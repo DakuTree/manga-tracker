@@ -1,0 +1,21 @@
+php_flag opcache.enable Off
+#FIXME: Make this development only.
+
+RewriteEngine On
+#TODO: Remove this on production.
+RewriteCond %{HTTP_HOST} ^tracker.codeanimu.net$ [NC]
+RewriteRule ^favicon\.ico$ favicon.production.ico [NC,QSA]
+RewriteCond %{HTTP_HOST} ^test.tracker.codeanimu.net$ [NC]
+RewriteRule ^favicon\.ico$  favicon.testing.ico [NC,QSA]
+RewriteCond %{HTTP_HOST} ^dev.tracker.codeanimu.net$ [NC]
+RewriteRule ^favicon\.ico$ favicon.development.ico [NC,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+
+#This must be set in apache conf.
+# SetEnvIf Host tracker.codeanimu.net$      CI_ENV=production
+# SetEnvIf Host dev.tracker.codeanimu.net$  CI_ENV=development
+# SetEnvIf Host test.tracker.codeanimu.net$ CI_ENV=testing

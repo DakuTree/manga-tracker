@@ -1,0 +1,182 @@
+body {
+	margin: 40px;
+
+	color: #4F5155;
+	background-color: #FFFFFF;
+
+	font: 13px/20px normal Helvetica, Arial, sans-serif;
+
+	font-family: 'Open Sans', sans-serif;
+	line-height: 26px;
+	font-weight: 400;
+}
+
+a {
+	color: #003399;
+	background-color: transparent;
+
+	font-weight: normal;
+}
+
+h1 {
+	margin: 0 0 14px 0;
+	padding: 14px 15px 10px 15px;
+
+	color: #444444;
+	border-bottom: 1px solid #D0D0D0;
+	background-color: transparent;
+
+	font-size: 19px;
+	font-weight: normal;
+}
+
+code {
+	display: block;
+
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+
+	color: #002166;
+	border: 1px solid #D0D0D0;
+	background-color: #F9F9F9;
+
+	font-family: Consolas, Monaco, Courier New, Courier, monospace;
+	font-size: 12px;
+}
+
+::selection, ::-moz-selection {
+	color: white;
+	background-color: #E13300;
+}
+
+/*** CSS ANIMATIONS ***/
+@-webkit-keyframes fadeIn {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+//FIX: boilerplate.css blanks these, after normalize.css sets them :|
+fieldset {
+	border: 1px solid #c0c0c0;
+	margin: 0 2px;
+	padding: 0.35em 0.625em 0.75em;
+}
+
+input, select {color: black}
+input[readonly] {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	font-family: inherit;
+	font-size: inherit;
+
+	font-weight: bold;
+}
+
+/** FIXME: This is a temp solution **/
+.sticky-alert {
+	height: 50px;
+	width:  400px; /** Use 100% to fill the width of the page **/
+	position: fixed;
+	top:    0;
+	left:   0;
+	right:  0;
+	margin: 0 auto;
+	background-color: rgba(0,0,255,0.2);
+	padding-top: 5px;
+	padding-bottom: 10px;
+	z-index: 1050;
+	text-align: center;
+}
+
+//CHECK: What is this used for?
+p.footer {
+	margin: 20px 0 0 0;
+	padding: 0 10px 0 10px;
+
+	text-align: right;
+
+	border-top: 1px solid #D0D0D0;
+
+	font-size: 11px;
+	line-height: 32px;
+}
+
+//This is pretty much taken directly from http://www.trueachievements.com/DakuTree.htm.
+//It is pretty much my idea of how I'd like a site like gemushi to look
+#page-wrap {
+	margin-top: 75px;
+
+	#page-holder {
+		min-width: 1000px;
+		max-width: 1000px;
+		//max-width: 1174px;
+		margin: 0 auto;
+
+		#page {
+			position: relative;
+			clear: both;
+			float: left;
+			width: 100%;
+			overflow: hidden;
+			//background: #eee;
+			//min-height: 724px;
+
+			margin-bottom: 40px + 10px; //This keeps the footer from overlaying on the page
+			padding-top: 1px;
+		}
+	}
+}
+
+//http://davidjrush.com/blog/2011/12/simple-jquery-tooltip/
+//This is used alongside bootstrap tooltip as a ? icon.
+span.question {
+	cursor: pointer;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: rgb(51, 122, 183);
+	line-height: 16px;
+	color: white;
+	font-size: 13px;
+	font-weight: bold;
+	border-radius: 8px;
+	text-align: center;
+	position: relative;
+
+	&:hover { background-color: #265a88; }
+
+	& + .tooltip > .tooltip-inner {
+		white-space:pre;
+		max-width:none;
+	}
+}
+
+//Custom bootstrap table row colors
+//TODO: Convert to LESS.
+.table > tbody > tr.inactive > td,
+.table > tbody > tr.inactive > th,
+.table > tbody > tr > td.inactive,
+.table > tbody > tr > th.inactive,
+.table > tfoot > tr.inactive > td,
+.table > tfoot > tr.inactive > th,
+.table > tfoot > tr > td.inactive,
+.table > tfoot > tr > th.inactive,
+.table > thead > tr.inactive > td,
+.table > thead > tr.inactive > th,
+.table > thead > tr > td.inactive,
+.table > thead > tr > th.inactive {
+	color: grey;
+}
+
+/*.table-hover > tbody > tr.inactive:hover > td,
+.table-hover > tbody > tr.inactive:hover > th,
+.table-hover > tbody > tr:hover > .inactive,
+.table-hover > tbody > tr > td.inactive:hover,
+.table-hover > tbody > tr > th.inactive:hover {
+	//background-color: #d0e9c6;
+}*/

@@ -1,0 +1,59 @@
+imports:
+- javascript
+- php
+
+filter:
+    excluded_paths:
+        - 'vendor/*'
+        - 'application/helpers/vendor/*'
+        - 'application/libraries/vendor/*'
+        - 'application/models/vendor/*'
+        - 'application/language/*'
+        - 'public/assets/vendor/*'
+
+checks:
+    php:
+        uppercase_constants: true
+        align_assignments: true
+        avoid_usage_of_logical_operators: false
+        no_commented_out_code: false
+        one_class_per_file: false
+        side_effects_or_types: false
+
+coding_style:
+    php:
+        indentation:
+            general:
+                use_tabs: true
+        spaces:
+            before_parentheses:
+                if: false
+                for: false
+                while: false
+                switch: false
+                catch: false
+        braces:
+            classes_functions:
+                class: end-of-line
+                function: end-of-line
+                closure: end-of-line
+            if:
+                opening: end-of-line
+            for:
+                opening: end-of-line
+            while:
+                opening: end-of-line
+            do_while:
+                opening: end-of-line
+            switch:
+                opening: end-of-line
+            try:
+                opening: end-of-line
+        upper_lower_casing:
+            keywords:
+                general: lower
+            constants:
+                true_false_null: upper
+
+tools:
+    external_code_coverage: true

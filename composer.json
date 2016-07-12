@@ -1,0 +1,84 @@
+{
+	"name" : "dakutree/manga-tracker",
+	"description" : "A site for tracking manga updates.",
+	"type" : "project",
+
+	"require": {
+		"php": ">=5.5.0",
+		"codeigniter/framework": "3.0.*",
+		"kenjis/ci-phpunit-test": "0.12.*",
+
+		"fxp/composer-asset-plugin": "~1.1",
+		"bower-asset/jquery": "1.12.3",
+		"bower-asset/jquery-validation": "1.15.0",
+		"bower-asset/html5shiv": "3.x",
+		"bower-asset/normalize.css": "3.0.*",
+		"bower-asset/html5bp" : "5.2.*",
+		"bower-asset/bootstrap" : "3.3.*",
+		"bower-asset/font-awesome" : "4.6.3"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "5.3.*"
+	},
+	"extra": {
+		"asset-repositories": [
+			{
+				"type": "bower-vcs",
+				"url": "https://github.com/h5bp/html5-boilerplate.git",
+				"name": "bower-asset/html5bp"
+			}
+		]
+	},
+	"vendor-copy": {
+		"vendor/bower-asset/html5bp/dist/css/main.css"                               : "public/assets/vendor/css/boilerplate.css",
+		"vendor/bower-asset/normalize.css/normalize.css"                             : "public/assets/vendor/css/normalize.css",
+		"vendor/bower-asset/html5shiv/dist/html5shiv.js"                             : "public/assets/vendor/js/html5shiv.js",
+		"vendor/bower-asset/html5shiv/dist/html5shiv.min.js"                         : "public/assets/vendor/js/html5shiv.min.js",
+		"vendor/bower-asset/jquery/dist/jquery.js"                                   : "public/assets/vendor/js/jquery-1.12.3.js",
+		"vendor/bower-asset/jquery/dist/jquery.min.js"                               : "public/assets/vendor/js/jquery-1.12.3.min.js",
+		"vendor/bower-asset/jquery/dist/jquery.min.map"                              : "public/assets/vendor/js/jquery-1.12.3.min.map",
+		"vendor/bower-asset/jquery-validation/dist/jquery.validate.js"               : "public/assets/vendor/js/jquery.validate-1.15.0.js",
+		"vendor/bower-asset/jquery-validation/dist/additional-methods.js"            : "public/assets/vendor/js/jquery.validate.additional-methods-1.15.0.js",
+		"vendor/bower-asset/jquery-validation/dist/jquery.validate.min.js"           : "public/assets/vendor/js/jquery.validate-1.15.0.min.js",
+		"vendor/bower-asset/jquery-validation/dist/additional-methods.min.js"        : "public/assets/vendor/js/jquery.validate.additional-methods-1.15.0.min.js",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap.css"                        : "public/assets/vendor/css/bootstrap.css",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap.css.map"                    : "public/assets/vendor/css/bootstrap.css.map",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap.min.css"                    : "public/assets/vendor/css/bootstrap.min.css",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap-theme.css"                  : "public/assets/vendor/css/bootstrap-theme.css",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap-theme.css.map"              : "public/assets/vendor/css/bootstrap-theme.css.map",
+		"vendor/bower-asset/bootstrap/dist/css/bootstrap-theme.min.css"              : "public/assets/vendor/css/bootstrap-theme.min.css",
+		"vendor/bower-asset/bootstrap/dist/fonts/glyphicons-halflings-regular.eot"   : "public/assets/vendor/fonts/glyphicons-halflings-regular.eot",
+		"vendor/bower-asset/bootstrap/dist/fonts/glyphicons-halflings-regular.svg"   : "public/assets/vendor/fonts/glyphicons-halflings-regular.svg",
+		"vendor/bower-asset/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf"   : "public/assets/vendor/fonts/glyphicons-halflings-regular.ttf",
+		"vendor/bower-asset/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"  : "public/assets/vendor/fonts/glyphicons-halflings-regular.woff",
+		"vendor/bower-asset/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2" : "public/assets/vendor/fonts/glyphicons-halflings-regular.woff2",
+		"vendor/bower-asset/bootstrap/dist/js/bootstrap.js"                          : "public/assets/vendor/js/bootstrap.js",
+		"vendor/bower-asset/bootstrap/dist/js/bootstrap.min.js"                      : "public/assets/vendor/js/bootstrap.min.js",
+		"vendor/bower-asset/bootstrap/dist/js/npm.js"                                : "public/assets/vendor/js/npm.js",
+		"vendor/bower-asset/font-awesome/css/font-awesome.css"                       : "public/assets/vendor/css/font-awesome.css",
+		"vendor/bower-asset/font-awesome/css/font-awesome.css.map"                   : "public/assets/vendor/css/font-awesome.css.map",
+		"vendor/bower-asset/font-awesome/css/font-awesome.min.css"                   : "public/assets/vendor/css/font-awesome.min.css",
+		"vendor/bower-asset/font-awesome/fonts/FontAwesome.otf"                      : "public/assets/vendor/fonts/FontAwesome.otf",
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.eot"              : "public/assets/vendor/fonts/fontawesome-webfont.eot",
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.svg"              : "public/assets/vendor/fonts/fontawesome-webfont.svg",
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.ttf"              : "public/assets/vendor/fonts/fontawesome-webfont.ttf",
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff"             : "public/assets/vendor/fonts/fontawesome-webfont.woff",
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2"
+	},
+
+	"scripts": {
+		"post-install-cmd" : [
+			"php vendor/kenjis/ci-phpunit-test/update.php",
+			"php -r \"array_map('copy', array_keys(json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']), json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']);\"",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_production  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_testing     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_development CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"php _scripts/chmod_config.php"
+		],
+		"post-update-cmd" : [
+			"php vendor/kenjis/ci-phpunit-test/update.php",
+			"php -r \"array_map('copy', array_keys(json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']), json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']);\"",
+			"php _scripts/chmod_config.php"
+		]
+	}
+}

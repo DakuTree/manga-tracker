@@ -1,0 +1,158 @@
+<?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Tracker_Model extends CI_Model {
+	private $sites;
+
+	public function __construct() {
+		parent::__construct();
+
+		$this->load->database();
+
+		require_once(APPPATH.'models/Site_Model.php');
+		$this->sites = new Sites_Model;
+	}
+
+	/****** GET TRACKER *******/
+	public function get_tracker_from_user_id(int $userID) {
+		$query = $this->db
+			->select('tracker_chapters.*,
+			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated,
+			          tracker_sites.site, tracker_sites.site_class')
+			->from('tracker_chapters')
+			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
+			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+			->where('tracker_chapters.user_id', $userID)
+			->get();
+
+		$arr = [];
+		if($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$arr[] = [
+					'id' => $row->id,
+					'generated_current_url' => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->current_chapter),
+					'generated_latest_url'  => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->latest_chapter),
+					'full_title_url' => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
+
+					'new_chapter_exists'    => ($row->latest_chapter == $row->current_chapter ? '1' : '0'),
+
+					'title_data' => [
+						'id'              => $row->title_id,
+						'title'           => $row->title,
+						'title_url'       => $row->title_url,
+						'latest_chapter'  => $row->latest_chapter,
+						'current_chapter' => $row->current_chapter
+					],
+					'site_data' => [
+						'id'         => $row->site_id,
+						'site'       => $row->site
+					]
+				];
+			}
+
+			return $arr;
+		}
+	}
+
+	public function get_id_from_site_url(string $site_url) {
+		$query = $this->db->select('id')
+		                  ->from('tracker_sites')
+		                  ->where('site', $site_url)
+		                  ->get();
+
+		if($query->num_rows() > 0) {
+			$siteID = (int) $query->row('id');
+		}
+
+		return $siteID ?? FALSE;
+	}
+
+	public function getTitleId(string $mangaTitle, int $siteID) {
+		$query = $this->db->select('id')
+		                  ->from('tracker_titles')
+		                  ->where('title', $mangaTitle)
+		                  ->where('site_id', $siteID)
+		                  ->get();
+
+		if($query->num_rows() > 0) {
+			$titleID = $query->row('id');
+		} else {
+			//TODO: Check if title is valid URL!
+			$titleID = $this->addTitle($mangaTitle, $siteID);
+		}
+
+		return $titleID;
+	}
+
+	public function updateTracker(int $userID, string $site, string $title, string $chapter) : bool {
+		$success = FALSE;
+		if($siteID = $this->Tracker_Model->get_id_from_site_url($site)) {
+			$titleID = $this->Tracker_Model->getTitleId($title, $siteID);
+
+			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
+				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
+				                    ->where('user_id', $userID)
+				                    ->where('title_id', $titleID)
+				                    ->update('tracker_chapters');
+				//$success = 1;
+			} else {
+				$success = $this->db->insert('tracker_chapters', ['user_id' => $userID, 'title_id' => $titleID, 'current_chapter' => $chapter]);
+			}
+		}
+		return (bool) $success;
+	}
+
+	public function updateTrackerByID(int $userID, int $chapterID, string $chapter) : bool {
+		$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
+		                    ->where('user_id', $userID)
+		                    ->where('id', $chapterID)
+		                    ->update('tracker_chapters');
+
+		return (bool) $success;
+	}
+
+	private function updateTitleById(int $id, string $latestChapter) {
+		$success = $this->db->set(['latest_chapter' => $latestChapter, 'last_updated' => NULL])
+		                    ->where('id', $id)
+		                    ->update('tracker_titles');
+
+		return (bool) $success;
+	}
+	private function addTitle(string $mangaTitle, int $siteID) {
+		$query = $this->db->select('site, site_class')
+		                  ->from('tracker_sites')
+		                  ->where('id', $siteID)
+		                  ->get();
+
+		$latestChapter = $this->sites->{$query->row()->site_class}->getLatestChapter($mangaTitle);
+		$this->db->insert('tracker_titles', ['title' => $mangaTitle, 'site_id' => $siteID, 'latest_chapter' => $latestChapter]);
+		//TODO: Trigger update.
+		return $this->db->insert_id();
+	}
+
+
+	/**
+	 * Checks for any titles that haven't updated in 16 hours and updates them.
+	 * This is ran every 6 hours via a cron job.
+	 */
+	public function updateLatestChapters() {
+		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_sites.site, tracker_sites.site_class, tracker_titles.latest_chapter, tracker_titles.last_updated')
+		                  ->from('tracker_titles')
+		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+		                  ->where('latest_chapter', NULL)
+		                  ->or_where('last_updated < ', 'DATE_SUB(NOW(), INTERVAL 16 HOUR)', FALSE) //TODO: Each title should have specific interval time?
+		                  ->get();
+
+		if($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$latestChapter = $this->sites->{$row->site_class}->getLatestChapter($row->title_url);
+				if($this->updateTitleById((int) $row->id, $latestChapter)) {
+					print "> {$row->title} - ($latestChapter)\n";
+				}
+			}
+		}
+	}
+
+	private function sites() {
+		return $this;
+	}
+}

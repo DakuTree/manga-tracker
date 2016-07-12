@@ -1,0 +1,37 @@
+# phpStorm
+/.idea/*
+!/.idea/jsLinters
+!/.idea/codeStyleSettings.xml
+!/.idea/encodings.xml
+!/.idea/watcherTasks.xml
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+Desktop.ini
+*.lnk
+
+#Composer
+composer.phar
+/vendor/
+
+#Bower // Composer Asset Plugin
+/public/assets/vendor
+!/public/assets/vendor/**/.gitkeep
+
+#Testing
+application/tests/_ci_phpunit_test/
+application/logs/
+application/tests/build/
+
+#Production config
+#TODO: We should do some manual tweaking here.
+application/config/production/
+!application/config/production/database.php
+!application/config/production/database_password.php.sample
+
+#Other config stuff
+application/config/*/recaptcha.php
+application/config/*/email.php
+application/config/**/database_password.php

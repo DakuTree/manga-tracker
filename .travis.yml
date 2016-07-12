@@ -1,0 +1,39 @@
+#DOCS: http://docs.travis-ci.com/user/languages/php/
+language: php
+php:
+  - 7.0
+
+services:
+  - mysql
+
+sudo: false
+
+env:
+  - CI_ENV=testing
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+matrix:
+  fast_finish: true
+
+addons:
+  ssh_known_hosts: tracker.codeanimu.net:22
+
+before_install:
+  - travis_retry composer self-update && composer --version #travis is bad at updating composer
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
+  #NOTE: Database creation is done in composer.json scripts.
+
+install:
+  - composer install
+  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
+  - php public/index.php admin/migrate
+
+script: cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
+
+after_success:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover

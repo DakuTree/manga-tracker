@@ -1,0 +1,54 @@
+/* Sticky footer styles */
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	/* Margin bottom by footer height */
+	margin-bottom: 40px;
+}
+#site-footer {
+	position: absolute;
+	bottom: 0;
+	left:   0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 40px;
+	background-color: #f5f5f5;
+
+	.container {
+		padding-top: 10px;
+	}
+
+	a {
+		color: #777;
+		&:hover {
+			color: #333;
+			background-color: transparent;
+			text-decoration: none;
+		}
+	}
+
+	//Only show debug info on hover.
+	#footer-left {
+		cursor: default;
+
+		.footer-copyright {
+			-webkit-animation: fadeIn 0.7s;
+			animation:         fadeIn 0.7s;
+		}
+		.footer-debug {
+			display: none;
+		}
+
+		&:hover .footer-copyright {
+			display: none;
+		}
+		&:hover .footer-debug {
+			display: block;
+
+			-webkit-animation: fadeIn 0.7s;
+			animation:         fadeIn 0.7s;
+		}
+	}
+}
