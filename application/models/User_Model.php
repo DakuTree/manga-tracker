@@ -21,7 +21,9 @@ class User_Model extends CI_Model {
 	}
 
 	public function login_redirect() {
-		$this->session->set_flashdata('referred_from', current_url());
+		//FIXME: The referred_from method <works> but can cause UX issues if the user was redirected from a DL page.
+		//$this->session->set_flashdata('referred_from', current_url());
+		redirect('user/login');
 	}
 
 	public function username_exists(string $username) : bool {

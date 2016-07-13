@@ -6,6 +6,8 @@ class Tracker extends AJAX_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		$this->output->set_header('Access-Control-Allow-Origin: *');
+
 		$this->load->library('vendor/Limiter');
 		$this->load->library('form_validation');
 
@@ -14,10 +16,6 @@ class Tracker extends AJAX_Controller {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 			exit();
 		}
-
-		//FIXME: THIS IS TEMP
-		//$this->form_validation->set_data($this->input->get());
-		//$_POST['api-key'] = $_POST['api-key'] ?? $_GET['api-key'] ?? NULL;
 
 		//API Key is required for all AJAX requests
 		//We're not using set_rules here since we can't run form_validation twice.

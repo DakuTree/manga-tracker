@@ -37,7 +37,7 @@ class Login extends No_Auth_Controller {
 				if($prevURL = $this->session->flashdata('referred_from')) {
 					redirect($prevURL);
 				} else { //@codeCoverageIgnore
-					redirect('user/dashboard'); //TODO (CHECK): Should this be refresh?
+					redirect('/'); //TODO (CHECK): Should this be refresh?
 				} //@codeCoverageIgnore
 			} else {
 				//login was unsuccessful

@@ -31,4 +31,15 @@ class TrackerInline extends Auth_Controller {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
+
+	/***** IMPORT/EXPORT ******/
+
+	public function import() {
+		$this->form_validation->set_rules('list_import', 'Chapter', 'required');
+	}
+
+	public function export() {
+		$trackerData = $this->Tracker_Model->export_tracker_from_user_id($this->userID);
+		$this->_render_json($trackerData, TRUE);
+	}
 }

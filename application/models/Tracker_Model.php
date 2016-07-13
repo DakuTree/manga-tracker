@@ -152,6 +152,32 @@ class Tracker_Model extends CI_Model {
 		}
 	}
 
+	public function export_tracker_from_user_id(int $userID) {
+		$query = $this->db
+			->select('tracker_chapters.current_chapter,
+			          tracker_titles.title_url,
+			          tracker_sites.site')
+			->from('tracker_chapters')
+			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
+			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+			->where('tracker_chapters.user_id', $userID)
+			->get();
+
+		$arr = [];
+		if($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$arr[] = [
+					'site'            => $row->site,
+					'title_url'       => $row->title_url,
+					'current_chapter' => $row->current_chapter
+				];
+			}
+
+			return $arr;
+		}
+	}
+
+	/*************************************************/
 	private function sites() {
 		return $this;
 	}

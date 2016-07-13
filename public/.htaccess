@@ -1,5 +1,6 @@
+#FIXME: This should be development ONLY
 php_flag opcache.enable Off
-#FIXME: Make this development only.
+
 
 RewriteEngine On
 #TODO: Remove this on production.

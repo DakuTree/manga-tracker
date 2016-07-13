@@ -29,10 +29,15 @@ class MY_Controller extends CI_Controller {
 		}
 		$this->load->view('common/footer', ($this->global_data + $this->footer_data));
 	}
-	function _render_json($json_input) {
+	function _render_json($json_input, bool $download = FALSE) {
 		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
 
 		$this->output->set_content_type('application/json');
+		if($download) {
+			$date = date('Ymd_Hi', time());
+			$this->output->set_header('Content-Disposition: attachment; filename="tracker-'.$date.'.json"');
+			$this->output->set_header('Content-Length: '.strlen($json));
+		}
 		$this->output->set_output($json);
 	}
 }
@@ -50,7 +55,9 @@ class Auth_Controller extends User_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		if(!$this->ion_auth->logged_in()) redirect('user/login');
+		if(!$this->ion_auth->logged_in()) {
+			$this->User->login_redirect();
+		}
 	}
 }
 
@@ -81,7 +88,6 @@ class AJAX_Controller extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		//$this->output->set_header('Access-Control-Allow-Origin: *'); //FIXME: Limit this to specific URLs
 		//todo: general security stuff
 	}
 }
