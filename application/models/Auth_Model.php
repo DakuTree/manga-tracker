@@ -51,9 +51,9 @@ class Auth_Model extends CI_Model {
 			), TRUE);
 
 			//TODO: Make an easy email helper
-			$this->email->from('admin@codeanimu.net', 'Manga Tracker');
+			$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 			$this->email->to($email);
-			$this->email->subject('Manga Tracker - Email Verification');
+			$this->email->subject($this->config->item('site_title', 'ion_auth').' - Email Verification');
 			$this->email->message($message);
 			if(!$this->email->send()) {
 				throw new Exception('Unable to send email to address provided.');
