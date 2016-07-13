@@ -18,4 +18,10 @@ $(function(){
 			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
 		});
 	});
+
+	//UX: This makes it easier to press the checkbox
+	$('#tracker-table > tbody > tr > td:nth-of-type(1)').click(function () {
+		var checkbox = $(this).find('> input[type=checkbox]');
+		$(checkbox).prop("checked", !checkbox.prop("checked"));
+	});
 });
