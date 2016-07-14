@@ -66,10 +66,10 @@ class Tracker_Model extends CI_Model {
 		return $siteID ?? FALSE;
 	}
 
-	public function getTitleId(string $mangaTitle, int $siteID) {
+	public function getTitleId(string $titleURL, int $siteID) {
 		$query = $this->db->select('id')
 		                  ->from('tracker_titles')
-		                  ->where('title', $mangaTitle)
+		                  ->where('title_url', $titleURL)
 		                  ->where('site_id', $siteID)
 		                  ->get();
 
@@ -77,7 +77,7 @@ class Tracker_Model extends CI_Model {
 			$titleID = $query->row('id');
 		} else {
 			//TODO: Check if title is valid URL!
-			$titleID = $this->addTitle($mangaTitle, $siteID);
+			$titleID = $this->addTitle($titleURL, $siteID);
 		}
 
 		return $titleID;
@@ -117,15 +117,15 @@ class Tracker_Model extends CI_Model {
 
 		return (bool) $success;
 	}
-	private function addTitle(string $mangaTitle, int $siteID) {
+	private function addTitle(string $titleURL, int $siteID) {
 		$query = $this->db->select('site, site_class')
 		                  ->from('tracker_sites')
 		                  ->where('id', $siteID)
 		                  ->get();
 
-		$latestChapter = $this->sites->{$query->row()->site_class}->getLatestChapter($mangaTitle);
-		$this->db->insert('tracker_titles', ['title' => $mangaTitle, 'site_id' => $siteID, 'latest_chapter' => $latestChapter]);
-		//TODO: Trigger update.
+		$latestChapter = $this->sites->{$query->row()->site_class}->getLatestChapter($titleURL);
+		//FIXME: Get title
+		$this->db->insert('tracker_titles', ['title' => $titleURL, 'title_url' => $titleURL, 'site_id' => $siteID, 'latest_chapter' => $latestChapter]);
 		return $this->db->insert_id();
 	}
 
@@ -175,6 +175,34 @@ class Tracker_Model extends CI_Model {
 
 			return $arr;
 		}
+	}
+
+	public function import_tracker_from_json(string $json_string) : array {
+		//We already know the this is a valid JSON string as it was validated by form_validator.
+		$json = json_decode($json_string, TRUE);
+
+		/*
+		 * 0 = Success
+		 * 1 = Invalid keys.
+		 * 2 = Has failed rows
+		 */
+		$status = ['code' => 0, 'failed_rows' => []];
+
+		//Make sure we have all the proper keys, and no extra ones.
+		$json_keys = array_keys(call_user_func_array('array_merge', $json));
+		if(count($json_keys) === 3 && !array_diff(array('site', 'title_url', 'current_chapter'), $json_keys)) {
+			foreach($json as $row) {
+				$success = $this->updateTracker($this->User->id, $row['site'], $row['title_url'], $row['current_chapter']);
+				if(!$success) {
+					$status['code'] = 2;
+					$status['failed_rows'][] = $row;
+				}
+			}
+			//switch($this->Tracker_Model->import_tracker_from_json())
+		} else {
+			$status['code'] = 1;
+		}
+		return $status;
 	}
 
 	/*************************************************/

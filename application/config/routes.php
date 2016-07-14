@@ -69,7 +69,7 @@ $route['ajax/update_tracker']         = 'Ajax/Tracker/update';
 $route['ajax/update_tracker_inline']  = 'Ajax/TrackerInline/update';
 
 $route['export_list'] = 'Ajax/TrackerInline/export';
-$route['import_list']['post'] = '';
+$route['import_list']['post'] = 'Ajax/TrackerInline/import';
 
 //$route['ajax/([a-zA-Z0-9_-]+)']          = 'Ajax/$1'; //TODO: Remove me. Don't match everything.
 

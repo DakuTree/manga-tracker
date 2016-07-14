@@ -238,7 +238,7 @@ body {
 
 	width: 100%;
 	/* Set the fixed height of the footer here */
-	height: 40px;
+	height: 46px;
 
 	background-color: #F5F5F5;
 }
@@ -564,6 +564,36 @@ body {
 }
 #page[data-page="options"] #userscript-form > * {
 	margin: 0 2px;
+}
+#page[data-page="dashboard"] > #import-export > div {
+	display: inline-block;
+}
+#page[data-page="dashboard"] > #import-export > div > div {
+	display: inline-block;
+
+	text-align: center;
+}
+#page[data-page="dashboard"] > #import-export > div > div > input {
+	position: absolute;
+
+	visibility: hidden;
+}
+#page[data-page="dashboard"] > #import-export label {
+	margin-bottom: 0;
+}
+#page[data-page="dashboard"] > #import-export label span {
+	cursor: pointer;
+
+	color: #003399;
+	background-color: transparent;
+
+	font-weight: normal;
+}
+#page[data-page="dashboard"] > #import-export label span:hover {
+	text-decoration: underline;
+}
+#page[data-page="dashboard"] > #import-export > #import-status {
+	margin-left: 10px;
 }
 #page[data-page="dashboard"] > table {
 	width: 100%;

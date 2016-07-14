@@ -57,6 +57,14 @@ class MY_Form_validation extends CI_Form_validation {
 		return $isValid;
 	}
 
+	public function is_valid_json(string $json_string) : bool {
+		$isValid = FALSE;
+		if(json_decode($json_string) && json_last_error() === JSON_ERROR_NONE) {
+			$isValid = TRUE;
+		}
+		return $isValid;
+	}
+
 	/** MISC FUNCTIONS **/
 	/**
 	 * @param string $ruleName

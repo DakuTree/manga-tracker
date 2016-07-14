@@ -1,6 +1,8 @@
 #FIXME: This should be development ONLY
 php_flag opcache.enable Off
 
+php_value post_max_size 3M
+php_value upload_max_filesize 0M
 
 RewriteEngine On
 #TODO: Remove this on production.

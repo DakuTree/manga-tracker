@@ -1,4 +1,15 @@
-<table id="myTable read" class="tablesorter tablesorter-bootstrap">
+<div id="import-export">
+	<a href="./export_list" download>Export List</a> |
+	<div>
+		<div>
+			<label for="file_import"><span>Import List</span></label>
+			<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">
+		</div>
+	</div>
+	<span id="import-status"></span>
+</div>
+
+<table id="tracker-table" class="tablesorter tablesorter-bootstrap">
 	<thead>
 		<tr>
 			<th class="header read headerSortDown"></th>
@@ -30,7 +41,7 @@
 				<span class="update-read" title="I've read the latest chapter!">
 					<i class="fa fa-refresh" aria-hidden="true"></i>
 				</span>
-				<!-- TODO: 
+				<!-- TODO: Chapter List? -->
 				<?php } ?>
 			</td>
 		</tr>

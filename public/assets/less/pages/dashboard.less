@@ -1,4 +1,35 @@
 #page[data-page='dashboard'] {
+	& > #import-export {
+		& > div {
+			display: inline-block;
+			& > div {
+				display: inline-block;
+				text-align: center;
+
+				& > input {
+					visibility: hidden;
+					position: absolute;
+				}
+			}
+		}
+		label {
+			margin-bottom: 0;
+			span {
+				color: #003399;
+				background-color: transparent;
+				font-weight: normal;
+				cursor: pointer;
+				&:hover {
+					text-decoration: underline;
+
+				}
+			}
+		}
+
+		& > #import-status {
+			margin-left: 10px;
+		}
+	}
 	& > table {
 		width: 100%;
 		text-align: left;
