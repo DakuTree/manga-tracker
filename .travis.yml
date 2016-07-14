@@ -34,6 +34,6 @@ install:
 
 script: cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
 
-after_success:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
+# after_success:
+  # - wget https://scrutinizer-ci.com/ocular.phar
+  # - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
