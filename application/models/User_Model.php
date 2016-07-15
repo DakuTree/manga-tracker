@@ -3,17 +3,25 @@
 class User_Model extends CI_Model {
 	public $id;
 	public $username;
+	private $email;
 
 	public function __construct() {
 		parent::__construct();
 
 		//CHECK: Should this be placed elsewhere?
-		if($this->logged_in() && !$this->session->userdata('username')) {
-			$this->session->set_userdata('username', $this->ion_auth->user()->row()->username);
+		if($this->logged_in()) {
+			if(!$this->session->userdata('username')) {
+				$this->session->set_userdata('username', $this->ion_auth->user()->row()->username);
+			}
+			if(!$this->session->userdata('email')) {
+				//CHECK: This seems like a bad idea?
+				$this->session->set_userdata('email', $this->ion_auth->user()->row()->email);
+			}
 		}
 
 		$this->id       = (int) $this->ion_auth->get_user_id();
 		$this->username = $this->session->userdata('username');
+		$this->email    = $this->session->userdata('email');
 	}
 
 	public function logged_in() : bool {
@@ -85,7 +93,7 @@ class User_Model extends CI_Model {
 	}
 
 	public function get_gravatar_url($email = NULL, $size = NULL) : string {
-		$email = $email ?? $this->global_data['user']->email; //FIXME: We probably shouldn't use global_data ere.
+		$email = $email ?? $this->email;
 		//TODO: FIXME ON PROFILE PAGES
 		return $this->gravatar->get($email, $size);
 	}
