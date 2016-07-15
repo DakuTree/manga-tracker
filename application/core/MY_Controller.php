@@ -57,6 +57,7 @@ class Auth_Controller extends User_Controller {
 
 		if(!$this->ion_auth->logged_in()) {
 			$this->User->login_redirect();
+			redirect('user/login');
 		}
 	}
 }

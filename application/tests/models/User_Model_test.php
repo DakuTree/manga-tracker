@@ -47,7 +47,6 @@ class User_Model_test extends TestCase {
 
 		//FIXME: We should probably be checking against a custom set current_url()
 		$this->assertEquals("https://test.tracker.codeanimu.net/", $result);
-		$this->assertRedirect("https://test.tracker.codeanimu.net/", 302);
 	}
 
 	public function test_username_exists_true() {
