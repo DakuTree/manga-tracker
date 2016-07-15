@@ -16,7 +16,7 @@ class Login_test extends TestCase {
 		);
 
 		$this->request('GET', 'user/login');
-		$this->assertRedirect('user/dashboard');
+		$this->assertRedirect('/');
 	}
 
 	public function test_index_not_logged_in() {

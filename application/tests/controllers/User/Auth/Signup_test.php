@@ -26,7 +26,7 @@ class Signup_test extends TestCase {
 		);
 
 		$this->request('GET', 'user/signup');
-		$this->assertRedirect('user/dashboard');
+		$this->assertRedirect('/');
 	}
 
 	public function test_index_not_logged_in() {
@@ -150,7 +150,7 @@ class Signup_test extends TestCase {
 		);
 
 		$this->request('POST', 'user/signup/foobarauthcode');
-		$this->assertRedirect('user/dashboard');
+		$this->assertRedirect('/');
 	}
 	public function test_signup_p2_verification_pass_validation_pass_register_fail() {
 		//form was valid, and register was unsuccessful, reshow form
