@@ -26,7 +26,7 @@ class Forgot_Password_test extends TestCase {
 		);
 
 		$this->request('GET', 'user/forgot_password');
-		$this->assertRedirect('user/dashboard');
+		$this->assertRedirect('/');
 	}
 
 	public function test_index_not_logged_in() {
