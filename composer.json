@@ -70,9 +70,9 @@
 		"post-install-cmd" : [
 			"php vendor/kenjis/ci-phpunit-test/update.php",
 			"php -r \"array_map('copy', array_keys(json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']), json_decode(file_get_contents('composer.json'), TRUE)['vendor-copy']);\"",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_production  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_testing     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS manga-tracker_development CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS `manga-tracker_production`  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS `manga-tracker_testing`     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS `manga-tracker_development` CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
 			"php _scripts/chmod_config.php"
 		],
 		"post-update-cmd" : [
