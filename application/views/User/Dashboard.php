@@ -1,5 +1,6 @@
 <div id="import-export">
-	<a href="./export_list" download>Export List</a> |
+	<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
+	<a href="./export_list">Export List</a> |
 	<div>
 		<div>
 			<label for="file_import"><span>Import List</span></label>
