@@ -1,13 +1,20 @@
-<div id="import-export">
-	<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
-	<a href="./export_list">Export List</a> |
-	<div>
+<div id="tracker-table-links">
+	<div class="pull-left">
+		<a href="#" type="submit" id="delete_selected">
+			<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
+		</a>
+	</div>
+	<div class="pull-right">
+		<span id="import-status"></span>
+		<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
+		<a href="./export_list">Export List</a> |
 		<div>
-			<label for="file_import"><span>Import List</span></label>
-			<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">
+			<div>
+				<label for="file_import"><span>Import List</span></label>
+				<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">
+			</div>
 		</div>
 	</div>
-	<span id="import-status"></span>
 </div>
 
 <table id="tracker-table" class="tablesorter tablesorter-bootstrap">
@@ -17,6 +24,7 @@
 			<th class="header read">Series (<?=count($trackerData)?>)</th>
 			<th class="header read">My Status</th>
 			<th class="header read">Latest Release</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -24,7 +32,6 @@
 		<tr data-id="<?=$row['id']?>">
 			<td>
 				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=$row['title_data']['title']?></span>
-
 				<input type="checkbox" name="check">
 			</td>
 			<td>

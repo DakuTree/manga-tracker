@@ -110,6 +110,13 @@ class Tracker_Model extends CI_Model {
 		return (bool) $success;
 	}
 
+	public function deleteTrackerByID(int $userID, int $chapterID) {
+		$success = $this->db->where('user_id', $userID)
+		                    ->where('id', $chapterID)
+		                    ->delete('tracker_chapters');
+
+		return (bool) $success;
+	}
 	private function updateTitleById(int $id, string $latestChapter) {
 		$success = $this->db->set(['latest_chapter' => $latestChapter, 'last_updated' => NULL])
 		                    ->where('id', $id)
@@ -202,6 +209,25 @@ class Tracker_Model extends CI_Model {
 		} else {
 			$status['code'] = 1;
 		}
+		return $status;
+	}
+
+	public function delete_tracker_from_json(string $json_string) : array {
+		//We already know the this is a valid JSON string as it was validated by form_validator.
+		$json = json_decode($json_string, TRUE);
+
+		/*
+		 * 0 = Success
+		 * 1 = Invalid IDs
+		 */
+		$status = ['code' => 0];
+
+		foreach($json as $id) {
+			if(!(ctype_digit($id) && $this->deleteTrackerByID($this->User->id, (int) $id))) {
+				$status['code'] = 1;
+			}
+		}
+
 		return $status;
 	}
 

@@ -20,9 +20,39 @@ $(function(){
 	});
 
 	//UX: This makes it easier to press the checkbox
-	$('#tracker-table > tbody > tr > td:nth-of-type(1)').click(function () {
-		var checkbox = $(this).find('> input[type=checkbox]');
-		$(checkbox).prop("checked", !checkbox.prop("checked"));
+	$('#tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
+		if(!$(e.target).is('input')) {
+			var checkbox = $(this).find('> input[type=checkbox]');
+			$(checkbox).prop("checked", !checkbox.prop("checked"));
+		}
+	});
+
+	$('#delete_selected').click(function(e) {
+		e.preventDefault();
+
+		var checked_rows = $('#tracker-table').find('tr:has(td input[type=checkbox]:checked)');
+		if(checked_rows.length > 0) {
+			var row_ids = [];
+			$(checked_rows).each(function() {
+				row_ids.push($(this).attr('data-id'));
+			});
+
+			var data = new FormData();
+			data.append('json', JSON.stringify(row_ids));
+			$.ajax({
+				type: "POST",
+				url: './ajax/delete_inline',
+				data: data,
+				success: function () {
+					location.reload();
+				},
+				error : function (xhr, ajaxOptions, thrownError) {
+					//TODO: We should probably do something here..
+				},
+				contentType: false,
+				processData: false
+			});
+		}
 	});
 
 	$('#file_import').change(function() {

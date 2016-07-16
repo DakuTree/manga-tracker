@@ -1,17 +1,16 @@
 #page[data-page='dashboard'] {
-	& > #import-export {
-		& > div {
-			display: inline-block;
-			& > div {
-				display: inline-block;
-				text-align: center;
+	& > #tracker-table-links {
+		padding: 0 5px;
 
-				& > input {
-					visibility: hidden;
-					position: absolute;
-				}
-			}
+		div {
+			display: inline-block;
+			text-align: center;
 		}
+		input {
+			visibility: hidden;
+			position: absolute;
+		}
+
 		label {
 			margin-bottom: 0;
 			span {
@@ -26,17 +25,22 @@
 			}
 		}
 
-		& > #import-status {
-			margin-left: 10px;
+		#import-status {
+			margin-right: 10px;
 		}
 	}
-	& > table {
+
+	& > #tracker-table {
 		width: 100%;
 		text-align: left;
 
 		& > tbody {
 			& > tr {
-				& > td:nth-of-type(1) { width: 5%; }
+				& > td:nth-of-type(1) {
+					width: 5%;
+					text-align: center;
+					& > input { vertical-align: sub; }
+				}
 				& > td:nth-of-type(2) {
 					& > img {
 						height: 15px;
@@ -48,6 +52,8 @@
 				& > td:nth-of-type(4) { width: 20%; }
 				& > td:nth-of-type(5) {
 					width: 5%;
+					text-align: right;
+					padding: 0 5px;
 
 					& > .update-read {
 						cursor: pointer;

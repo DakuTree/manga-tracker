@@ -32,6 +32,29 @@ class TrackerInline extends Auth_Controller {
 		}
 	}
 
+	public function delete() {
+		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
+
+		if($this->form_validation->run() === TRUE) {
+			$status = $this->Tracker_Model->delete_tracker_from_json($this->input->post('json'));
+			switch($status['code']) {
+				case 0:
+					//All is good!
+					$this->output->set_status_header('200');
+					break;
+				case 1:
+					$this->output->set_status_header('400', 'JSON contains invalid IDs');
+					break;
+			}
+		} else {
+			if(!$this->form_validation->isRuleValid('is_valid_json')) {
+				$this->output->set_status_header('400', 'Not valid JSON!');
+			} else {
+				$this->output->set_status_header('400', 'No JSON sent');
+			}
+		}
+	}
+
 	/***** IMPORT/EXPORT ******/
 
 	public function import() {
