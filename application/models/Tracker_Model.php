@@ -124,15 +124,21 @@ class Tracker_Model extends CI_Model {
 
 		return (bool) $success;
 	}
+	private function updateTitleDataById(int $id, array $titleData) {
+		$success = $this->db->set(array_merge($titleData, ['last_updated' => NULL]))
+		                    ->where('id', $id)
+		                    ->update('tracker_titles');
+
+		return (bool) $success;
+	}
 	private function addTitle(string $titleURL, int $siteID) {
 		$query = $this->db->select('site, site_class')
 		                  ->from('tracker_sites')
 		                  ->where('id', $siteID)
 		                  ->get();
 
-		$latestChapter = $this->sites->{$query->row()->site_class}->getLatestChapter($titleURL);
-		//FIXME: Get title
-		$this->db->insert('tracker_titles', ['title' => $titleURL, 'title_url' => $titleURL, 'site_id' => $siteID, 'latest_chapter' => $latestChapter]);
+		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL);
+		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 		return $this->db->insert_id();
 	}
 
@@ -151,9 +157,9 @@ class Tracker_Model extends CI_Model {
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				$latestChapter = $this->sites->{$row->site_class}->getLatestChapter($row->title_url);
-				if($this->updateTitleById((int) $row->id, $latestChapter)) {
-					print "> {$row->title} - ($latestChapter)\n";
+				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
+				if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
+					print "> {$row->title} - ({$titleData['latest_chapter']})\n";
 				}
 			}
 		}

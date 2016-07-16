@@ -11,7 +11,7 @@ class Site_Model extends CI_Model {
 
 	public function getChapterURL(string $title_url, string $chapter) : string {}
 
-	public function getLatestChapter(string $title_url) {}
+	public function getTitleData(string $title_url) {}
 
 	protected function get_content($URL){
 		$ch = curl_init();
@@ -29,12 +29,8 @@ class Sites_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
-		$this->MangaFox = new MangaFox();
+		$this->MangaFox  = new MangaFox();
 		$this->MangaHere = new MangaHere();
-	}
-
-	public function MangaHere() {
-		return new MangaHere();
 	}
 }
 
@@ -47,7 +43,9 @@ class MangaFox extends Site_Model {
 		return "http://mangafox.me/manga/{$title_url}/{$chapter}/";
 	}
 
-	public function getLatestChapter(string $title_url) {
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
 		$rssURL = "http://mangafox.me/rss/{$title_url}.xml";
 
 		$data = $this->get_content($rssURL);
@@ -55,14 +53,15 @@ class MangaFox extends Site_Model {
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 
 			if(isset($xml->channel->item[0])) {
+				$titleData['title'] = (string) trim($xml->channel->title);
 				$chapterURLSegments = explode('/', ((string) $xml->channel->item[0]->link));
-				$latestChapter      = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
+				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
 			}
 		} else {
 			//TODO: Throw ERRORS;
 		}
 
-		return $latestChapter ?? NULL;
+		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
 
@@ -75,7 +74,9 @@ class MangaHere extends Site_Model {
 		return "http://www.mangahere.co/manga/{$title}/{$chapter}/";
 	}
 
-	public function getLatestChapter(string $title_url) {
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
 		$rssURL = "http://www.mangahere.co/rss/{$title_url}.xml";
 
 		$data = $this->get_content($rssURL);
@@ -83,14 +84,15 @@ class MangaHere extends Site_Model {
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 
 			if(isset($xml->channel->item[0])) {
+				$titleData['title'] = trim((string) $xml->channel->title);
 				$chapterURLSegments = explode('/', ((string) $xml->channel->item[0]->link));
-				$latestChapter      = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
+				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
 			}
 		} else {
 			//TODO: Throw ERRORS;
 		}
 
-		return $latestChapter ?? NULL;
+		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
 
@@ -100,7 +102,7 @@ class Batoto extends Site_Model {
 		return "http://bato.to/reader#" . $chapterInfo[0];
 	}
 
-	public function getLatestChapter(string $title_url) {
+	public function getTitleData(string $title_url) {
 
 	}
 }
