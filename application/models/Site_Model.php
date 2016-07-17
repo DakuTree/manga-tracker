@@ -53,8 +53,17 @@ class MangaFox extends Site_Model {
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 
 			if(isset($xml->channel->item[0])) {
-				$titleData['title'] = (string) trim($xml->channel->title);
-				$chapterURLSegments = explode('/', ((string) $xml->channel->item[0]->link));
+				$titleData['title'] = trim((string) $xml->channel->title);
+
+				$items = [];
+				foreach($xml->channel->item as $item) {
+					$items[] = $item;
+				}
+				usort($items, function($a, $b) {
+					return strcmp((string) $b->title, (string) $a->title);
+				});
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items[0]->link);
+				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
 			}
 		} else {
@@ -85,7 +94,16 @@ class MangaHere extends Site_Model {
 
 			if(isset($xml->channel->item[0])) {
 				$titleData['title'] = trim((string) $xml->channel->title);
-				$chapterURLSegments = explode('/', ((string) $xml->channel->item[0]->link));
+
+				$items = [];
+				foreach($xml->channel->item as $item) {
+					$items[] = $item;
+				}
+				usort($items, function($a, $b) {
+					return strcmp((string) $b->title, (string) $a->title);
+				});
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items->link);
+				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
 			}
 		} else {
