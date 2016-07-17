@@ -17,7 +17,7 @@
 	</div>
 </div>
 
-<table id="tracker-table" class="tablesorter tablesorter-bootstrap">
+<table id="tracker-table" class="tablesorter tablesorter-bootstrap table-striped">
 	<thead>
 		<tr>
 			<th class="header read headerSortDown"></th>
