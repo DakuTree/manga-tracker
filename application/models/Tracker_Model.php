@@ -161,9 +161,9 @@ class Tracker_Model extends CI_Model {
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
 					//Make sure last_checked is always updated on successful run.
-					$this->db->update('tracker_titles')
-					         ->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-					         ->where('id', $row->id);
+					$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+					         ->where('id', $row->id)
+					         ->update('tracker_titles');
 
 					print "> {$row->title} - ({$titleData['latest_chapter']})\n";
 				}
