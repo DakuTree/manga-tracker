@@ -40,7 +40,8 @@ class Tracker_Model extends CI_Model {
 						'title'           => $row->title,
 						'title_url'       => $row->title_url,
 						'latest_chapter'  => $row->latest_chapter,
-						'current_chapter' => $row->current_chapter
+						'current_chapter' => $row->current_chapter,
+						'last_updated'    => $row->title_last_updated
 					],
 					'site_data' => [
 						'id'         => $row->site_id,
@@ -49,8 +50,8 @@ class Tracker_Model extends CI_Model {
 				];
 			}
 
-			return $arr;
 		}
+		return $arr;
 	}
 
 	public function get_id_from_site_url(string $site_url) {
@@ -118,14 +119,14 @@ class Tracker_Model extends CI_Model {
 		return (bool) $success;
 	}
 	private function updateTitleById(int $id, string $latestChapter) {
-		$success = $this->db->set(['latest_chapter' => $latestChapter, 'last_updated' => NULL])
+		$success = $this->db->set(['latest_chapter' => $latestChapter]) //last_updated gets updated via a trigger if something changes
 		                    ->where('id', $id)
 		                    ->update('tracker_titles');
 
 		return (bool) $success;
 	}
 	private function updateTitleDataById(int $id, array $titleData) {
-		$success = $this->db->set(array_merge($titleData, ['last_updated' => NULL]))
+		$success = $this->db->set($titleData)
 		                    ->where('id', $id)
 		                    ->update('tracker_titles');
 
@@ -152,13 +153,18 @@ class Tracker_Model extends CI_Model {
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 		                  ->where('latest_chapter', NULL)
-		                  ->or_where('last_updated < ', 'DATE_SUB(NOW(), INTERVAL 16 HOUR)', FALSE) //TODO: Each title should have specific interval time?
+		                  ->or_where('last_checked < ', 'DATE_SUB(NOW(), INTERVAL 16 HOUR)', FALSE) //TODO: Each title should have specific interval time?
 		                  ->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
+					//Make sure last_checked is always updated on successful run.
+					$this->db->update('tracker_titles')
+					         ->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+					         ->where('id', $row->id);
+
 					print "> {$row->title} - ({$titleData['latest_chapter']})\n";
 				}
 			}

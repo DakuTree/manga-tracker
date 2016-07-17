@@ -35,6 +35,7 @@
 				<input type="checkbox" name="check">
 			</td>
 			<td>
+				<img src="<?=img_url()."time_icons/".get_time_icon($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"/>
 				<img src="<?=img_url()."site_icons/{$row['site_data']['site']}.ico"?>" />
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=$row['title_data']['title']?></a>
 			</td>
