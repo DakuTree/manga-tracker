@@ -17,7 +17,7 @@ function get_time_icon(string $time_string) : string {
 		$time_string = "month.png";
 	} elseif($time < strtotime('-1 week')) {
 		//More than a week old, but less than a month old.
-		$time_string = "month.png";
+		$time_string = "week.png";
 	} else {
 		//Less than a week old.
 		$time_string = "day.png";

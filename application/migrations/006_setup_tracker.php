@@ -62,12 +62,13 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'constraint' => '255',
 				'null'       => TRUE
 			),
-			'last_updated' => array(
-				'type' => 'TIMESTAMP',
-				'null' => FALSE,
-				//'default'   => 'CURRENT_TIMESTAMP',
-				//'on_update' => 'CURRENT_TIMESTAMP' //This is auto-added by CI
-			)
+			//'last_updated' => array(
+			//	'type' => 'TIMESTAMP',
+			//	'null' => FALSE,
+			//	//'default'   => 'CURRENT_TIMESTAMP',
+			//	//'on_update' => 'CURRENT_TIMESTAMP' //This is auto-added by CI
+			//)
+			'`last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP',
 		));
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->add_key('site_id');
