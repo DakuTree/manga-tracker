@@ -152,8 +152,8 @@ class Tracker_Model extends CI_Model {
 		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_sites.site, tracker_sites.site_class, tracker_titles.latest_chapter, tracker_titles.last_updated')
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
-		                  ->where('latest_chapter', NULL)
-		                  ->or_where('last_checked < ', 'DATE_SUB(NOW(), INTERVAL 16 HOUR)', FALSE) //TODO: Each title should have specific interval time?
+		                  ->where('(`complete` = "Y" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 16 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
+		                  ->or_where('(`complete` = "N" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
 		                  ->get();
 
 		if($query->num_rows() > 0) {
