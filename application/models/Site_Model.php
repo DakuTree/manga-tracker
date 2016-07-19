@@ -64,7 +64,7 @@ class MangaFox extends Site_Model {
 				});
 				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items[0]->link);
 				$chapterURLSegments = explode('/', $link);
-				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
+				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $items[0]->pubDate));
 			}
 		} else {
@@ -103,9 +103,9 @@ class MangaHere extends Site_Model {
 				usort($items, function($a, $b) {
 					return strcmp((string) $b->title, (string) $a->title);
 				});
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items->link);
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items[0]->link);
 				$chapterURLSegments = explode('/', $link);
-				$titleData['latest_chapter'] = $chapterURLSegments[5] . ($chapterURLSegments[6] ? "/{$chapterURLSegments[6]}" : "");
+				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $items[0]->pubDate));
 			}
 		} else {
