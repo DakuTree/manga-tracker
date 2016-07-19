@@ -47,6 +47,22 @@
 						width:  15px;
 					}
 					width: 50%;
+
+					&:hover .more-info {
+						display: inline;
+					}
+					.more-info {
+						display: none;
+						margin-right: 15px;
+						&:hover {
+							text-decoration: underline;
+							cursor: pointer;
+						}
+					}
+					& > .tags {
+						display: none;
+						input { font-style: normal; }
+					}
 				}
 				& > td:nth-of-type(3) { width: 20%; }
 				& > td:nth-of-type(4) { width: 20%; }

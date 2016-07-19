@@ -88,4 +88,19 @@ class TrackerInline extends Auth_Controller {
 		$trackerData = $this->Tracker_Model->export_tracker_from_user_id($this->userID);
 		$this->_render_json($trackerData, TRUE);
 	}
+
+	/***** NOTES *****/
+	public function tag_update() {
+		$this->form_validation->set_rules('id',         'Chapter ID', 'required|ctype_digit');
+		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]');
+
+		if($this->form_validation->run() === TRUE) {
+			$success = $this->Tracker_Model->updateTagsByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
+
+			$this->output->set_content_type('text/plain', 'UTF-8');
+			$this->output->set_output("1");
+		} else {
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
+		}
+	}
 }

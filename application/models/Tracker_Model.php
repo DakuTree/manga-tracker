@@ -31,9 +31,11 @@ class Tracker_Model extends CI_Model {
 					'id' => $row->id,
 					'generated_current_url' => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->current_chapter),
 					'generated_latest_url'  => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->latest_chapter),
-					'full_title_url' => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
+					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
 					'new_chapter_exists'    => ($row->latest_chapter == $row->current_chapter ? '1' : '0'),
+					'tag_list'              => $row->tags,
+					'has_tags'              => !empty($row->tags),
 
 					'title_data' => [
 						'id'              => $row->title_id,
@@ -241,6 +243,19 @@ class Tracker_Model extends CI_Model {
 		}
 
 		return $status;
+	}
+
+
+	public function updateTagsByID(int $userID, int $chapterID, string $tag_string) : bool {
+		$success = FALSE;
+		if(preg_match("/^[a-z0-9,\\-_]{0,255}$/i", $tag_string)) {
+			$success = $this->db->set(['tags' => $tag_string, 'last_updated' => NULL])
+			                    ->where('user_id', $userID)
+			                    ->where('id', $chapterID)
+			                    ->update('tracker_chapters');
+		}
+
+		return (bool) $success;
 	}
 
 	/*************************************************/

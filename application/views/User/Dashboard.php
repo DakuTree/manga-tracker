@@ -38,6 +38,26 @@
 				<img src="<?=img_url()."time_icons/".get_time_icon($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"/>
 				<img src="<?=img_url()."site_icons/{$row['site_data']['site']}.ico"?>" />
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=$row['title_data']['title']?></a>
+
+				<?php if($row['has_tags']) { ?>
+				<small class="more-info pull-right text-muted">Less info</small>
+				<div class="tags" style="display: block">
+				<?php } else { ?>
+				<small class="more-info pull-right text-muted">More info</small>
+				<div class="tags">
+				<?php } ?>
+					<small>
+						<a href="#" class="edit-tags">Edit</a>
+						|
+						Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
+						<div class="input-group hidden tag-edit">
+							<input type="text" class="form-control" placeholder="tag1,tag2,tag3" maxlength="255" value="<?=$row['tag_list']?>">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button">Save</button>
+							</span>
+						</div><!-- /input-group -->
+					</small>
+				</div>
 			</td>
 			<td>
 				<a class="chp-release current" href="<?=$row['generated_current_url']?>" rel="nofollow"><?=$row['title_data']['current_chapter']?></a>
