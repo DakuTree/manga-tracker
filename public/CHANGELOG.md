@@ -10,4 +10,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release.
 -- MangaFox/MangaHere support.
+-- Bato.to support (with multi-language support!).
 -- Ability to track series on page-load.

@@ -29,8 +29,8 @@ class Tracker_Model extends CI_Model {
 			foreach ($query->result() as $row) {
 				$arr[] = [
 					'id' => $row->id,
-					'generated_current_url' => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->current_chapter),
-					'generated_latest_url'  => $this->sites->{$row->site_class}->getChapterURL($row->title_url, $row->latest_chapter),
+					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
+					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
 					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
 					'new_chapter_exists'    => ($row->latest_chapter == $row->current_chapter ? '1' : '0'),

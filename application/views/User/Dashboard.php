@@ -60,10 +60,10 @@
 				</div>
 			</td>
 			<td>
-				<a class="chp-release current" href="<?=$row['generated_current_url']?>" rel="nofollow"><?=$row['title_data']['current_chapter']?></a>
+				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=$row['generated_current_data']['number']?></a>
 			</td>
 			<td>
-				<a class="chp-release latest" href="<?=$row['generated_latest_url']?>" rel="nofollow"><?=$row['title_data']['latest_chapter']?></a>
+				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow"><?=$row['generated_latest_data']['number']?></a>
 			</td>
 			<td>
 				<?php if($row['new_chapter_exists'] == '0') { ?>

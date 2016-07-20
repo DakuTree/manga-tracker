@@ -96,7 +96,7 @@ $autoload['helper'] = array('url', 'vendor/asset', 'generic_helper');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('asset', 'gravatar', 'analytics');
+$autoload['config'] = array('asset', 'gravatar', 'analytics', 'sites');
 
 /*
 | -------------------------------------------------------------------
