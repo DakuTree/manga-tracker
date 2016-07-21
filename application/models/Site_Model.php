@@ -185,7 +185,7 @@ class Batoto extends Site_Model {
 					$chapter_element = $nodes_chapter->item(0);
 					$updated_element = $nodes_updated->item(0);
 
-					preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>\S+)): .*/', trim($chapter_element->nodeValue), $text);
+					preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)):?.*/', trim($chapter_element->nodeValue), $text);
 
 					$titleData['title']          = trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue);
 					$titleData['latest_chapter'] = substr($chapter_element->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter']);
