@@ -231,6 +231,8 @@ class DynastyScans extends Site_Model {
 			'url'    => 'http://dynasty-scans.com/chapters/' . $title_parts[0].'_'.$chapter,
 			'number' => ''
 		];
+
+		$chapter = preg_replace("/^([a-zA-Z]+)/", '$1_', $chapter);
 		if($chapter == 'oneshot') {
 			$chapterData['number'] = 'oneshot';
 		} else {
@@ -264,7 +266,7 @@ class DynastyScans extends Site_Model {
 
 			preg_match('/<b>.*<\/b>/', $data, $matchesT);
 			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
-			$titleData['title'] = (!empty($matchesD) ? substr($matchesD[1], 0, -7).' - ' : '') . substr($matchesT[0], 3, -4);
+			$titleData['title'] = (!empty($matchesD) ? (substr($matchesD[1], 0, -7) !== 'Original' ? substr($matchesD[1], 0, -7).' - ' : '') : '') . substr($matchesT[0], 3, -4);
 
 			$data = preg_replace('/^[\S\s]*(<dl class=\'chapter-list\'>[\S\s]*<\/dl>)[\S\s]*$/', '$1', $data);
 			preg_match_all('/<dd>[\s\S]+?(?=<\/dd>)<\/dd>/', $data, $matches);
@@ -280,7 +282,7 @@ class DynastyScans extends Site_Model {
 
 			preg_match('/<b>.*<\/b>/', $data, $matchesT);
 			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
-			$titleData['title'] = (!empty($matchesD) ? $matchesD[1].' - ' : '') . substr($matchesT[0], 3, -4);
+			$titleData['title'] = (!empty($matchesD) ? ($matchesD[1] !== 'Original' ? $matchesD[1].' - ' : '') : '') . substr($matchesT[0], 3, -4);
 
 			$titleData['latest_chapter'] = 'oneshot'; //This will never change
 
