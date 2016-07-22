@@ -28,13 +28,15 @@ class Sites_Model extends CI_Model {
 	public $MangaFox;
 	public $MangaHere;
 	public $Batoto;
+	public $DynastyScans;
 
 	public function __construct() {
 		parent::__construct();
 
-		$this->MangaFox  = new MangaFox();
-		$this->MangaHere = new MangaHere();
-		$this->Batoto    = new Batoto();
+		$this->MangaFox     = new MangaFox();
+		$this->MangaHere    = new MangaHere();
+		$this->Batoto       = new Batoto();
+		$this->DynastyScans = new DynastyScans();
 	}
 }
 
@@ -202,5 +204,93 @@ class Batoto extends Site_Model {
 			//print implode(";\n", $cookies)."\n";
 		}
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+class DynastyScans extends Site_Model {
+
+	public function getFullTitleURL(string $title_string) : string {
+		$title_parts = explode(':--:', $title_string);
+
+		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
+
+		return 'http://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
+	}
+
+	public function getChapterData(string $title_string, string $chapter) : array {
+		$title_parts = explode(':--:', $title_string);
+
+		/* Known chapter url formats (# is numbers):
+		       chapters_#A_#B - Ch#A-#B
+		       ch_#A          - Ch#A
+		       ch_#A_#B       - Ch#A.#B
+		       <NOTHING>      - Oneshot (This is passed as "oneshot")
+		*/
+
+		$chapterData = [
+			'url'    => 'http://dynasty-scans.com/chapters/' . $title_parts[0].'_'.$chapter,
+			'number' => ''
+		];
+		if($chapter == 'oneshot') {
+			$chapterData['number'] = 'oneshot';
+		} else {
+			$chapterSegments = explode('_', $chapter);
+			switch($chapterSegments[0]) {
+				case 'ch':
+					$chapterData['number'] = 'c'.$chapterSegments[1].(isset($chapterSegments[2]) && !empty($chapterSegments[2]) ? '.'.$chapterSegments[2] : '');
+					break;
+
+				case 'chapters':
+					//This is barely ever used, but I have seen it.
+					$chapterData['number'] = 'c'.$chapterSegments[1].'-'.$chapterSegments[2];
+					break;
+
+				default:
+					//TODO: FALLBACK, ALERT ADMIN?
+					$chapterData['number'] = $chapter;
+					break;
+			}
+		}
+		return $chapterData;
+	}
+
+	public function getTitleData(string $title_string) {
+		$title_parts = explode(':--:', $title_string);
+		$title_url   = $title_parts[0];
+
+		$titleData = [];
+		if($title_parts[1] == '0') {
+			$data = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
+
+			preg_match('/<b>.*<\/b>/', $data, $matchesT);
+			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
+			$titleData['title'] = (!empty($matchesD) ? substr($matchesD[1], 0, -7).' - ' : '') . substr($matchesT[0], 3, -4);
+
+			$data = preg_replace('/^[\S\s]*(<dl class=\'chapter-list\'>[\S\s]*<\/dl>)[\S\s]*$/', '$1', $data);
+			preg_match_all('/<dd>[\s\S]+?(?=<\/dd>)<\/dd>/', $data, $matches);
+			$latest_chapter_html = array_pop($matches[0]);
+
+			preg_match('/\/chapters\/([^"]+)/', $latest_chapter_html, $matches);
+			$titleData['latest_chapter'] = substr($matches[1], strlen($title_url)+1);
+
+			preg_match('/<small>released (.*)<\/small>/', $latest_chapter_html, $matches);
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(str_replace('\'', '', $matches[1])));
+		} elseif($title_parts[1] == '1') {
+			$data = $this->get_content('http://dynasty-scans.com/chapters/'.$title_url);
+
+			preg_match('/<b>.*<\/b>/', $data, $matchesT);
+			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
+			$titleData['title'] = (!empty($matchesD) ? $matchesD[1].' - ' : '') . substr($matchesT[0], 3, -4);
+
+			$titleData['latest_chapter'] = 'oneshot'; //This will never change
+
+			preg_match('/<i class="icon-calendar"><\/i> (.*)<\/span>/', $data, $matches);
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime($matches[1]));
+		} else {
+			//FIXME: WTF?
+		}
+
+		print_r($titleData);
+		//return (!empty($titleData) ? $titleData : NULL);
 	}
 }

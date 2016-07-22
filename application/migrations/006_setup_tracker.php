@@ -149,6 +149,11 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'id'         => '3',
 				'site'       => 'bato.to',
 				'site_class' => 'Batoto'
+			),
+			array(
+				'id'         => '4',
+				'site'       => 'dynasty-scans.com',
+				'site_class' => 'DynastyScans'
 			)
 		);
 		$this->db->insert_batch('tracker_sites', $typesData);
