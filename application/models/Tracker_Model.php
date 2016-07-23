@@ -156,19 +156,24 @@ class Tracker_Model extends CI_Model {
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 		                  ->where('(`complete` = "N" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 16 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
 		                  ->or_where('(`complete` = "Y" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+		                  ->order_by('tracker_titles.title', 'ASC')
 		                  ->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
-				if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
-					//Make sure last_checked is always updated on successful run.
-					$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-					         ->where('id', $row->id)
-					         ->update('tracker_titles');
+				if(!is_null($titleData['latest_chapter'])) {
+					if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
+						//Make sure last_checked is always updated on successful run.
+						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+						         ->where('id', $row->id)
+						         ->update('tracker_titles');
 
-					print "> {$row->title} - ({$titleData['latest_chapter']})\n";
+						print "> {$row->title} - ({$titleData['latest_chapter']})\n";
+					}
+				} else {
+					//FIXME: Something went wrong! Alert admin!
 				}
 			}
 		}
