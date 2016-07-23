@@ -55,26 +55,32 @@ class MangaFox extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
-		$rssURL = "http://mangafox.me/rss/{$title_url}.xml";
+		$fullURL = "http://mangafox.me/manga/{$title_url}";
 
-		$data = $this->get_content($rssURL);
+		$data = $this->get_content($fullURL);
 		if($data !== 'Can\'t find the manga series.') {
-			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
+			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			if(isset($xml->channel->item[0])) {
-				$titleData['title'] = trim((string) $xml->channel->title);
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
 
-				$items = [];
-				foreach($xml->channel->item as $item) {
-					$items[] = $item;
-				}
-				usort($items, function($a, $b) {
-					return strcmp((string) $b->title, (string) $a->title);
-				});
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items[0]->link);
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//meta[@property='og:title']");
+			$nodes_row   = $xpath->query("//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]");
+			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+				//This seems to be be the only viable way to grab the title...
+				$titleData['title'] = substr($nodes_title[0]->getAttribute('content'), 0, -6);
+
+				$nodes_latest  = $xpath->query("div/span[@class='date']", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("div/h3/a", $nodes_row[0]);
+
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
 				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $items[0]->pubDate));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -99,31 +105,35 @@ class MangaHere extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
-		$rssURL = "http://www.mangahere.co/rss/{$title_url}.xml";
+		$fullURL = "http://www.mangahere.co/manga/{$title_url}/";
 
-		$data = $this->get_content($rssURL);
+		$data = $this->get_content($fullURL);
 		if($data !== 'Can\'t find the manga series.') {
-			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
+			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			if(isset($xml->channel->item[0])) {
-				$titleData['title'] = trim((string) $xml->channel->title);
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
 
-				$items = [];
-				foreach($xml->channel->item as $item) {
-					$items[] = $item;
-				}
-				usort($items, function($a, $b) {
-					return strcmp((string) $b->title, (string) $a->title);
-				});
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $items[0]->link);
+			$xpath = new DOMXPath($dom);
+			$nodes_title = $xpath->query("//meta[@property='og:title']");
+			$nodes_row   = $xpath->query("//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]");
+			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+				//This seems to be be the only viable way to grab the title...
+				$titleData['title'] = $nodes_title[0]->getAttribute('content');
+
+				$nodes_latest  = $xpath->query("span[@class='right']", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("span[@class='left']/a", $nodes_row[0]);
+
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
 				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $items[0]->pubDate));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
 		}
-
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
@@ -261,6 +271,7 @@ class DynastyScans extends Site_Model {
 		$title_url   = $title_parts[0];
 
 		$titleData = [];
+		//FIXME: Using regex here is probably a terrible idea, but we're doing it anyway....
 		if($title_parts[1] == '0') {
 			$data = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
 
