@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2016-XX-XX
 ### Added
 - Initial release.
--- MangaFox/MangaHere support.
--- Bato.to support (with multi-language support!).
--- Ability to track series on page-load.
+  - Support for:
+    - MangaFox
+    - Bato.to (with multi-lang support)
+    - DynastyScans
+    - MangaHere
+    - MangaStream
+    - MangaPanda
+  - Basic category support (Reading & Plan to Read)
+  - Ability to track series on page-load.
+  - Import/Export from site.
