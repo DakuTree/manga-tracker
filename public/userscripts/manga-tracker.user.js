@@ -471,7 +471,7 @@ var sites = {
 
 			//Add viewer specific styles
 			GM_addStyle('\
-				#reader                  { width: auto; max-width: 95%; text-align: center; }\
+				#reader                  { width: auto; max-width: 95%; text-align: center; margin: 0 auto; }\
 				#reader > .read_img      { background: none; width: auto !important; }\
 				#reader > .read_img  img { margin: 5px auto; width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ min-height: 300px;}\
 				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;\
@@ -1076,7 +1076,7 @@ function setupTopBar(chapterObj, currentChapter, callback) {
 				$('<img/>', {src: mtBase64, width: '20px'}))).append(
 			$('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
 				(Object.keys(chapterObj).indexOf(currentChapter) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) - 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Previous'}) : "")).append(
-				$('<select/>', {style: 'float: none; max-width: 943px', onchange: 'location.href = this.value'}).append(
+				$('<select/>', {style: 'float: none; max-width: 943px', onchange: 'location.href = this.value; window.location.reload();'}).append(
 					$.map(chapterObj, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(currentChapter == v) {o.attr('selected', '1');} return o.get();}))).append(
 				(Object.keys(chapterObj).indexOf(currentChapter) < (Object.keys(chapterObj).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) + 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Next'}) : "")).append(
 				// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
