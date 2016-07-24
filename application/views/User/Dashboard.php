@@ -1,34 +1,57 @@
-<div id="tracker-table-links">
-	<div class="pull-left">
-		<a href="#" type="submit" id="delete_selected">
-			<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
-		</a>
-	</div>
-	<div class="pull-right">
-		<span id="import-status"></span>
-		<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
-		<a href="./export_list">Export List</a> |
-		<div>
+<div>
+	<nav id="category-nav">
+		<ul class="nav navbar-nav">
+			<li class="active">
+				<a href="#" data-list="reading">Reading</a>
+			</li>
+			<li>
+				<a href="#" data-list="plan-to-read">Plan to Read</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="tracker-table-links">
+		<div class="pull-left">
+			<a href="#" type="submit" id="delete_selected">
+				<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
+			</a>
+
+			<div id="move-container">
+				<label for="move-input" class="control-label">Move to:</label>
+				<select id="move-input">
+					<option>---</option>
+					<option value="reading">Reading</option>
+					<option value="plan-to-read">Plan to Read</option>
+				</select>
+			</div>
+		</div>
+		<div class="pull-right">
+			<span id="import-status"></span>
+			<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
+			<a href="./export_list">Export List</a> |
 			<div>
-				<label for="file_import"><span>Import List</span></label>
-				<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">
+				<div>
+					<label for="file_import"><span>Import List</span></label>
+					<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<table id="tracker-table" class="tablesorter tablesorter-bootstrap table-striped">
+<?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
+<table class="tablesorter tablesorter-bootstrap table-striped tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>">
 	<thead>
 		<tr>
 			<th class="header read headerSortDown"></th>
-			<th class="header read">Series (<?=count($trackerData)?>)</th>
-			<th class="header read">My Status</th>
-			<th class="header read">Latest Release</th>
+			<th class="header read"><div class="tablesorter-header-inner">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></div></th>
+			<th class="header read"><div class="tablesorter-header-inner">My Status</div></th>
+			<th class="header read"><div class="tablesorter-header-inner">Latest Release</div></th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($trackerData as $row) { ?>
+		<?php foreach($trackerDataType['manga'] as $row) { ?>
 		<tr data-id="<?=$row['id']?>">
 			<td>
 				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=$row['title_data']['title']?></span>
@@ -77,3 +100,4 @@
 		<?php } ?>
 	</tbody>
 </table>
+<?php } ?>

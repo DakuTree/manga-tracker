@@ -565,23 +565,41 @@ body {
 #page[data-page="options"] #userscript-form > * {
 	margin: 0 2px;
 }
-#page[data-page="dashboard"] > #tracker-table-links {
-	padding: 0 5px;
+#page[data-page="dashboard"] > div {
+	margin-bottom: 5px;
 }
-#page[data-page="dashboard"] > #tracker-table-links div {
+#page[data-page="dashboard"] > div > nav ul > li.active {
+	background-color: #EEEEEE;
+}
+#page[data-page="dashboard"] > div > nav ul > li a {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+#page[data-page="dashboard"] > div > #tracker-table-links {
+	clear: both;
+	overflow: auto;
+
+	padding: 3px 7px;
+
+	background-color: #EEEEEE;
+}
+#page[data-page="dashboard"] > div > #tracker-table-links #move-container {
+	margin-left: 10px;
+}
+#page[data-page="dashboard"] > div > #tracker-table-links div {
 	display: inline-block;
 
 	text-align: center;
 }
-#page[data-page="dashboard"] > #tracker-table-links input {
+#page[data-page="dashboard"] > div > #tracker-table-links input {
 	position: absolute;
 
 	visibility: hidden;
 }
-#page[data-page="dashboard"] > #tracker-table-links label {
+#page[data-page="dashboard"] > div > #tracker-table-links label {
 	margin-bottom: 0;
 }
-#page[data-page="dashboard"] > #tracker-table-links label span {
+#page[data-page="dashboard"] > div > #tracker-table-links label span {
 	cursor: pointer;
 
 	color: #003399;
@@ -589,63 +607,63 @@ body {
 
 	font-weight: normal;
 }
-#page[data-page="dashboard"] > #tracker-table-links label span:hover {
+#page[data-page="dashboard"] > div > #tracker-table-links label span:hover {
 	text-decoration: underline;
 }
-#page[data-page="dashboard"] > #tracker-table-links #import-status {
+#page[data-page="dashboard"] > div > #tracker-table-links #import-status {
 	margin-right: 10px;
 }
-#page[data-page="dashboard"] > #tracker-table {
+#page[data-page="dashboard"] > .tracker-table {
 	width: 100%;
 
 	text-align: left;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(1) {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
 
 	text-align: center;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(1) > input {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) > input {
 	vertical-align: sub;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) {
 	width: 50%;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) > img {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > img {
 	width: 15px;
 	height: 15px;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2):hover .more-info {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2):hover .more-info {
 	display: inline;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) .more-info {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .more-info {
 	display: none;
 
 	margin-right: 15px;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) .more-info:hover {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .more-info:hover {
 	cursor: pointer;
 	text-decoration: underline;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) > .tags {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags {
 	display: none;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(2) > .tags input {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags input {
 	font-style: normal;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(3) {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) {
 	width: 20%;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(4) {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(4) {
 	width: 20%;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(5) {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) {
 	width: 5%;
 	padding: 0 5px;
 
 	text-align: right;
 }
-#page[data-page="dashboard"] > #tracker-table > tbody > tr > td:nth-of-type(5) > .update-read {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) > .update-read {
 	cursor: pointer;
 }
 #page[data-page="terms"] > header {

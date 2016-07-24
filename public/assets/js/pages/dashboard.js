@@ -20,7 +20,7 @@ $(function(){
 	});
 
 	//UX: This makes it easier to press the checkbox
-	$('#tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
+	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
 		if(!$(e.target).is('input')) {
 			var checkbox = $(this).find('> input[type=checkbox]');
 			$(checkbox).prop("checked", !checkbox.prop("checked"));
@@ -30,7 +30,7 @@ $(function(){
 	$('#delete_selected').click(function(e) {
 		e.preventDefault();
 
-		var checked_rows = $('#tracker-table').find('tr:has(td input[type=checkbox]:checked)');
+		var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
 		if(checked_rows.length > 0) {
 			var row_ids = [];
 			$(checked_rows).each(function() {
@@ -163,6 +163,49 @@ $(function(){
 		} else {
 			//Tag list is invalid.
 			alert('Tags can only contain: lowercase a-z, 0-9, - & _.');
+		}
+	});
+
+	/***** CATEGORIES *****/
+	$('#category-nav > .nav > li > a').click(function(e) {
+		e.preventDefault();
+
+		//Change category active state
+		$(this).closest('ul').find('> .active').removeClass('active');
+		$(this).parent().addClass('active');
+
+		$('.tracker-table:visible').hide();
+		$('.tracker-table[data-list="'+$(this).attr('data-list')+'"]').show();
+	});
+	$('#move-input').change(function() {
+		var selected = $(this).find(':selected');
+		if(selected.is('[value]')) {
+			var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
+			if(checked_rows.length > 0) {
+				var json = {
+					id_list: [],
+					category: selected.attr('value')
+				};
+				$(checked_rows).each(function() {
+					json['id_list'].push($(this).attr('data-id'));
+				});
+
+				var data = new FormData();
+				data.append('json', JSON.stringify(json));
+				$.ajax({
+					type: "POST",
+					url: './ajax/set_category',
+					data: data,
+					success: function () {
+						location.reload();
+					},
+					error : function (xhr, ajaxOptions, thrownError) {
+						//TODO: We should probably do something here..
+					},
+					contentType: false,
+					processData: false
+				});
+			}
 		}
 	});
 

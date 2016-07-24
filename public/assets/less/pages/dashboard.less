@@ -1,36 +1,61 @@
 #page[data-page='dashboard'] {
-	& > #tracker-table-links {
-		padding: 0 5px;
+	& > div {
+		margin-bottom: 5px;
 
-		div {
-			display: inline-block;
-			text-align: center;
-		}
-		input {
-			visibility: hidden;
-			position: absolute;
-		}
-
-		label {
-			margin-bottom: 0;
-			span {
-				color: #003399;
-				background-color: transparent;
-				font-weight: normal;
-				cursor: pointer;
-				&:hover {
-					text-decoration: underline;
-
+		& > nav {
+			& ul {
+				& > li {
+					&.active { background-color: #eee; }
+					a {
+						padding-top:    5px;
+						padding-bottom: 5px;
+					}
 				}
 			}
 		}
 
-		#import-status {
-			margin-right: 10px;
+		& > #tracker-table-links {
+			clear: both;
+
+			background-color: #eee;
+			overflow: auto;
+
+			padding: 3px 7px;
+
+			#move-container {
+				margin-left: 10px;
+			}
+
+			div {
+				display: inline-block;
+				text-align: center;
+			}
+			input {
+				visibility: hidden;
+				position: absolute;
+			}
+
+			label {
+				margin-bottom: 0;
+				span {
+					color: #003399;
+					background-color: transparent;
+					font-weight: normal;
+					cursor: pointer;
+					&:hover {
+						text-decoration: underline;
+
+					}
+				}
+			}
+
+			#import-status {
+				margin-right: 10px;
+			}
 		}
 	}
 
-	& > #tracker-table {
+	& > .tracker-table {
 		width: 100%;
 		text-align: left;
 

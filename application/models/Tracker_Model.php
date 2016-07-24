@@ -26,14 +26,25 @@ class Tracker_Model extends CI_Model {
 
 		$arr = [];
 		if($query->num_rows() > 0) {
+			$arr['reading'] = [
+				'manga' => [],
+			    'unread_count' => 0
+			];
+			$arr['plan-to-read'] = [
+				'manga' => [],
+				'unread_count' => 0
+			];
+
 			foreach ($query->result() as $row) {
-				$arr[] = [
+				$is_unread     = intval($row->latest_chapter == $row->current_chapter ? '1' : '0');
+				$arr[$row->category]['unread_count'] = (($arr[$row->category]['unread_count'] ?? 0) + !$is_unread);
+				$arr[$row->category]['manga'][] = [
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
 					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
 					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
-					'new_chapter_exists'    => ($row->latest_chapter == $row->current_chapter ? '1' : '0'),
+					'new_chapter_exists'    => $is_unread,
 					'tag_list'              => $row->tags,
 					'has_tags'              => !empty($row->tags),
 
@@ -51,7 +62,6 @@ class Tracker_Model extends CI_Model {
 					]
 				];
 			}
-
 		}
 		return $arr;
 	}
@@ -249,6 +259,40 @@ class Tracker_Model extends CI_Model {
 		}
 
 		return $status;
+	}
+
+	public function set_category_from_json(string $json_string) : array {
+		//We already know the this is a valid JSON string as it was validated by form_validator.
+		$json = json_decode($json_string, TRUE);
+
+		/*
+		 * 0 = Success
+		 * 1 = Invalid IDs
+		 * 2 = Invalid category
+		 */
+		$status = ['code' => 0];
+
+		$validCategories = ['reading', 'plan-to-read'];
+
+		if(in_array($json['category'], $validCategories)) {
+			foreach($json['id_list'] as $id) {
+				if(!(ctype_digit($id) && $this->setCategoryTrackerByID($this->User->id, (int) $id, $json['category']))) {
+					$status['code'] = 1;
+				}
+			}
+		} else {
+			$status['code'] = 2;
+		}
+
+		return $status;
+	}
+	public function setCategoryTrackerByID(int $userID, int $chapterID, string $category) : bool {
+		$success = $this->db->set(['category' => $category, 'last_updated' => NULL])
+		                    ->where('user_id', $userID)
+		                    ->where('id', $chapterID)
+		                    ->update('tracker_chapters');
+
+		return (bool) $success;
 	}
 
 
