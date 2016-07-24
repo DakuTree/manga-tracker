@@ -30,6 +30,7 @@ class Sites_Model extends CI_Model {
 	public $Batoto;
 	public $DynastyScans;
 	public $MangaPanda;
+	public $MangaStream;
 
 	public function __construct() {
 		parent::__construct();
@@ -39,6 +40,7 @@ class Sites_Model extends CI_Model {
 		$this->Batoto       = new Batoto();
 		$this->DynastyScans = new DynastyScans();
 		$this->MangaPanda   = new MangaPanda();
+		$this->MangaStream  = new MangaStream();
 	}
 }
 
@@ -350,6 +352,54 @@ class MangaPanda extends Site_Model {
 				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
 
 				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
+			}
+		} else {
+			//TODO: Throw ERRORS;
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+class MangaStream extends Site_Model {
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://mangastream.com/manga/{$title_url}/";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		return [
+			'url'    => "https://mangastream.com/r/{$title_url}/{$chapter}",
+			'number' => 'c'.explode('/', $chapter)[0]
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+
+		$data = $this->get_content($fullURL);
+		if($data !== 'Can\'t find the manga series.') {
+			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//div[contains(@class, 'content')]/div[1]/h1");
+			$nodes_row   = $xpath->query("//div[contains(@class, 'content')]/div[1]/table/tr[2]"); //Missing tbody here..
+			print $nodes_row->length;
+			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+				$titleData['title'] = $nodes_title[0]->nodeValue;
+
+				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
+
+				$titleData['latest_chapter'] = preg_replace('/^.*\/(.*?\/[0-9]+)\/[0-9]+$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
 			}
 		} else {

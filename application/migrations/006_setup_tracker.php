@@ -159,6 +159,11 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'id'         => '5',
 				'site'       => 'www.mangapanda.com',
 				'site_class' => 'MangaPanda'
+			),
+			array(
+				'id'         => '6',
+				'site'       => 'mangastream.com',
+				'site_class' => 'MangaStream'
 			)
 		);
 		$this->db->insert_batch('tracker_sites', $typesData);
