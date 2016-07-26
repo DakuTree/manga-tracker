@@ -2,11 +2,27 @@
 
 class Tracker_Model extends CI_Model {
 	private $sites;
+	private $enabledCategories;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->load->database();
+
+		$this->enabledCategories = [
+			'reading'      => 'Reading',
+			'on-hold'      => 'On-Hold',
+			'plan-to-read' => 'Plan to Read'
+		];
+		if($this->User_Options->get('category_custom_1') == 'enabled') {
+			$this->enabledCategories['custom1'] = $this->User_Options->get('category_custom_1_text');
+		}
+		if($this->User_Options->get('category_custom_2') == 'enabled') {
+			$this->enabledCategories['custom2'] = $this->User_Options->get('category_custom_2_text');
+		}
+		if($this->User_Options->get('category_custom_3') == 'enabled') {
+			$this->enabledCategories['custom3'] = $this->User_Options->get('category_custom_3_text');
+		}
 
 		require_once(APPPATH.'models/Site_Model.php');
 		$this->sites = new Sites_Model;
@@ -26,14 +42,13 @@ class Tracker_Model extends CI_Model {
 
 		$arr = [];
 		if($query->num_rows() > 0) {
-			$arr['reading'] = [
-				'manga' => [],
-			    'unread_count' => 0
-			];
-			$arr['plan-to-read'] = [
-				'manga' => [],
-				'unread_count' => 0
-			];
+			foreach($this->enabledCategories as $category => $name) {
+				$arr[$category] = [
+					'name'         => $name,
+					'manga'        => [],
+					'unread_count' => 0
+				];
+			}
 
 			foreach ($query->result() as $row) {
 				$is_unread     = intval($row->latest_chapter == $row->current_chapter ? '1' : '0');
@@ -272,9 +287,7 @@ class Tracker_Model extends CI_Model {
 		 */
 		$status = ['code' => 0];
 
-		$validCategories = ['reading', 'plan-to-read'];
-
-		if(in_array($json['category'], $validCategories)) {
+		if(in_array($json['category'], array_keys($this->enabledCategories))) {
 			foreach($json['id_list'] as $id) {
 				if(!(ctype_digit($id) && $this->setCategoryTrackerByID($this->User->id, (int) $id, $json['category']))) {
 					$status['code'] = 1;
@@ -308,6 +321,16 @@ class Tracker_Model extends CI_Model {
 		return (bool) $success;
 	}
 
+	public function getUsedCategories(int $userID) : array {
+		$usedCategories = [];
+
+		$query = $this->db->distinct()
+		                  ->select('category')
+		                  ->from('tracker_chapters')
+		                  ->get();
+
+		return array_column($query->result_array(), 'category');
+	}
 	/*************************************************/
 	private function sites() {
 		return $this;

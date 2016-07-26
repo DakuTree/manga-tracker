@@ -125,4 +125,4 @@ $autoload['language'] = array('auth');
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('User_Model' => 'User', 'Tracker_Model');
+$autoload['model'] = array('User_Model' => 'User', 'User_Options_Model' => 'User_Options', 'Tracker_Model');

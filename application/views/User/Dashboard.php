@@ -1,12 +1,12 @@
 <div>
 	<nav id="category-nav">
 		<ul class="nav navbar-nav">
-			<li class="active">
-				<a href="#" data-list="reading">Reading</a>
+			<?php $first = key($trackerData); ?>
+			<?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
+			<li <?=($first == $trackerDataTypeKey ? 'class="active"' : '')?>>
+				<a href="#" data-list="<?=$trackerDataTypeKey?>"><?=$trackerDataType['name']?></a>
 			</li>
-			<li>
-				<a href="#" data-list="plan-to-read">Plan to Read</a>
-			</li>
+			<?php } ?>
 		</ul>
 	</nav>
 
@@ -20,8 +20,9 @@
 				<label for="move-input" class="control-label">Move to:</label>
 				<select id="move-input">
 					<option>---</option>
-					<option value="reading">Reading</option>
-					<option value="plan-to-read">Plan to Read</option>
+					<?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
+					<option value="<?=$trackerDataTypeKey?>"><?=$trackerDataType['name']?></option>
+					<?php } ?>
 				</select>
 			</div>
 		</div>

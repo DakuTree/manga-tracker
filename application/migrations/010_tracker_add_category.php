@@ -9,7 +9,7 @@ class Migration_Tracker_add_category extends CI_Migration {
 	public function up() {
 		$fields = array(
 			'category' => array(
-				'type'      => 'ENUM("reading", "plan-to-read")',
+				'type'      => 'ENUM("reading", "on-hold", "plan-to-read", "custom1", "custom2", "custom3")',
 				'null'      => FALSE,
 				'default'   => 'reading'
 			),
