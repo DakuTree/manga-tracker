@@ -222,7 +222,6 @@ class Batoto extends Site_Model {
 }
 
 class DynastyScans extends Site_Model {
-
 	public function getFullTitleURL(string $title_string) : string {
 		$title_parts = explode(':--:', $title_string);
 
@@ -246,10 +245,10 @@ class DynastyScans extends Site_Model {
 			'number' => ''
 		];
 
-		$chapter = preg_replace("/^([a-zA-Z]+)/", '$1_', $chapter);
 		if($chapter == 'oneshot') {
 			$chapterData['number'] = 'oneshot';
 		} else {
+			$chapter = preg_replace("/^([a-zA-Z]+)/", '$1_', $chapter);
 			$chapterSegments = explode('_', $chapter);
 			switch($chapterSegments[0]) {
 				case 'ch':
