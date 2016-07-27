@@ -316,7 +316,7 @@ class DynastyScans extends Site_Model {
 
 class MangaPanda extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://www.mangapanda.com/{$title_url}/";
+		return "http://www.mangapanda.com/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
