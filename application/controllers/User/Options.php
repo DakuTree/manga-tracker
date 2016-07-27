@@ -18,7 +18,7 @@ class Options extends Auth_Controller {
 		$this->form_validation->set_rules('category_custom_3_text', 'Custom Category 3 Text', 'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
 
 		$customCategories = ['custom1' => 'category_custom_1', 'custom2' => 'category_custom_2', 'custom3' => 'category_custom_3'];
-		$usedCategories   = $this->Tracker_Model->getUsedCategories($this->User->id);
+		$usedCategories   = $this->Tracker->getUsedCategories($this->User->id);
 		if ($isValid = $this->form_validation->run() === TRUE) {
 			foreach($customCategories as $categoryK => $category) {
 				if(!in_array($categoryK, $usedCategories)) {

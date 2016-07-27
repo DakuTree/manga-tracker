@@ -32,7 +32,7 @@ class Tracker extends AJAX_Controller {
 	}
 
 	public function get() {
-		$trackerData = $this->Tracker_Model->get_tracker_from_user_id($this->userID);
+		$trackerData = $this->Tracker->get_tracker_from_user_id($this->userID);
 		$this->_render_json($trackerData);
 	}
 
@@ -44,7 +44,7 @@ class Tracker extends AJAX_Controller {
 		if($this->form_validation->run() === TRUE) {
 			$manga = $this->input->post('manga');
 
-			$success = $this->Tracker_Model->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
+			$success = $this->Tracker->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
 			//TODO: Do more stuff, error handling, proper output
 			$this->output->set_content_type('text/plain', 'UTF-8');
 			$this->output->set_output("1");

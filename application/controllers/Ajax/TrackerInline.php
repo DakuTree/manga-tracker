@@ -23,7 +23,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('chapter', 'Chapter',   'required');
 
 		if($this->form_validation->run() === TRUE) {
-			$success = $this->Tracker_Model->updateTrackerByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
+			$success = $this->Tracker->updateTrackerByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
 
 			$this->output->set_content_type('text/plain', 'UTF-8');
 			$this->output->set_output("1");
@@ -36,7 +36,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker_Model->delete_tracker_from_json($this->input->post('json'));
+			$status = $this->Tracker->delete_tracker_from_json($this->input->post('json'));
 			switch($status['code']) {
 				case 0:
 					//All is good!
@@ -61,7 +61,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker_Model->import_tracker_from_json($this->input->post('json'));
+			$status = $this->Tracker->import_tracker_from_json($this->input->post('json'));
 			switch($status['code']) {
 				case 0:
 					//All is good!
@@ -85,7 +85,7 @@ class TrackerInline extends Auth_Controller {
 	}
 
 	public function export() {
-		$trackerData = $this->Tracker_Model->export_tracker_from_user_id($this->userID);
+		$trackerData = $this->Tracker->export_tracker_from_user_id($this->userID);
 		$this->_render_json($trackerData, TRUE);
 	}
 
@@ -95,7 +95,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]');
 
 		if($this->form_validation->run() === TRUE) {
-			$success = $this->Tracker_Model->updateTagsByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
+			$success = $this->Tracker->updateTagsByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
 
 			$this->output->set_content_type('text/plain', 'UTF-8');
 			$this->output->set_output("1");
@@ -109,7 +109,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker_Model->set_category_from_json($this->input->post('json'));
+			$status = $this->Tracker->set_category_from_json($this->input->post('json'));
 			switch($status['code']) {
 				case 0:
 					//All is good!

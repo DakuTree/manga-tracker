@@ -8,6 +8,6 @@ class UpdateTitles extends CI_Controller {
 	}
 
 	public function index() {
-		$this->Tracker_Model->updateLatestChapters();
+		$this->Tracker->updateLatestChapters();
 	}
 }

@@ -113,8 +113,8 @@ class Tracker_Model extends CI_Model {
 
 	public function updateTracker(int $userID, string $site, string $title, string $chapter) : bool {
 		$success = FALSE;
-		if($siteID = $this->Tracker_Model->get_id_from_site_url($site)) {
-			$titleID = $this->Tracker_Model->getTitleId($title, $siteID);
+		if($siteID = $this->Tracker->get_id_from_site_url($site)) {
+			$titleID = $this->Tracker->getTitleId($title, $siteID);
 
 			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
 				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
@@ -250,7 +250,7 @@ class Tracker_Model extends CI_Model {
 					$status['failed_rows'][] = $row;
 				}
 			}
-			//switch($this->Tracker_Model->import_tracker_from_json())
+			//switch($this->Tracker->import_tracker_from_json())
 		} else {
 			$status['code'] = 1;
 		}

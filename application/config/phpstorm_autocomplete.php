@@ -54,10 +54,10 @@
  * @property Limiter            $limiter
  *
  * @property User_model         $User
- * @property User_Options_model         $User_Options
+ * @property User_Options_model $User_Options
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
- * @property Tracker_Model     $Tracker_Model
+ * @property Tracker_Model      $Tracker
  */
 class CI_Controller {}
 
@@ -115,10 +115,10 @@ class CI_Controller {}
  * @property Limiter            $limiter
  *
  * @property User_model         $User
- * @property User_Options_model         $User_Options
+ * @property User_Options_model $User_Options
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
- * @property Tracker_Model     $Tracker_Model
+ * @property Tracker_Model      $Tracker
  */
 class CI_Model {}
 
@@ -175,11 +175,11 @@ class CI_Model {}
  * @property Recaptcha          $recaptcha
  * @property Gravatar           $gravatar
  * @property Limiter            $limiter
- * 
+ *
  * @property User_model         $User
- * @property User_Options_model         $User_Options
+ * @property User_Options_model $User_Options
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
- * @property Tracker_Model     $Tracker_Model
+ * @property Tracker_Model      $Tracker
  */
 class TestCase {}
