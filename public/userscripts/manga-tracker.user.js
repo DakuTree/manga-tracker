@@ -157,10 +157,10 @@ var sites = {
 			/**** SETUP AJAX LIST ****/
 			this.getChapterList(function(ajaxChapterList) {
 				var div = $('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
-				              (Object.keys(ajaxChapterList).indexOf(_this.chapter_url) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) - 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Previous'}) : "")).append(
-				              $('<select/>', {style: 'float: none; max-width: 943px', onchange: 'location.href = this.value'}).append(
+				              (Object.keys(ajaxChapterList).indexOf(_this.chapter_url) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) - 1], text: 'Previous'}) : "")).append(
+				              $('<select/>', {style: 'float: none; max-width: 943px'}).append(
 					       $.map(ajaxChapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapter_url == v) {o.attr('selected', '1');} return o.get();}))).append(
-				(Object.keys(ajaxChapterList).indexOf(_this.chapter_url) < (Object.keys(ajaxChapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) + 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Next'}) : "")).append(
+				(Object.keys(ajaxChapterList).indexOf(_this.chapter_url) < (Object.keys(ajaxChapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) + 1], text: 'Next'}) : "")).append(
 				// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 				// $('<img/>', {class: 'butamrread', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 				$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'}));
@@ -436,6 +436,13 @@ var sites = {
 			});
 			setupTopBar(chapterList, 'http://bato.to/reader#'+_this.chapter_hash, function(topBar) {
 				//Setup the tracking click event.
+
+				//Bato.to only changes hash on chapter change, but this doesn't trigger a page reload so we need to do it ourselves.
+				$(topBar).on('change', 'select', function(e) {
+					location.href = this.value;
+					window.location.reload();
+				});
+
 				$(topBar).on('click', '#trackCurrentChapter', function(e) {
 					e.preventDefault();
 
@@ -1075,10 +1082,10 @@ function setupTopBar(chapterObj, currentChapter, callback) {
 			$('<a/>', {href: main_site, target: '_blank'}).append(
 				$('<img/>', {src: mtBase64, width: '20px'}))).append(
 			$('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
-				(Object.keys(chapterObj).indexOf(currentChapter) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) - 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Previous'}) : "")).append(
-				$('<select/>', {style: 'float: none; max-width: 943px', onchange: 'location.href = this.value; window.location.reload();'}).append(
+				(Object.keys(chapterObj).indexOf(currentChapter) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) - 1], text: 'Previous'}) : "")).append(
+				$('<select/>', {style: 'float: none; max-width: 943px'}).append(
 					$.map(chapterObj, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(currentChapter == v) {o.attr('selected', '1');} return o.get();}))).append(
-				(Object.keys(chapterObj).indexOf(currentChapter) < (Object.keys(chapterObj).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) + 1], onclick: 'window.location.href = this.href; window.location.reload();', text: 'Next'}) : "")).append(
+				(Object.keys(chapterObj).indexOf(currentChapter) < (Object.keys(chapterObj).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(chapterObj)[Object.keys(chapterObj).indexOf(currentChapter) + 1], text: 'Next'}) : "")).append(
 				// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 				// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 				$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'}))).append(
