@@ -42,6 +42,16 @@ class MY_Controller extends CI_Controller {
 	}
 }
 
+class CLI_Controller extends CI_Controller {
+	public function __construct() {
+		parent::__construct();
+
+		//NOTE: This should fail, assuming routes.php does handles things properly.
+		//      It's good to have "just in case" fallbacks though.
+		is_cli() or exit("ERROR: This controller can only be called via command line: php index.php ...");
+	}
+}
+
 /**** AUTH CONTROLLERS ****/
 class User_Controller extends MY_Controller {
 	public function __construct() {
