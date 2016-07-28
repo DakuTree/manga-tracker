@@ -442,6 +442,10 @@ var sites = {
 					location.href = this.value;
 					window.location.reload();
 				});
+				$(topBar).on('click', 'a.buttonTracker', function(e) {
+					location.href = $(this).attr('href');
+					window.location.reload();
+				});
 
 				$(topBar).on('click', '#trackCurrentChapter', function(e) {
 					e.preventDefault();
