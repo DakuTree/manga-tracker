@@ -236,7 +236,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
@@ -377,7 +377,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
@@ -471,7 +471,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
@@ -648,7 +648,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
@@ -775,7 +775,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
@@ -915,7 +915,7 @@ var sites = {
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
 					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/update_tracker', json);
+					$.post(main_site + '/ajax/userscript/update', json);
 				}
 			} else {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');

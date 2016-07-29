@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Tracker extends AJAX_Controller {
+class Userscript extends AJAX_Controller {
 	private $userID;
 
 	public function __construct() {
