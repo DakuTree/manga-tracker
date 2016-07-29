@@ -35,23 +35,48 @@ var bookmarkBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYA
 var trackBase64    = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sFBAwYLqR4MpkAAAIhSURBVDjLzZLPaxNREMe/u91sSkISBTGxJcaA4EFbETy2FAQNmFxavXmQIJV4EIIpniTdg5coAb0IkUBzkiT4BxRECoVaFFtKwORiiLgRIfTH1jS7b9++3fUQs1hqvHjxC8OXBzOfN8wM8I/ifn/k83khFApdNQw6wwMR0zRBGWuKovtNMplcBWAPBVSr1TlVVfOh4MkzkfExNA5EaIQiMqJAltv29t7elsvlupdKpd4fAVQqFcnj8WRnpqe4nuDH4rsf6GgcdlQTIzbDo4tA0Gjj7coqNS0rmclkXg0AfLFYvOn1erOJRILzBY7h8fo+bpzzYT68C3+tDJ0aeLBOcSocxezcrGhZVkmSpGkHQAjJxmIxDgA+dXR4RkWcYNuAvAX+42t4PyzB4F1Y/qwh4PMiHo+7er3e8wFAoJQySikEQYBtA/5REc+WKnhyNoCXt27/SlsGGoDWAI4DuKvrl54OOuB5PlMul03GGC4E3djtqohevwMAMBUFRqcDXZZBWi2o9Tp6tRr219acIfLpdHpFUZT5QqHAvn5p4f6kGzuqCQCwKIWl67AIgaVpfSfkz2vM5XJThJAX4fGxidORKM5/a0OXZafYZgwWIbANAwe1Gi5vbHBHDgkAJ0mLV7rd7rWFicmHpNVyfrYZc0C9en0owNH3UslW63Wnbdsw+m6a0JpNB8D/7c5txvphGH03TdiMHcoRhhUfbG4emvb/q59HqiRjuY+xSgAAAABJRU5ErkJggg==';
 var currentBase64  = 'data:image/gif;base64,R0lGODlhEAAQAHcAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgBEACwAAAAAEAAQAIeyPgbynlb+znrybh7+umb+9q66WiLyikL+qkr2upb+ljbqRgL2zrr+6tr+wm7qVg7+9ur2pnrufi7uZhr+nk7+smb2kk66Uhr+4pr6jjr+rk7mTgb62qb+ynb++vLufk7+okK2Rg7+1n76tob6ypb+8ub+wn7mXiL2fibqZib2mlL+okrudjr+unb+hir+qk72wqb+lkbmSgL+1rr67uL+wnbqWhb+9vLygjL+jjL+rlbqUgr+3sb++vb+oka2RhL+1oruai72mloAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIyQCJCCRywcCFgxdCDFxIxEABDBiAiOjg4AfDhgUEaEBQ44UGDQQsDnRYA0SLCj1McADhQ4fICwUc5FBQgoQHmytWKHih0ACQDC5c1LxB4kaCGS5W9BSQoUGGEgmMGuWBIobFCxUk3IhQgsaNBjcYzBhA4aqKBw14QLjBlu2MByos/sCxI2rbtjB2BLhABECQDQ943GX7YcIIkQBsLDjhtW0CwwYWAjghw0aQy0FOjIjMEECKFCwOWBCy+aJAACFC/PhxQaTp1wsDAgA7';
 
-/***********************************************************************************************************/
 $.fn.reverseObj = [].reverse;
+
+/***********************************************************************************************************/
+
+var base_site = {
+	init : function() {
+		var _this = this;
+
+		this.preInit(function() {
+			_this.setObjVars();
+
+			_this.stylize();
+
+			_this.setupTopBar();
+
+			_this.setupViewer();
+		});
+	},
+	preInit : function(callback) {
+		callback();
+	},
+
+	//Functions
+	setObjVars  : function() {},
+	stylize     : function() {},
+	setupTopBar : function() {},
+	setupViewer : function() {}
+};
+function extendSite(o) { return Object.assign({}, base_site, o); }
+
 var sites = {
 	//FIXME: Is there a better way to set site vars?
 	//FIXME: VIEWER: Is it possible to make sure the pages load in order without using async: false?
 	//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
 
-	'mangafox.me' : {
+	'mangafox.me' : extendSite({
 		init : function() {
-			var _this = this;
 			this.setObjVars();
 
 			this.stylize();
 
-			this.fixBugs(function() {
-				_this.setupTopBar();
-			});
+			this.setupTopBar();
 
 			this.setupViewer();
 
@@ -107,12 +132,12 @@ var sites = {
 				}
 			});
 		},
-		fixBugs : function(callback) {
+		setupTopBar : function() {
 			var _this = this;
 
 			//Sometimes newly released chapters don't properly appear on the chapter list, we need to add these manually.
 			//Even though this list will be removed later when we add our topbar, we still use this as a base.
-			//Also since the list is generated after page load via JS, we need to
+			//Also since the list is generated after page load via JS, we need to wait for that to load too.
 
 			//FIX Chapter Dropdown (Sometimes recently added chapters don't show in list).
 			var chapterTitle = $('#tip strong:first').text().replace(/^.*: (.*)(?: [0-9]+)?$/, '$1');
@@ -125,49 +150,43 @@ var sites = {
 					$('#top_chapter_list').val(_this.volume_chapter);
 				}
 
-				callback();
-			});
-		},
-		setupTopBar : function() {
-			var _this = this;
+				//Generate the chapter list to be passed to the topbar.
+				//NOTE: MangaFox currently has a bug where the chapter list may not contain new chapters (SEE MORE IN fixBugs). Because of this, we load the chapter list from the manga page.
+				//      Before we load the AJAX version, we use the inline chapter list as a base for UX purposes (so the user isn't waiting for a topbar to load). This is replaced with the AJAX list when it loads.
 
-			//Generate the chapter list to be passed to the topbar.
-			//NOTE: MangaFox currently has a bug where the chapter list may not contain new chapters (SEE MORE IN fixBugs). Because of this, we load the chapter list from the manga page.
-			//      Before we load the AJAX version, we use the inline chapter list as a base for UX purposes (so the user isn't waiting for a topbar to load). This is replaced with the AJAX list when it loads.
+				/**** SETUP INLINE LIST ****/
+				var inlineChapterList = {};
+				$('#top_chapter_list > option').each(function() {
+					inlineChapterList[_this.manga_url + $(this).attr('value')] = $(this).text().trim();
+				});
+				setupTopBar(inlineChapterList, _this.chapter_url.slice(0, -1), function(topBar) {
+					//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
+					$('#top_center_bar, #bottom_center_bar').remove();
+					$('#tool').parent().find('> .gap').remove();
+					$('#series').css('padding-top', '0');
 
-			/**** SETUP INLINE LIST ****/
-			var inlineChapterList = {};
-			$('#top_chapter_list > option').each(function() {
-				inlineChapterList[_this.manga_url + $(this).attr('value')] = $(this).text().trim();
-			});
-			setupTopBar(inlineChapterList, _this.chapter_url.slice(0, -1), function(topBar) {
-				//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
-				$('#top_center_bar, #bottom_center_bar').remove();
-				$('#tool').parent().find('> .gap').remove();
-				$('#series').css('padding-top', '0');
+					//Setup the tracking click event.
+					$(topBar).on('click', '#trackCurrentChapter', function(e) {
+						e.preventDefault();
 
-				//Setup the tracking click event.
-				$(topBar).on('click', '#trackCurrentChapter', function(e) {
-					e.preventDefault();
+						_this.trackChapter(true);
+					});
+				});
 
-					_this.trackChapter(true);
+				/**** SETUP AJAX LIST ****/
+				_this.getChapterList(function(ajaxChapterList) {
+					var div = $('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
+								  (Object.keys(ajaxChapterList).indexOf(_this.chapter_url) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) - 1], text: 'Previous'}) : "")).append(
+								  $('<select/>', {style: 'float: none; max-width: 943px'}).append(
+							   $.map(ajaxChapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapter_url == v) {o.attr('selected', '1');} return o.get();}))).append(
+					(Object.keys(ajaxChapterList).indexOf(_this.chapter_url) < (Object.keys(ajaxChapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) + 1], text: 'Next'}) : "")).append(
+					// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
+					// $('<img/>', {class: 'butamrread', src: trackBase64, title: 'Stop following updates for this manga'})).append(
+					$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'}));
+
+					$('.TrackerBarLayout').replaceWith(div);
 				});
 			});
-
-			/**** SETUP AJAX LIST ****/
-			this.getChapterList(function(ajaxChapterList) {
-				var div = $('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
-				              (Object.keys(ajaxChapterList).indexOf(_this.chapter_url) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) - 1], text: 'Previous'}) : "")).append(
-				              $('<select/>', {style: 'float: none; max-width: 943px'}).append(
-					       $.map(ajaxChapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapter_url == v) {o.attr('selected', '1');} return o.get();}))).append(
-				(Object.keys(ajaxChapterList).indexOf(_this.chapter_url) < (Object.keys(ajaxChapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(ajaxChapterList)[Object.keys(ajaxChapterList).indexOf(_this.chapter_url) + 1], text: 'Next'}) : "")).append(
-				// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
-				// $('<img/>', {class: 'butamrread', src: trackBase64, title: 'Stop following updates for this manga'})).append(
-				$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'}));
-
-				$('.TrackerBarLayout').replaceWith(div);
-			});
-
 		},
 		setupViewer : function() {
 			var _this = this;
@@ -242,19 +261,10 @@ var sites = {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
 			}
 		}
-	},
+	}),
 
-	'www.mangahere.co' : {
+	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
-		init : function() {
-			this.setObjVars();
-
-			this.stylize();
-
-			this.setupTopBar();
-
-			this.setupViewer();
-		},
 		setObjVars : function() {
 			var segments       = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
@@ -383,10 +393,10 @@ var sites = {
 				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
 			}
 		}
-	},
+	}),
 
-	'bato.to' : {
-		init : function() {
+	'bato.to' : extendSite({
+		preInit : function(callback) {
 			var _this = this;
 
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
@@ -401,13 +411,7 @@ var sites = {
 				}
 			}, 1000);
 			dfd.done(function () {
-				_this.setObjVars();
-
-				_this.stylize();
-
-				_this.setupTopBar();
-
-				_this.setupViewer();
+				callback();
 			});
 		},
 		setObjVars : function() {
@@ -553,18 +557,9 @@ var sites = {
 				}
 			});
 		}
-	},
+	}),
 
-	'dynasty-scans.com' : {
-		init : function() {
-			this.setObjVars();
-
-			this.stylize();
-
-			this.setupTopBar();
-
-			this.setupViewer();
-		},
+	'dynasty-scans.com' : extendSite({
 		setObjVars : function() {
 			this.is_one_shot = !$('#chapter-title > b > a').length;
 
@@ -697,23 +692,16 @@ var sites = {
 				}
 			});
 		}
-	},
+	}),
 
-	'www.mangapanda.com' : {
-		init : function() {
+	'www.mangapanda.com' : extendSite({
+		preInit : function(callback) {
 			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually seperates its manga URLs from every other page on the site.
 			//I've went and already filtered a bunch of URLs out in the include regex, but since it may not match everything, we have to do an additional check here.
-
 			if($('#topchapter, #chapterMenu, #bottomchapter').length === 3) {
 				//MangaPanda is another site which uses the MangaFox layout. Is this just another thing like FoolSlide?
 
-				this.setObjVars();
-
-				this.stylize();
-
-				this.setupTopBar();
-
-				this.setupViewer();
+				callback();
 			}
 		},
 		setObjVars : function() {
@@ -834,18 +822,9 @@ var sites = {
 				}
 			});
 		}
-	},
+	}),
 
-	'mangastream.com' : {
-		init : function() {
-			this.setObjVars();
-
-			this.stylize();
-
-			this.setupTopBar();
-
-			this.setupViewer();
-		},
+	'mangastream.com' : extendSite({
 		setObjVars : function() {
 			var segments     = window.location.pathname.split( '/' );
 
@@ -977,7 +956,7 @@ var sites = {
 				}
 			});
 		}
-	}
+	})
 };
 
 /********************** SCRIPT *********************/
