@@ -60,8 +60,39 @@ var base_site = {
 	//Functions
 	setObjVars  : function() {},
 	stylize     : function() {},
+	setupViewer : function() {},
+
+	//Fixed Functions
 	setupTopBar : function() {},
-	setupViewer : function() {}
+	trackChapter : function(askForConfirmation) {
+		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
+
+		if(config['api-key']) {
+			var json = {
+				'api-key' : config['api-key'],
+				'manga'   : {
+					'site'    : this.site,
+
+					//Both title and chapter can contain anything, as parsing is done on the backend.
+					'title'   : this.title,
+					'chapter' : this.chapter
+				}
+			};
+			//TODO: Check if everything is set, and not null.
+
+			if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
+				//TODO: Add some basic checking for success here.
+				$.post(main_site + '/ajax/userscript/update', json);
+			}
+		} else {
+			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.
+		}
+	},
+
+	//Variables
+	site    : location.hostname.replace(/^(?:dev|test)\./, ''),
+	title   : '',
+	chapter : ''
 };
 function extendSite(o) { return Object.assign({}, base_site, o); }
 
@@ -71,25 +102,16 @@ var sites = {
 	//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
 
 	'mangafox.me' : extendSite({
-		init : function() {
-			this.setObjVars();
-
-			this.stylize();
-
-			this.setupTopBar();
-
-			this.setupViewer();
-
-		},
 		setObjVars : function () {
-			var segments       = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+			var segments     = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
-			this.page_count     = $('#top_bar .prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
-			this.title          = segments[2];
-			this.volume_chapter = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
+			this.title       = segments[2];
+			this.chapter     = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
+
+			this.page_count  = $('#top_bar .prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
 			this.manga_url   = 'http://mangafox.me/manga/'+this.title+'/';
-			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.volume_chapter+'/';
+			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
 		},
 		stylize : function() {
 			//This removes the old border/background. The viewer adds borders to the images now instead which looks better.
@@ -141,13 +163,13 @@ var sites = {
 
 			//FIX Chapter Dropdown (Sometimes recently added chapters don't show in list).
 			var chapterTitle = $('#tip strong:first').text().replace(/^.*: (.*)(?: [0-9]+)?$/, '$1');
-			var chapterString = _this.volume_chapter.replace(/^(?:v(.*?)\/)?c(.*?)$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + ': '+chapterTitle;
-			$('#top_chapter_list').append($('<option/>', {value: _this.volume_chapter, text: chapterString})).val(_this.volume_chapter);
+			var chapterString = _this.chapter.replace(/^(?:v(.*?)\/)?c(.*?)$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + ': '+chapterTitle;
+			$('#top_chapter_list').append($('<option/>', {value: _this.chapter, text: chapterString})).val(_this.chapter);
 			$('script[src*="js/list"]').on("load", function() {
 				//We need to re-add it, since the above one is added prior to the page JS populating the chapter list.
-				if(!$('#top_chapter_list option[value="'+_this.volume_chapter+'"]').length) {
-					$('#top_chapter_list').append($('<option/>', {value: _this.volume_chapter, text: chapterString}));
-					$('#top_chapter_list').val(_this.volume_chapter);
+				if(!$('#top_chapter_list option[value="'+_this.chapter+'"]').length) {
+					$('#top_chapter_list').append($('<option/>', {value: _this.chapter, text: chapterString}));
+					$('#top_chapter_list').val(_this.chapter);
 				}
 
 				//Generate the chapter list to be passed to the topbar.
@@ -213,7 +235,7 @@ var sites = {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
 				}
 				$.ajax({
-					url: 'http://mangafox.me/manga/'+_this.title+'/'+_this.volume_chapter+'/'+pageN+'.html',
+					url: 'http://mangafox.me/manga/'+_this.title+'/'+_this.chapter+'/'+pageN+'.html',
 					type: 'GET',
 					page: pageN,
 					//async: false,
@@ -237,29 +259,6 @@ var sites = {
 					_this.trackChapter();
 				}
 			});
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'mangafox.me',
-						'title'   : _this.title,
-						//real title
-						'chapter' : _this.volume_chapter
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
-			}
 		}
 	}),
 
@@ -271,10 +270,10 @@ var sites = {
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
 			this.page_count     = $('.go_page:first > .right > select > option').length;
 			this.title          = segments[2];
-			this.volume_chapter = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
+			this.chapter = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
 
 			this.manga_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
-			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.volume_chapter+'/';
+			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
 		},
 		stylize : function() {
 			GM_addStyle("\
@@ -369,29 +368,6 @@ var sites = {
 					_this.trackChapter();
 				}
 			});
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'www.mangahere.co',
-						'title'   : _this.title,
-						//real title
-						'chapter' : _this.volume_chapter
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
-			}
 		}
 	}),
 
@@ -425,6 +401,9 @@ var sites = {
 
 			this.manga_url      = $('#reader a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
+
+			this.title          = this.manga_url    + ':--:' + this.manga_language;
+			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
 		},
 		stylize : function() {
 			//???
@@ -457,29 +436,6 @@ var sites = {
 					_this.trackChapter(true);
 				});
 			});
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'bato.to',
-						'title'   : _this.manga_url + ':--:' + _this.manga_language,
-						//real title
-						'chapter' : _this.chapter_hash + ':--:' + _this.chapter_number
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
-			}
 		},
 		setupViewer : function() {
 			var _this = this;
@@ -570,6 +526,9 @@ var sites = {
 				this.title_url   = location.pathname.substr(10);
 				this.chapter_url = 'oneshot';
 			}
+
+			this.title   = this.title_url + ':--:' + (+this.is_one_shot);
+			this.chapter = this.chapter_url;
 		},
 		stylize : function() {
 			//These buttons aren't needed since we have our own viewer.
@@ -625,28 +584,6 @@ var sites = {
 						_this.trackChapter(true);
 					});
 				});
-			}
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'dynasty-scans.com',
-						'title'   : _this.title_url + ':--:' + (+_this.is_one_shot),
-						'chapter' : _this.chapter_url
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
 			}
 		},
 		setupViewer : function() {
@@ -746,28 +683,6 @@ var sites = {
 					clearInterval(checkExist);
 				}
 			}, 500);
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'www.mangapanda.com',
-						'title'   : _this.title,
-						'chapter' : _this.chapter
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
-			}
 		},
 		setupViewer : function() {
 			var _this = this;
@@ -877,28 +792,6 @@ var sites = {
 						});
 					}
 				});
-		},
-		trackChapter : function(askForConfirmation) {
-			var _this = this;
-			askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
-
-			if(config['api-key']) {
-				var json = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : 'mangastream.com',
-						'title'   : _this.title,
-						'chapter' : _this.chapter
-					}
-				};
-
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read. Do you confirm this action?")) {
-					//TODO: Add some basic checking for success here.
-					$.post(main_site + '/ajax/userscript/update', json);
-				}
-			} else {
-				alert('API Key isn\'t set.\nHave you done the initial userscript setup?');
-			}
 		},
 		setupViewer : function() {
 			var _this = this;
