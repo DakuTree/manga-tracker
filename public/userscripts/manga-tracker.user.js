@@ -61,7 +61,9 @@ var base_site = {
 	stylize         : function() {},
 	preSetupTopBar  : function(callback) { callback(); }, //callback must always be called
 	postSetupTopBar : function(topbar) {},
-	setupViewer     : function() {},
+	preSetupViewer  : function(callback) { callback(); }, //callback must always be called
+	postSetupViewer : function(topbar) {},
+
 
 	//Fixed Functions
 	setupTopBar : function() {
@@ -158,6 +160,91 @@ var base_site = {
 			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.
 		}
 	},
+	setupViewer : function() {
+		var _this = this;
+
+		//FIXME: VIEWER: Is it possible to make sure the pages load in order without using async: false?
+		//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
+		//FIXME: Somehow handle the viewer header code here?
+
+		this.preSetupViewer(function(useCustomHeader, useCustomImageList) {
+			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
+			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
+
+			GM_addStyle('\
+				#viewer                  { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }\
+				#viewer > .read_img      { background: none; }\
+				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
+				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}\
+				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
+				#viewer_header { font-weight: bolder; text-align: center; }\
+			');
+
+			//Setup viewer header if enabled
+			if(!useCustomHeader) {
+				$('#viewer').append(
+					$('<div/>', {id: 'viewer_header'}).append(
+						$('<a/>', {href: _this.chapter_url, text: _this.viewerChapterName})).append(
+						'  ----  ').append(
+						$('<a/>', {href: _this.title_url, text: _this.viewerTitle})
+					)
+				);
+			}
+
+			//Generate the viewer using a loop & AJAX.
+			for(var pageN=1; pageN<=_this.page_count; pageN++) {
+				if(pageN == 1) {
+					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
+				} else {
+					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
+				}
+
+				if(!useCustomImageList) {
+					$.ajax({
+						url: _this.viewerChapterURLFormat.replace('%pageN%', pageN),
+						type: 'GET',
+						page: pageN,
+						//async: false,
+						success: function(data) {
+							var original_image  = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+							var image_container = $('<div/>', {class: 'read_img'}).append(
+								//We want to completely recreate the image element to remove all additional attributes
+								$('<img/>', {src: $(original_image).attr('src')})).append(
+								//Add page number
+								$('<div/>', {class: 'pageNumber'}).append(
+									$('<div/>', {class: 'number', text: this.page}))
+							);
+
+							//Replace the placeholder image_container with the real one
+							$('#page-'+this.page).replaceWith(image_container);
+						}
+					});
+				} else {
+					//FIXME: We should probably split this and the above into a seperate function to avoid code duplication...
+					var image_container = $('<div/>', {class: 'read_img'}).append(
+						//We want to completely recreate the image element to remove all additional attributes
+						$('<img/>', {src: _this.viewerCustomImageList[pageN-1]})).append(
+						//Add page number
+						$('<div/>', {class: 'pageNumber'}).append(
+							$('<div/>', {class: 'number', text: pageN}))
+					);
+
+					//Replace the placeholder image_container with the real one
+					$('#page-'+pageN).replaceWith(image_container);
+				}
+			}
+
+			//Auto-track chapter if enabled.
+			$(window).on("load", function() {
+				if(config.auto_track && config.auto_track == 'on') {
+					_this.trackChapter();
+				}
+			});
+
+			_this.postSetupViewer();
+		});
+	},
+
 
 	/** Variables **/
 	//Used for tracking.
@@ -165,9 +252,21 @@ var base_site = {
 	title   : '',
 	chapter : '',
 
+	//Used by everything for easy access
+	chapter_url : '',
+	title_url   : '',
+
 	//Used for topbar.
 	chapterListCurrent : '',
-	chapterList        : {}
+	chapterList        : {},
+
+	//Used for custom viewer header (if requested)
+	viewerChapterName      : '',
+	viewerTitle            : '',
+	viewerChapterURLFormat : '%pageN%', //%pageN% is replaced by the page number on load.
+	//Used for viewer AJAX (if used)
+	viewerRegex            : /^$/, // First img tag MUST be the chapter page
+	viewerCustomImageList  : [] //This is is only used if useCustomImageList is true
 };
 function extendSite(o) { return Object.assign({}, base_site, o); }
 function generateChapterList(target, attrURL) {
@@ -183,9 +282,6 @@ function generateChapterList(target, attrURL) {
 }
 
 var sites = {
-	//FIXME: VIEWER: Is it possible to make sure the pages load in order without using async: false?
-	//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
-
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
 			var segments     = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
@@ -195,11 +291,14 @@ var sites = {
 
 			this.page_count  = $('#top_bar .prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
-			this.manga_url   = 'http://mangafox.me/manga/'+this.title+'/';
+			this.title_url   = 'http://mangafox.me/manga/'+this.title+'/';
 			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url;
 			this.chapterList        = {}; //This is set via preSetupTopbar
+
+			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
+			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 		},
 		stylize : function() {
 			//This removes the old border/background. The viewer adds borders to the images now instead which looks better.
@@ -220,7 +319,7 @@ var sites = {
 			//The inline chapter list is cached. This causes new chapters to not properly show on the list. (Why the cache isn't reset when a new chapter is added is beyond me)
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
 			$.ajax({
-				url: _this.manga_url,
+				url: _this.title_url,
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
 					xhr.setRequestHeader("Pragma", "no-cache");
@@ -247,55 +346,10 @@ var sites = {
 			$('#tool').parent().find('> .gap').remove();
 			$('#series').css('padding-top', '0');
 		},
-		setupViewer : function() {
-			var _this = this;
+		preSetupViewer : function(callback) {
+			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			//Remove the current page, because it might not always be the first.
-			$('#viewer > .read_img').remove();
-
-			//Add viewer specific styles
-			GM_addStyle('\
-				#viewer                  { width: auto; max-width: 95%; }\
-				#viewer > .read_img      { background: none; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
-
-			//Generate the viewer using a loop & AJAX.
-			//FIXME: Is it possible to make sure the pages load in order without using async: false?
-			//FIXME: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
-			for(var pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN == 1) {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).prependTo($('#viewer'));
-				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
-				}
-				$.ajax({
-					url: 'http://mangafox.me/manga/'+_this.title+'/'+_this.chapter+'/'+pageN+'.html',
-					type: 'GET',
-					page: pageN,
-					//async: false,
-					success: function(data) {
-						var image = $(data.replace(/^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/, '$1'));
-						$(image).find('> a > img').unwrap(); //Remove image link
-
-						//Add page number below the image
-						$('<div/>', {class: 'pageNumber'})
-						               .append($('<div/>', {class: 'number', text: this.page}))
-									   .appendTo(image);
-
-						$('#page-'+this.page).replaceWith(image);
-					}
-				});
-			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
+			callback();
 		}
 	}),
 
@@ -309,11 +363,14 @@ var sites = {
 			this.title         = segments[2];
 			this.chapter       = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
 
-			this.manga_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
+			this.title_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
 			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url;
 			// this.chapterList        = {}; //This is set via preSetupTopbar
+
+			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
+			this.viewerRegex            = /^[\s\S]*<section class="read_img" id="viewer">[\s\S]*(<img src[\s\S]*\/>)[\s\S]*<\/section>[\s\S]*<section class="readpage_footer[\s\S]*$/;
 		},
 		stylize : function() {
 			GM_addStyle("\
@@ -345,7 +402,7 @@ var sites = {
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
 			$.ajax({
-				url: _this.manga_url,
+				url: _this.title_url,
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
 					xhr.setRequestHeader("Pragma", "no-cache");
@@ -371,53 +428,10 @@ var sites = {
 		postSetupTopBar : function() {
 			$('.go_page:first').remove();
 		},
-		setupViewer : function() {
-			var _this = this;
+		preSetupViewer : function(callback) {
+			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			//Remove the current page, because it might not always be the first.
-			$('#viewer > a').remove();
-
-			//Add viewer specific styles
-			GM_addStyle('\
-				#viewer                  { width: auto; max-width: 95%; }\
-				#viewer > .read_img      { background: none; width: auto !important; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
-
-			//Generate the viewer using a loop & AJAX.
-			for(var pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN == 1) {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).prependTo($('#viewer'));
-				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
-				}
-				$.ajax({
-					url: _this.chapter_url+pageN+'.html',
-					type: 'GET',
-					page: pageN,
-					//async: false,
-					success: function(data) {
-						var image = $(data.replace(/^[\s\S]*(<section class="read_img"[\s\S]*<\/section>)[\s\S]*<section class="readpage_footer[\s\S]*$/, '$1'));
-						image = $('<div/>', {class: 'read_img'}).append($(image).find('> a > img'));
-
-						//Add page number below the image
-						$('<div/>', {class: 'pageNumber'})
-						               .append($('<div/>', {class: 'number', text: this.page}))
-									   .appendTo(image);
-
-						$('#page-'+this.page).replaceWith(image);
-					}
-				});
-			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
+			callback(true);
 		}
 	}),
 
@@ -449,93 +463,41 @@ var sites = {
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2];
 
-			this.manga_url      = $('#reader a[href*="/comic/"]:first').attr('href');
+			this.title_url      = $('#reader a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
 
-			this.title          = this.manga_url    + ':--:' + this.manga_language;
+			this.title          = this.title_url    + ':--:' + this.manga_language;
 			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
+			this.chapter_url    = 'http://bato.to/reader#'+this.chapter_hash;
 
-			this.chapterListCurrent = 'http://bato.to/reader#'+this.chapter_hash;
+			this.chapterListCurrent = this.chapter_url;
 			this.chapterList        = generateChapterList($('select[name=chapter_select]:first > option').reverseObj(), 'value');
+
+			this.viewerChapterName      = this.chapter_number;
+			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '');
+			this.viewerChapterURLFormat = 'http://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
+			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
+			this.viewerCustomImageList  = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
+				return $(e).attr('src');
+			});
 		},
 		stylize : function() {
-			//???
+			//Nothing?
 		},
-		setupViewer : function() {
-			var _this = this;
+		preSetupViewer : function(callback) {
+			this.viewerCustomImageList = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
+				return $(e).attr('src');
+			});
 
-			//Add viewer specific styles
-			GM_addStyle('\
-				#reader                  { width: auto; max-width: 95%; text-align: center; margin: 0 auto; }\
-				#reader > .read_img      { background: none; width: auto !important; }\
-				#reader > .read_img  img { margin: 5px auto; width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
+			$('#reader').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			var img_list = $('#reader').find('#read_settings + div + div img').map(function(i, e) { return $(e).attr('src'); });
-
-			//Empty the reader
-			$('#reader > *').remove();
-
-			$('#reader').append(
-				$('<div/>', {id: 'reader_header', style: 'font-weight: bolder;'}).append(
-					$('<a/>', {href: 'http://bato.to/reader#'+_this.chapter_hash, text: _this.chapter_number})).append(
-					'  ----  ').append(
-					$('<a/>', {href: _this.manga_url, text: String.fromCharCode('&#33;'.substring(2).slice(0, -1))}))
-			);
-
-
-			//Generate the viewer using a loop & AJAX.
-			if(_this.is_web_toon !== 1) {
-				for(var pageN=1; pageN<=_this.page_count; pageN++) {
-					if(pageN == 1) {
-						$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#reader_header'));
-					} else {
-						$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#reader > .read_img:last'));
-					}
-					$.ajax({
-						url: 'http://bato.to/areader?id='+_this.chapter_hash+'&p='+pageN,
-						type: 'GET',
-						page: pageN,
-						//async: false,
-						success: function(data) {
-							var image = $(data);
-							image = $('<div/>', {class: 'read_img'}).append($(image).find('img#comic_page'));
-
-							//Add page number below the image
-							$('<div/>', {class: 'pageNumber'})
-										   .append($('<div/>', {class: 'number', text: this.page}))
-										   .appendTo(image);
-
-							$('#page-'+this.page).replaceWith(image);
-						}
-					});
-				}
+			if(this.is_web_toon !== 1) {
+				callback();
 			} else {
 				//Bato.to has an option for webtoons to show all chapters on a single page (with a single ajax), we need to do stuff differently if this happens.
-				var img_list_count = img_list.length;
-				for(var pageN=1; pageN<=img_list_count; pageN++) {
-					var image = $('<div/>', {class: 'read_img'}).append(
-					                $('<img/>', {src: img_list[pageN-1]})).append(
-					                $('<div/>', {class: 'pageNumber'}).append(
-					                    $('<div/>', {class: 'number', text: pageN})));
-
-
-					if(pageN == 1) {
-						$(image).insertAfter($('#reader_header'));
-					} else {
-						$(image).insertAfter($('#reader > .read_img:last'));
-					}
-				}
+				this.page_count = this.viewerCustomImageList.length;
+				callback(false, true);
 			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
 		}
 	}),
 
@@ -556,6 +518,11 @@ var sites = {
 
 			this.chapterListCurrent = location.pathname;
 			this.chapterList = {}; //This is set in preSetupTopBar
+
+			this.viewerCustomImageList = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e, i) {
+				return e.replace(/^"|"$/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
 		},
 		stylize : function() {
 			//These buttons aren't needed since we have our own viewer.
@@ -593,48 +560,10 @@ var sites = {
 				callback();
 			}
 		},
-		setupViewer : function() {
-			var _this = this;
+		preSetupViewer : function(callback) {
+			$('#reader').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			//We could use unsafeWindow, and load this properly, but I'd like to avoid doing that if possible, even if it means using a hacky method like this.
-			var img_list = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e, i) {
-				return e.replace(/^"|"$/g, '');
-			});
-
-
-			//Add viewer specific styles
-			GM_addStyle('\
-				#reader                  { width: auto; max-width: 95%; text-align: center; }\
-				#reader > .read_img      { background: none; width: auto !important; }\
-				#reader > .read_img  img { margin: 5px auto; width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
-
-			//Empty the reader
-			$('#reader > *').remove();
-
-			var img_list_count = img_list.length;
-			for(var pageN=1; pageN<=img_list_count; pageN++) {
-				var image = $('<div/>', {class: 'read_img'}).append(
-								$('<img/>', {src: img_list[pageN-1]})).append(
-								$('<div/>', {class: 'pageNumber'}).append(
-									$('<div/>', {class: 'number', text: pageN})));
-
-
-				if(pageN == 1) {
-					$(image).appendTo($('#reader'));
-				} else {
-					$(image).insertAfter($('#reader > .read_img:last'));
-				}
-			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
+			callback(true, true);
 		}
 	}),
 
@@ -654,12 +583,17 @@ var sites = {
 			this.page_count     = parseInt($('#topchapter #selectpage select > option:last').text());
 			this.title          = segments[1];
 			this.chapter        = segments[2];
-			
+
 			this.chapterListCurrent = '/'+this.title+'/'+this.chapter;
 			// this.chapterList = {}, //This is set via preSetupTopBar.
 
-			this.manga_url      = 'http://www.mangapanda.com/'+this.title+'/';
+			this.title_url      = 'http://www.mangapanda.com/'+this.title+'/';
 			this.chapter_url    = 'http://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
+
+			// this.viewerChapterName      = '';
+			// this.viewerTitle            = '';
+			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
+			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
 		},
 		stylize : function() {
 			//Remove page count from the header, since all pages are loaded at once now.
@@ -686,58 +620,12 @@ var sites = {
 			//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
 			$('#topchapter > #mangainfo ~ div, #bottomchapter > #mangainfo ~ div').remove();
 		},
-		setupViewer : function() {
+		preSetupViewer : function(callback) {
 			var _this = this;
 
-			//Remove the current page, because it might not always be the first.
-			$('#imgholder').attr('id', 'viewer');
-			$('#viewer > *').remove();
+			$('.episode-table').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			//Add viewer specific styles
-			GM_addStyle('\
-				#viewer                  { width: auto; max-width: 95%; }\
-				#viewer > .read_img      { background: none; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; height: 18px; font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 17px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important; margin-top: 3px !important;\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
-			$('#viewer').parent().removeAttr('width');
-			$('#viewer').closest('table').css('text-align', 'center');
-
-			//Generate the viewer using a loop & AJAX.
-			//FIXME: Is it possible to make sure the pages load in order without using async: false?
-			//FIXME: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
-			for(var pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN == 1) {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).prependTo($('#viewer'));
-				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
-				}
-				$.ajax({
-					url: _this.chapter_url + pageN,
-					type: 'GET',
-					page: pageN,
-					//async: false,
-					success: function(data) {
-						var image = $(data.replace(/^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/, '$1'));
-						image = $('<div/>', {class: 'read_img'}).append($(image).removeAttr('height'));
-
-						//Add page number below the image
-						$('<div/>', {class: 'pageNumber'})
-						               .append($('<div/>', {class: 'number', text: this.page}))
-									   .appendTo(image);
-
-						$('#page-'+this.page).replaceWith(image);
-					}
-				});
-			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
+			callback(true);
 		}
 	}),
 
@@ -751,11 +639,16 @@ var sites = {
 			this.title       = segments[2];
 			this.chapter     = segments[3]+'/'+segments[4];
 
-			this.manga_url   = this.https+'://mangastream.com/manga/'+this.title;
+			this.title_url   = this.https+'://mangastream.com/manga/'+this.title;
 			this.chapter_url = this.https+'://mangastream.com/r/'+this.title+'/'+this.chapter;
 
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
 			this.chapterListCurrent = this.chapter_url+'/1';
+
+			this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
+			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();
+			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
+			this.viewerRegex            = /^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/;
 		},
 		stylize : function() {
 			GM_addStyle("\
@@ -768,7 +661,7 @@ var sites = {
 			var _this = this;
 
 			$.ajax({
-				url: _this.manga_url,
+				url: _this.title_url,
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
 					xhr.setRequestHeader("Pragma", "no-cache");
@@ -783,61 +676,15 @@ var sites = {
 				}
 			});
 		},
-		setupViewer : function() {
+		postSetupTopBar : function() {
+			$('.subnav').remove(); //Remove topbar, since we have our own
+		},
+		preSetupViewer : function(callback) {
 			var _this = this;
 
-			$('.page').attr('id', 'viewer');
-			$('#viewer > *').remove();
+			$('.page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			//Add viewer specific styles
-			GM_addStyle('\
-				#viewer                  { width: auto; max-width: 95%; margin: 0 auto !important; }\
-				#viewer > .read_img      { background: none; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-			');
-
-			var real_title = $('.btn-reader-chapter > a > span:first').text();
-			$('.subnav').replaceWith(
-				$('<div/>', {style: 'font-weight: bolder; text-align: center;'}).append(
-					$('<a/>', {href: _this.chapter_url, text: 'c'+_this.chapter.split('/')[0]})).append(
-					'  ----  ').append(
-					$('<a/>', {href: _this.manga_url, text: real_title}))
-			);
-
-			//Generate the viewer using a loop & AJAX.
-			for(var pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN == 1) {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).prependTo($('#viewer'));
-				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
-				}
-				$.ajax({
-					url: _this.chapter_url + '/'+pageN,
-					type: 'GET',
-					page: pageN,
-					//async: false,
-					success: function(data) {
-						var image = $(data.replace(/^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/, '$1'));
-						image = $('<div/>', {class: 'read_img'}).append($(image).find('img'));
-
-						//Add page number below the image
-						$('<div/>', {class: 'pageNumber'})
-						               .append($('<div/>', {class: 'number', text: this.page}))
-									   .appendTo(image);
-
-						$('#page-'+this.page).replaceWith(image);
-					}
-				});
-			}
-
-			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
-					_this.trackChapter();
-				}
-			});
+			callback();
 		}
 	})
 };
