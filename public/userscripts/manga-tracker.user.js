@@ -5,7 +5,7 @@
 // @description  A cross-site manga tracker.
 // @homepageURL  https://tracker.codeanimu.net
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
-// @include      /^https:\/\/(?:(?:dev|test)\.)?tracker\.codeanimu\.net\/.*$/
+// @include      /^https:\/\/(?:(?:dev|test)\.)?tracker\.codeanimu\.net\/user\/options.*$/
 // @include      /^http:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^http:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^http:\/\/bato\.to\/reader.*$/
@@ -13,7 +13,7 @@
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2016-XX-XX
-// @version      0.0.1
+// @version      0.9.0
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @grant        GM_addStyle
 // @grant        GM_getValue
@@ -174,7 +174,7 @@ var base_site = {
 			GM_addStyle('\
 				#viewer                  { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }\
 				#viewer > .read_img      { background: none; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y;*/ background: url("http://mangafox.me/media/loading.gif") no-repeat center; min-height: 300px;}\
+				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y; background: url("http://mangafox.me/media/loading.gif") no-repeat center;*/ min-height: 300px;}\
 				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}\
 				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
 				#viewer_header { font-weight: bolder; text-align: center; }\
@@ -686,87 +686,76 @@ var sites = {
 
 			callback();
 		}
-	})
+	}),
+
+	//Tracking site
+	//FIXME: We <probably> shouldn't have this here, but whatever.
+	'tracker.codeanimu.net' : {
+		init : function() {
+			/* TODO:
+			Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
+			If userscript IS loaded, then insert data.
+			Seperate API key from general options. Always set API config when generate is clicked.
+			*/
+
+			//Enable the form
+			$('#userscript-check').remove();
+			$('#userscript-form fieldset').removeAttr('disabled');
+			$('#userscript-form input[type=submit]').removeAttr('onclick');
+
+			//CHECK: Is there a better way to mass-set form values from an object/array?
+			$('#userscript-form input#auto_track').attr('checked', !!config.auto_track);
+
+			$('#userscript-form').submit(function(e) {
+				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});
+				if(config['api-key']) {
+					data['api-key'] = config['api-key'];
+					// data['init'] = false;
+
+					GM_setValue('config', JSON.stringify(data));
+					$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
+				} else {
+					$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
+				}
+
+				e.preventDefault();
+			});
+
+			$('#api-key').text(config['api-key'] || "not set");
+			$('#api-key-div').on('click', '#generate-api-key', function() {
+				$.getJSON(main_site + '/ajax/get_apikey', function(json) {
+					if(json['api-key']) {
+						$('#api-key').text(json['api-key']);
+
+						config['api-key'] = json['api-key'];
+						GM_setValue('config', JSON.stringify(config));
+					} else {
+						//TODO: Handle errors here?
+					}
+				});
+			});
+
+			if(config.init === true) {
+				//TODO: Point user to generating API key.
+			}
+		}
+	}
 };
 
 /********************** SCRIPT *********************/
 var main_site = 'https://dev.tracker.codeanimu.net';
 
-var config = JSON.parse(GM_getValue('config') || '{"init": true}'); //TODO: GET OPTIONS FROM LOCALSTORAGE, SET THESE VIA SITE?, NAG USER IF NOT SET OPTIONS.
-console.log(config);
+var config = JSON.parse(GM_getValue('config') || '{"init": true}');
+console.log(config); //TODO: Disable on production
 
-// console.log(config);
-//if($.isEmptyObject(config)) {
+if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
 	var hostname = location.hostname.replace(/^(?:dev|test)\./, '');
-	switch(hostname) {
-		case 'tracker.codeanimu.net':
-			if(location.pathname.substr(1, 13) !== 'user/options') {
-				setupTracker();
-			} else {
-				setupTrackerOptions();
-			}
-			break;
-
-		default:
-			//TODO: Instead of using case, check against online JSON for valid websites?
-			if(sites[hostname]) {
-				$(function() {
-					sites[hostname].init();
-				});
-			}
-			break;
-	}
-//}
-
-function setupTracker() {
-}
-
-function setupTrackerOptions() {
-	/* TODO:
-	Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
-	If userscript IS loaded, then insert data.
-	Seperate API key from general options. Always set API config when generate is clicked.
-	*/
-
-	//Enable the form
-	$('#userscript-check').remove();
-	$('#userscript-form fieldset').removeAttr('disabled');
-	$('#userscript-form input[type=submit]').removeAttr('onclick');
-
-	//CHECK: Is there a better way to mass-set form values from an object/array?
-	$('#userscript-form input#auto_track').attr('checked', !!config.auto_track);
-
-	$('#userscript-form').submit(function(e) {
-		var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});
-		if(config['api-key']) {
-			data['api-key'] = config['api-key'];
-			// data['init'] = false;
-
-			GM_setValue('config', JSON.stringify(data));
-			$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
-		} else {
-			$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
-		}
-
-		e.preventDefault();
-	});
-
-	$('#api-key').text(config['api-key'] || "not set");
-	$('#api-key-div').on('click', '#generate-api-key', function() {
-		$.getJSON(main_site + '/ajax/get_apikey', function(json) {
-			if(json['api-key']) {
-				$('#api-key').text(json['api-key']);
-
-				config['api-key'] = json['api-key'];
-				GM_setValue('config', JSON.stringify(config));
-			} else {
-				//TODO: Handle errors here?
-			}
+	if(sites[hostname]) {
+		$(function() {
+			sites[hostname].init();
 		});
-	});
-
-	if(config.init === true) {
-		//TODO: Point user to generating API key.
 	}
+} else {
+	alert('Tracker isn\'t setup! Go to tracker.moe/user/options to set things up.');
 }
