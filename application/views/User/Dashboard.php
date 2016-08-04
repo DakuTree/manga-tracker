@@ -8,6 +8,10 @@
 			</li>
 			<?php } ?>
 		</ul>
+		<div id="update-timer-container" class="pull-right">
+			Next update in: <span id="update-timer"><?=$this->Tracker->getNextUpdateTime()?></span>
+			<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Each series is updated at different times, but only once every 16 hours.<br>This is to avoid bombarding the sites with 100s of requests all at once."></i>
+		</div>
 	</nav>
 
 	<div id="tracker-table-links">

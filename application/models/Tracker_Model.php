@@ -358,7 +358,7 @@ class Tracker_Model extends CI_Model {
 		}
 
 		$interval = $future_date->diff($now);
-		return $interval->format("%H:%I;%S");
+		return $interval->format("%H:%I:%S");
 	}
 
 	/*************************************************/
