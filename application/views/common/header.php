@@ -35,7 +35,7 @@
 	<div class="sticky-alert" style="line-height: 40px;">
 		This is a development server.
 		<br />
-		Next update in: <?=$update_time?><!--<i class="fa fa-question-circle" aria-hidden="true"></i>-->
+		Next update in: <?=$this->Tracker->getNextUpdateTime()?><!--<i class="fa fa-question-circle" aria-hidden="true"></i>-->
 	</div>
 	<?php } else if(ENVIRONMENT == 'testing') { ?>
 	<div class="sticky-alert">
