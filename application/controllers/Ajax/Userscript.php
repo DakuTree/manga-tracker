@@ -6,13 +6,11 @@ class Userscript extends AJAX_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		$this->output->set_header('Access-Control-Allow-Origin: *');
-
 		$this->load->library('vendor/Limiter');
 		$this->load->library('form_validation');
 
 		//1000 requests per hour to either AJAX request.
-		if($this->limiter->limit('tracker_general', 1000)) {
+		if($this->limiter->limit('tracker_userscript', 500)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 			exit();
 		}
@@ -31,12 +29,15 @@ class Userscript extends AJAX_Controller {
 		}
 	}
 
-	public function get() {
-		$trackerData = $this->Tracker->get_tracker_from_user_id($this->userID);
-		$this->_render_json($trackerData);
-	}
-
+	/**
+	 * This is the main update URL for the userscript.
+	 *
+	 * REQ_PARAMS: api-key, manga[site], manga[title], manga[chapter]
+	 * METHOD:     POST
+	 * URL:        /ajax/userscript/update
+	 */
 	public function update() {
+		//NOTE: CORS is enabled via vhost <only> for this URL.
 		$this->form_validation->set_rules('manga[site]',    'Manga [Site]',    'required');
 		$this->form_validation->set_rules('manga[title]',   'Manga [Title]',   'required');
 		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
