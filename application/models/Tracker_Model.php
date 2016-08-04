@@ -331,6 +331,36 @@ class Tracker_Model extends CI_Model {
 
 		return array_column($query->result_array(), 'category');
 	}
+
+	//FIXME: Should this be moved elsewhere??
+	public function getNextUpdateTime() : string {
+		$temp_now = new DateTime();
+		$temp_now->setTimezone(new DateTimeZone('America/New_York'));
+		$temp_now_formatted = $temp_now->format('Y-m-d H:i:s');
+
+		//NOTE: PHP Bug: DateTime:diff doesn't play nice with setTimezone, so we need to create another DT object
+		$now         = new DateTime($temp_now_formatted);
+		$future_date = new DateTime($temp_now_formatted);
+		$now_hour    = (int) $now->format('H');
+		if($now_hour < 6) {
+			//Time until 6am
+			$future_date->setTime(6, 00);
+		} elseif($now_hour < 12) {
+			//Time until 12pm
+			$future_date->setTime(12, 00);
+		} elseif($now_hour < 18) {
+			//Time until 6pm
+			$future_date->setTime(18, 00);
+		} else {
+			//Time until 12am
+			$future_date->setTime(00, 00);
+			$future_date->add(new DateInterval('P1D'));
+		}
+
+		$interval = $future_date->diff($now);
+		return $interval->format("%H:%I;%S");
+	}
+
 	/*************************************************/
 	private function sites() {
 		return $this;
