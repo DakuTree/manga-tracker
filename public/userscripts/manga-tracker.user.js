@@ -12,6 +12,7 @@
 // @include      /^http:/\/dynasty-scans\.com\/chapters\/.+$/
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
+// @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @updated      2016-XX-XX
 // @version      0.9.0
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -71,7 +72,7 @@ var base_site = {
 
 		this.preSetupTopBar(function() {
 			GM_addStyle("\
-				#TrackerBar { height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; }\
+				#TrackerBar { height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; }\
 				#TrackerBar:hover { opacity: 1 !important; }\
 				#TrackerBarIn { padding: 2px 15px !important; margin: 0 !important; border-bottom-left-radius: 6px 6px !important; border-bottom-right-radius: 6px 6px !important; border: 1px solid #CCC !important; border-top: 0 !important; opacity: 1 !important; background-color: #fff !important; /*display:inline-block!important;*/ padding-left: 15px !important; padding-right: 15px !important; }\
 				#TrackerBarIn img,.TrackerBarLayout img { vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }\
@@ -685,6 +686,23 @@ var sites = {
 			$('.page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback();
+		}
+	}),
+
+	'www.webtoons.com' : extendSite({
+		setObjVars : function() {
+			var segments     = window.location.pathname.split( '/' );
+
+			var title_id     = window.location.search.match(/title_no=([0-9]+)/)[1];
+			var chapter_id   = window.location.search.match(/episode_no=([0-9]+)/)[1];
+			this.title       = title_id   + ':--:' + segments[1] + ':--:' + segments[3] + ':--:' + segments[2];
+			this.chapter     = chapter_id + ':--:' + segments[4];
+
+			this.title_url   = 'http://www.webtoons.com/'+segments[1]+'/'+segments[2]+'/'+segments[3]+'/list?title_no='+title_id;
+			this.chapter_url = 'http://www.webtoons.com/'+segments[1]+'/'+segments[2]+'/'+segments[3]+'/'+segments[4]+'/viewer?title_no='+title_id+'&episode_no='+chapter_id;
+
+			this.chapterList        = generateChapterList($('.episode_lst > .episode_cont > ul > li a'), 'href');
+			this.chapterListCurrent = this.chapter_url;
 		}
 	}),
 
