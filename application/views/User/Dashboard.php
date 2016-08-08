@@ -91,7 +91,7 @@
 				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=$row['generated_current_data']['number']?></a>
 			</td>
 			<td>
-				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow"><?=$row['generated_latest_data']['number']?></a>
+				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=$row['generated_latest_data']['number']?></a>
 			</td>
 			<td>
 				<?php if($row['new_chapter_exists'] == '0') { ?>
