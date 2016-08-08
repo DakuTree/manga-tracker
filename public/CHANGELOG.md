@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - MangaHere
     - MangaStream
     - MangaPanda
+    - WebToons.com
   - Category support (Reading, On-Hold, Plan to Read & 3 custom categories)
   - Site Options (Custom Categories)
   - Userscript Options (Track on page-load).
