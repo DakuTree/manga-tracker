@@ -13,6 +13,7 @@
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
+// @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+\?id=[0-9]+$/
 // @updated      2016-XX-XX
 // @version      0.9.0
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -38,6 +39,7 @@ var currentBase64  = 'data:image/gif;base64,R0lGODlhEAAQAHcAACH/C05FVFNDQVBFMi4w
 
 $.fn.reverseObj = [].reverse;
 function escapeHTML(html) { return $('<div/>').text(html).html(); }
+function getCookie(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2];}
 
 /***********************************************************************************************************/
 
@@ -78,7 +80,7 @@ var base_site = {
 				#TrackerBarIn img,.TrackerBarLayout img { vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }\
 				#TrackerBarIn div { padding: 0 !important; margin: 0 !important; }\
 				#TrackerBarIn .buttonTracker,.TrackerBarLayout .buttonTracker { vertical-align: middle !important; }\
-				#TrackerBarIn select,.TrackerBarLayout select { vertical-align: middle !important; }\
+				#TrackerBarIn select,.TrackerBarLayout select { vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }\
 				#TrackerBarIn a,.TrackerBarLayout a { vertical-align: middle !important; }\
 				#TrackerBarIn select { margin: 0 !important; }\
 				#TrackerBarInLtl { padding: 0 !important; margin: 0 !important; opacity: .7 !important; }\
@@ -706,6 +708,58 @@ var sites = {
 		}
 	}),
 
+	'kissmanga.com' : extendSite({
+		preInit : function(callback) {
+			if(dev === true) {
+				//NOTE: At the moment, KissManga support has been put on hold. We can't get the backend to work without somehow parsing the entire page (including JS).
+
+				//Kissmanga has bot protection, sometimes we need to wait for the site to load.
+				if($('.cf-browser-verification').length === 0) {
+					//Kissmanga has a built-in method to show all pages on the same page. Check if the cookie is correct, otherwise change and refresh.
+					if(getCookie('vns_readType1') !== '1') {
+						callback();
+					} else {
+						document.cookie = 'vns_readType1=0; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
+						location.reload();
+					}
+				}
+			}
+		},
+		setObjVars : function() {
+			var segments     = window.location.pathname.split( '/' );
+
+			var chapter_id   = document.location.search.match(/id=([0-9]+)/)[1];
+
+			this.title       = segments[2];
+			this.chapter     = segments[3] + ':--:' + chapter_id;
+
+			this.title_url   = 'http://kissmanga.com/Manga/'+this.title;
+			this.chapter_url = this.title_url+'/'+segments[3]+'?id='+chapter_id;
+
+			this.chapterList        = generateChapterList($('.selectChapter:first > option'), 'value');
+			this.chapterListCurrent = segments[3]+'?id='+chapter_id;
+
+
+			this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			this.viewerTitle           = $('title').text().trim().split("\n")[1];
+			this.viewerCustomImageList = $('#headnav + div + script').html().match(/"(http:\/\/[^"]+)"/g).map(function(e, i) {
+				return e.replace(/^"|"$/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		postSetupTopBar : function() {
+			//Remove extra unneeded elements.
+			$('#divImage').prevAll().remove();
+			$('#divImage').nextAll().remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#divImage').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+
+			this.page_count = this.viewerCustomImageList.length;
+			callback(false, true);
+		}
+	}),
+
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
 	'tracker.codeanimu.net' : {
@@ -762,6 +816,7 @@ var sites = {
 
 /********************** SCRIPT *********************/
 var main_site = 'https://dev.tracker.codeanimu.net';
+var dev = false;
 
 var config = JSON.parse(GM_getValue('config') || '{"init": true}');
 console.log(config); //TODO: Disable on production
@@ -769,7 +824,9 @@ console.log(config); //TODO: Disable on production
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
 	var hostname = location.hostname.replace(/^(?:dev|test)\./, '');
-	if(sites[hostname]) {
+	if(hostname == 'tracker.codeanimu.net') {
+		sites[hostname].init();
+	} else if(sites[hostname]) {
 		$(function() {
 			sites[hostname].init();
 		});
