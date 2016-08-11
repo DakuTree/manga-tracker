@@ -499,7 +499,7 @@ class KissManga extends Site_Model {
 
 		return [
 			'url'    => "http://kissmanga.com/Manga/{$title_url}/{$chapter_parts[0]}?id={$chapter_parts[1]}",
-			'number' => $chapter_parts[0] //TODO: FORMAT THIS
+			'number' => preg_replace('/--.*?$/', '', $chapter_parts[0])
 		];
 	}
 
