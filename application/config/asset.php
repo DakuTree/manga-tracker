@@ -50,7 +50,7 @@
 |
 */
 
-//These are all accessed via static.gemushi.net (which points to /public/assets)
+//These are all accessed via static.*.net (which points to /public/assets)
 $config['asset_path']    = '/';
 $config['css_path']      = 'css/';
 $config['less_path']     = 'less/';
