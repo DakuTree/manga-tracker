@@ -163,6 +163,92 @@ span.question + .tooltip > .tooltip-inner {
 .table-hover > tbody > tr > th.inactive:hover {
 	//background-color: #d0e9c6;
 }*/
+/*** ICON SPRITES ***/
+.sprite {
+	display: inline-block;
+
+	vertical-align: middle;
+}
+.sprite-time {
+	display: inline-block;
+
+	vertical-align: middle;
+
+	background: url("../../img/time.png") no-repeat;
+}
+.sprite-time.sprite-day {
+	width: 16px;
+	height: 16px;
+
+	background-position: -1px -1px;
+}
+.sprite-time.sprite-month {
+	width: 16px;
+	height: 16px;
+
+	background-position: -19px -1px;
+}
+.sprite-time.sprite-week {
+	width: 16px;
+	height: 16px;
+
+	background-position: -37px -1px;
+}
+.sprite-site {
+	display: inline-block;
+
+	vertical-align: middle;
+
+	background: url("../../img/sites.png") no-repeat;
+}
+.sprite-site.sprite-bato-to {
+	width: 16px;
+	height: 16px;
+
+	background-position: -1px -1px;
+}
+.sprite-site.sprite-dynasty-scans-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -19px -1px;
+}
+.sprite-site.sprite-kissmanga-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -37px -1px;
+}
+.sprite-site.sprite-mangafox-me {
+	width: 16px;
+	height: 16px;
+
+	background-position: -55px -1px;
+}
+.sprite-site.sprite-mangastream-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -73px -1px;
+}
+.sprite-site.sprite-www-mangahere-co {
+	width: 16px;
+	height: 16px;
+
+	background-position: -91px -1px;
+}
+.sprite-site.sprite-www-mangapanda-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -109px -1px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -127px -1px;
+}
 #site-header {
 	/* dropdown */
 }

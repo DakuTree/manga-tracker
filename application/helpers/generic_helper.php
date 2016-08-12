@@ -9,18 +9,18 @@ function view_exists(string $path) : bool {
 	return (is_string($path) && file_exists(APPPATH . "/views/{$path}.php"));
 }
 
-function get_time_icon(string $time_string) : string {
+function get_time_class(string $time_string) : string {
 	$time = strtotime($time_string);
 
 	if($time < strtotime('-1 month')) {
 		//More than a month old.
-		$time_string = "month.png";
+		$time_string = "sprite-month";
 	} elseif($time < strtotime('-1 week')) {
 		//More than a week old, but less than a month old.
-		$time_string = "week.png";
+		$time_string = "sprite-week";
 	} else {
 		//Less than a week old.
-		$time_string = "day.png";
+		$time_string = "sprite-day";
 	}
 	return $time_string;
 }

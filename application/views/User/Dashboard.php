@@ -63,8 +63,8 @@
 				<input type="checkbox" name="check">
 			</td>
 			<td>
-				<img src="<?=img_url()."time_icons/".get_time_icon($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"/>
-				<img src="<?=img_url()."site_icons/{$row['site_data']['site']}.ico"?>" />
+				<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>" title="<?=$row['title_data']['last_updated']?>"></i>
+				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=$row['title_data']['title']?></a>
 
 				<?php if($row['has_tags']) { ?>
