@@ -81,7 +81,7 @@ class Tracker_Model extends CI_Model {
 			//NOTE: This does not sort in the same way as tablesorter, but it works better.
 			foreach (array_keys($arr) as $category) {
 				usort($arr[$category]['manga'], function ($a, $b) {
-					return "{$a['new_chapter_exists']} - {$a['title_data']['title']}" <=> "{$b['new_chapter_exists']} - {$b['title_data']['title']}";
+					return strtolower("{$a['new_chapter_exists']} - {$a['title_data']['title']}") <=> strtolower("{$b['new_chapter_exists']} - {$b['title_data']['title']}");
 				});
 			}
 		}
