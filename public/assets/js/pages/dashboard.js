@@ -3,9 +3,9 @@ $(function(){
 
 	//Sort by unread, then alphabetically.
 	//We sort by unread by using prepending 1 or 0 depending if it's unread or not to an invisible td
-	$(".tablesorter").tablesorter({
+	$(".tablesorter").tablesorter(/*{
 		sortList: [[0,0], [1,0]]
-	});
+	}*/);
 
 	$('.update-read').click(function(e) {
 		var _this = this;
