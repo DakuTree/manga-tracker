@@ -57,7 +57,7 @@ class Tracker_Model extends CI_Model {
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
 					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
-					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
+					'full_title_url'        =>  $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
 					'new_chapter_exists'    => $is_unread,
 					'tag_list'              => $row->tags,

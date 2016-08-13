@@ -460,6 +460,7 @@ $config['csrf_exclude_uris'] = array();
 | by the output class.  Do not 'echo' any values with compression enabled.
 |
 */
+//NOTE: This is enabled server-side.
 $config['compress_output'] = FALSE;
 
 /*
