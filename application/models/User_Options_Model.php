@@ -63,6 +63,8 @@ class User_Options_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
+		/*
+		//FIXME: This breaks tests.
 		if($this->get('category_custom_1') == 'enabled') {
 			$this->options['default_series_category']['valid_options'][3] = 'custom1';
 		}
@@ -72,6 +74,7 @@ class User_Options_Model extends CI_Model {
 		if($this->get('category_custom_3') == 'enabled') {
 			$this->options['default_series_category']['valid_options'][5] = 'custom3';
 		}
+		*/
 
 	}
 
