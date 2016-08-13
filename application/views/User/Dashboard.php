@@ -106,3 +106,6 @@
 	</tbody>
 </table>
 <?php } ?>
+<script>
+	var use_live_countdown_timer = <?=$use_live_countdown_timer?>;
+</script>

@@ -72,7 +72,6 @@
 
 	<script>
 		var base_url = "<?=base_url()?>";
-		var use_live_countdown_timer = <?=($this->User_Options->get('enable_live_countdown_timer') == 'enabled' ? 'true' : 'false')?>;
 	</script>
 	<script src="<?=asset_url()?>js/compiled.min.js"></script>
 
