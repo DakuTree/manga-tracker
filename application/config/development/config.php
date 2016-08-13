@@ -15,9 +15,3 @@ $config['static_url'] = 'https://static.dev.tracker.codeanimu.net';
 */
 $config['log_threshold'] = 2;
 
-/*
-|--------------------------------------------------------------------------
-| Cross Site Request Forgery
-|--------------------------------------------------------------------------
-*/
-$config['csrf_protection'] = FALSE;
