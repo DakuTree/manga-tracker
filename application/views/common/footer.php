@@ -70,7 +70,10 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 	<!-- End Cookie Consent plugin -->
 
-	<script>base_url = "<?=base_url()?>";</script>
+	<script>
+		var base_url = "<?=base_url()?>";
+		var use_live_countdown_timer = <?=($this->User_Options->get('enable_live_countdown_timer') == 'enabled' ? 'true' : 'false')?>;
+	</script>
 	<script src="<?=asset_url()?>js/compiled.min.js"></script>
 
 	<script>

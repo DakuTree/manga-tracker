@@ -1,4 +1,4 @@
-/*global $:false, jQuery:false, validate:false, base_url:false */
+/*global $:false, jQuery:false, validate:false, base_url:false, use_live_countdown_timer:false */
 $(function(){
 	"use strict";
 

@@ -65,6 +65,13 @@ class MY_Form_validation extends CI_Form_validation {
 		return $isValid;
 	}
 
+	public function is_valid_option_value(string $value, string $option) : bool {
+		if(!($isValid = in_array($value, $this->CI->User_Options->options[$option]['valid_options']))) {
+			$this->set_message('is_valid_option_value', 'The %s field has an invalid value.');
+		}
+		return $isValid;
+	}
+
 	/** MISC FUNCTIONS **/
 	/**
 	 * @param string $ruleName

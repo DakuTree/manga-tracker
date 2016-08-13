@@ -123,7 +123,12 @@ class Tracker_Model extends CI_Model {
 				                    ->update('tracker_chapters');
 				//$success = 1;
 			} else {
-				$success = $this->db->insert('tracker_chapters', ['user_id' => $userID, 'title_id' => $titleID, 'current_chapter' => $chapter]);
+				$success = $this->db->insert('tracker_chapters', [
+					'user_id'         => $userID,
+					'title_id'        => $titleID,
+					'current_chapter' => $chapter,
+					'category'        => $this->User_Options->get('default_series_category')
+				]);
 			}
 		}
 		return (bool) $success;

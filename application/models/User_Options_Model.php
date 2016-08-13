@@ -39,10 +39,40 @@ class User_Options_Model extends CI_Model {
 			'default' => 'Custom 3',
 			'type' => 'string'
 		),
+
+		'enable_live_countdown_timer' => array(
+			'default' => 'enabled',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'disabled',
+				1 => 'enabled'
+			)
+		),
+
+		'default_series_category' => array(
+			'default' => 'reading',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'reading',
+				1 => 'on-hold',
+				2 => 'plan-to-read'
+			)
+		),
 	);
 
 	public function __construct() {
 		parent::__construct();
+
+		if($this->get('category_custom_1') == 'enabled') {
+			$this->options['default_series_category']['valid_options'][3] = 'custom1';
+		}
+		if($this->get('category_custom_2') == 'enabled') {
+			$this->options['default_series_category']['valid_options'][4] = 'custom2';
+		}
+		if($this->get('category_custom_3') == 'enabled') {
+			$this->options['default_series_category']['valid_options'][5] = 'custom3';
+		}
+
 	}
 
 	/**
@@ -145,5 +175,32 @@ class User_Options_Model extends CI_Model {
 		if(!isset($value)) $value = FALSE; //FIXME: This won't play nice with BOOL type false?
 
 		return $value;
+	}
+
+	//Used to quickly generate an array used with form_radio.
+	public function generate_radio_array(string $option, string $selected_option) {
+		if(array_key_exists($option, $this->options)) {
+			$base_attributes = array(
+				'name' => $option,
+				'id'   => $option
+			);
+			//FIXME: Get a better solution than str_replace for removing special characters
+			$elements = array();
+			foreach (array_values($this->options[$option]['valid_options']) as $valid_option) {
+				$elements[$option.'_'.str_replace(',', '_', $valid_option)] = array_merge($base_attributes, array(
+					'value' => $valid_option
+				));
+			}
+			if(isset($elements[$option.'_'.str_replace(',', '_', $selected_option)])) {
+				$elements[$option.'_'.str_replace(',', '_', $selected_option)]['checked'] = TRUE;
+			} else {
+				//This should never occur, but fallbacks are always a good idea..
+				$elements[$option.'_'.$this->options[$option]['default']]['checked'] = TRUE;
+			}
+			//CHECK: Should we attach this to body_data here?
+			return $elements;
+		} else {
+			return FALSE;
+		}
 	}
 }
