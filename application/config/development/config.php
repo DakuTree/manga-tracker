@@ -14,4 +14,3 @@ $config['static_url'] = 'https://static.dev.tracker.codeanimu.net';
 |--------------------------------------------------------------------------
 */
 $config['log_threshold'] = 2;
-

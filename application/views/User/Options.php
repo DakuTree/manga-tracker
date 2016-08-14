@@ -31,7 +31,7 @@
 	<div class="col-sm-6">
 		<div id="options-site">
 			<h3>Site Options</h3>
-			<form method="POST">
+			<?=form_open('', ['method' => 'POST'])?>
 				<div id="options-custom-categories">
 					<div class="form-group">
 						<div class="input-group">

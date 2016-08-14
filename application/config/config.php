@@ -438,7 +438,15 @@ $config['csrf_token_name'] = 'csrf_token';
 $config['csrf_cookie_name'] = 'csrf_cookie';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array();
+$config['csrf_exclude_uris'] = array(
+	'ajax/userscript/update',
+
+	//TODO: These <should> use CSRF, but for now we're going to just exclude them.
+	'ajax/update_tracker_inline',
+	'ajax/tag/update',
+	'ajax/set_category',
+	'ajax/delete_inline'
+);
 
 /*
 |--------------------------------------------------------------------------
