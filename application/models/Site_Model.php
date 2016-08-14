@@ -499,7 +499,8 @@ class KissManga extends Site_Model {
 
 		return [
 			'url'    => "http://kissmanga.com/Manga/{$title_url}/{$chapter_parts[0]}?id={$chapter_parts[1]}",
-			'number' => preg_replace('/--.*?$/', '', $chapter_parts[0])
+			//FIXME: KM has an extremely inconsistant chapter format which makes it difficult to parse.
+			'number' => /*preg_replace('/--.*?$/', '', */$chapter_parts[0]/*)*/
 		];
 	}
 
