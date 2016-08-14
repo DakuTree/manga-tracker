@@ -134,7 +134,7 @@ class Tracker_Model extends CI_Model {
 					'user_id'         => $userID,
 					'title_id'        => $titleID,
 					'current_chapter' => $chapter,
-					'category'        => $this->User_Options->get('default_series_category')
+					'category'        => $this->User_Options->get_by_userid('default_series_category', $userID)
 				]);
 			}
 		}

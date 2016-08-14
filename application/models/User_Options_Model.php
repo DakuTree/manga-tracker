@@ -55,27 +55,19 @@ class User_Options_Model extends CI_Model {
 			'valid_options' => array(
 				0 => 'reading',
 				1 => 'on-hold',
-				2 => 'plan-to-read'
+				2 => 'plan-to-read',
+
+				//FIXME: (MAJOR) This should only be enabled if the custom categories
+				// Problem is we can't easily check for this since the userscript uses it's own UserID, and not $this->User->id
+				3 => 'custom1',
+				4 => 'custom2',
+				5 => 'custom3'
 			)
 		),
 	);
 
 	public function __construct() {
 		parent::__construct();
-
-		/*
-		//FIXME: This breaks tests.
-		if($this->get('category_custom_1') == 'enabled') {
-			$this->options['default_series_category']['valid_options'][3] = 'custom1';
-		}
-		if($this->get('category_custom_2') == 'enabled') {
-			$this->options['default_series_category']['valid_options'][4] = 'custom2';
-		}
-		if($this->get('category_custom_3') == 'enabled') {
-			$this->options['default_series_category']['valid_options'][5] = 'custom3';
-		}
-		*/
-
 	}
 
 	/**
