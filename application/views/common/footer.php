@@ -26,8 +26,8 @@
 
 	<span id="fb-check" class="fa sr-only" style="display: none">&nbsp;</span>
 	<!-- JAVASCRIPT BELOW -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-1.12.3.min.js"><\/script>')</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-1.12.4.min.js"><\/script>')</script>
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>

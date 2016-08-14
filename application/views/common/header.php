@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="<?=asset_url()?>css/main.css">
 
 	<!--[if lt IE 9]>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.5/html5shiv.min.js"></script>
 		<script>window.html5 || document.write('<script src="<?=asset_url()?>vendor/js/html5shiv.js"><\/script>')</script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->

@@ -5,14 +5,14 @@
 
 	"require": {
 		"php": ">=5.5.0",
-		"codeigniter/framework": "3.0.*",
+		"codeigniter/framework": "3.1.*",
 		"kenjis/ci-phpunit-test": "0.12.*",
 
-		"fxp/composer-asset-plugin": "~1.1",
-		"bower-asset/jquery": "1.12.3",
+		"fxp/composer-asset-plugin": "1.2.*",
+		"bower-asset/jquery": "1.12.4",
 		"bower-asset/jquery-validation": "1.15.0",
-		"bower-asset/html5shiv": "3.x",
-		"bower-asset/normalize.css": "3.0.*",
+		"bower-asset/html5shiv": "3.7.*",
+		"bower-asset/normalize.css": "4.1.*",
 		"bower-asset/html5bp" : "5.2.*",
 		"bower-asset/bootstrap" : "3.3.*",
 		"bower-asset/font-awesome" : "4.6.3"
@@ -34,9 +34,9 @@
 		"vendor/bower-asset/normalize.css/normalize.css"                             : "public/assets/vendor/css/normalize.css",
 		"vendor/bower-asset/html5shiv/dist/html5shiv.js"                             : "public/assets/vendor/js/html5shiv.js",
 		"vendor/bower-asset/html5shiv/dist/html5shiv.min.js"                         : "public/assets/vendor/js/html5shiv.min.js",
-		"vendor/bower-asset/jquery/dist/jquery.js"                                   : "public/assets/vendor/js/jquery-1.12.3.js",
-		"vendor/bower-asset/jquery/dist/jquery.min.js"                               : "public/assets/vendor/js/jquery-1.12.3.min.js",
-		"vendor/bower-asset/jquery/dist/jquery.min.map"                              : "public/assets/vendor/js/jquery-1.12.3.min.map",
+		"vendor/bower-asset/jquery/dist/jquery.js"                                   : "public/assets/vendor/js/jquery-1.12.4.js",
+		"vendor/bower-asset/jquery/dist/jquery.min.js"                               : "public/assets/vendor/js/jquery-1.12.4.min.js",
+		"vendor/bower-asset/jquery/dist/jquery.min.map"                              : "public/assets/vendor/js/jquery-1.12.4.min.map",
 		"vendor/bower-asset/jquery-validation/dist/jquery.validate.js"               : "public/assets/vendor/js/jquery.validate-1.15.0.js",
 		"vendor/bower-asset/jquery-validation/dist/additional-methods.js"            : "public/assets/vendor/js/jquery.validate.additional-methods-1.15.0.js",
 		"vendor/bower-asset/jquery-validation/dist/jquery.validate.min.js"           : "public/assets/vendor/js/jquery.validate-1.15.0.min.js",
