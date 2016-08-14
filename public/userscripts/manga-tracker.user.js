@@ -798,7 +798,19 @@ var sites = {
 						config['api-key'] = json['api-key'];
 						GM_setValue('config', JSON.stringify(config));
 					} else {
-						//TODO: Handle errors here?
+						alert('ERROR: Something went wrong!\nJSON missing API key?');
+					}
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: Not logged in?');
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break
 					}
 				});
 			});
