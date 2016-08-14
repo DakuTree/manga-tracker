@@ -212,7 +212,7 @@ $(function(){
 
 
 	//Initialize header update timer
-	if(use_live_countdown_timer) {
+	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer) {
 		var timer_obj = $('#update-timer'),
 		    timer_arr = timer_obj.text().split(':'),
 		    time_left = parseInt(timer_arr[0] * 60 * 60, 10) + parseInt(timer_arr[1] * 60, 10) + parseInt(timer_arr[2], 10);
