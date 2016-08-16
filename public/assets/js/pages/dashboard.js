@@ -68,6 +68,7 @@ $(function(){
 		}
 	});
 
+	//File import
 	$('#file_import').change(function() {
 		var files = this.files;
 		if(files && files[0]) {
@@ -97,8 +98,18 @@ $(function(){
 									location.reload();
 								}, 2500);
 							},
-							error : function (xhr, ajaxOptions, thrownError) {
-								import_status('ERROR: Upload failed! - ' + xhr.status);
+							error : function(jqXHR, textStatus, errorThrown) {
+								switch(jqXHR.status) {
+									case 400:
+										alert('ERROR: ' + errorThrown);
+										break;
+									case 429:
+										alert('ERROR: Rate limit reached.');
+										break;
+									default:
+										alert('ERROR: Something went wrong!\n'+errorThrown);
+										break
+								}
 							},
 							contentType: false,
 							processData: false

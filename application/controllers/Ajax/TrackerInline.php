@@ -69,24 +69,28 @@ class TrackerInline extends Auth_Controller {
 		}
 	}
 
-	/***** IMPORT/EXPORT ******/
-
+	/**
+	 * Used to import a tracker exported list.
+	 *
+	 * REQ_PARAMS: json
+	 * METHOD:     POST
+	 * URL:        /import_list
+	 */
 	public function import() {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->import_tracker_from_json($this->input->post('json'));
+			$status = $this->Tracker->importTrackerFromJSON($this->input->post('json'));
 			switch($status['code']) {
 				case 0:
-					//All is good!
-					$this->output->set_status_header('200');
+					$this->output->set_status_header('200'); //Success
 					break;
 				case 1:
 					$this->output->set_status_header('400', 'JSON contains invalid keys');
 					break;
 				case 2:
 					$this->output->set_status_header('400', 'Unable to add some rows from JSON');
-					$this->_render_json(json_encode($status['failed_rows']));
+					//$this->_render_json(json_encode($status['failed_rows'])); //TODO: We should list what rows these are.
 					break;
 			}
 		} else {
@@ -98,8 +102,15 @@ class TrackerInline extends Auth_Controller {
 		}
 	}
 
+	/**
+	 * Used to import a tracker exported list.
+	 *
+	 * REQ_PARAMS: N/A
+	 * METHOD:     GET/POST
+	 * URL:        /export_list
+	 */
 	public function export() {
-		$trackerData = $this->Tracker->export_tracker_from_user_id($this->userID);
+		$trackerData = $this->Tracker->exportTrackerFromUserID($this->userID);
 		$this->_render_json($trackerData, TRUE);
 	}
 

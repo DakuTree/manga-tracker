@@ -216,7 +216,7 @@ class Tracker_Model extends CI_Model {
 		}
 	}
 
-	public function export_tracker_from_user_id(int $userID) {
+	public function exportTrackerFromUserID(int $userID) {
 		$query = $this->db
 			->select('tracker_chapters.current_chapter,
 			          tracker_titles.title_url,
@@ -241,7 +241,7 @@ class Tracker_Model extends CI_Model {
 		}
 	}
 
-	public function import_tracker_from_json(string $json_string) : array {
+	public function importTrackerFromJSON(string $json_string) : array {
 		//We already know the this is a valid JSON string as it was validated by form_validator.
 		$json = json_decode($json_string, TRUE);
 
@@ -262,7 +262,6 @@ class Tracker_Model extends CI_Model {
 					$status['failed_rows'][] = $row;
 				}
 			}
-			//switch($this->Tracker->import_tracker_from_json())
 		} else {
 			$status['code'] = 1;
 		}
