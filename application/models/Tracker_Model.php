@@ -219,6 +219,7 @@ class Tracker_Model extends CI_Model {
 	public function exportTrackerFromUserID(int $userID) {
 		$query = $this->db
 			->select('tracker_chapters.current_chapter,
+			          tracker_chapters.category,
 			          tracker_titles.title_url,
 			          tracker_sites.site')
 			->from('tracker_chapters')
@@ -230,7 +231,7 @@ class Tracker_Model extends CI_Model {
 		$arr = [];
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				$arr[] = [
+				$arr[$row->category][] = [
 					'site'            => $row->site,
 					'title_url'       => $row->title_url,
 					'current_chapter' => $row->current_chapter
@@ -252,15 +253,22 @@ class Tracker_Model extends CI_Model {
 		 */
 		$status = ['code' => 0, 'failed_rows' => []];
 
-		//Make sure we have all the proper keys, and no extra ones.
-		$json_keys = array_keys(call_user_func_array('array_merge', $json));
-		if(count($json_keys) === 3 && !array_diff(array('site', 'title_url', 'current_chapter'), $json_keys)) {
-			foreach($json as $row) {
-				$success = $this->updateTracker($this->User->id, $row['site'], $row['title_url'], $row['current_chapter']);
-				if(!$success) {
-					$status['code'] = 2;
-					$status['failed_rows'][] = $row;
+		$categories = array_keys($json);
+		if(count($categories) === array_intersect(['reading', 'on-hold', 'plan-to-read', 'custom1', 'custom2', 'custom3'], $categories)) {
+			$json_keys = array_keys(call_user_func_array('array_merge', $json));
+
+			if(count($json_keys) === 3 && !array_diff(array('site', 'title_url', 'current_chapter'), $json_keys)) {
+				foreach($categories as $category) {
+					foreach($json[$category] as $row) {
+						$success = $this->updateTracker($this->User->id, $row['site'], $row['title_url'], $row['current_chapter']);
+						if(!$success) {
+							$status['code']          = 2;
+							$status['failed_rows'][] = $row;
+						}
+					}
 				}
+			} else {
+				$status['code'] = 1;
 			}
 		} else {
 			$status['code'] = 1;
