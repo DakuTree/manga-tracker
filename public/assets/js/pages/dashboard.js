@@ -1,24 +1,10 @@
 $(function(){
 	"use strict";
 
-	//Sort by unread, then alphabetically.
 	//We sort by unread by using prepending 1 or 0 depending if it's unread or not to an invisible td
 	$(".tablesorter").tablesorter(/*{
 		sortList: [[0,0], [1,0]]
 	}*/);
-
-	$('.update-read').click(function(e) {
-		var _this = this;
-		var row             = $(this).closest('tr'),
-		    chapter_id      = $(row).attr('data-id'),
-		    current_chapter = $(row).find('.current'),
-		    latest_chapter  = $(row).find('.latest');
-
-		$.post(base_url + 'ajax/update_tracker_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function (data) {
-			$(_this).hide();
-			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
-		});
-	});
 
 	//UX: This makes it easier to press the checkbox
 	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
@@ -28,30 +14,56 @@ $(function(){
 		}
 	});
 
+	//Update latest chapter (via "I've read the latest chapter")
+	$('.update-read').click(function() {
+		var _this = this;
+		var row             = $(this).closest('tr'),
+		    chapter_id      = $(row).attr('data-id'),
+		    current_chapter = $(row).find('.current'),
+		    latest_chapter  = $(row).find('.latest');
+
+		$.post(base_url + 'ajax/update_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
+			$(_this).hide();
+			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			switch(jqXHR.status) {
+				case 400:
+					alert('ERROR: ' + errorThrown);
+					break;
+				case 429:
+					alert('ERROR: Rate limit reached.');
+					break;
+				default:
+					alert('ERROR: Something went wrong!\n'+errorThrown);
+					break
+			}
+		});
+	});
+
+	//Delete selected series
 	$('#delete_selected').click(function(e) {
 		e.preventDefault();
 
 		var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
 		if(checked_rows.length > 0) {
-			var row_ids = [];
-			$(checked_rows).each(function() {
-				row_ids.push($(this).attr('data-id'));
-			});
+			var row_ids = $(checked_rows).map(function() {
+				return parseInt($(this).attr('data-id'));
+			}).toArray();
 
-			var data = new FormData();
-			data.append('json', JSON.stringify(row_ids));
-			$.ajax({
-				type: "POST",
-				url: './ajax/delete_inline',
-				data: data,
-				success: function () {
-					location.reload();
-				},
-				error : function (xhr, ajaxOptions, thrownError) {
-					//TODO: We should probably do something here..
-				},
-				contentType: false,
-				processData: false
+			$.post(base_url + 'ajax/delete_inline', {'id[]' : row_ids}, function () {
+				location.reload();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				switch(jqXHR.status) {
+					case 400:
+						alert('ERROR: ' + errorThrown);
+						break;
+					case 429:
+						alert('ERROR: Rate limit reached.');
+						break;
+					default:
+						alert('ERROR: Something went wrong!\n'+errorThrown);
+						break
+				}
 			});
 		}
 	});

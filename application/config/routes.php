@@ -63,11 +63,11 @@ $route['user/logout']                = 'User/Auth/Logout';
 $route['user/options']               = 'User/Options';
 
 $route['ajax/username_check']         = 'Ajax/UsernameCheck'; //rate limited
-$route['ajax/get_apikey']             = 'Ajax/GetKey';
+$route['ajax/get_apikey']['post']     = 'Ajax/GetKey';
 $route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
-$route['ajax/update_tracker_inline']  = 'Ajax/TrackerInline/update';
-$route['ajax/delete_inline']          = 'Ajax/TrackerInline/delete';
+$route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
+$route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
 $route['ajax/tag/update']             = 'Ajax/TrackerInline/tag_update';
 $route['ajax/set_category']           = 'Ajax/TrackerInline/set_category';
 

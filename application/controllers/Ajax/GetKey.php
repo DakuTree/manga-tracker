@@ -8,6 +8,13 @@ class GetKey extends AJAX_Controller {
 		$this->load->library('form_validation');
 	}
 
+	/**
+	 * Used to generate the API Key the userscript can use.
+	 *
+	 * REQ_PARAMS: N/A
+	 * METHOD:     POST
+	 * URL:        /ajax/get_apikey
+	 */
 	public function index() {
 		if($this->ion_auth->logged_in()) {
 			if(!$this->limiter->limit('new_api_key', 10)) {

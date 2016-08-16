@@ -18,40 +18,54 @@ class TrackerInline extends Auth_Controller {
 		$this->userID = (int) $this->User->id;
 	}
 
+	/**
+	 * Used locally to update the users' latest read chapter of a series.
+	 *
+	 * REQ_PARAMS: id, chapter
+	 * METHOD:     POST
+	 * URL:        /ajax/update_tracker_inline
+	 */
 	public function update() {
-		$this->form_validation->set_rules('id',      'Chapter ID',    'required|ctype_digit');
-		$this->form_validation->set_rules('chapter', 'Chapter',   'required');
+		$this->form_validation->set_rules('id',      'Chapter ID', 'required|ctype_digit');
+		$this->form_validation->set_rules('chapter', 'Chapter',    'required');
 
 		if($this->form_validation->run() === TRUE) {
 			$success = $this->Tracker->updateTrackerByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
-
-			$this->output->set_content_type('text/plain', 'UTF-8');
-			$this->output->set_output("1");
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				$this->output->set_status_header('400', 'Unable to update?');
+			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
 
+	/**
+	 * Used locally to remove (multiple) series from a users' list.
+	 *
+	 * REQ_PARAMS: id[]
+	 * METHOD:     POST
+	 * URL:        /ajax/delete_inline
+	 */
 	public function delete() {
-		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
+		$this->form_validation->set_rules('id[]', 'List of IDs', 'required|ctype_digit');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->delete_tracker_from_json($this->input->post('json'));
+			$status = $this->Tracker->deleteTrackerByIDList($this->input->post('id[]'));
 			switch($status['code']) {
 				case 0:
-					//All is good!
-					$this->output->set_status_header('200');
+					$this->output->set_status_header('200'); //Success!
 					break;
 				case 1:
 					$this->output->set_status_header('400', 'JSON contains invalid IDs');
 					break;
+				case 2:
+					$this->output->set_status_header('400', 'JSON contains invalid elements.');
+					break;
 			}
 		} else {
-			if(!$this->form_validation->isRuleValid('is_valid_json')) {
-				$this->output->set_status_header('400', 'Not valid JSON!');
-			} else {
-				$this->output->set_status_header('400', 'No JSON sent');
-			}
+			$this->output->set_status_header('400', 'Request contained invalid elements!');
 		}
 	}
 
