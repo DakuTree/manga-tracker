@@ -15,7 +15,7 @@
  * @property CI_Encrypt          $encrypt                             Provides two-way keyed encoding using Mcrypt
  * @property CI_Encryption       $encryption                          Provides two-way keyed encryption via PHP's MCrypt and/or OpenSSL extensions
  * @property CI_Exceptions       $exceptions                          Exceptions Class
- * @property CI_Form_validation  $form_validation                     Form Validation Class
+ * @property MY_Form_validation  $form_validation                     Form Validation Class
  * @property CI_FTP              $ftp                                 FTP Class
  * @property CI_Hooks            $hooks                               Provides a mechanism to extend the base system without hacking
  * @property CI_Image_lib        $image_lib                           Image Manipulation class
@@ -49,7 +49,6 @@
  * @property MY_Controller   $my_controller
  * @property Auth_Controller $auth_controlerr
  *
- * @property MY_Form_validation $my_form_validation
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
  * @property Recaptcha          $recaptcha
@@ -79,7 +78,7 @@ class CI_Controller {}
  * @property CI_Encrypt          $encrypt                             Provides two-way keyed encoding using Mcrypt
  * @property CI_Encryption       $encryption                          Provides two-way keyed encryption via PHP's MCrypt and/or OpenSSL extensions
  * @property CI_Exceptions       $exceptions                          Exceptions Class
- * @property CI_Form_validation  $form_validation                     Form Validation Class
+ * @property MY_Form_validation  $form_validation                     Form Validation Class
  * @property CI_FTP              $ftp                                 FTP Class
  * @property CI_Hooks            $hooks                               Provides a mechanism to extend the base system without hacking
  * @property CI_Image_lib        $image_lib                           Image Manipulation class
@@ -113,7 +112,6 @@ class CI_Controller {}
  * @property MY_Controller      $my_controller
  * @property Auth_Controller    $auth_controlerr
  *
- * @property MY_Form_validation $my_form_validation
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
  * @property Recaptcha          $recaptcha
@@ -144,7 +142,7 @@ class CI_Model {}
  * @property CI_Encrypt          $encrypt                             Provides two-way keyed encoding using Mcrypt
  * @property CI_Encryption       $encryption                          Provides two-way keyed encryption via PHP's MCrypt and/or OpenSSL extensions
  * @property CI_Exceptions       $exceptions                          Exceptions Class
- * @property CI_Form_validation  $form_validation                     Form Validation Class
+ * @property MY_Form_validation  $form_validation                     Form Validation Class
  * @property CI_FTP              $ftp                                 FTP Class
  * @property CI_Hooks            $hooks                               Provides a mechanism to extend the base system without hacking
  * @property CI_Image_lib        $image_lib                           Image Manipulation class
@@ -178,7 +176,6 @@ class CI_Model {}
  * @property MY_Controller   $my_controller
  * @property Auth_Controller $auth_controlerr
  *
- * @property MY_Form_validation $my_form_validation
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
  * @property Recaptcha          $recaptcha
