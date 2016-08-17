@@ -34,4 +34,5 @@ application/config/production/
 #Other config stuff
 application/config/*/recaptcha.php
 application/config/*/email.php
-application/config/**/database_password.php
+application/config/*/database_password.php
+application/config/*/sites.php
