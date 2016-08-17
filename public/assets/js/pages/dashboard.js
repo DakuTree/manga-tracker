@@ -204,28 +204,24 @@ $(function(){
 		if(selected.is('[value]')) {
 			var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
 			if(checked_rows.length > 0) {
-				var json = {
-					id_list: [],
-					category: selected.attr('value')
-				};
-				$(checked_rows).each(function() {
-					json['id_list'].push($(this).attr('data-id'));
-				});
+				var row_ids = $(checked_rows).map(function() {
+					return parseInt($(this).attr('data-id'));
+				}).toArray();
 
-				var data = new FormData();
-				data.append('json', JSON.stringify(json));
-				$.ajax({
-					type: "POST",
-					url: './ajax/set_category',
-					data: data,
-					success: function () {
-						location.reload();
-					},
-					error : function (xhr, ajaxOptions, thrownError) {
-						//TODO: We should probably do something here..
-					},
-					contentType: false,
-					processData: false
+				$.post(base_url + 'ajax/set_category', {'id[]' : row_ids, category : selected.attr('value')}, function () {
+					location.reload();
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: ' + errorThrown);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break
+					}
 				});
 			}
 		}

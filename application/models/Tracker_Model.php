@@ -2,7 +2,7 @@
 
 class Tracker_Model extends CI_Model {
 	private $sites;
-	private $enabledCategories;
+	public $enabledCategories;
 
 	public function __construct() {
 		parent::__construct();
@@ -292,10 +292,7 @@ class Tracker_Model extends CI_Model {
 		return $status;
 	}
 
-	public function set_category_from_json(string $json_string) : array {
-		//We already know the this is a valid JSON string as it was validated by form_validator.
-		$json = json_decode($json_string, TRUE);
-
+	public function setCategoryByIDList(array $idList, string $category) : array {
 		/*
 		 * 0 = Success
 		 * 1 = Invalid IDs
@@ -303,9 +300,9 @@ class Tracker_Model extends CI_Model {
 		 */
 		$status = ['code' => 0];
 
-		if(in_array($json['category'], array_keys($this->enabledCategories))) {
-			foreach($json['id_list'] as $id) {
-				if(!(ctype_digit($id) && $this->setCategoryTrackerByID($this->User->id, (int) $id, $json['category']))) {
+		if(in_array($category, array_keys($this->enabledCategories))) {
+			foreach($idList as $id) {
+				if(!(ctype_digit($id) && $this->setCategoryTrackerByID($this->User->id, (int) $id, $category))) {
 					$status['code'] = 1;
 				}
 			}

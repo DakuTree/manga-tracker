@@ -69,6 +69,10 @@ class MY_Form_validation extends CI_Form_validation {
 		return (bool) preg_match('/^[a-z0-9-_,]{0,255}$/', $tag_string);
 	}
 
+	public function is_valid_category(string $category) : bool {
+		return in_array($category, array_keys($this->CI->Tracker->enabledCategories));
+	}
+
 	public function not_contains(string $haystack, string $needle) {
 		return strpos($haystack, $needle) === FALSE;
 	}

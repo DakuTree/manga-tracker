@@ -58,10 +58,10 @@ class TrackerInline extends Auth_Controller {
 					$this->output->set_status_header('200'); //Success!
 					break;
 				case 1:
-					$this->output->set_status_header('400', 'JSON contains invalid IDs');
+					$this->output->set_status_header('400', 'Request contains invalid IDs');
 					break;
 				case 2:
-					$this->output->set_status_header('400', 'JSON contains invalid elements.');
+					$this->output->set_status_header('400', 'Request contains invalid elements.');
 					break;
 			}
 		} else {
@@ -138,30 +138,32 @@ class TrackerInline extends Auth_Controller {
 		}
 	}
 
-	/***** CATEGORIES *****/
+	/**
+	 * Used to set chapter user category
+	 *
+	 * REQ_PARAMS: id[], category
+	 * METHOD:     POST
+	 * URL:        /set_category
+	 */
 	public function set_category() {
-		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
+		$this->form_validation->set_rules('id[]',     'List of IDs',   'required|ctype_digit');
+		$this->form_validation->set_rules('category', 'Category Name', 'required|is_valid_category');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->set_category_from_json($this->input->post('json'));
+			$status = $this->Tracker->setCategoryByIDList($this->input->post('id[]'), $this->input->post('category'));
 			switch($status['code']) {
 				case 0:
-					//All is good!
-					$this->output->set_status_header('200');
+					$this->output->set_status_header('200'); //Success!
 					break;
 				case 1:
-					$this->output->set_status_header('400', 'JSON contains invalid IDs');
+					$this->output->set_status_header('400', 'Request contains invalid IDs');
 					break;
 				case 2:
-					$this->output->set_status_header('400', 'JSON contains invalid category');
+					$this->output->set_status_header('400', 'Request contains invalid category.');
 					break;
 			}
 		} else {
-			if(!$this->form_validation->isRuleValid('is_valid_json')) {
-				$this->output->set_status_header('400', 'Not valid JSON!');
-			} else {
-				$this->output->set_status_header('400', 'No JSON sent');
-			}
+			$this->output->set_status_header('400', 'Request contained invalid elements!');
 		}
 	}
 }
