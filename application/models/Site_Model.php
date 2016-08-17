@@ -163,7 +163,7 @@ class Batoto extends Site_Model {
 	public function getFullTitleURL(string $title_string) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?
 		$title_parts = explode(':--:', $title_string);
-		return $title_parts[0];
+		return "http://bato.to/comic/_/comics/".$title_parts[0];
 	}
 
 	public function getChapterData(string $title_string, string $chapter) : array {

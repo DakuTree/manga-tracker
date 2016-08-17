@@ -471,7 +471,7 @@ var sites = {
 			this.title_url      = $('#reader a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
 
-			this.title          = this.title_url    + ':--:' + this.manga_language;
+			this.title          = this.title_url.split('/')[6] + ':--:' + this.manga_language;
 			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
 			this.chapter_url    = 'http://bato.to/reader#'+this.chapter_hash;
 
