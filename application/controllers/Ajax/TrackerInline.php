@@ -103,7 +103,7 @@ class TrackerInline extends Auth_Controller {
 	}
 
 	/**
-	 * Used to import a tracker exported list.
+	 * Used to export a users' list.
 	 *
 	 * REQ_PARAMS: N/A
 	 * METHOD:     GET/POST
@@ -114,16 +114,25 @@ class TrackerInline extends Auth_Controller {
 		$this->_render_json($trackerData, TRUE);
 	}
 
-	/***** NOTES *****/
+	/**
+	 * Used to set chapter user tags
+	 *
+	 * REQ_PARAMS: id, tag_string
+	 * METHOD:     POST
+	 * URL:        /tag_update
+	 */
 	public function tag_update() {
 		$this->form_validation->set_rules('id',         'Chapter ID', 'required|ctype_digit');
-		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]');
+		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_contains[none]');
 
 		if($this->form_validation->run() === TRUE) {
 			$success = $this->Tracker->updateTagsByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
 
-			$this->output->set_content_type('text/plain', 'UTF-8');
-			$this->output->set_output("1");
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				$this->output->set_status_header('400', 'Unable to set tags?');
+			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}

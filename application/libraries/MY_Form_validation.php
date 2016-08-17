@@ -65,6 +65,14 @@ class MY_Form_validation extends CI_Form_validation {
 		return $isValid;
 	}
 
+	public function is_valid_tag_string(string $tag_string) : bool {
+		return (bool) preg_match('/^[a-z0-9-_,]{0,255}$/', $tag_string);
+	}
+
+	public function not_contains(string $haystack, string $needle) {
+		return strpos($haystack, $needle) === FALSE;
+	}
+
 	public function is_valid_option_value(string $value, string $option) : bool {
 		if(!($isValid = in_array($value, $this->CI->User_Options->options[$option]['valid_options']))) {
 			$this->set_message('is_valid_option_value', 'The %s field has an invalid value.');

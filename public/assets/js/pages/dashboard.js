@@ -163,23 +163,21 @@ $(function(){
 		if(/^[a-z0-9,\-_]{0,255}$/.test(tag_list)) {
 			var tag_array = tag_list.split(',');
 			if($.inArray('none', tag_array) === -1) {
-				var data = new FormData();
-				data.append('id', id);
-				data.append('tag_string', tag_array.join(','));
-
-				$.ajax({
-					type: "POST",
-					url: './ajax/tag/update',
-					data: data,
-					success: function () {
-						$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
-						$(_this).closest('.tag-edit').toggleClass('hidden');
-					},
-					error : function (xhr, ajaxOptions, thrownError) {
-
-					},
-					contentType: false,
-					processData: false
+				$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
+					$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
+					$(_this).closest('.tag-edit').toggleClass('hidden');
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: ' + errorThrown);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break
+					}
 				});
 			} else {
 				alert('"none" is a restricted tag.');

@@ -68,7 +68,7 @@ $route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
 $route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
 $route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
-$route['ajax/tag/update']             = 'Ajax/TrackerInline/tag_update';
+$route['ajax/tag_update']['post']     = 'Ajax/TrackerInline/tag_update';
 $route['ajax/set_category']           = 'Ajax/TrackerInline/set_category';
 
 $route['export_list']                 = 'Ajax/TrackerInline/export';

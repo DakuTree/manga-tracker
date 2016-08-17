@@ -327,7 +327,7 @@ class Tracker_Model extends CI_Model {
 
 	public function updateTagsByID(int $userID, int $chapterID, string $tag_string) : bool {
 		$success = FALSE;
-		if(preg_match("/^[a-z0-9,\\-_]{0,255}$/i", $tag_string)) {
+		if(preg_match("/^[a-z0-9-_,]{0,255}$/", $tag_string)) {
 			$success = $this->db->set(['tags' => $tag_string, 'last_updated' => NULL])
 			                    ->where('user_id', $userID)
 			                    ->where('id', $chapterID)
