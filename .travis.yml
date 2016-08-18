@@ -39,7 +39,7 @@ script:
   - sleep 3
   - CI_ENV=testing php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
-  - php vendor/bin/codecept run acceptance --colors
+  - CI_ENV=testing php vendor/bin/codecept run acceptance --colors
 
 # after_success:
   # - wget https://scrutinizer-ci.com/ocular.phar
