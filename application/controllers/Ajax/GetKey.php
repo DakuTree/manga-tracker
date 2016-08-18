@@ -28,7 +28,7 @@ class GetKey extends AJAX_Controller {
 				$this->output->set_status_header('429', 'Rate limit reached.');
 			}
 		} else {
-			$this->output->set_status_header('400');
+			$this->output->set_status_header('400', 'Not logged in.');
 		}
 	}
 
