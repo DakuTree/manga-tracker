@@ -103,7 +103,8 @@ var base_site = {
 						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "")).append(
 						// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
-						$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'}))).append(
+						$('<img/>', {id: 'trackCurrentChapter', src: currentBase64, title: 'Mark this chapter as latest chapter read'})).append(
+						$('<span/>', {id: 'TrackerStatus'}))).append(
 					/*$('<div/>', {style: 'display: inline-block'}).append(
 						$('<img/>', {src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAGFBMVEW/v7/////V1dXu7u7Gxsbc3NzMzMzl5eW5mFoUAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNi8xNi8wNoxlAQMAAABwSURBVAiZLY4xCoAwFEMDle5pEVerF2hFdBX1At6gqOgsgue3X3zDJ0N+EpBN1DUJmvHuS5fEEUg7E2ZjonPwQYRVqPix4jRIuAfKDkAWPBQ9vnMyBxY+Yo5azOm9nVgoCSwuCeT+V9Dou49S+s94AbiAEUwMbfYNAAAAAElFTkSuQmCC', title: 'Hide AMR Toolbar', width: '16px'})))).append(
 					$('<div/>', {id: 'TrackerBarInLtl', style: 'display: none'}).append(
@@ -145,7 +146,7 @@ var base_site = {
 		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
 
 		if(config['api-key']) {
-			var json = {
+			var params = {
 				'api-key' : config['api-key'],
 				'manga'   : {
 					'site'    : this.site,
@@ -158,8 +159,22 @@ var base_site = {
 			//TODO: Check if everything is set, and not null.
 
 			if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
-				//TODO: Add some basic checking for success here.
-				$.post(main_site + '/ajax/userscript/update', json);
+				$.post(main_site + '/ajax/userscript/update', params, function () {
+					//TODO: We should really output this somewhere other than the topbar..
+					$('#TrackerStatus').text('Updated');
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: ' + errorThrown);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break
+					}
+				});
 			}
 		} else {
 			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.

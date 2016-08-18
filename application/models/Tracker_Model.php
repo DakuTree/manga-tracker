@@ -88,7 +88,7 @@ class Tracker_Model extends CI_Model {
 		return $arr;
 	}
 
-	public function get_id_from_site_url(string $site_url) {
+	public function getSiteIDFromURL(string $site_url) {
 		$query = $this->db->select('id')
 		                  ->from('tracker_sites')
 		                  ->where('site', $site_url)
@@ -101,7 +101,7 @@ class Tracker_Model extends CI_Model {
 		return $siteID ?? FALSE;
 	}
 
-	public function getTitleId(string $titleURL, int $siteID) {
+	public function getTitleID(string $titleURL, int $siteID) {
 		$query = $this->db->select('id')
 		                  ->from('tracker_titles')
 		                  ->where('title_url', $titleURL)
@@ -120,8 +120,8 @@ class Tracker_Model extends CI_Model {
 
 	public function updateTracker(int $userID, string $site, string $title, string $chapter) : bool {
 		$success = FALSE;
-		if($siteID = $this->Tracker->get_id_from_site_url($site)) {
-			$titleID = $this->Tracker->getTitleId($title, $siteID);
+		if($siteID = $this->Tracker->getSiteIDFromURL($site)) {
+			$titleID = $this->Tracker->getTitleID($title, $siteID);
 
 			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
 				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])

@@ -9,7 +9,7 @@ class Userscript extends AJAX_Controller {
 		$this->load->library('vendor/Limiter');
 		$this->load->library('form_validation');
 
-		//1000 requests per hour to either AJAX request.
+		//500 requests per hour to either AJAX request.
 		if($this->limiter->limit('tracker_userscript', 500)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 			exit();
@@ -46,9 +46,12 @@ class Userscript extends AJAX_Controller {
 			$manga = $this->input->post('manga');
 
 			$success = $this->Tracker->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
-			//TODO: Do more stuff, error handling, proper output
-			$this->output->set_content_type('text/plain', 'UTF-8');
-			$this->output->set_output("1");
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
+				$this->output->set_status_header('400', 'Unable to update?');
+			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
