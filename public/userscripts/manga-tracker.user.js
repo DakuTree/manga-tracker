@@ -8,7 +8,7 @@
 // @include      /^https:\/\/(?:(?:dev|test)\.)?tracker\.codeanimu\.net\/user\/options.*$/
 // @include      /^http:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^http:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
-// @include      /^http:\/\/bato\.to\/reader.*$/
+// @include      /^https?:\/\/bato\.to\/reader.*$/
 // @include      /^http:/\/dynasty-scans\.com\/chapters\/.+$/
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
