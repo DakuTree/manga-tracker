@@ -29,7 +29,7 @@ before_install:
 
 install:
   - composer install
-  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' | tee application/config/{development,production,testing}/test.php >/dev/null
+  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' | tee application/config/{development,production,testing}/database_password.php >/dev/null
   - php public/index.php admin/migrate
 
 script:
