@@ -178,7 +178,7 @@ class Batoto extends Site_Model {
 
 	public function getTitleData(string $title_string) {
 		$title_parts = explode(':--:', $title_string);
-		$title_url   = $title_parts[0];
+		$title_url   = $this->getFullTitleURL($title_string);
 		$title_lang  = $title_parts[1];
 		//TODO: Validate title_lang from array?
 
