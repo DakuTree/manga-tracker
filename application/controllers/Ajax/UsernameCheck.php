@@ -8,18 +8,27 @@ class UsernameCheck extends AJAX_Controller {
 		$this->load->library('form_validation');
 	}
 
+	/**
+	 * Used by the signup to do a AJAX username check.
+	 *
+	 * REQ_PARAMS: username
+	 * METHOD:     POST
+	 * URL:        /ajax/username_check
+	 */
 	public function index() {
-		//TODO: Setup a bunch of easy rate limit functions.
-		if($username = $this->input->post('username')) {
-			if(!$this->limiter->limit('email_check', 25)) {
-				$username = $this->input->post('username');
-				$this->output->set_output($this->form_validation->is_unique_username($username) ? "true" : "false");
+		$this->form_validation->set_rules('username', 'Username', 'required|max_length[100]');
+
+		if($this->form_validation->run() === TRUE) {
+			if(!$this->limiter->limit('username_check', 10)) {
+				$is_unique_username = $this->form_validation->is_unique_username($this->input->post('username'));
+
+				//TODO: WE <should> probably output something different here.
+				$this->output->set_output($is_unique_username ? "true" : "false");
 			} else {
 				$this->output->set_status_header('429', 'Rate limit reached.'); //rate limited reached
 			}
 		} else {
-			$this->output->set_status_header('400');
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
-
 }

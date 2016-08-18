@@ -443,9 +443,9 @@ $config['csrf_exclude_uris'] = array(
 
 	//TODO: These <should> use CSRF, but for now we're going to just exclude them.
 	'ajax/update_inline',
+	'ajax/delete_inline',
 	'ajax/tag_update',
-	'ajax/set_category',
-	'ajax/delete_inline'
+	'ajax/set_category'
 );
 
 /*

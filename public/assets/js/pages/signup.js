@@ -1,7 +1,7 @@
 $(function(){
 	//Validate signup. This will fallback to HTML5 validation if JS isn't enabled.
 	//This should run on all signup forms (initial & continued)
-	$('#page[data-page=signup] form').validate({
+	$('#page[data-page=signup]').find('form').validate({
 		ignore: [], //Make sure terms input is validated
 		onkeyup: false,
 
