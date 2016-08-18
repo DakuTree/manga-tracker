@@ -16,7 +16,7 @@
 
 	<div id="tracker-table-links">
 		<div class="pull-left">
-			<a href="#" type="submit" id="delete_selected">
+			<a href="#" id="delete_selected">
 				<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
 			</a>
 
