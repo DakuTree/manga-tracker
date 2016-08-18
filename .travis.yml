@@ -36,7 +36,9 @@ script:
   - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
   #TEMP
   - phantomjs --webdriver=4444 > /dev/null 2>&1 &
+  - sleep 3
   - CI_ENV=testing php -S 127.0.0.1:8000 public/index.php > /dev/null 2>&1 &
+  - sleep 3
   - php vendor/bin/codecept run acceptance --colors
 
 # after_success:
