@@ -29,7 +29,7 @@ before_install:
 
 install:
   - composer install
-  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
+  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' | tee application/config/{development,production,testing}/test.php >/dev/null
   - php public/index.php admin/migrate
 
 script:
@@ -37,9 +37,10 @@ script:
   #TEMP
   - phantomjs --webdriver=4444 > /dev/null 2>&1 &
   - sleep 3
-  - CI_ENV=testing php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
+  #BUG: We can't specify CI_ENV due to a bug: https://bugs.php.net/bug.php?id=67808
+  - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
-  - CI_ENV=testing php vendor/bin/codecept run acceptance --colors
+  - php vendor/bin/codecept run acceptance --colors
 
 # after_success:
   # - wget https://scrutinizer-ci.com/ocular.phar
