@@ -32,7 +32,12 @@ install:
   - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
   - php public/index.php admin/migrate
 
-script: cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
+script:
+  - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
+  #TEMP
+  - phantomjs --webdriver=4444
+  - CI_ENV=testing php -S 127.0.0.1:8000 public/index.php
+  - php vendor/bin/codecept
 
 # after_success:
   # - wget https://scrutinizer-ci.com/ocular.phar
