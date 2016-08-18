@@ -37,7 +37,7 @@ script:
   #TEMP
   - phantomjs --webdriver=4444 > /dev/null 2>&1 &
   - sleep 3
-  - CI_ENV=testing php -S 127.0.0.1:8000 -t public/ public/index.php > /dev/null 2>&1 &
+  - CI_ENV=testing php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
   - php vendor/bin/codecept run acceptance --colors
 
