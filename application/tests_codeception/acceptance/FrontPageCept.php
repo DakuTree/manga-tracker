@@ -5,5 +5,9 @@
 	$I->amOnPage('/');
 	$I->see('FRONT PAGE');
 	$I->see('©2016 tracker.codeanimu.net');
+
+	$I->seeLink('Login');
+	$I->seeLink('Register');
+
 	$I->seeInTitle('Manga Tracker - Index');
 
