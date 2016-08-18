@@ -29,7 +29,7 @@ before_install:
 
 install:
   - composer install
-  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' | tee application/config/{development,production,testing}/database_password.php >/dev/null
+  - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
   - php public/index.php admin/migrate
 
 script:
@@ -37,7 +37,9 @@ script:
   #TEMP
   - phantomjs --webdriver=4444 > /dev/null 2>&1 &
   - sleep 3
-  #BUG: We can't specify CI_ENV due to a bug: https://bugs.php.net/bug.php?id=67808
+  #BUG: We can't specify CI_ENV normally due to a bug: https://bugs.php.net/bug.php?id=67808
+  #Because of this, we need to edit the index.php.
+  - sed -i "1s/.*/<\?php \$_SERVER['CI_ENV'] = 'testing';/" public/index.php
   - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
   - php vendor/bin/codecept run acceptance --colors
