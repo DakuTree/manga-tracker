@@ -35,9 +35,9 @@ install:
 script:
   - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
   #TEMP
-  - phantomjs --webdriver=4444
-  - CI_ENV=testing php -S 127.0.0.1:8000 public/index.php
-  - php vendor/bin/codecept
+  - phantomjs --webdriver=4444 | sh >/dev/null 2>&1
+  - CI_ENV=testing php -S 127.0.0.1:8000 public/index.php | sh >/dev/null 2>&1
+  - php vendor/bin/codecept --colors
 
 # after_success:
   # - wget https://scrutinizer-ci.com/ocular.phar
