@@ -2,7 +2,7 @@
 # The humans responsible & technology colophon
 
 # TEAM
-	DakuTree (also known as Daku / DakuTree) -- Creator/Admin -- Github: @DakuTree, Twitter: @Avareei
+	DakuTree (also known as Daku / Avareei) -- Creator/Admin -- Github: @DakuTree, Twitter: @Avareei
 
 # THANKS
 	https://github.com/AllMangasReader-dev - This completely changed the way I track manga, but sadly it hasn't been updated much in the past few years.
@@ -10,5 +10,6 @@
 
 # TECHNOLOGY COLOPHON
 	HTML5, CSS3, PHP7
-	CodeIgniter3, Composer
+	CodeIgniter3, Composer, PHPUnit, Codeception
 	Travis-CI, Scrutinizer-CI
+	jQuery, jQuery-validation, HTML5Shiv, normalize.css, HTML5 Boilerplate, Bootstrap, Font Awesome, CI-PHPUnit Test
