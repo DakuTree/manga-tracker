@@ -17,5 +17,5 @@
 	$I->seeInField('#identity', 'administrator');
 	$I->fillField('#password', 'password');
 	$I->seeInField('#password', 'password');
-	$I->click('input', ['value' => 'Login']);
+	$I->click('input[type=submit]');
 	$I->see('Delete Selected');
