@@ -11,4 +11,3 @@
 	//$I->seeLink('Register');
 
 	$I->seeInTitle('Manga Tracker - Index');
-
