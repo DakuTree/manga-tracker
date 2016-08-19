@@ -79,8 +79,7 @@ $route['ajax/userscript/update']      = 'Ajax/Userscript/update';
 //$route['ajax/([a-zA-Z0-9_-]+)']          = 'Ajax/$1'; //TODO: Remove me. Don't match everything.
 
 $route['about']         = 'About';
-$route['about/faq']     = 'About/faq';
-$route['about/terms']   = 'About/terms';
+//$route['about/terms']   = 'About/terms'; //FIXME: This isn't setup??
 
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
