@@ -13,7 +13,7 @@
 
 	$I->wantTo('Check if Login form works');
 	$I->amOnPage('/user/login');
-	$I->fillField('identity', 'administrator');
-	$I->fillField('password', 'password');
+	$I->fillField('#identity', 'administrator');
+	$I->fillField('#password', 'password');
 	$I->click('form [type=submit]');
 	$I->see('Delete Selected');
