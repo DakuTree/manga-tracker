@@ -5,7 +5,7 @@
 	$I->amOnPage('/user/login');
 	$I->see('©2016 tracker.codeanimu.net');
 	$I->see('Please Sign In');
-	$I->see('Login');
+	$I->seeElement('input', ['value' => 'Login']);
 	$I->see('Create an account');
 	$I->see('Remember Me');
 	$I->seeLink('Forgot Password?');
@@ -15,5 +15,5 @@
 	$I->amOnPage('/user/login');
 	$I->fillField('identity', 'administrator');
 	$I->fillField('password', 'password');
-	$I->click('Login');
+	$I->click('form [type=submit]');
 	$I->see('Delete Selected');
