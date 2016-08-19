@@ -11,4 +11,9 @@
 	$I->seeLink('Forgot Password?');
 	$I->seeInTitle('Manga Tracker - Login');
 
-	//TODO: Test actual login
+	$I->wantTo('Check if Login form works');
+	$I->amOnPage('/user/login');
+	$I->fillField('identity', 'administrator');
+	$I->fillField('password', 'password');
+	$I->click('Login');
+	$I->see('Delete Selected');
