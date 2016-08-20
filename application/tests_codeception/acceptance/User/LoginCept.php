@@ -14,8 +14,10 @@
 	$I->wantTo('Check if Login form works');
 	$I->amOnPage('/user/login');
 	$I->fillField('#identity', 'administrator');
-	$I->seeInField('#identity', 'administrator');
 	$I->fillField('#password', 'password');
-	$I->seeInField('#password', 'password');
 	$I->click('input[type=submit]');
+	//Check if the page actually reloaded.
+	$I->seeInField('#identity', 'administrator');
+	$I->seeInField('#password', 'password');
+
 	$I->see('Delete Selected');
