@@ -217,7 +217,7 @@ class Batoto extends Site_Model {
 
 					$titleData['title']          = trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue);
 					$titleData['latest_chapter'] = substr($chapter_element->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter']);
-					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ -.*$/', '', $updated_element->nodeValue)));
+					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $updated_element->nodeValue)));
 				} else {
 					//FIXME: SOMETHING WENT WRONG
 				}
