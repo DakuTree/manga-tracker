@@ -20,14 +20,14 @@ cache:
 matrix:
   fast_finish: true
 
-addons:
-  ssh_known_hosts: tracker.codeanimu.net:22
+#addons:
+#  ssh_known_hosts: tracker.codeanimu.net:22
 
 before_install:
   - travis_retry composer self-update && composer --version #travis is bad at updating composer
   - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
   #NOTE: Database creation is done in composer.json scripts.
-  #NOTE: Travis is using an extemely old version of phantomjs for some reason..
+  #NOTE: Travis is using an extemely old version of phantomjs for some reason | SEE: https://github.com/travis-ci/travis-ci/issues/3225
   - "phantomjs --version"
   - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
   - "phantomjs --version"
