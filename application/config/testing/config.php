@@ -15,7 +15,7 @@ $config['static_url'] = 'https://static.test.tracker.codeanimu.net';
 */
 $config['log_threshold'] = 2;
 
-if(isset($_ENV['CI_TESTING'])) {
+if(isset($_SERVER['CI_TESTING'])) {
 	$config['base_url']   = 'http://127.0.0.1:8000';
 	$config['static_url'] = 'http://127.0.0.1:8000/assets';
 
