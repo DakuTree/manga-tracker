@@ -51,7 +51,7 @@ script:
   - sed -i "1s/.*/<\?php \$_SERVER['CI_ENV'] = 'testing';/" public/index.php
   - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
-  - php vendor/bin/codecept run acceptance --colors
+  - CI_TESTING=TRUE php vendor/bin/codecept run acceptance --colors
 
 # after_success:
   # - wget https://scrutinizer-ci.com/ocular.phar
