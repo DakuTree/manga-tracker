@@ -49,6 +49,7 @@ script:
   #BUG: We can't specify CI_ENV normally due to a bug: https://bugs.php.net/bug.php?id=67808
   #Because of this, we need to edit the index.php.
   - sed -i "1s/.*/<\?php \$_SERVER['CI_ENV'] = 'testing';/" public/index.php
+  - echo "127.0.0.1:8000  test.tracker.codeanimu.net" >> /etc/hosts
   - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
   - sleep 3
   - php vendor/bin/codecept run acceptance --colors
