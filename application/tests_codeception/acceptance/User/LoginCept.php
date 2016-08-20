@@ -13,11 +13,16 @@
 
 	$I->wantTo('Check if Login form works');
 	$I->amOnPage('/user/login');
-	$I->fillField('#identity', 'administrator');
-	$I->fillField('#password', 'password');
-	$I->click('input[type=submit]');
-	//Check if the page actually reloaded.
-	$I->seeInField('#identity', 'administrator');
-	$I->seeInField('#password', 'password');
+	//$I->fillField('#identity', 'administrator');
+	//$I->fillField('#password', 'password');
+	//$I->click('input[type=submit]');
+	$I->submitForm(
+		'#login-form',
+		[
+			'identity' => 'administrator',
+			'password' => 'password'
+		],
+		'Login'
+	);
 
 	$I->see('Delete Selected');

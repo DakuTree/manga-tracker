@@ -1,6 +1,6 @@
 <div class="row" style="margin-top:20px">
 	<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form action="<?=base_url('user/login')?>" method="post" accept-charset="utf-8" role="form">
+		<form action="<?=base_url('user/login')?>" method="post" accept-charset="utf-8" role="form" id="login-form">
 			<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">
 
 			<fieldset>
