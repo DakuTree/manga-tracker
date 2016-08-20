@@ -24,5 +24,6 @@
 		],
 		'Login'
 	);
+	$I->wait(5);
 
 	$I->see('Delete Selected');
