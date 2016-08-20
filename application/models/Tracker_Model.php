@@ -355,15 +355,21 @@ class Tracker_Model extends CI_Model {
 		$now         = new DateTime($temp_now_formatted);
 		$future_date = new DateTime($temp_now_formatted);
 		$now_hour    = (int) $now->format('H');
-		if($now_hour < 6) {
-			//Time until 6am
-			$future_date->setTime(6, 00);
+		if($now_hour < 4) {
+			//Time until 4am
+			$future_date->setTime(4, 00);
+		} elseif($now_hour < 8) {
+			//Time until 8am
+			$future_date->setTime(8, 00);
 		} elseif($now_hour < 12) {
 			//Time until 12pm
 			$future_date->setTime(12, 00);
-		} elseif($now_hour < 18) {
-			//Time until 6pm
-			$future_date->setTime(18, 00);
+		} elseif($now_hour < 16) {
+			//Time until 4pm
+			$future_date->setTime(16, 00);
+		} elseif($now_hour < 20) {
+			//Time until 8pm
+			$future_date->setTime(20, 00);
 		} else {
 			//Time until 12am
 			$future_date->setTime(00, 00);
