@@ -104,8 +104,4 @@ class Login extends No_Auth_Controller {
 			$this->_render_page('User/Login');
 		}
 	}
-
-	//TODO: Steam Login
-	//TODO: Google Login
-	//TODO (Research): PSN/XBL
 }
