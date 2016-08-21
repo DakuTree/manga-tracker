@@ -12,7 +12,6 @@ class Userscript extends AJAX_Controller {
 		//500 requests per hour to either AJAX request.
 		if($this->limiter->limit('tracker_userscript', 500)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
-			exit();
 		}
 
 		//API Key is required for all AJAX requests
@@ -21,11 +20,9 @@ class Userscript extends AJAX_Controller {
 			$this->userID = $this->User->get_id_from_api_key($this->input->post('api-key'));
 			if(!$this->userID) {
 				$this->output->set_status_header('400', 'Invalid API Key');
-				exit();
 			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
-			exit();
 		}
 	}
 
@@ -37,6 +34,7 @@ class Userscript extends AJAX_Controller {
 	 * URL:        /ajax/userscript/update
 	 */
 	public function update() {
+		if($this->output->is_custom_header_set()) { return; }
 		//NOTE: CORS is enabled via vhost <only> for this URL.
 		$this->form_validation->set_rules('manga[site]',    'Manga [Site]',    'required');
 		$this->form_validation->set_rules('manga[title]',   'Manga [Title]',   'required');

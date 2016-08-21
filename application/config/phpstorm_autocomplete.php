@@ -27,7 +27,7 @@
  * @property CI_Log              $log                                 Logging Class
  * @property CI_Migration        $migration                           All migrations should implement this, forces up() and down() and gives access to the CI super-global
  * @property CI_Model            $model                               CodeIgniter Model Class
- * @property CI_Output           $output                              Responsible for sending final output to the browser
+ * @property MY_Output           $output                              Responsible for sending final output to the browser
  * @property CI_Pagination       $pagination                          Pagination Class
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
@@ -90,7 +90,7 @@ class CI_Controller {}
  * @property CI_Log              $log                                 Logging Class
  * @property CI_Migration        $migration                           All migrations should implement this, forces up() and down() and gives access to the CI super-global
  * @property CI_Model            $model                               CodeIgniter Model Class
- * @property CI_Output           $output                              Responsible for sending final output to the browser
+ * @property MY_Output           $output                              Responsible for sending final output to the browser
  * @property CI_Pagination       $pagination                          Pagination Class
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
@@ -154,7 +154,7 @@ class CI_Model {}
  * @property CI_Log              $log                                 Logging Class
  * @property CI_Migration        $migration                           All migrations should implement this, forces up() and down() and gives access to the CI super-global
  * @property CI_Model            $model                               CodeIgniter Model Class
- * @property CI_Output           $output                              Responsible for sending final output to the browser
+ * @property MY_Output           $output                              Responsible for sending final output to the browser
  * @property CI_Pagination       $pagination                          Pagination Class
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
