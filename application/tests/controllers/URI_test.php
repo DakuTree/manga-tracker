@@ -1,6 +1,7 @@
 <?php
 
 class URI_test extends TestCase {
+	/******** GENERAL/LOGGED OUT TESTS ************/
 	public function test_index() {
 		$output = $this->request('GET', '/');
 		$this->assertContains('<title>Manga Tracker - Index</title>', $output);
@@ -28,6 +29,7 @@ class URI_test extends TestCase {
 		$output = $this->request('GET', '/user/login');
 		$this->assertContains('<title>Manga Tracker - Login</title>', $output);
 	}
+
 	public function test_logout() {
 		$this->request('GET', '/user/logout');
 		$this->assertRedirect(base_url('/'));
@@ -37,4 +39,59 @@ class URI_test extends TestCase {
 		$this->request('GET', '/user/options');
 		$this->assertRedirect(base_url('/user/login'));
 	}
+
+	public function test_username_check_get() {
+		$this->request('GET', '/ajax/username_check');
+		$this->assertResponseCode(404);
+	}
+	public function test_username_check_post() {
+		$this->request('POST', '/ajax/username_check');
+		$this->assertResponseCode('400'); //This is valid, since is normally requires param
+	}
+
+	public function test_get_apikey_get() {
+		$this->request('GET', '/ajax/get_apikey');
+		$this->assertResponseCode(404);
+	}
+	public function test_get_apikey_post() {
+		$this->request('POST', '/ajax/get_apikey');
+		$this->assertResponseCode('400'); //This is valid, since requires login
+	}
+
+	public function test_update_inline_get() {
+		$this->request('GET', '/ajax/update_inline');
+		$this->assertResponseCode(404);
+	}
+	public function test_update_inline_post() {
+		$this->request('POST', '/ajax/update_inline');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	public function test_delete_inline_get() {
+		$this->request('GET', '/ajax/delete_inline');
+		$this->assertResponseCode(404);
+	}
+	public function test_delete_inline_post() {
+		$this->request('POST', '/ajax/delete_inline');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	public function test_tag_update_get() {
+		$this->request('GET', '/ajax/tag_update');
+		$this->assertResponseCode(404);
+	}
+	public function test_tag_update_post() {
+		$this->request('POST', '/ajax/tag_update');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_set_category_get() {
+		$this->request('GET', '/ajax/set_category');
+		$this->assertResponseCode(404);
+	}
+	public function test_set_category_post() {
+		$this->request('POST', '/ajax/set_category');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	/******** LOGGED_IN TESTS *******/
 }
