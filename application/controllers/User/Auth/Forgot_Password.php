@@ -141,7 +141,7 @@ class Forgot_Password extends No_Auth_Controller {
 			//code is invalid, send them back to forgot password page
 			$this->session->set_flashdata('notices', $this->ion_auth->errors());
 
-			redirect("user/forgot_password", 'refresh');
+			redirect("user/forgot_password");
 		}
 	}
 }
