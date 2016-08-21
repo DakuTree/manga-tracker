@@ -12,8 +12,7 @@ class URI_test extends TestCase {
 	}
 	public function test_signup_continued() {
 		$this->request('GET', '/user/signup/bad_code');
-		$this->assertResponseCode(302);
-		//TODO: We should verify the redirected URL
+		$this->assertRedirect(base_url('user/signup'));
 	}
 
 	public function test_forgot_password() {
@@ -22,8 +21,7 @@ class URI_test extends TestCase {
 	}
 	public function test_forgot_password_continued() {
 		$this->request('GET', '/user/reset_password/bad_code');
-		$this->assertResponseCode(302);
-		//TODO: We should verify the redirected URL
+		$this->assertRedirect(base_url('/user/forgot_password'));
 	}
 
 	public function test_login() {
@@ -32,13 +30,11 @@ class URI_test extends TestCase {
 	}
 	public function test_logout() {
 		$this->request('GET', '/user/logout');
-		$this->assertResponseCode(302);
-		//TODO: We should verify the redirected URL
+		$this->assertRedirect(base_url('/'));
 	}
 
 	public function test_user_options() {
 		$this->request('GET', '/user/options');
-		$this->assertResponseCode(302);
-		//TODO: We should verify the redirected URL
+		$this->assertRedirect(base_url('/user/login'));
 	}
 }
