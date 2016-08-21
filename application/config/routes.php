@@ -74,7 +74,7 @@ $route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 $route['import_list']['post']         = 'Ajax/TrackerInline/import';
 
-$route['ajax/userscript/update']      = 'Ajax/Userscript/update';
+$route['ajax/userscript/update']['post'] = 'Ajax/Userscript/update';
 
 //$route['ajax/([a-zA-Z0-9_-]+)']          = 'Ajax/$1'; //TODO: Remove me. Don't match everything.
 
