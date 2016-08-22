@@ -46,7 +46,7 @@ class URI_test extends TestCase {
 	}
 	public function test_username_check_post() {
 		$this->request('POST', '/ajax/username_check');
-		$this->assertResponseCode('400'); //This is valid, since is normally requires param
+		$this->assertResponseCode(400); //This is valid, since is normally requires param
 	}
 
 	public function test_get_apikey_get() {
@@ -55,7 +55,7 @@ class URI_test extends TestCase {
 	}
 	public function test_get_apikey_post() {
 		$this->request('POST', '/ajax/get_apikey');
-		$this->assertResponseCode('400'); //This is valid, since requires login
+		$this->assertResponseCode(400); //This is valid, since requires login
 	}
 
 	public function test_update_inline_get() {
@@ -84,6 +84,7 @@ class URI_test extends TestCase {
 		$this->request('POST', '/ajax/tag_update');
 		$this->assertRedirect(base_url('/user/login'));
 	}
+
 	public function test_set_category_get() {
 		$this->request('GET', '/ajax/set_category');
 		$this->assertResponseCode(404);
@@ -91,6 +92,42 @@ class URI_test extends TestCase {
 	public function test_set_category_post() {
 		$this->request('POST', '/ajax/set_category');
 		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	public function test_export_list_get() {
+		$this->request('GET', '/export_list');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_export_list_post() {
+		$this->request('POST', '/export_list');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_import_list_get() {
+		$this->request('GET', '/import_list');
+		$this->assertResponseCode(404);
+	}
+	public function test_import_list_post() {
+		$this->request('POST', '/ajax/set_category');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	public function test_userscript_update_get() {
+		$this->request('GET', '/ajax/userscript/update');
+		$this->assertResponseCode(404);
+	}
+	public function test_userscript_update_post() {
+		$this->request('POST', '/ajax/userscript/update');
+		$this->assertResponseCode(400);
+	}
+
+	public function test_about() {
+		$output = $this->request('GET', '/about');
+		$this->assertContains('<title>Manga Tracker - About</title>', $output);
+	}
+
+	public function test_cli_migrate() {
+		$this->request('GET', '/admin/migrate');
+		$this->assertResponseCode(200);
 	}
 
 	/******** LOGGED_IN TESTS *******/

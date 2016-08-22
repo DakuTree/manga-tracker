@@ -34,7 +34,7 @@ class Userscript extends AJAX_Controller {
 	 * URL:        /ajax/userscript/update
 	 */
 	public function update() {
-		if($this->output->is_custom_header_set()) { return; }
+		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 		//NOTE: CORS is enabled via vhost <only> for this URL.
 		$this->form_validation->set_rules('manga[site]',    'Manga [Site]',    'required');
 		$this->form_validation->set_rules('manga[title]',   'Manga [Title]',   'required');
