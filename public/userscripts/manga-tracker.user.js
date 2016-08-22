@@ -14,6 +14,7 @@
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+\?id=[0-9]+$/
+// @include      /^http:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @updated      2016-XX-XX
 // @version      0.9.0
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -76,7 +77,7 @@ var base_site = {
 
 		this.preSetupTopBar(function() {
 			GM_addStyle("\
-				#TrackerBar { height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; }\
+				#TrackerBar { height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; font-size: 14px; font-family: 'Open Sans', Arial, Helvetica, sans-serif; }\
 				#TrackerBar:hover { opacity: 1 !important; }\
 				#TrackerBarIn { padding: 2px 15px !important; margin: 0 !important; border-bottom-left-radius: 6px 6px !important; border-bottom-right-radius: 6px 6px !important; border: 1px solid #CCC !important; border-top: 0 !important; opacity: 1 !important; background-color: #fff !important; /*display:inline-block!important;*/ padding-left: 15px !important; padding-right: 15px !important; }\
 				#TrackerBarIn img,.TrackerBarLayout img { vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }\
@@ -172,7 +173,7 @@ var base_site = {
 							break;
 						default:
 							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break
+							break;
 					}
 				});
 			}
@@ -773,6 +774,38 @@ var sites = {
 		}
 	}),
 
+	'reader.kireicake.com' : extendSite({
+		setObjVars : function() {
+			var segments     = window.location.pathname.split( '/' );
+
+			this.title       = segments[2];
+			this.chapter     = segments[3] + '/' + segments[4] + '/' + segments[5] + (segments[6] && segments[6] !== 'page' ? '/' + segments[6] : '');
+
+			this.title_url   = 'http://reader.kireicake.com/series/'+this.title;
+			this.chapter_url = 'http://reader.kireicake.com/read/'+this.title+'/'+this.chapter;
+
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			// this.viewerTitle           = $('title').text().trim().split("\n")[1];
+			this.viewerCustomImageList = $('#content > script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) { 
+				return self.indexOf(value) === index;
+			}).map(function(e, i) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		postSetupTopBar : function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		}
+	}),
+
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
 	'tracker.codeanimu.net' : {
@@ -827,7 +860,7 @@ var sites = {
 							break;
 						default:
 							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break
+							break;
 					}
 				});
 			});
