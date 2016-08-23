@@ -48,11 +48,8 @@
 			<hr class="colorgraph">
 
 			<div class="row">
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-12">
 					<?=form_submit($form_submit);?>
-				</div>
-				<div class="col-xs-12 col-md-6">
-					<a href="<?=base_url('user/login')?>" class="btn btn-success btn-block btn-lg">Sign In</a>
 				</div>
 			</div>
 		</form>
