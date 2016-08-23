@@ -238,7 +238,6 @@ class Batoto extends Site_Model {
 class DynastyScans extends Site_Model {
 	public function getFullTitleURL(string $title_string) : string {
 		$title_parts = explode(':--:', $title_string);
-
 		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
 
 		return 'http://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
@@ -246,7 +245,6 @@ class DynastyScans extends Site_Model {
 
 	public function getChapterData(string $title_string, string $chapter) : array {
 		$title_parts = explode(':--:', $title_string);
-
 		/* Known chapter url formats (# is numbers):
 		       chapters_#A_#B - Ch#A-#B
 		       ch_#A          - Ch#A
@@ -405,7 +403,6 @@ class MangaStream extends Site_Model {
 
 			$nodes_title = $xpath->query("//div[contains(@class, 'content')]/div[1]/h1");
 			$nodes_row   = $xpath->query("//div[contains(@class, 'content')]/div[1]/table/tr[2]"); //Missing tbody here..
-			print $nodes_row->length;
 			if($nodes_title->length === 1 & $nodes_row->length === 1) {
 				$titleData['title'] = $nodes_title[0]->nodeValue;
 
@@ -492,7 +489,6 @@ class KissManga extends Site_Model {
 	*/
 
 	public function getFullTitleURL(string $title_url) : string {
-		$title_parts = explode(':--:', $title_url);
 		return "http://kissmanga.com/Manga/{$title_url}";
 	}
 
