@@ -6,7 +6,7 @@
  * @return bool
  */
 function view_exists(string $path) : bool {
-	return (is_string($path) && file_exists(APPPATH . "/views/{$path}.php"));
+	return file_exists(APPPATH . "/views/{$path}.php");
 }
 
 function get_time_class(string $time_string) : string {
