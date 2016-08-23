@@ -129,6 +129,4 @@ class URI_test extends TestCase {
 		$this->request('GET', '/admin/migrate');
 		$this->assertResponseCode(200);
 	}
-
-	/******** LOGGED_IN TESTS *******/
 }

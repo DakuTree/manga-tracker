@@ -5,7 +5,10 @@ class Signup extends No_Auth_Controller {
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters(
+			$this->config->item('error_start_delimiter', 'ion_auth'),
+			$this->config->item('error_end_delimiter', 'ion_auth')
+		);
 
 		$this->load->model('Auth_Model', 'Auth');
 	}
@@ -33,11 +36,13 @@ class Signup extends No_Auth_Controller {
 		//user enters email, submits, email is sent to verify it exists and to continue setup.
 
 		$this->form_validation->set_rules('email', 'Email:', 'trim|required|valid_email|is_unique_email', array(
-			'required' => 'Email field is empty.'
+			'required'        => 'Email field is empty.',
+			'valid_email'     => 'Email is an invalid format',
+			'is_unique_email' => 'Email already exists.'
 		));
 
 		if ($isValid = $this->form_validation->run() === TRUE) {
-			$email = $this->input->post('email'); //strtolower "would" be used here however the first part of the email CAN be case-sensitive
+			$email = $this->Auth->parse_email($this->input->post('email'));
 
 			$this->body_data['email'] = $email;
 			if($this->Auth->verification_start($email)) {
@@ -57,13 +62,13 @@ class Signup extends No_Auth_Controller {
 			$this->body_data['form_email'] = array(
 					'name'        => 'email',
 					'id'          => 'email',
-					'type'        => 'text',
+					'type'        => 'email',
 
 					'class'       => 'form-control input-lg',
-					'tabindex'    => '2',
+					'tabindex'    => '1',
 
 					'placeholder' => 'Email Address',
-					'value'       => $this->form_validation->set_value('email'),
+					'value'       => '',
 
 					'required'    => ''
 			);
@@ -72,7 +77,7 @@ class Signup extends No_Auth_Controller {
 					'type'     => 'submit',
 
 					'class'    => 'btn btn-primary btn-block btn-lg',
-					'tagindex' => '6',
+					'tagindex' => '2',
 
 					'value'    => 'Send verification email.'
 			);
@@ -87,12 +92,12 @@ class Signup extends No_Auth_Controller {
 		if(!($email = $this->Auth->verification_check($verificationCode))) redirect('user/signup');
 
 		//validation is valid, proceed as normal
-		$this->form_validation->set_rules('username',         'Username',           'required|valid_username|is_unique_username');
+		$this->form_validation->set_rules('username',         'Username',           'required|min_length[4]|max_length[15]|valid_username|is_unique_username');
 		$this->form_validation->set_rules('password',         'Password',           'required|valid_password');
 		$this->form_validation->set_rules('password_confirm', 'Confirm Password',   'required|matches[password]');
 		$this->form_validation->set_rules('terms',            'Terms & Conditions', 'required');
-		//timezone
-		//receive email
+		//TODO: timezone
+		//TODO: receive email
 
 		if ($isValid = $this->form_validation->run() === TRUE) {
 			$username = $this->input->post('username');

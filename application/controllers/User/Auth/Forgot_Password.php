@@ -5,7 +5,10 @@ class Forgot_Password extends No_Auth_Controller {
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters(
+			$this->config->item('error_start_delimiter', 'ion_auth'),
+			$this->config->item('error_end_delimiter', 'ion_auth')
+		);
 	}
 
 	public function index() {
@@ -13,13 +16,15 @@ class Forgot_Password extends No_Auth_Controller {
 		$this->header_data['page']  = "forgot_password";
 
 		//TODO (RESEARCH): Should we allow username here too?
-		$this->form_validation->set_rules('email', 'Email',  'required|valid_email', array('required' => 'Please enter your email.', 'valid_email' => 'The email your entered is invalid.'));
+		$this->form_validation->set_rules('email', 'Email',  'required|valid_email', array(
+			'required'    => 'Please enter your email.',
+			'valid_email' => 'The email your entered is invalid.'
+		));
 
 		if ($this->form_validation->run() === TRUE) {
 			//form is valid
 
 			$identity = $this->ion_auth->where('email', $this->input->post('email'))->users()->row();
-
 
 			//To avoid people finding out if an email is associated with the site, a valid email (regardless if it's used) will always return a success page.
 			//TODO (Research): Is this the right thing to do?

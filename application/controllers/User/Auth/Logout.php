@@ -7,13 +7,17 @@ class Logout extends User_Controller {
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters(
+			$this->config->item('error_start_delimiter', 'ion_auth'),
+			$this->config->item('error_end_delimiter', 'ion_auth')
+		);
 	}
 
 	public function index() {
 		$this->header_data['title'] = "Logout";
 		$this->header_data['page']  = "logout";
 
+		//TODO (CHECK): Is there any point to checking if the user is even logged in before doing this?
 		$this->ion_auth->logout();
 
 		//TODO: Notify user on successful logout.

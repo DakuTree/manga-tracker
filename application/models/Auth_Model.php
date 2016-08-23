@@ -106,6 +106,9 @@ class Auth_Model extends CI_Model {
 		return $this->db->delete('auth_signup_verification', array('email' => $email));
 	}
 
-	//forgotten_password_time' => time()
-//$activation_code       = sha1(md5(microtime()));
+	//FIXME: This assumes we know the email is valid.
+	public function parse_email(string $email) : string {
+		$email_parts = explode('@', $email);
+		return $email_parts[0].'@'.strtolower($email_parts[1]); //Only the first half of the email can be case sensitive
+	}
 }

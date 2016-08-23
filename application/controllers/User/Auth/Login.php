@@ -5,15 +5,25 @@ class Login extends No_Auth_Controller {
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->form_validation->set_error_delimiters(
+			$this->config->item('error_start_delimiter', 'ion_auth'),
+			$this->config->item('error_end_delimiter', 'ion_auth')
+		);
 	}
 
 	public function index() {
 		$this->header_data['title'] = "Login";
 		$this->header_data['page']  = "login";
 
-		$this->form_validation->set_rules('identity', 'Identity',  'required', array('required' => 'Please enter your username or email.'));
-		$this->form_validation->set_rules('password', 'Password',  'required', array('required' => 'Please enter your password.'));
+		$this->form_validation->set_rules('identity', 'Identity',  'required|max_length[254]', array(
+			'required'   => 'Please enter your username or email.',
+			'max_length' => 'Invalid username.'
+
+		));
+		$this->form_validation->set_rules('password', 'Password',  'required|max_length[64]', array(
+			'required'   => 'Please enter your password.',
+			'max_length' => 'Invalid password.'
+		));
 
 		if ($isValid = $this->form_validation->run() === TRUE) {
 			//form is valid
