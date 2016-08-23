@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - KissManga.com
     - KireiCake.com
   - Category support (Reading, On-Hold, Plan to Read & 3 custom categories)
+  - (Basic) Tagging support.
   - Site Options (Custom Categories, Default Category, Toggle Live Countdown Timer)
   - Userscript Options (Track on page-load).
   - Import/Export from site.
