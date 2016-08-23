@@ -17,7 +17,7 @@ class MY_Controller extends CI_Controller {
 		$this->global_data['analytics_tracking_id'] = $this->config->item('tracking_id');
 	}
 
-	function _render_page(/*(array) $paths*/) {
+	public function _render_page(/*(array) $paths*/) {
 		//using the union operator + makes sure global_data always takes priority
 		//SEE: http://stackoverflow.com/a/2140094/1168377
 
@@ -29,7 +29,7 @@ class MY_Controller extends CI_Controller {
 		}
 		$this->load->view('common/footer', ($this->global_data + $this->footer_data));
 	}
-	function _render_json($json_input, bool $download = FALSE) {
+	public function _render_json($json_input, bool $download = FALSE) {
 		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
 
 		$this->output->set_content_type('application/json');

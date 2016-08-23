@@ -102,7 +102,6 @@ class Signup_test extends TestCase {
 				$this->verifyInvokedMultipleTimes($validation, 'set_rules', 1);
 				$this->verifyInvokedOnce($validation, 'run');
 				//$this->verifyNeverInvoked($validation, 'reset_validation');
-				$this->verifyInvoked($validation, 'set_value');
 				// Inject mock object
 				$CI->form_validation = $validation;
 			}
