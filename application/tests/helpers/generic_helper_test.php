@@ -15,4 +15,21 @@ class Generic_Helper_test extends TestCase {
 		$result = view_exists('AnInvalidPage');
 		$this->assertFalse($result);
 	}
+
+	public function test_get_time_class_day() {
+		$result = get_time_class('today');
+		$this->assertEquals('sprite-day', $result);
+	}
+	public function test_get_time_class_week() {
+		$result = get_time_class('last week');
+		$this->assertEquals('sprite-week', $result);
+	}
+	public function test_get_time_class_month() {
+		$result = get_time_class('35 days ago');
+		$this->assertEquals('sprite-month', $result);
+	}
+	public function test_get_time_class_fail() {
+		$result = get_time_class('invalid');
+		$this->assertEquals('sprite-error', $result);
+	}
 }

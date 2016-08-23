@@ -12,15 +12,19 @@ function view_exists(string $path) : bool {
 function get_time_class(string $time_string) : string {
 	$time = strtotime($time_string);
 
-	if($time < strtotime('-1 month')) {
-		//More than a month old.
-		$time_string = "sprite-month";
-	} elseif($time < strtotime('-1 week')) {
-		//More than a week old, but less than a month old.
-		$time_string = "sprite-week";
+	if(is_int($time)) {
+		if($time < strtotime('-1 month')) {
+			//More than a month old.
+			$time_string = "sprite-month";
+		} elseif($time < strtotime('-1 week')) {
+			//More than a week old, but less than a month old.
+			$time_string = "sprite-week";
+		} else {
+			//Less than a week old.
+			$time_string = "sprite-day";
+		}
 	} else {
-		//Less than a week old.
-		$time_string = "sprite-day";
+		$time_string = "sprite-error"; //TODO: Create the sprite for this
 	}
 	return $time_string;
 }
