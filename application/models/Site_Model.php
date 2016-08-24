@@ -28,6 +28,8 @@ class Site_Model extends CI_Model {
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$data = curl_exec($ch);
+		if($data === FALSE & getenv('TRAVIS')){ echo 'Curl Error: '.curl_errno($ch); }
+
 		curl_close($ch);
 		return $data;
 	}
