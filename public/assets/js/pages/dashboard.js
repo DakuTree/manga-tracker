@@ -1,6 +1,6 @@
 $(function(){
 	"use strict";
-	if(page === 'dashboard') { return false; }
+	if(page !== 'dashboard') { return false; }
 
 	//We sort by unread by using prepending 1 or 0 depending if it's unread or not to an invisible td
 	$(".tablesorter").tablesorter(/*{
