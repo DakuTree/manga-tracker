@@ -80,4 +80,10 @@ class TestCase extends CIPHPUnitTestCase {
 			'This test has not been implemented yet.'
 		);
 	}
+
+	public function skipTravis(string $reason = NULL) {
+		if(isset($_ENV['TRAVIS']) && $_ENV['TRAVIS'] == 'true') {
+			$this->markTestSkipped('This test doesn\'t play nice with Travis'.($reason ? "\nReason: $reason" : ""));
+		}
+	}
 }

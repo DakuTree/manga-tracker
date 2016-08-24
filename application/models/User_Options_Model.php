@@ -57,7 +57,7 @@ class User_Options_Model extends CI_Model {
 				1 => 'on-hold',
 				2 => 'plan-to-read',
 
-				//FIXME: (MAJOR) This should only be enabled if the custom categories
+				//FIXME: (MAJOR) This should only be enabled if the custom categories are enabled
 				// Problem is we can't easily check for this since the userscript uses it's own UserID, and not $this->User->id
 				3 => 'custom1',
 				4 => 'custom2',

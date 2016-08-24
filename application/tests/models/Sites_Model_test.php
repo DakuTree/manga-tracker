@@ -38,10 +38,7 @@ class Site_Model_test extends TestCase {
 	}
 
 	public function test_Batoto() {
-		//TODO: Allow this to run locally, but not on Travis.
-		$this->markTestIncomplete(
-			'This test is temp-disabled as it doesn\'t work on Travis due to the cookie requirement'
-		);
+		$this->skipTravis('Missing required cookies.');
 
 		$result = $this->Sites_Model->{'Batoto'}->getTitleData('tsugumomo-r4271:--:English');
 
@@ -79,6 +76,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_MangaStream() {
+		//FIXME: This randomly errors on travis???
 		$result = $this->Sites_Model->{'MangaStream'}->getTitleData('okitegami');
 
 		$this->assertInternalType('array', $result);
@@ -103,10 +101,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_KissManga() {
-		//TODO: Allow this to run locally, but not on Travis.
-		$this->markTestIncomplete(
-			'This test is temp-disabled as it doesn\'t work on Travis due to the cookie requirement'
-		);
+		$this->skipTravis('Missing required cookies.');
 
 		$result = $this->Sites_Model->{'KissManga'}->getTitleData('Tsugumomo');
 
