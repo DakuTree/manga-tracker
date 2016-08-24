@@ -68,6 +68,12 @@ switch (ENVIRONMENT)
 	case 'development':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
+
+		ini_set('opcache.enable', 'Off'); //Index.php WILL be cached, but any other scripts will not | http://stackoverflow.com/questions/21556437
+
+		ini_set('post_max_size', '1M');
+		ini_set('upload_max_filesize', '0M');
+
 		break;
 
 	case 'testing':
