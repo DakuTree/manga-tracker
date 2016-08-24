@@ -1,4 +1,7 @@
 $(function(){
+	"use strict";
+	if(page === 'signup') { return false; }
+
 	//Validate signup. This will fallback to HTML5 validation if JS isn't enabled.
 	//This should run on all signup forms (initial & continued)
 	$('#page[data-page=signup]').find('form').validate({

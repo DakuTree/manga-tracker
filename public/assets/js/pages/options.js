@@ -1,5 +1,6 @@
 $(function(){
 	"use strict";
+	if(page === 'options') { return false; }
 
 	$('input[type=checkbox][name^=category_custom]').change(function(e) {
 

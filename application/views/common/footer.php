@@ -72,6 +72,7 @@
 
 	<script>
 		var base_url = "<?=base_url()?>";
+		var page     = "<?=$page?>";
 	</script>
 	<script src="<?=asset_url()?>js/compiled.min.js"></script>
 

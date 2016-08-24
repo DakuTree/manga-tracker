@@ -21,6 +21,9 @@ class MY_Controller extends CI_Controller {
 		//using the union operator + makes sure global_data always takes priority
 		//SEE: http://stackoverflow.com/a/2140094/1168377
 
+		//We could just use global, but this is the only var we need in both header+footer
+		$this->footer_data['page'] = $this->header_data['page'];
+
 		$this->load->view('common/header', ($this->global_data + $this->header_data));
 		foreach(func_get_args() as $path) {
 			view_exists($path) or show_404(); //TODO (FIXME): This seems bad performance wise in the long run. Is there any reason to have it in production?
