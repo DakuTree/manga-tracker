@@ -83,7 +83,7 @@ var base_site = {
 				#TrackerBarIn img,.TrackerBarLayout img { vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }\
 				#TrackerBarIn div { padding: 0 !important; margin: 0 !important; }\
 				#TrackerBarIn .buttonTracker,.TrackerBarLayout .buttonTracker { vertical-align: middle !important; }\
-				#TrackerBarIn select,.TrackerBarLayout select { vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }\
+				#TrackerBarIn select,.TrackerBarLayout select { font: inherit; vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }\
 				#TrackerBarIn a,.TrackerBarLayout a { vertical-align: middle !important; }\
 				#TrackerBarIn select { margin: 0 !important; }\
 				#TrackerBarInLtl { padding: 0 !important; margin: 0 !important; opacity: .7 !important; }\
