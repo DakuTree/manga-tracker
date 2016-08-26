@@ -2,6 +2,8 @@
 
 #Get KissManga CookieLib
 sudo python /var/www/tracker.codeanimu.net/dev/public_html/_scripts/get_kissmanga_cookie.py
+
+# Fix user permissions
 sudo chown www-data:www-data /var/www/tracker.codeanimu.net/ --recursive
 
 #Run update
