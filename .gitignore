@@ -40,3 +40,5 @@ application/config/*/sites.php
 #Codeception
 application/tests_codeception/_output
 application/tests_codeception/_support/_generated/*.php
+
+_scripts/config.cfg
