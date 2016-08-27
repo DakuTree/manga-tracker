@@ -82,8 +82,7 @@ class TestCase extends CIPHPUnitTestCase {
 	}
 
 	public function skipTravis(string $reason = NULL) {
-		$travis = getenv('TRAVIS');
-		if(isset($travis)) {
+		if(getenv('TRAVIS')) {
 			$this->markTestSkipped('This test doesn\'t play nice with Travis'.($reason ? "\nReason: $reason" : ""));
 		}
 	}
