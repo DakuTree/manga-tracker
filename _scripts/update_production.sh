@@ -30,8 +30,8 @@ if [ "${dirArr[3]}" == 'dev' ]; then
 			echo "BAD URL";
 		else
 			#TODO: Turn on update mode, wait 5 minutes~
-			sudo tar -zxvf /tmp/tracker.tar.gz -C /var/www/tracker.codeanimu.net/tracker/public_html/ --strip 1 --owner="$(id -u www-data)" --group="$(id -g www-data)"
-			sudo chown www-data:www-data /var/www/tracker.codeanimu.net/ -R
+			sudo tar -zxvf /tmp/tracker.tar.gz -C /var/www/trackr.moe/trackr/public_html/ --strip 1 --owner="$(id -u www-data)" --group="$(id -g www-data)"
+			sudo chown www-data:www-data /var/www/trackr.moe/ -R
 			#TODO: Update composer
 			#TODO: Run migration
 			#TODO: Run title update

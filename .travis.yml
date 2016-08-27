@@ -21,7 +21,7 @@ matrix:
   fast_finish: true
 
 #addons:
-#  ssh_known_hosts: tracker.codeanimu.net:22
+#  ssh_known_hosts: trackr.moe:22
 
 before_install:
   - travis_retry composer self-update && composer --version #travis is bad at updating composer

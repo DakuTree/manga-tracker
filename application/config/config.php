@@ -17,8 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url']   = 'https://tracker.codeanimu.net';
-$config['static_url'] = 'https://static.tracker.codeanimu.net';
+$config['base_url']   = 'https://trackr.moe';
+$config['static_url'] = 'https://static.trackr.moe';
 
 /*
 |--------------------------------------------------------------------------

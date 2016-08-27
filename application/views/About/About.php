@@ -26,6 +26,6 @@
 
 	<h3>Contact</h3>
 	<p>
-		If you need contact me for whatever reason, send me an email at <a href="mailto:admin@codeanimu.net">admin@codeanimu.net</a> or DM me on twitter at <a href="https://twitter.com/Avareei">@Avareei</a>.
+		If you need contact me for whatever reason, send me an email at <a href="mailto:admin@trackr.moe">admin@trackr.moe</a> or DM me on twitter at <a href="https://twitter.com/Avareei">@Avareei</a>.
 	</p>
 </article>

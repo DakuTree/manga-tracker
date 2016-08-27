@@ -4,7 +4,7 @@
 	$I->wantTo('Check the Front Page works (No login)');
 	$I->amOnPage('/');
 	$I->see('FRONT PAGE');
-	$I->see('©2016 tracker.codeanimu.net');
+	$I->see('©2016 trackr.moe');
 
 	//FIXME: For whatever reason, we can't see either of these
 	//$I->seeLink('Login');

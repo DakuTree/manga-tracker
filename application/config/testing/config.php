@@ -5,8 +5,9 @@
 | Base Site URL
 |--------------------------------------------------------------------------
 */
-$config['base_url']   = 'https://test.tracker.codeanimu.net';
-$config['static_url'] = 'https://static.test.tracker.codeanimu.net';
+//NOTE: This is only used by Travis/PhantomJS testing
+$config['base_url']   = 'https://test.trackr.moe';
+$config['static_url'] = 'https://static.test.trackr.moe';
 
 /*
 |--------------------------------------------------------------------------

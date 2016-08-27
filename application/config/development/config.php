@@ -5,8 +5,8 @@
 | Base Site URL
 |--------------------------------------------------------------------------
 */
-$config['base_url']   = 'https://dev.tracker.codeanimu.net';
-$config['static_url'] = 'https://static.dev.tracker.codeanimu.net';
+$config['base_url']   = 'https://dev.trackr.moe';
+$config['static_url'] = 'https://static.dev.trackr.moe';
 
 /*
 |--------------------------------------------------------------------------

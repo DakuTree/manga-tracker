@@ -118,13 +118,14 @@ class Migration_Install_ion_auth extends CI_Migration {
 		$this->dbforge->create_table('auth_users');
 
 		// Dumping data for table 'auth_users'
+		//FIXME: This shouldn't be public, even if the password is just password.
 		$data = array(
 			'id'                      => '1',
 			'ip_address'              => '127.0.0.1',
 			'username'                => 'administrator',
 			'password'                => '$2y$08$200Z6ZZbp3RAEXoaWcMA6uJOFicwNZaqk4oDhqTUiFXFe63MG.Daa',
 			'salt'                    => '',
-			'email'                   => 'admin@codeanimu.net',
+			'email'                   => 'admin@trackr.moe',
 			'activation_code'         => NULL,
 			'forgotten_password_code' => NULL,
 			'created_on'              => ''.time().'',

@@ -2,7 +2,7 @@
 # The humans responsible & technology colophon
 
 # TEAM
-	DakuTree (also known as Daku / Avareei) -- Creator/Admin -- Github: @DakuTree, Twitter: @Avareei
+	DakuTree (also known as Daku / Avareei) -- Creator/Admin -- Github: @DakuTree, Twitter: @Avareei -- admin@trackr.moe
 
 # THANKS
 	https://github.com/AllMangasReader-dev - This completely changed the way I track manga, but sadly it hasn't been updated much in the past few years.

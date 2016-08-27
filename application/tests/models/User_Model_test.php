@@ -46,7 +46,7 @@ class User_Model_test extends TestCase {
 		$result = $this->CI->session->flashdata('referred_from');
 
 		//FIXME: We should probably be checking against a custom set current_url()
-		$this->assertEquals("https://test.tracker.codeanimu.net/", $result);
+		$this->assertEquals("https://test.trackr.moe/", $result);
 	}
 
 	public function test_username_exists_true() {

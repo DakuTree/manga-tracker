@@ -21,4 +21,4 @@ with ghost.start(display=False, download_images=False, wait_timeout=10, user_age
 			# break
 	session.save_cookies(cj)
 
-	cj.save('/var/www/tracker.codeanimu.net/dev/public_html/_scripts/cookiejar', True, True)
+	cj.save('/var/www/trackr.moe/dev/public_html/_scripts/cookiejar', True, True)

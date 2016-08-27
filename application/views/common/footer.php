@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="pull-left">
 			<p class="text-muted" id="footer-left">
-				<span class="footer-copyright">©2016 tracker.codeanimu.net</span>
+				<span class="footer-copyright">©2016 trackr.moe</span>
 				<span class="footer-debug"><?="Page rendered in <strong>{elapsed_time}</strong> seconds and used {memory_usage} of RAM. CodeIgniter Version <strong>".CI_VERSION."</strong>."?></span>
 			</p>
 		</div>

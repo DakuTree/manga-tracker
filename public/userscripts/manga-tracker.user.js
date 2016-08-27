@@ -3,9 +3,9 @@
 // @namespace    https://github.com/DakuTree/userscripts
 // @author       Daku (admin@codeanimu.net)
 // @description  A cross-site manga tracker.
-// @homepageURL  https://tracker.codeanimu.net
+// @homepageURL  https://trackr.moe
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
-// @include      /^https:\/\/(?:(?:dev|test)\.)?tracker\.codeanimu\.net\/user\/options.*$/
+// @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe\/user\/options.*$/
 // @include      /^http:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^http:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
@@ -808,7 +808,7 @@ var sites = {
 
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
-	'tracker.codeanimu.net' : {
+	'trackr.moe' : {
 		init : function() {
 			/* TODO:
 			Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
@@ -873,7 +873,8 @@ var sites = {
 };
 
 /********************** SCRIPT *********************/
-var main_site = 'https://dev.tracker.codeanimu.net';
+var main_site = 'https://dev.trackr.moe';
+//FIXME: This should point to non-dev. We should only point to dev if requested
 
 var config = JSON.parse(GM_getValue('config') || '{"init": true}');
 console.log(config); //TODO: Disable on production
@@ -881,7 +882,7 @@ console.log(config); //TODO: Disable on production
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
 	var hostname = location.hostname.replace(/^(?:dev|test)\./, '');
-	if(hostname == 'tracker.codeanimu.net') {
+	if(hostname == 'trackr.moe') {
 		sites[hostname].init();
 	} else if(sites[hostname]) {
 		$(function() {
