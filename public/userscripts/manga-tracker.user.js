@@ -582,7 +582,7 @@ var sites = {
 			this.chapterList        = generateChapterList($('select[name=chapter_select]:first > option').reverseObj(), 'value');
 
 			this.viewerChapterName      = this.chapter_number;
-			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '');
+			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
 			this.viewerChapterURLFormat = 'http://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
 			this.viewerCustomImageList  = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
