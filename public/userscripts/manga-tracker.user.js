@@ -79,27 +79,106 @@ var base_site = {
 
 		this.preSetupTopBar(function() {
 			GM_addStyle(`
-				#TrackerBar { color: black !important; height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; font-size: 14px; font-family: 'Open Sans', Arial, Helvetica, sans-serif; }
-				#TrackerBar a         { color:black !important; }
+				#TrackerBar {
+					position: fixed    !important;
+					top:      0        !important;
+					z-index:  10000000 !important;
+
+					height: 0; /*Allows everything outside the topbar to be clicked properly*/
+					width:  100% !important;
+
+					opacity: .9 !important;
+					padding:  0 !important;
+					margin:   0 !important;
+
+					font:       14px 'Open Sans', Arial, Helvetica, sans-serif !important;
+					color:      black  !important;
+					text-align: center !important;
+				}
+				#TrackerBarIn {
+					display: inline-block;
+
+					opacity: 1               !important;
+					padding: 0 15px 2px 15px !important;
+					margin:  0               !important;
+
+					background-color: #FFF !important;
+
+					border:        1px solid #CCC !important;
+					border-top:    0              !important;
+					border-radius: 0 0 6px 6px    !important;
+				}
+
+
+				#TrackerBarLayout {
+					padding: 0 !important;
+					margin:  0 !important;
+				}
+				a.buttonTracker {
+					display: inline-block;
+					cursor: pointer;
+
+					margin:    5px;
+					padding:   2px;
+					min-width: 100px;
+
+					background: linear-gradient(0, #EEE, #FFF);
+
+					border:        1px solid rgb(221, 221, 221);
+					border-radius: 5px;
+
+					font-size:       13px;
+					color:           black;
+					text-align:      center;
+					text-decoration: none;
+
+					transition: all 0.4s ease-in-out;
+				}
+				a.buttonTracker:hover {
+					background: linear-gradient(0, rgb(255, 255, 255), rgb(238, 238, 238));
+
+					border-color: #3278BE;
+
+					color:           #003C82 !important;
+					text-decoration: none    !important;
+				}
+				a.buttonTracker:active {
+					background: #4195DD; /* For browsers that do not support gradients */
+					background: linear-gradient(90deg, #003C82, #4195DD);
+				}
+
+				#TrackerBar *         { vertical-align: middle  !important; }
+				#TrackerBar a         {
+					vertical-align: initial !important;
+					color:          black   !important;
+				}
 				#TrackerBar a:visited { color:black !important; }
-				#TrackerBarIn { padding: 2px 15px !important; margin: 0 !important; border-bottom-left-radius: 6px 6px !important; border-bottom-right-radius: 6px 6px !important; border: 1px solid #CCC !important; border-top: 0 !important; opacity: 1 !important; background-color: #fff !important; /*display:inline-block!important;*/ padding-left: 15px !important; padding-right: 15px !important; }
-				#TrackerBarIn img, #TrackerBarIn .TrackerBarLayout .fa { font-size: 16px; vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }
-				#TrackerBarIn div { padding: 0 !important; margin: 0 !important; }
-				#TrackerBarIn .buttonTracker,.TrackerBarLayout .buttonTracker { vertical-align: middle !important; }
-				#TrackerBarIn select,.TrackerBarLayout select { font: inherit; vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }
-				#TrackerBarIn a,.TrackerBarLayout a { vertical-align: middle !important; }
+
+				#TrackerBarIn .fa {
+					margin: auto 5px !important;
+
+					font-size: 16px;
+
+					cursor: pointer !important;
+				}
+				#TrackerBarIn select {
+					/* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
+					margin: 0 !important;
+
+					background-color: initial;
+
+					border: 1px solid rgb(221, 221, 221);
+
+					font:  inherit;
+					color: initial;
+				}
 				#TrackerBarIn select { margin: 0 !important; }
-				#TrackerBarInLtl { padding: 0 !important; margin: 0 !important; opacity: .7 !important; }
-				#TrackerBarInLtl:hover { opacity: 1 !important; }
-				a.buttonTracker { display: inline-block; min-width: 100px; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; text-align: center; cursor: pointer; font-size: 10pt; color: rgb(0, 0, 0); text-decoration: none; padding: 2px; border-width: 1px; border-style: solid; border-color: rgb(221, 221, 221); background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(238, 238, 238))); border-radius: 5px; transition: all 0.4s ease-in-out; margin: 5px; }
-				a.buttonTracker:hover { color:#003C82!important; border-color:#3278BE; text-decoration:none!important; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEE), to(#FFFFFF)); }
-				a.buttonTracker:active { background:#4195DD; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#003C82), to(#4195DD)); background:-moz-linear-gradient(0% 90% 90deg, #4195DD, #003C82); }
 			`);
-			var topbar = $('<div/>', {id: 'TrackerBar', style: 'text-align: center'}).append(
-				$('<div/>', {id: 'TrackerBarIn', style: 'display: inline-block'}).append(
+			var topbar = $('<div/>', {id: 'TrackerBar'}).append(
+				$('<div/>', {id: 'TrackerBarIn'}).append(
 					$('<a/>', {href: main_site, target: '_blank'}).append(
-						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true', 'style': 'font-size: 16px'}))).append(
-					$('<div/>', {class: 'TrackerBarLayout', style: 'display: inline-block'}).append(
+						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true'}))).append(
+					$('<div/>', {id: 'TrackerBarLayout', style: 'display: inline-block'}).append(
 						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "")).append(
 						$('<select/>', {style: 'float: none; max-width: 943px'}).append(
 							$.map(_this.chapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();}))).append(
@@ -108,12 +187,9 @@ var base_site = {
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report bug'})).append(
 						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})).append(
-						$('<span/>', {id: 'TrackerStatus'}))).append(
-					/*$('<div/>', {style: 'display: inline-block'}).append(
-						$('<img/>', {src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAGFBMVEW/v7/////V1dXu7u7Gxsbc3NzMzMzl5eW5mFoUAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNi8xNi8wNoxlAQMAAABwSURBVAiZLY4xCoAwFEMDle5pEVerF2hFdBX1At6gqOgsgue3X3zDJ0N+EpBN1DUJmvHuS5fEEUg7E2ZjonPwQYRVqPix4jRIuAfKDkAWPBQ9vnMyBxY+Yo5azOm9nVgoCSwuCeT+V9Dou49S+s94AbiAEUwMbfYNAAAAAElFTkSuQmCC', title: 'Hide AMR Toolbar', width: '16px'})))).append(
-					$('<div/>', {id: 'TrackerBarInLtl', style: 'display: none'}).append(
-						$('<img/>', {src: '#', style: 'margin-top: -10px; margin-left: -10px; cursor: pointer;', title: 'Display AMR Toolbar', width: '40px'})*/
+						$('<span/>', {id: 'TrackerStatus'})
 					)
+				)
 			);
 
 			$(topbar).appendTo('body');
