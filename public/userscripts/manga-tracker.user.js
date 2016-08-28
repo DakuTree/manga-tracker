@@ -78,24 +78,23 @@ var base_site = {
 		var _this = this;
 
 		this.preSetupTopBar(function() {
-			GM_addStyle("\
-				#TrackerBar { color: black !important; height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; font-size: 14px; font-family: 'Open Sans', Arial, Helvetica, sans-serif; }\
-				#TrackerBar a         { color:black !important; }\
-				#TrackerBar a:visited { color:black !important; }\
-				#TrackerBarIn { padding: 2px 15px !important; margin: 0 !important; border-bottom-left-radius: 6px 6px !important; border-bottom-right-radius: 6px 6px !important; border: 1px solid #CCC !important; border-top: 0 !important; opacity: 1 !important; background-color: #fff !important; /*display:inline-block!important;*/ padding-left: 15px !important; padding-right: 15px !important; }\
-				#TrackerBarIn img, #TrackerBarIn .TrackerBarLayout .fa { font-size: 16px; vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }\
-				#TrackerBarIn div { padding: 0 !important; margin: 0 !important; }\
-				#TrackerBarIn .buttonTracker,.TrackerBarLayout .buttonTracker { vertical-align: middle !important; }\
-				#TrackerBarIn select,.TrackerBarLayout select { font: inherit; vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }\
-				#TrackerBarIn a,.TrackerBarLayout a { vertical-align: middle !important; }\
-				#TrackerBarIn select { margin: 0 !important; }\
-				#TrackerBarInLtl { padding: 0 !important; margin: 0 !important; opacity: .7 !important; }\
-				#TrackerBarInLtl:hover { opacity: 1 !important; }\
-				a.buttonTracker { display: inline-block; min-width: 100px; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; text-align: center; cursor: pointer; font-size: 10pt; color: rgb(0, 0, 0); text-decoration: none; padding: 2px; border-width: 1px; border-style: solid; border-color: rgb(221, 221, 221); background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(238, 238, 238))); border-radius: 5px; transition: all 0.4s ease-in-out; margin: 5px; }\
-				a.buttonTracker:hover { color:#003C82!important; border-color:#3278BE; text-decoration:none!important; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEE), to(#FFFFFF)); }\
-				a.buttonTracker:active { background:#4195DD; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#003C82), to(#4195DD)); background:-moz-linear-gradient(0% 90% 90deg, #4195DD, #003C82); }\
-			");
-
+			GM_addStyle(`
+				#TrackerBar { color: black !important; height: 0; position: fixed !important; z-index: 10000000 !important; top: 0 !important; width: 100% !important; /*text-align:center!important; height:30px!important;*/ opacity: .9 !important; -webkit-transition: all .4s ease-in-out !important; padding: 0 !important; margin: 0 !important; 	color: black; font-size: 14px; font-family: 'Open Sans', Arial, Helvetica, sans-serif; }
+				#TrackerBar a         { color:black !important; }
+				#TrackerBar a:visited { color:black !important; }
+				#TrackerBarIn { padding: 2px 15px !important; margin: 0 !important; border-bottom-left-radius: 6px 6px !important; border-bottom-right-radius: 6px 6px !important; border: 1px solid #CCC !important; border-top: 0 !important; opacity: 1 !important; background-color: #fff !important; /*display:inline-block!important;*/ padding-left: 15px !important; padding-right: 15px !important; }
+				#TrackerBarIn img, #TrackerBarIn .TrackerBarLayout .fa { font-size: 16px; vertical-align: middle !important; margin-left: 5px !important; margin-right: 5px !important; cursor: pointer !important; }
+				#TrackerBarIn div { padding: 0 !important; margin: 0 !important; }
+				#TrackerBarIn .buttonTracker,.TrackerBarLayout .buttonTracker { vertical-align: middle !important; }
+				#TrackerBarIn select,.TrackerBarLayout select { font: inherit; vertical-align: middle !important; color: initial; background-color: initial; border: 1px solid black; }
+				#TrackerBarIn a,.TrackerBarLayout a { vertical-align: middle !important; }
+				#TrackerBarIn select { margin: 0 !important; }
+				#TrackerBarInLtl { padding: 0 !important; margin: 0 !important; opacity: .7 !important; }
+				#TrackerBarInLtl:hover { opacity: 1 !important; }
+				a.buttonTracker { display: inline-block; min-width: 100px; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; text-align: center; cursor: pointer; font-size: 10pt; color: rgb(0, 0, 0); text-decoration: none; padding: 2px; border-width: 1px; border-style: solid; border-color: rgb(221, 221, 221); background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(238, 238, 238))); border-radius: 5px; transition: all 0.4s ease-in-out; margin: 5px; }
+				a.buttonTracker:hover { color:#003C82!important; border-color:#3278BE; text-decoration:none!important; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEE), to(#FFFFFF)); }
+				a.buttonTracker:active { background:#4195DD; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#003C82), to(#4195DD)); background:-moz-linear-gradient(0% 90% 90deg, #4195DD, #003C82); }
+			`);
 			var topbar = $('<div/>', {id: 'TrackerBar', style: 'text-align: center'}).append(
 				$('<div/>', {id: 'TrackerBarIn', style: 'display: inline-block'}).append(
 					$('<a/>', {href: main_site, target: '_blank'}).append(
@@ -107,8 +106,8 @@ var base_site = {
 						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "")).append(
 						// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
-						// $('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report bug'})).append(
-						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', title: 'Mark this chapter as latest chapter read'})).append(
+						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report bug'})).append(
+						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})).append(
 						$('<span/>', {id: 'TrackerStatus'}))).append(
 					/*$('<div/>', {style: 'display: inline-block'}).append(
 						$('<img/>', {src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAGFBMVEW/v7/////V1dXu7u7Gxsbc3NzMzMzl5eW5mFoUAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNi8xNi8wNoxlAQMAAABwSURBVAiZLY4xCoAwFEMDle5pEVerF2hFdBX1At6gqOgsgue3X3zDJ0N+EpBN1DUJmvHuS5fEEUg7E2ZjonPwQYRVqPix4jRIuAfKDkAWPBQ9vnMyBxY+Yo5azOm9nVgoCSwuCeT+V9Dou49S+s94AbiAEUwMbfYNAAAAAElFTkSuQmCC', title: 'Hide AMR Toolbar', width: '16px'})))).append(
@@ -142,13 +141,14 @@ var base_site = {
 				e.preventDefault();
 
 				_this.trackChapter(true);
+				// $(this).css('color', '#00b232');
 			});
 			//Setup bug report event.
-			// $(topbar).on('click', '#report-bug', function(e) {
-				// e.preventDefault();
+			$(topbar).on('click', '#report-bug', function(e) {
+				e.preventDefault();
 
 				//// _this.trackChapter(true);
-			// });
+			});
 
 			_this.postSetupTopBar(topbar);
 		});
@@ -202,14 +202,14 @@ var base_site = {
 			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
 
-			GM_addStyle('\
-				#viewer                  { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }\
-				#viewer > .read_img      { background: none; }\
-				#viewer > .read_img  img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y; background: url("http://mangafox.me/media/loading.gif") no-repeat center;*/ min-height: 300px;}\
-				.pageNumber              { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}\
-				.pageNumber .number      { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important;\
-				#viewer_header { font-weight: bolder; text-align: center; }\
-			');
+			GM_addStyle(`
+				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
+				#viewer > .read_img     { background: none; }
+				#viewer > .read_img img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y; background: url("http://mangafox.me/media/loading.gif") no-repeat center;*/ min-height: 300px;}
+				.pageNumber             { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}
+				.pageNumber .number     { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important; }
+				#viewer_header          { font-weight: bolder; text-align: center; }
+			`);
 
 			//Setup viewer header if enabled
 			if(!useCustomHeader) {
@@ -404,10 +404,11 @@ var sites = {
 			this.viewerRegex            = /^[\s\S]*<section class="read_img" id="viewer">[\s\S]*(<img src[\s\S]*\/>)[\s\S]*<\/section>[\s\S]*<section class="readpage_footer[\s\S]*$/;
 		},
 		stylize : function() {
-			GM_addStyle("\
-				.read_img { min-height: 0; }\
-				.readpage_top {margin-bottom: 5px;}\
-				.readpage_top .title h1, .readpage_top .title h2 {font-size: 15px;}");
+			GM_addStyle(`
+				.read_img { min-height: 0; }
+				.readpage_top {margin-bottom: 5px;}
+				.readpage_top .title h1, .readpage_top .title h2 {font-size: 15px;}
+			`);
 
 			//Remove banners
 			$('.readpage_top > div[class^=advimg], .readpage_footer > div[class^=banner-]').remove();
@@ -561,8 +562,9 @@ var sites = {
 			$('#reader').addClass('noresize');
 
 			//Topbar covers a bunch of nav buttons.
-			GM_addStyle("\
-				#content > .navbar > .navbar-inner { padding-top: 42px; }");
+			GM_addStyle(`
+				#content > .navbar > .navbar-inner { padding-top: 42px; }
+			`);
 		},
 		preSetupTopBar : function(callback) {
 			var _this = this;
@@ -682,9 +684,10 @@ var sites = {
 			this.viewerRegex            = /^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/;
 		},
 		stylize : function() {
-			GM_addStyle("\
-				.page { margin-right: 0 !important; }\
-				#reader-nav { margin-bottom: 0; }");
+			GM_addStyle(`
+				.page { margin-right: 0 !important; }
+				#reader-nav { margin-bottom: 0; }
+			`);
 
 			$('.page-wrap > #reader-sky').remove(); //Ad block
 		},

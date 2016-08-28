@@ -1,7 +1,7 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tracker_Model extends CI_Model {
-	private $sites;
+	public $sites;
 	public $enabledCategories;
 
 	public function __construct() {
@@ -381,7 +381,7 @@ class Tracker_Model extends CI_Model {
 	}
 
 	/*************************************************/
-	private function sites() {
+	public function sites() {
 		return $this;
 	}
 }
