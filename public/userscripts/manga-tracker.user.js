@@ -128,6 +128,7 @@ var base_site = {
 					border-radius: 5px;
 
 					font-size:       13px;
+					font-weight:     initial;
 					color:           black;
 					text-align:      center;
 					text-decoration: none;
@@ -404,6 +405,7 @@ var sites = {
 			this.chapterListCurrent = this.chapter_url;
 			this.chapterList        = {}; //This is set via preSetupTopbar
 
+			this.viewerTitle            = $('#series > strong:last > a').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 		},
@@ -476,6 +478,7 @@ var sites = {
 			this.chapterListCurrent = this.chapter_url;
 			// this.chapterList        = {}; //This is set via preSetupTopbar
 
+			this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*<section class="read_img" id="viewer">[\s\S]*(<img src[\s\S]*\/>)[\s\S]*<\/section>[\s\S]*<section class="readpage_footer[\s\S]*$/;
 		},
@@ -627,6 +630,7 @@ var sites = {
 			this.chapterListCurrent = location.pathname;
 			this.chapterList = {}; //This is set in preSetupTopBar
 
+			this.viewerTitle = $('#chapter-title > b > a, #chapter-title > b').get(0).innerText; //FIXME: This doesn't prepend series names (if exists)
 			this.viewerCustomImageList = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e, i) {
 				return e.replace(/^"|"$/g, '');
 			});
@@ -700,7 +704,7 @@ var sites = {
 			this.chapter_url    = 'http://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
 
 			// this.viewerChapterName      = '';
-			// this.viewerTitle            = '';
+			this.viewerTitle            = $('#mangainfo > div[style*=float] > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
 		},
@@ -812,6 +816,8 @@ var sites = {
 
 			this.chapterList        = generateChapterList($('.episode_lst > .episode_cont > ul > li a'), 'href');
 			this.chapterListCurrent = this.chapter_url;
+
+			this.viewerTitle = $('.subj').text();
 		}
 	}),
 
@@ -877,7 +883,7 @@ var sites = {
 			this.chapterListCurrent = this.chapter_url+'/';
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			// this.viewerTitle           = $('title').text().trim().split("\n")[1];
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
 			this.viewerCustomImageList = $('#content > script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) { 
 				return self.indexOf(value) === index;
 			}).map(function(e, i) {
