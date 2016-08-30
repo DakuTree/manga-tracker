@@ -181,7 +181,7 @@ var base_site = {
 						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true'}))).append(
 					$('<div/>', {id: 'TrackerBarLayout', style: 'display: inline-block'}).append(
 						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "")).append(
-						$('<select/>', {style: 'float: none; max-width: 943px', title: _this.viewerTitle}).append(
+						$('<select/>', {style: 'float: none; max-width: 500px', title: _this.viewerTitle}).append(
 							$.map(_this.chapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();}))).append(
 						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "")).append(
 						// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
