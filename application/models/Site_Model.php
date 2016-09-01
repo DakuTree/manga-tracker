@@ -287,6 +287,7 @@ class DynastyScans extends Site_Model {
 
 		$titleData = [];
 		//FIXME: Using regex here is probably a terrible idea, but we're doing it anyway....
+		//FIXME (ASAP): All the regex here should be checked to see if it even returns something, and we should probably error if possible.
 		if($title_parts[1] == '0') {
 			$data = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
 
@@ -300,6 +301,11 @@ class DynastyScans extends Site_Model {
 
 			preg_match('/\/chapters\/([^"]+)/', $latest_chapter_html, $matches);
 			$titleData['latest_chapter'] = substr($matches[1], strlen($title_url)+1);
+			//FIXME: THIS IS A TEMP FIX, SEE https://github.com/DakuTree/manga-tracker/issues/58
+			if(!$titleData['latest_chapter']) {
+				log_message('error', 'DynastyScans::getTitleData cannot parse title properly as it contains oneshot. || URL: '.$title_url);
+				return NULL;
+			}
 
 			preg_match('/<small>released (.*)<\/small>/', $latest_chapter_html, $matches);
 			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(str_replace('\'', '', $matches[1])));
