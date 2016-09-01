@@ -199,6 +199,7 @@ class Tracker_Model extends CI_Model {
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 
+				print "> {$row->title}"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if(!is_null($titleData['latest_chapter'])) {
 					if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
@@ -207,9 +208,11 @@ class Tracker_Model extends CI_Model {
 						         ->where('id', $row->id)
 						         ->update('tracker_titles');
 
-						print "> {$row->title} - ({$titleData['latest_chapter']})\n";
+						print " - ({$titleData['latest_chapter']})\n";
 					}
 				} else {
+					log_message('error', "{$row->title} failed to update successfully");
+					print " - FAILED TO PARSE\n";
 					//FIXME: Something went wrong! Alert admin!
 				}
 			}
