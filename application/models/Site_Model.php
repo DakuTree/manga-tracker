@@ -193,6 +193,10 @@ class Batoto extends Site_Model {
 		    "pass_hash=" . $this->config->item('batoto_cookie_pass_hash')
 		];
 		$data = $this->get_content($title_url, implode("; ", $cookies));
+		if(!$data) {
+			log_message('error', "Batoto: Couldn't successfully grab URL ({$title_url})");
+			return NULL;
+		}
 
 		$data = preg_replace('/^[\s\S]+<!-- ::: CONTENT ::: -->/', '<!-- ::: CONTENT ::: -->', $data);
 		$data = preg_replace('/<!-- end mainContent -->[\s\S]+$/', '<!-- end mainContent -->', $data);
