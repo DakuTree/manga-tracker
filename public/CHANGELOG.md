@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Support for:
     - MangaFox
     - Bato.to (with multi-lang support)
-    - DynastyScans
+    - DynastyScans (beta)
     - MangaHere
     - MangaStream
     - MangaPanda
@@ -24,3 +24,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Site Options (Custom Categories, Default Category, Toggle Live Countdown Timer)
   - Userscript Options (Track on page-load).
   - Import/Export from site.
+  - Bug Reporting (via userscript)
