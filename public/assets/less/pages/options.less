@@ -5,62 +5,9 @@
 			text-decoration: underline;
 		}
 	}
-	#userscript-form {
-		fieldset {
-			legend {
-				border: 1px solid #C0C0C0;
-				font-weight: bold;
-				border-radius: 3px;
-
-				padding:       2px 6px;
-				margin-bottom: 14px;
-
-				width: auto;
-
-				background-color: fade(@color2, 50%);
-
-				label {
-					margin: 0px auto; //center text
-					//color: darken(@color2, 40%);
-				}
-			}
-
-			fieldset legend label {
-				font-size: 18px;
-				font-weight: 600;
-			}
-		}
-
-		& > fieldset {
-			margin-bottom: 12px;
-			//padding-bottom: 12px;
-
-			& > legend {
-				padding: 4px 6px;
-			}
-
-			div.form-group:last-of-type {
-				margin-bottom: 0;
-			}
-		}
-
-		fieldset[disabled] {
-			cursor: default;
-			//input, select { background-color: rgba(0,0,0, 0.01); }
-			input, a { cursor: default; }
-			a:hover { text-decoration: none; }
-
-			.fieldset-container {
-				opacity: 0.5;
-
-				//background-color: rgba(0,0,0, 0.3);
-			}
-		}
-
-		& > * {
-			margin: 0 2px; //Make sure everything is evenly aligned.
-		}
-
+	#userscript-check {
+		padding: 0 10px;
+		text-align: center;
 	}
 }
 

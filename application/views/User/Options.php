@@ -1,33 +1,6 @@
 <?=validation_errors()?>
 
-
-<div id="userscript-check" class="alert alert-danger" role="alert">
-	Userscript is not enabled!
-</div>
-<div id="api-key-div">
-	API Key: <strong><span id="api-key">not set</span></strong> | <a id="generate-api-key" href="#" onclick="return false">Generate new API key</a>
-</div>
-
 <div class="row" style="margin-top: 4px;">
-	<div class="col-sm-6">
-		<div id="options-userscript">
-			<form id="userscript-form">
-				<?=form_fieldset('Userscript Options', array('disabled' => TRUE))?>
-				<div class="fieldset-container">
-					<div class="form-group">
-						<label for="auto_track">
-							Auto track series on page load <input id="auto_track" name="auto_track" type="checkbox">
-						</label>
-					</div>
-				</div>
-				<?=form_fieldset_close()?>
-
-				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success', 'onclick' => 'alert(\'Userscript must be enabled to save settings.\'); return false;')))?>
-				<span id="form-feedback"></span>
-			</form>
-		</div>
-	</div>
-
 	<div class="col-sm-6">
 		<div id="options-site">
 			<h3>Site Options</h3>
@@ -85,6 +58,32 @@
 					</div>
 				</div>
 				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success')))?>
+			</form>
+		</div>
+	</div>
+
+	<div class="col-sm-6">
+		<div id="options-userscript">
+			<h3>Userscript Options</h3>
+
+
+			<div id="userscript-check" class="alert alert-danger" role="alert">
+				Userscript is not enabled!
+			</div>
+			<div id="api-key-div">
+				API Key: <strong><span id="api-key">not set</span></strong> | <a id="generate-api-key" href="#" onclick="return false">Generate new API key</a>
+			</div>
+
+			<?=form_open('', ['method' => 'POST', 'id' => 'userscript-form'])?>
+				<div id="options-auto_track">
+					<div class="form-group">
+						<?=form_checkbox('auto_track')?>
+						<?=form_label('Auto track series on page load', 'auto_track')?>
+					</div>
+				</div>
+
+				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success', 'onclick' => 'alert(\'Userscript must be enabled to save settings.\'); return false;')))?>
+				<span id="form-feedback"></span>
 			</form>
 		</div>
 	</div>

@@ -614,47 +614,10 @@ body {
 #page[data-page="options"] #api-key-div #api-key {
 	text-decoration: underline;
 }
-#page[data-page="options"] #userscript-form fieldset legend {
-	width: auto;
-	margin-bottom: 14px;
-	padding: 2px 6px;
+#page[data-page="options"] #userscript-check {
+	padding: 0 10px;
 
-	border: 1px solid #C0C0C0;
-	border-radius: 3px;
-	background-color: rgba(170, 170, 170, 0.5);
-
-	font-weight: bold;
-}
-#page[data-page="options"] #userscript-form fieldset legend label {
-	margin: 0px auto;
-}
-#page[data-page="options"] #userscript-form fieldset fieldset legend label {
-	font-size: 18px;
-	font-weight: 600;
-}
-#page[data-page="options"] #userscript-form > fieldset {
-	margin-bottom: 12px;
-}
-#page[data-page="options"] #userscript-form > fieldset > legend {
-	padding: 4px 6px;
-}
-#page[data-page="options"] #userscript-form > fieldset div.form-group:last-of-type {
-	margin-bottom: 0;
-}
-#page[data-page="options"] #userscript-form fieldset[disabled] {
-	cursor: default;
-}
-#page[data-page="options"] #userscript-form fieldset[disabled] input, #page[data-page="options"] #userscript-form fieldset[disabled] a {
-	cursor: default;
-}
-#page[data-page="options"] #userscript-form fieldset[disabled] a:hover {
-	text-decoration: none;
-}
-#page[data-page="options"] #userscript-form fieldset[disabled] .fieldset-container {
-	opacity: 0.5;
-}
-#page[data-page="options"] #userscript-form > * {
-	margin: 0 2px;
+	text-align: center;
 }
 #page[data-page="dashboard"] > div {
 	margin-bottom: 5px;

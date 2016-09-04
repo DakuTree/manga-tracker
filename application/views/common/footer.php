@@ -15,6 +15,7 @@
 		</div>
 		<div class="pull-right">
 			<ul class="list-inline">
+				<li><a href="<?=base_url('report_bug')?>">Report a Bug</a></li>
 				<li><a href="<?=base_url('CHANGELOG.md')?>">Changelog</a></li>
 				<li><a href="<?=base_url('about')?>">About</a></li>
 			</ul>
