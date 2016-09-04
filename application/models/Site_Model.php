@@ -567,7 +567,7 @@ class KireiCake extends Site_Model {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "http://reader.kireicake.com/read/helck/{$chapter}",
+			'url'    => "http://reader.kireicake.com/read/{$title_url}/{$chapter}",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
