@@ -1,6 +1,6 @@
 # THE "LICENSING IS FUCKING COMPLICATED" LICENSE
 
-> Version 1, August 2016
+> Version 2, September 2016
 
 > Copyright © 2016 Angus Johnston <admin@codeanimu.net>
 
@@ -14,7 +14,7 @@
     * You intend to help improve the original project.  
 
  2. You are not allowed to create a duplicate/mirror of the repository.  
-    All redistributions must be publicly available github.com repository.
+    All redistributions must be a publicly available github.com repository.
 
  2. You are not allowed in anyway to sell, or make money off the the original or modifications.
 
