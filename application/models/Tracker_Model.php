@@ -383,6 +383,26 @@ class Tracker_Model extends CI_Model {
 		return $interval->format("%H:%I:%S");
 	}
 
+	public function reportBug(string $text, $userID = NULL, $url = NULL) : bool {
+		$this->load->library('email');
+
+		//This is pretty barebones bug reporting, and honestly not a great way to do it, but it works for now (until the Github is public).
+		$body = "".
+		(!is_null($url) ? "URL: ".htmlspecialchars($url)."<br>\n" : "").
+		"Submitted by: ".$this->input->ip_address().(!is_null($userID) ? "| {$userID}" : "")."<br>\n".
+		"<br>Bug report: ".htmlspecialchars($text);
+
+		$success = TRUE;
+		$this->email->from('bug-report@trackr.moe', $this->config->item('site_title', 'ion_auth'));
+		$this->email->to($this->config->item('admin_email', 'ion_auth'));
+		$this->email->subject($this->config->item('site_title', 'ion_auth')." - Bug Report");
+		$this->email->message($body);
+		if(!$this->email->send()) {
+			$success = FALSE;
+		}
+		return $success;
+	}
+
 	/*************************************************/
 	public function sites() {
 		return $this;

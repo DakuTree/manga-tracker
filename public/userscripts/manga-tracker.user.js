@@ -224,7 +224,7 @@ var base_site = {
 			$(topbar).on('click', '#report-bug', function(e) {
 				e.preventDefault();
 
-				//// _this.trackChapter(true);
+				_this.reportBug();
 			});
 
 			_this.postSetupTopBar(topbar);
@@ -353,6 +353,38 @@ var base_site = {
 		});
 	},
 
+	reportBug : function() {
+		var bugText = prompt("Describe the bug.");
+		if(bugText) {
+			if(bugText !== '') {
+				var params = {
+					'api-key' : config['api-key'],
+					'bug'     : {
+						url  : location.href,
+						text : bugText
+					}
+				};
+
+				$.post(main_site + '/ajax/userscript/report_bug', params, function () {
+					alert('Bug successfully submitted');
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: ' + errorThrown);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break;
+					}
+				});
+			} else {
+				alert('Bug text cannot be blank.');
+			}
+		}
+	},
 
 	/** Variables **/
 	//Used for tracking.

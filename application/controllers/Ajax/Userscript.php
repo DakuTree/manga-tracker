@@ -35,7 +35,6 @@ class Userscript extends AJAX_Controller {
 	 */
 	public function update() {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		//NOTE: CORS is enabled via vhost <only> for this URL.
 		$this->form_validation->set_rules('manga[site]',    'Manga [Site]',    'required');
 		$this->form_validation->set_rules('manga[title]',   'Manga [Title]',   'required');
 		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
@@ -49,6 +48,34 @@ class Userscript extends AJAX_Controller {
 			} else {
 				//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
 				$this->output->set_status_header('400', 'Unable to update?');
+			}
+		} else {
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
+		}
+	}
+
+	/**
+	 * Report a bug via userscript.
+	 *
+	 * REQ_PARAMS: api-key, bug[url], bug[text]
+	 * METHOD:     POST
+	 * URL:        /ajax/userscript/report_bug
+	 */
+	public function report_bug() {
+		$this->load->library('user_agent');
+		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
+		$this->form_validation->set_rules('bug[url]',  'Bug [URL]',  'required');
+		$this->form_validation->set_rules('bug[text]', 'Bug [Text]', 'required');
+
+		if($this->form_validation->run() === TRUE) {
+			$bug = $this->input->post('bug');
+
+			//Preferably, I'd like to validate this in some way, but it's a bit too easy to bypass
+			$success = $this->Tracker->reportBug($bug['text'], NULL, substr($bug['url'], 0, 255));
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				$this->output->set_status_header('400', 'Unable to report bug?');
 			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
