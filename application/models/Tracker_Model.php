@@ -388,9 +388,9 @@ class Tracker_Model extends CI_Model {
 
 		//This is pretty barebones bug reporting, and honestly not a great way to do it, but it works for now (until the Github is public).
 		$body = "".
-		(!is_null($url) ? "URL: ".htmlspecialchars($url)."<br>\n" : "").
+		(!is_null($url) && !empty($url) ? "URL: ".htmlspecialchars(substr($url, 0, 255))."<br>\n" : "").
 		"Submitted by: ".$this->input->ip_address().(!is_null($userID) ? "| {$userID}" : "")."<br>\n".
-		"<br>Bug report: ".htmlspecialchars($text);
+		"<br>Bug report: ".htmlspecialchars(substr($text, 0, 1000));
 
 		$success = TRUE;
 		$this->email->from('bug-report@trackr.moe', $this->config->item('site_title', 'ion_auth'));

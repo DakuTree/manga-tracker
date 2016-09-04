@@ -75,7 +75,7 @@ class Userscript extends AJAX_Controller {
 			$bug = $this->input->post('bug');
 
 			//Preferably, I'd like to validate this in some way, but it's a bit too easy to bypass
-			$success = $this->Tracker->reportBug($bug['text'], NULL, substr($bug['url'], 0, 255));
+			$success = $this->Tracker->reportBug($bug['text'], NULL, $bug['url']);
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
 			} else {
