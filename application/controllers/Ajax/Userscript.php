@@ -35,22 +35,26 @@ class Userscript extends AJAX_Controller {
 	 */
 	public function update() {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		$this->form_validation->set_rules('manga[site]',    'Manga [Site]',    'required');
-		$this->form_validation->set_rules('manga[title]',   'Manga [Title]',   'required');
-		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
-
-		if($this->form_validation->run() === TRUE) {
-			$manga = $this->input->post('manga');
-
-			$success = $this->Tracker->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
-			if($success) {
-				$this->output->set_status_header('200'); //Success!
-			} else {
-				//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
-				$this->output->set_status_header('400', 'Unable to update?');
-			}
+		if($this->limiter->limit('tracker_userscript_bug', 10)) {
+			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 		} else {
-			$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
+			$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
+			$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
+
+			if($this->form_validation->run() === TRUE) {
+				$manga = $this->input->post('manga');
+
+				$success = $this->Tracker->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
+				if($success) {
+					$this->output->set_status_header('200'); //Success!
+				} else {
+					//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
+					$this->output->set_status_header('400', 'Unable to update?');
+				}
+			} else {
+				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			}
 		}
 	}
 
