@@ -13,7 +13,7 @@
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
-// @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+\?id=[0-9]+$/
+// @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^http:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @updated      2016-XX-XX
 // @version      0.9.0
@@ -175,19 +175,29 @@ var base_site = {
 				}
 				#TrackerBarIn select { margin: 0 !important; }
 			`);
+			var previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
+			var next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
+			var options  = $.map(_this.chapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();});
+
 			var topbar = $('<div/>', {id: 'TrackerBar'}).append(
 				$('<div/>', {id: 'TrackerBarIn'}).append(
 					$('<a/>', {href: main_site, target: '_blank'}).append(
 						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true'}))).append(
 					$('<div/>', {id: 'TrackerBarLayout', style: 'display: inline-block'}).append(
-						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "")).append(
+						previous
+					).append(
 						$('<select/>', {style: 'float: none; max-width: 500px', title: _this.viewerTitle}).append(
-							$.map(_this.chapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();}))).append(
-						(Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "")).append(
+							options
+						)
+					).append(
+						next
+					).append(
 						// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
-						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report bug'})).append(
-						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})).append(
+						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report bug'})
+					).append(
+						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})
+					).append(
 						$('<span/>', {id: 'TrackerStatus'})
 					)
 				)
@@ -878,7 +888,7 @@ var sites = {
 			this.chapter_url = this.title_url+'/'+segments[3]+'?id='+chapter_id;
 
 			this.chapterList        = generateChapterList($('.selectChapter:first > option'), 'value');
-			this.chapterListCurrent = segments[3]+'?id='+chapter_id;
+			this.chapterListCurrent = decodeURI(segments[3])+'?id='+chapter_id;
 
 
 			this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
