@@ -59,13 +59,13 @@
 		<?php foreach($trackerDataType['manga'] as $row) { ?>
 		<tr data-id="<?=$row['id']?>">
 			<td>
-				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=$row['title_data']['title']?></span>
+				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
 				<input type="checkbox" name="check">
 			</td>
 			<td>
 				<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>" title="<?=$row['title_data']['last_updated']?>"></i>
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
-				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=$row['title_data']['title']?></a>
+				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
 				<small class="more-info pull-right text-muted">Less info</small>
@@ -88,10 +88,10 @@
 				</div>
 			</td>
 			<td>
-				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=$row['generated_current_data']['number']?></a>
+				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=htmlentities($row['generated_current_data']['number'])?></a>
 			</td>
 			<td>
-				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=$row['generated_latest_data']['number']?></a>
+				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=htmlentities($row['generated_latest_data']['number'])?></a>
 			</td>
 			<td>
 				<?php if($row['new_chapter_exists'] == '0') { ?>
