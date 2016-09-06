@@ -432,7 +432,7 @@ class MangaPanda extends Site_Model {
 				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
 				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
 
-				$titleData['latest_chapter'] = preg_replace('/^.*\/(?:[0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
+				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
 			}
 		} else {
