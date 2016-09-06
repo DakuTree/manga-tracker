@@ -13,7 +13,8 @@ class Site_Model extends CI_Model {
 
 	public function getTitleData(string $title_url) {}
 
-	//TODO: Validation functions. To test if passed chapter data is valid
+	public function validTitleURL(string $title_url) : bool {}
+	public function isValidChapter(string $chapter): bool {}
 
 	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = ""){
 		$ch = curl_init();
@@ -61,6 +62,17 @@ class Sites_Model extends CI_Model {
 class MangaFox extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://mangafox.me/manga/{$title_url}/";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (MangaFox): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^(?:v[0-9]+\/)?c[0-9]+(?:\.[0-9]+)?$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (MangaFox): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -111,6 +123,17 @@ class MangaFox extends Site_Model {
 class MangaHere extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://www.mangahere.co/manga/{$title_url}/";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (MangaFox): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^(?:v[0-9]+\/)?c[0-9]+(?:\.[0-9]+)?$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (MangaFox): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title, string $chapter) : array {
@@ -166,6 +189,20 @@ class Batoto extends Site_Model {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?
 		$title_parts = explode(':--:', $title_string);
 		return "http://bato.to/comic/_/comics/".$title_parts[0];
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9%-]+:--:(?:English|Spanish|French|German|Portuguese|Turkish|Indonesian|Greek|Filipino|Italian|Polish|Thai|Malay|Hungarian|Romanian|Arabic|Hebrew|Russian|Vietnamese|Dutch)$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (Batoto): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		//FIXME: We're not validating the chapter name since we don't know what all the possible valid characters can be
+		//       Preferably we'd just use /^[0-9a-z]+:--:(v[0-9]+\/)?c[0-9]+(\.[0-9]+)?$/
+
+		$success = (bool) preg_match('/^[0-9a-z]+:--:.+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (Batoto): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_string, string $chapter) : array {
@@ -240,11 +277,23 @@ class Batoto extends Site_Model {
 }
 
 class DynastyScans extends Site_Model {
+	//FIXME: This has some major issues. SEE: https://github.com/DakuTree/manga-tracker/issues/58
 	public function getFullTitleURL(string $title_string) : string {
 		$title_parts = explode(':--:', $title_string);
 		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
 
 		return 'http://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+:--:(?:0|1)$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (DynastyScans): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^[0-9a-z_]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (DynastyScans): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_string, string $chapter) : array {
@@ -347,6 +396,17 @@ class MangaPanda extends Site_Model {
 		];
 	}
 
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9-]+$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (MangaPanda): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^[0-9]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (MangaPanda): '.$chapter);
+		return $success;
+	}
+
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
@@ -372,7 +432,7 @@ class MangaPanda extends Site_Model {
 				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
 				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
 
-				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
+				$titleData['latest_chapter'] = preg_replace('/^.*\/(?:[0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
 			}
 		} else {
@@ -386,6 +446,17 @@ class MangaPanda extends Site_Model {
 class MangaStream extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangastream.com/manga/{$title_url}/";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (MangaStream): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^(.*?)\/[0-9]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (MangaStream): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -451,6 +522,17 @@ class WebToons extends Site_Model {
 		return "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/list?title_no={$title_parts[0]}/";
 	}
 
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[0-9]+:--:(?:en|zh-hant|zh-hans|th|id):--:[a-z0-9-]+:--:(?:drama|fantasy|comedy|action|slice-of-life|romance|superhero|thriller|sports|sci-fi)$/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (WebToons): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^[0-9]+:--:.*$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (WebToons): '.$chapter);
+		return $success;
+	}
+
 	public function getChapterData(string $title_url, string $chapter) : array {
 		$title_parts   = explode(':--:', $title_url);
 		$chapter_parts = explode(':--:', $chapter);
@@ -500,6 +582,17 @@ class KissManga extends Site_Model {
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://kissmanga.com/Manga/{$title_url}";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[A-Za-z0-9-]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (KissManga): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^.*?:--:[0-9]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (KissManga): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -561,6 +654,17 @@ class KissManga extends Site_Model {
 class KireiCake extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://reader.kireicake.com/series/{$title_url}";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (KireiCake): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (KireiCake): '.$chapter);
+		return $success;
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {

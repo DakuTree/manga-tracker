@@ -88,17 +88,17 @@ class Tracker_Model extends CI_Model {
 		return $arr;
 	}
 
-	public function getSiteIDFromURL(string $site_url) {
-		$query = $this->db->select('id')
+	public function getSiteDataFromURL(string $site_url) {
+		$query = $this->db->select('id, site_class')
 		                  ->from('tracker_sites')
 		                  ->where('site', $site_url)
 		                  ->get();
 
 		if($query->num_rows() > 0) {
-			$siteID = (int) $query->row('id');
+			$siteData = $query->row();
 		}
 
-		return $siteID ?? FALSE;
+		return $siteData ?? FALSE;
 	}
 
 	public function getTitleID(string $titleURL, int $siteID) {
@@ -120,15 +120,25 @@ class Tracker_Model extends CI_Model {
 
 	public function updateTracker(int $userID, string $site, string $title, string $chapter) : bool {
 		$success = FALSE;
-		if($siteID = $this->Tracker->getSiteIDFromURL($site)) {
-			$titleID = $this->Tracker->getTitleID($title, $siteID);
+		if($siteData = $this->Tracker->getSiteDataFromURL($site)) {
+			//Validate user input
+			if(!$this->sites->{$siteData->site_class}->isValidTitleURL($title)) {
+				//Error is already logged via isValidTitleURL
+				return FALSE;
+			}
+			if(!$this->sites->{$siteData->site_class}->isValidChapter($chapter)) {
+				//Error is already logged via isValidChapter
+				return FALSE;
+			}
+
+			//NOTE: If the title doesn't exist it will be created. This maybe isn't perfect, but it works for now.
+			$titleID = $this->Tracker->getTitleID($title, (int) $siteData->id);
 
 			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
 				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
 				                    ->where('user_id', $userID)
 				                    ->where('title_id', $titleID)
 				                    ->update('tracker_chapters');
-				//$success = 1;
 			} else {
 				$success = $this->db->insert('tracker_chapters', [
 					'user_id'         => $userID,
@@ -181,7 +191,6 @@ class Tracker_Model extends CI_Model {
 		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 		return $this->db->insert_id();
 	}
-
 
 	/**
 	 * Checks for any titles that haven't updated in 16 hours and updates them.
