@@ -70,7 +70,7 @@ class MangaFox extends Site_Model {
 		return $success;
 	}
 	public function isValidChapter(string $chapter) : bool {
-		$success = (bool) preg_match('/^(?:v[0-9]+\/)?c[0-9]+(?:\.[0-9]+)?$/', $chapter);
+		$success = (bool) preg_match('/^(?:v[0-9a-zA-Z]+\/)?c[0-9\.]+$/', $chapter);
 		if(!$success) log_message('error', 'Invalid Chapter (MangaFox): '.$chapter);
 		return $success;
 	}
