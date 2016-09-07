@@ -13,7 +13,7 @@ class Site_Model extends CI_Model {
 
 	public function getTitleData(string $title_url) {}
 
-	public function validTitleURL(string $title_url) : bool {}
+	public function isValidTitleURL(string $title_url) : bool {}
 	public function isValidChapter(string $chapter): bool {}
 
 	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = ""){
