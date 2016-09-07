@@ -35,7 +35,7 @@ class Userscript extends AJAX_Controller {
 	 */
 	public function update() {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		if($this->limiter->limit('tracker_userscript_bug', 10)) {
+		if($this->limiter->limit('tracker_userscript_bug', 250)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 		} else {
 			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
