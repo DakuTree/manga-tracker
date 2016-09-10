@@ -4,7 +4,8 @@ class URI_test extends TestCase {
 	/******** GENERAL/LOGGED OUT TESTS ************/
 	public function test_index() {
 		$output = $this->request('GET', '/');
-		$this->assertContains('<title>Manga Tracker - Index</title>', $output);
+		$this->assertRedirect(base_url('/user/login'));
+		//$this->assertContains('<title>Manga Tracker - Index</title>', $output);
 	}
 
 	public function test_signup() {
