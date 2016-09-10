@@ -56,7 +56,6 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right" id="header-nav-user">
-					<!--TODO: This should be generated depending on if user is logged in or not-->
 					<?php if(!$this->User->logged_in()) { ?>
 					<li><a href="<?=base_url('user/login')?>">Login</a></li>
 					<li><a href="<?=base_url('user/signup')?>">Register</a></li>

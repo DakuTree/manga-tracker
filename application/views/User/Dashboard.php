@@ -32,7 +32,7 @@
 		</div>
 		<div class="pull-right">
 			<span id="import-status"></span>
-			<!-- FIXME: We would use the download attr here, but it can cause issues if the user logs out -->
+			<!-- NOTE: We would use the download attr here, but it can cause issues if the user logs out -->
 			<a href="./export_list">Export List</a> |
 			<div>
 				<div>

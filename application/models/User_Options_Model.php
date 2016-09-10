@@ -144,9 +144,7 @@ class User_Options_Model extends CI_Model {
 		                  ->limit(1);
 		return $query->get()->row_array();
 	}
-	private function set_db(string $option, $value) : bool {
-
-	}
+	private function set_db(string $option, $value) : bool {}
 
 	//FIXME: I really don't like this function.
 	private function parse_value(string $option, $value_str, $value_int) {
