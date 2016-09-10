@@ -1010,8 +1010,8 @@ var sites = {
 };
 
 /********************** SCRIPT *********************/
-var main_site = 'https://dev.trackr.moe';
-//FIXME: This should point to non-dev. We should only point to dev if requested
+var main_site = 'https://trackr.moe';
+//FIXME: We should point to dev if requested
 
 var config = JSON.parse(GM_getValue('config') || '{"init": true}');
 console.log(config); //TODO: Disable on production
