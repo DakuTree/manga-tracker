@@ -41,15 +41,14 @@ class Tracker_Model extends CI_Model {
 			->get();
 
 		$arr = [];
+		foreach($this->enabledCategories as $category => $name) {
+			$arr[$category] = [
+				'name'         => $name,
+				'manga'        => [],
+				'unread_count' => 0
+			];
+		}
 		if($query->num_rows() > 0) {
-			foreach($this->enabledCategories as $category => $name) {
-				$arr[$category] = [
-					'name'         => $name,
-					'manga'        => [],
-					'unread_count' => 0
-				];
-			}
-
 			foreach ($query->result() as $row) {
 				$is_unread     = intval($row->latest_chapter == $row->current_chapter ? '1' : '0');
 				$arr[$row->category]['unread_count'] = (($arr[$row->category]['unread_count'] ?? 0) + !$is_unread);
