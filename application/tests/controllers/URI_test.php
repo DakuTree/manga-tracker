@@ -52,7 +52,7 @@ class URI_test extends TestCase {
 
 	public function test_get_apikey_get() {
 		$this->request('GET', '/ajax/get_apikey');
-		$this->assertResponseCode(404);
+		$this->assertResponseCode(400);
 	}
 	public function test_get_apikey_post() {
 		$this->request('POST', '/ajax/get_apikey');
