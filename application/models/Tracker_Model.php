@@ -133,7 +133,11 @@ class Tracker_Model extends CI_Model {
 
 			//NOTE: If the title doesn't exist it will be created. This maybe isn't perfect, but it works for now.
 			$titleID = $this->Tracker->getTitleID($title, (int) $siteData->id);
-
+			if($titleID === 0) {
+				//Something went wrong.
+				log_message('error', "TitleID = 0 for {$title} @ {$siteData->id}");
+				return FALSE;
+			}
 			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
 				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
 				                    ->where('user_id', $userID)
