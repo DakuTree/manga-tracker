@@ -95,7 +95,7 @@ class Signup extends No_Auth_Controller {
 		$this->form_validation->set_rules('username',         'Username',           'required|min_length[4]|max_length[15]|valid_username|is_unique_username');
 		$this->form_validation->set_rules('password',         'Password',           'required|valid_password');
 		$this->form_validation->set_rules('password_confirm', 'Confirm Password',   'required|matches[password]');
-		$this->form_validation->set_rules('terms',            'Terms & Conditions', 'required');
+		//$this->form_validation->set_rules('terms',            'Terms & Conditions', 'required');
 		//TODO: timezone
 		//TODO: receive email
 

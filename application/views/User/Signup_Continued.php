@@ -33,7 +33,7 @@
 			<div id="notices"><?=print_r($notices, TRUE)?></div>
 
 			<div class="row">
-				<div class="col-xs-4 col-sm-3 col-md-3">
+				<?php /*<div class="col-xs-4 col-sm-3 col-md-3">
 					<span class="button-checkbox">
 						<button type="button" class="btn" data-color="info" tabindex="5">I Agree</button>
 						<?=form_checkbox($form_terms)?>
@@ -42,7 +42,7 @@
 
 				<div class="col-xs-8 col-sm-9 col-md-9">
 					By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="<?=base_url('about/terms')?>" target="_blank" onclick="window.open(this, null, 'toolbar=0'); return false;">Terms and Conditions</a> set out by this site, including our <a href="<?=base_url('about/terms#cookie-policy')?>" target="_blank" onclick="window.open(this, null, 'toolbar=0'); return false;">Cookie</a> and <a href="<?=base_url('about/terms#privacy-policy')?>" target="_blank" onclick="window.open(this, null, 'toolbar=0'); return false;">Privacy</a> Policy.
-				</div>
+				</div>*/?>
 			</div>
 
 			<hr class="colorgraph">

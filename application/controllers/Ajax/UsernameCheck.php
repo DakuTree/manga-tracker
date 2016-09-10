@@ -19,7 +19,7 @@ class UsernameCheck extends AJAX_Controller {
 		$this->form_validation->set_rules('username', 'Username', 'required|max_length[100]');
 
 		if($this->form_validation->run() === TRUE) {
-			if(!$this->limiter->limit('username_check', 10)) {
+			if(!$this->limiter->limit('username_check', 100)) {
 				$is_unique_username = $this->form_validation->is_unique_username($this->input->post('username'));
 
 				//TODO: WE <should> probably output something different here.

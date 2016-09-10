@@ -14,17 +14,17 @@ $(function(){
 				maxlength: 15,
 
 				pattern: /^[a-zA-Z0-9_-]{4,15}$/,
-
-				remote: {
-					//This has a ratelimit cap of 10, if it reaches this no JS validations will appear (and will intend fallback to CI)
-					url: base_url+"ajax/username_check",
-					type: "post",
-					data: {
-						username: function () {
-							return $("input[name='username']").val();
-						}
-					}
-				}
+			//
+			// 	remote: {
+			// 		//This has a ratelimit cap of 10, if it reaches this no JS validations will appear (and will intend fallback to CI)
+			// 		url: base_url+"ajax/username_check",
+			// 		type: "post",
+			// 		data: {
+			// 			username: function () {
+			// 				return $("input[name='username']").val();
+			// 			}
+			// 		}
+			// 	}
 			}
 		},
 		messages: {
