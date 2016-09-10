@@ -77,6 +77,7 @@
 	</script>
 	<script src="<?=asset_url()?>js/compiled.min.js"></script>
 
+	<?php if(ENVIRONMENT == 'production') { ?>
 	<script>
 		(function (b, o, i, l, e, r) {
 			b.GoogleAnalyticsObject = l;
@@ -87,8 +88,9 @@
 			e.src = '//www.google-analytics.com/analytics.js';
 			r.parentNode.insertBefore(e, r)
 		}(window, document, 'script', 'ga'));
-		ga('create', '<?=$analytics_tracking_id?>', 'auto'); //TODO: Make sure subdomains are supported/seperate
+		ga('create', '<?=$analytics_tracking_id?>', 'auto', 't0', {userId: <?=$this->User->id?>}); //TODO: Make sure subdomains are supported/seperate
 		ga('send', 'pageview');
 	</script>
+	<?php } ?>
 </body>
 <html>
