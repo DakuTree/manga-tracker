@@ -16,7 +16,7 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^http:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @updated      2016-09-10
-// @version      1.0.0
+// @version      1.0.1
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -609,6 +609,8 @@ var sites = {
 		setObjVars : function() {
 			var chapterNParts   = $('select[name=chapter_select]:first > option:selected').text().trim().match(/^(?:Vol\.(\S+) )?(?:Ch.([^\s:]+)):?.*/);
 
+			this.https          = location.protocol.slice(0, -1);
+
 			this.page_count     = $('#page_select:first > option').length;
 			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() == 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
@@ -627,7 +629,7 @@ var sites = {
 
 			this.viewerChapterName      = this.chapter_number;
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
-			this.viewerChapterURLFormat = 'http://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
+			this.viewerChapterURLFormat = this.https+'://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
 			this.viewerCustomImageList  = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
 				return $(e).attr('src');
