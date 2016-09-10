@@ -15,8 +15,9 @@
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^http:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
-// @updated      2016-XX-XX
-// @version      0.9.0
+// @updated      2016-09-10
+// @version      1.0.0
+// @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
 // @grant        GM_addStyle
@@ -32,9 +33,7 @@
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\//g, 'https://opensource.keycdn.com/fontawesome/4.6.3/'));
 
 /* CORE TODO
-Get a proper logo for the topbar (so we're not just using the AMR one anymore.
 Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?
-Get an actual working place to view your tracking stuff. Preferably similar to NovelUpdates.
 */
 
 var bookmarkBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACaElEQVQ4jX2SvU+TURTGf/d96QtYChT5CB8BU40I0SA4oA6Kootx5i8wxkaKKIszEzFRAaFGXVwciHEwaIwhDjL4FXFwESQBJQw0BQq0lL5t33scWjQgcJMnJzn3OU+e556LiLAXxh419o72+7p2u99zOHjD8G0sPEssTvWHB/0U7cQx2OM0NLXezisqyN1fdaDUV9/QtRNnV4Fgl1lz/OSFDuIhSEVpOXXp6sA15d7Oy9neGOpULsPIqWhqbukrLikoIhYCLCqr62oaG4/0BgPGHUdLODAsGkCJCK/7qrqrag+cLfQU1nqKi8vdnkKv2+12I2nAykDlImKxvhaNxtaWI9FIOLS2Gp5TIsL4gG/0TFvbZSyBdAJEwHFAVCalmBngAuUCrTI1Gs9EmPgx25mKx/PbTre2m1YCkmsgKdBp0A44AhpwsmKmBzuxj7Fvn14oEQHgnl/VHav2Pjnf7LtoGnEQnXEgm8M6CyFpW/J2cn5keiUW+CsAcNevalqqi56eO1rZnhHgn4DWoAWdEnkzFXo+GYn7e4KyvGWNPQ9lPrJuf8BOg+1A0slU2wFbZ+GoSCI51hOU5R3XWJZv1ZPK2gVAgc4+qgOGhlLL1bDrPygxzYPYacAEBxZjGxsmGN68/FzEgXQKr2E2bvK3RBjsVKVlOTm1aDfLq6b9bmbp/cjMgn9kNtQ9Phf5srpupaGAcsM8dP+6cv3nwFJU2ElDffwdnvi+svR4XeTlrWEJDQaU8TW68upnbLWjxeO9UijK7VKUAKEtWxgKqBJDOGEL0zeH5df2eIMBZWjNYUtRrRWfOx9I7A+InWebTg8pngAAAABJRU5ErkJggg==';
