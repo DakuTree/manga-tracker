@@ -63,7 +63,7 @@ $route['user/logout']                = 'User/Auth/Logout';
 $route['user/options']               = 'User/Options';
 
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
-$route['ajax/get_apikey']['post']     = 'Ajax/GetKey';
+$route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
 $route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
