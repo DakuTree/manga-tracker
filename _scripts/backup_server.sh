@@ -22,6 +22,8 @@ mkdir ${TMPDIR} && cd ${TMPDIR} && echo "Created & moved to TMP dir: "${TMPDIR}
 
 sudo s3cmd sync --recursive --preserve /etc/letsencrypt ${S3URI}"etc/"
 
+sudo s3cmd sync --recursive --preserve /etc/webalizer ${S3URI}"etc/"
+
 sudo tar -zcvf config_files.tar.gz /etc/apache2/apache2.conf /etc/mysql
 sudo s3cmd sync --recursive --preserve config_files.tar.gz ${S3URI}
 
@@ -29,7 +31,7 @@ sudo tar -zcvf virualhosts.tar.gz /etc/apache2/sites-available
 sudo s3cmd sync --recursive --preserve virualhosts.tar.gz ${S3URI}
 
 #TODO: This should be {dev,trackr}
-sudo tar --exclude="/var/log/journal/*" -zcvf logs.tar.gz /var/log /var/www/trackr.moe/dev/public_html/application/logs
+sudo tar --exclude="/var/log/journal/*" -zcvf logs.tar.gz /var/log /var/www/trackr.moe/trackr/public_html/application/logs
 sudo s3cmd sync --recursive --preserve logs.tar.gz ${S3URI}
 
 sudo bash -c 'dpkg --get-selections > dpkg.list'
