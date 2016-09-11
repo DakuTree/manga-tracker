@@ -443,6 +443,7 @@ $config['csrf_exclude_uris'] = array(
 	'ajax/userscript/report_bug',
 
 	//TODO: These <should> use CSRF, but for now we're going to just exclude them.
+	'ajax/username_check',
 	'ajax/update_inline',
 	'ajax/delete_inline',
 	'ajax/tag_update',
