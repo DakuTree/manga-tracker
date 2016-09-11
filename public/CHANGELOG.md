@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.0.1] - 2016-09-11
+## Fixed
+- Bato.to not working with https
+- Reenabled username AJAX check
+
 ## [1.0.0] - 2016-09-10
 ### Added
 - Initial release.
