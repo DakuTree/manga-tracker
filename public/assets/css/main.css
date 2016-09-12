@@ -163,6 +163,11 @@ span.question + .tooltip > .tooltip-inner {
 .table-hover > tbody > tr > th.inactive:hover {
 	//background-color: #d0e9c6;
 }*/
+.alert {
+	padding: 10px 15px;
+
+	background-image: none;
+}
 /*** ICON SPRITES ***/
 .sprite {
 	display: inline-block;

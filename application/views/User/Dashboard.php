@@ -1,3 +1,7 @@
+<div class="alert alert-info" role="alert">
+	<strong>Update (2016/09/12):</strong> KissManga tracking has been disabled due to getting IP blocked. No ETA on fix at the moment.
+</div>
+
 <div>
 	<nav id="category-nav">
 		<ul class="nav navbar-nav">
