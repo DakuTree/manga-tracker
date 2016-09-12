@@ -10,4 +10,4 @@
 sudo chown www-data:www-data /var/www/trackr.moe/ --recursive
 
 #Run update
-sudo -u www-data php /var/www/trackr.moe/trackr/public_html/public/index.php admin/update_titles
+sudo -u www-data CI_ENV="production" php /var/www/trackr.moe/trackr/public_html/public/index.php admin/update_titles
