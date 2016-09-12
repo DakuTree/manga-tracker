@@ -61,7 +61,7 @@
 	</thead>
 	<tbody>
 		<?php foreach($trackerDataType['manga'] as $row) { ?>
-		<tr data-id="<?=$row['id']?>">
+		<tr data-id="<?=$row['id']?>" <?=($row['site_data']['status'] == 'disabled' ? 'class="danger" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"' : '')?>>
 			<td>
 				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
 				<input type="checkbox" name="check">
