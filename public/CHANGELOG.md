@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - New users are now redirected to this page after signup.
   - The page can be found again be clicking "Need Help?" on the dashboard.
 
+## Fixes
+- MangaFox & Dynastyscans now properly decode HTML entities in titles. Existing titles have been fixed too.
+
 ## Changes
 - Changed the padding on the alert.
 

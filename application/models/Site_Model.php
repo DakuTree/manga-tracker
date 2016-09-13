@@ -102,7 +102,7 @@ class MangaFox extends Site_Model {
 			$nodes_row   = $xpath->query("//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]");
 			if($nodes_title->length === 1 & $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = substr($nodes_title[0]->getAttribute('content'), 0, -6);
+				$titleData['title'] = html_entity_decode(substr($nodes_title[0]->getAttribute('content'), 0, -6));
 
 				$nodes_latest  = $xpath->query("div/span[@class='date']", $nodes_row[0]);
 				$nodes_chapter = $xpath->query("div/h3/a", $nodes_row[0]);
@@ -258,7 +258,7 @@ class Batoto extends Site_Model {
 
 					preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)):?.*/', trim($chapter_element->nodeValue), $text);
 
-					$titleData['title']          = trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue);
+					$titleData['title']          = html_entity_decode(trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue));
 					$titleData['latest_chapter'] = substr($chapter_element->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter']);
 					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $updated_element->nodeValue)));
 				} else {
