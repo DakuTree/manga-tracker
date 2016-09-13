@@ -6,10 +6,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.0.3] - 2016-09-13
+## Added
+- Added a help page. This includes a "Getting Started" tutorial & supported sites.
+  - New users are now redirected to this page after signup.
+  - The page can be found again be clicking "Need Help?" on the dashboard.
+
+## Changes
+- Changed the padding on the alert.
+
+## [1.0.2] - 2016-09-12
+## Added
+- Support for marking a site as disabled, as well as a way to notify the user of it.
+
+### Changes
+- KissManga disabled due to IP ban.
+
 ## [1.0.1] - 2016-09-11
-## Fixed
-- Bato.to not working with https
+### Changes
 - Reenabled username AJAX check
+
+### Fixed
+- Bato.to not working with https
 
 ## [1.0.0] - 2016-09-10
 ### Added
