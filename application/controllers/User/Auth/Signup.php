@@ -112,7 +112,7 @@ class Signup extends No_Auth_Controller {
 
 				$this->Auth->verification_complete($email);
 
-				redirect('/'); //TODO: We should redirect to an "after" signup page.
+				redirect('help');
 			} else { //@codeCoverageIgnore
 				//Signup failed.
 
