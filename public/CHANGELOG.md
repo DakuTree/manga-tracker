@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changes
 - Moved to Perl for backend scripting. Much easier to securely use config files with this.
   - This is part of a slow move to eventually allow the project to go open-source.
+- All email should now be coming from no-reply@trackr.moe instead of admin@codeanimu.net.
 
 ### Fixes
 - Disabled KissManga testing (as it is not supported for now, and was causing tests to fail)
