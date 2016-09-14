@@ -149,7 +149,7 @@ class Signup_test extends TestCase {
 		);
 
 		$this->request('POST', 'user/signup/foobarauthcode');
-		$this->assertRedirect('/');
+		$this->assertRedirect('/help');
 	}
 	public function test_signup_p2_verification_pass_validation_pass_register_fail() {
 		//form was valid, and register was unsuccessful, reshow form
