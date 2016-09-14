@@ -84,7 +84,7 @@ $route['help'] = 'Help';
 $route['report_bug'] = 'ReportBug';
 
 $route['about']         = 'About';
-//$route['about/terms']   = 'About/terms'; //FIXME: This isn't setup??
+$route['about/terms']   = 'About/terms';
 
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
