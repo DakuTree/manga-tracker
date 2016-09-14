@@ -10,7 +10,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Terms/Cookie/Privacy policy page. Also re-added the terms requirement on signup.
 
-
 ### Changes
 - Moved to Perl for backend scripting. Much easier to securely use config files with this.
   - This is part of a slow move to eventually allow the project to go open-source.
