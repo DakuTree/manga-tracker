@@ -6,20 +6,29 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.0.4] - 2016-09-14
+### Changes
+- Moved to Perl for backend scripting. Much easier to securely use config files with this.
+  - This is part of a slow move to eventually allow the project to go open-source.
+
+### Fixes
+- Disabled KissManga testing (as it is not supported for now, and was causing tests to fail)
+- Fixed KireiCake not working due to move to HTTPS-only. Links for the site should now also use https instead of http (even though it redirected)
+
 ## [1.0.3] - 2016-09-13
-## Added
+### Added
 - Added a help page. This includes a "Getting Started" tutorial & supported sites.
   - New users are now redirected to this page after signup.
   - The page can be found again be clicking "Need Help?" on the dashboard.
 
-## Fixes
+### Fixes
 - MangaFox & Dynastyscans now properly decode HTML entities in titles. Existing titles have been fixed too.
 
-## Changes
+### Changes
 - Changed the padding on the alert.
 
 ## [1.0.2] - 2016-09-12
-## Added
+### Added
 - Support for marking a site as disabled, as well as a way to notify the user of it.
 
 ### Changes
