@@ -27,6 +27,8 @@ class Site_Model extends CI_Model {
 		//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
 		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36');
 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
+
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$data = curl_exec($ch);
 		curl_close($ch);
@@ -653,7 +655,7 @@ class KissManga extends Site_Model {
 
 class KireiCake extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://reader.kireicake.com/series/{$title_url}";
+		return "https://reader.kireicake.com/series/{$title_url}";
 	}
 
 	public function isValidTitleURL(string $title_url) : bool {
@@ -671,7 +673,7 @@ class KireiCake extends Site_Model {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "http://reader.kireicake.com/read/{$title_url}/{$chapter}",
+			'url'    => "https://reader.kireicake.com/read/{$title_url}/{$chapter}",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
