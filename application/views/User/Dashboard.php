@@ -105,7 +105,7 @@
 			</td>
 			<td>
 				<!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>-->
-				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" color="#f33131" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>
+				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>
 				<?php if($row['new_chapter_exists'] == '0') { ?>
 				<span class="update-read" title="I've read the latest chapter!">
 					<i class="fa fa-refresh" aria-hidden="true"></i>
