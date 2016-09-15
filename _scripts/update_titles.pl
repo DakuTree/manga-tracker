@@ -11,6 +11,8 @@ use warnings;
 
 if($> != 0) { die("Script must be run as root!"); }
 
+print "Running update_titles.pl @ ".localtime()."\n";
+
 ##### CORE VARIABLES #####{
 my $dirname = dirname(abs_path(__FILE__));
 if(!($dirname =~ /\/public_html\/_scripts$/)) { die("This is being run in an invalid location?"); }

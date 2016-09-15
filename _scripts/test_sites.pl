@@ -13,6 +13,8 @@ use warnings;
 
 if($> != 0) { die("Script must be run as root!"); }
 
+print "Running test_sites.pl @ ".localtime()."\n";
+
 ##### CORE VARIABLES #####{
 my ($testing_email);
 
