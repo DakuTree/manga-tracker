@@ -201,18 +201,32 @@ class Tracker_Model extends CI_Model {
 	 * This is ran every 6 hours via a cron job.
 	 */
 	public function updateLatestChapters() {
-		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_sites.site, tracker_sites.site_class, tracker_sites.status, tracker_titles.latest_chapter, tracker_titles.last_updated')
+		$query = $this->db->select('
+		                      tracker_titles.id,
+		                      tracker_titles.title,
+		                      tracker_titles.title_url,
+		                      tracker_sites.site,
+		                      tracker_sites.site_class,
+		                      tracker_sites.status,
+		                      tracker_titles.latest_chapter,
+		                      tracker_titles.last_updated,
+		                      from_unixtime(MAX(auth_users.last_login)) AS timestamp
+		                  ')
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+		                  ->join('tracker_chapters', 'tracker_titles.id = tracker_chapters.title_id', 'left')
+		                  ->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 		                  ->where('tracker_sites.status = "enabled"')
-		                  ->where('(`complete` = "N" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 14 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
+		                  ->where('(`complete` = "N" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
 		                  ->or_where('(`complete` = "Y" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+		                  ->group_by('tracker_titles.id')
+		                  ->having('timestamp IS NOT NULL')
+		                  ->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 		                  ->order_by('tracker_titles.title', 'ASC')
 		                  ->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-
 				print "> {$row->title} <{$row->site_class}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if(!is_null($titleData['latest_chapter'])) {
