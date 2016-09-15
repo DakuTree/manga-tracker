@@ -6,6 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.0.5] - 2016-09-15
+### Changes
+- Perl scripts now output start time (so we can actually know if they are working).
+- Titles with a disabled site now have a warning icon to try and better notify the user of the issue.
+- Titles can now be updated if they haven't updated in the past 12 hours, instead of 14.
+  - After a bit of testing, 14 hours seemed a bit slow. We'll see if 12 hours any more noticable. 
+- Titles with no active users (not logged in 5 days) or no users at all (Tracked at some point then removed) are now slowed to 48 hour updates.
+  - This is pretty much a partial-fix. I'd like to be able to mark titles which are slowed if a user tracking them ever comes back at some point.
+
 ## [1.0.4] - 2016-09-14
 ### Added
 - Terms/Cookie/Privacy policy page. Also re-added the terms requirement on signup.
