@@ -67,13 +67,13 @@
 	</thead>
 	<tbody>
 		<?php foreach($trackerDataType['manga'] as $row) { ?>
-		<tr data-id="<?=$row['id']?>" <?=($row['site_data']['status'] == 'disabled' ? 'class="danger" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"' : '')?>>
+		<tr data-id="<?=$row['id']?>" <?=($row['site_data']['status'] == 'disabled' ? 'class="danger"' : '')?>>
 			<td>
 				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
 				<input type="checkbox" name="check">
 			</td>
 			<td>
-				<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>" title="<?=$row['title_data']['last_updated']?>"></i>
+				<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"></i>
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
 
@@ -104,6 +104,8 @@
 				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=htmlentities($row['generated_latest_data']['number'])?></a>
 			</td>
 			<td>
+				<!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>-->
+				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" color="#f33131" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>
 				<?php if($row['new_chapter_exists'] == '0') { ?>
 				<span class="update-read" title="I've read the latest chapter!">
 					<i class="fa fa-refresh" aria-hidden="true"></i>
