@@ -10,7 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Bato.to now logs errors if it fails while grabbing info.
 
-## Fixes
+### Changes
+- Backup script now uses perl instead of bash.
+
+### Fixes
 - Bato.to series with the latest date marked as "An hour ago" no longer cause the updater to fail.
 
 ## [1.0.5] - 2016-09-15
