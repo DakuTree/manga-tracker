@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.0.6] - 2016-09-16
+### Added
+- Bato.to now logs errors if it fails while grabbing info.
+
+## Fixes
+- Bato.to series with the latest date marked as "An hour ago" no longer cause the updater to fail.
+
 ## [1.0.5] - 2016-09-15
 ### Changes
 - Perl scripts now output start time (so we can actually know if they are working).

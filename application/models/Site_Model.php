@@ -262,17 +262,24 @@ class Batoto extends Site_Model {
 
 					$titleData['title']          = html_entity_decode(trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue));
 					$titleData['latest_chapter'] = substr($chapter_element->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter']);
-					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $updated_element->nodeValue)));
+
+					$dateString = $updated_element->nodeValue;
+					if($dateString == 'An hour ago') {
+						$dateString = '1 hour ago';
+					}
+					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
 				} else {
-					//FIXME: SOMETHING WENT WRONG
+					log_message('error', "Batoto: Regex missing <td> ({$title_url})");
+					return NULL;
 				}
 			} else {
-				//FIXME: SOMETHING WENT WRONG
+				log_message('error', "Batoto: Regex missing <tr> ({$title_url})");
+				return NULL;
 			}
 		} else {
 			//Auth was not successful. Alert the admin / Try to login.
-			//FIXME: SOMETHING WENT WRONG
-			//print implode(";\n", $cookies)."\n";
+			log_message('error', "Batoto: Auth not successful ({$title_url})");
+			return NULL;
 		}
 		return (!empty($titleData) ? $titleData : NULL);
 	}
