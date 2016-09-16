@@ -28,9 +28,9 @@ my $trackrLocation = ($dirname =~ s/\/_scripts$//r);
 my $cfgLocation = dirname(__FILE__)."/config.ini";
 if(!(-e $cfgLocation)) { die("Config file does not exist. Did you forgot to rename the default config?\n"); }
 my $cfg = new Config::Simple($cfgLocation) or die Config::Simple->error();
-$S3URI = $cfg->param('backup.s3uri');
-$S3URI = $cfg->param('backup.s3uri');
-$S3URI = $cfg->param('backup.s3uri');
+$S3URI       = $cfg->param('backup.s3uri');
+$trackr_prod = $cfg->param('general.trackr_prod');
+$trackr_dev  = $cfg->param('general.trackr_dev');
 
 $tempDir = tempdir('backup_XXXXXX', CLEANUP => 1, TMPDIR => 1);
 
