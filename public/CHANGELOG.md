@@ -6,12 +6,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
-## [1.0.6] - 2016-09-16
+## [1.1.0] - 2016-09-16
+### Notice
+- We went open-source! - https://github.com/DakuTree/manga-tracker
+
 ### Added
 - Bato.to now logs errors if it fails while grabbing info.
+- Default config file.
 
 ### Changes
 - Backup script now uses perl instead of bash.
+- LICENSE V3. Slight re-wording here and there.
 
 ### Fixes
 - Bato.to series with the latest date marked as "An hour ago" no longer cause the updater to fail.
