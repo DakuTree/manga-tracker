@@ -27,8 +27,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Titles with a disabled site now have a warning icon to try and better notify the user of the issue.
 - Titles can now be updated if they haven't updated in the past 12 hours, instead of 14.
   - After a bit of testing, 14 hours seemed a bit slow. We'll see if 12 hours any more noticable. 
-- Titles with no active users (not logged in 5 days) or no users at all (Tracked at some point then removed) are now slowed to 48 hour updates.
+- Titles with no active users (not logged in 5 days) are now slowed to 120 hour updates.
   - This is pretty much a partial-fix. I'd like to be able to mark titles which are slowed if a user tracking them ever comes back at some point.
+- Titles with no users at all (Tracked at some point then removed) are now completely stopped tracking.
 
 ## [1.0.4] - 2016-09-14
 ### Added
