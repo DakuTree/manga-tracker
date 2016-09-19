@@ -21,7 +21,7 @@ class Generic_Helper_test extends TestCase {
 		$this->assertEquals('sprite-day', $result);
 	}
 	public function test_get_time_class_week() {
-		$result = get_time_class('last week');
+		$result = get_time_class('2 weeks ago');
 		$this->assertEquals('sprite-week', $result);
 	}
 	public function test_get_time_class_month() {
