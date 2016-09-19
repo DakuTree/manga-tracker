@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/DakuTree/manga-tracker.svg?token=q5TqgzemixHUDfa2JkMy&branch=master)](https://travis-ci.com/DakuTree/manga-tracker)
+[![Build Status](https://travis-ci.org/DakuTree/manga-tracker.svg?branch=master)](https://travis-ci.org/DakuTree/manga-tracker)  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DakuTree/manga-tracker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DakuTree/manga-tracker/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/DakuTree/manga-tracker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/DakuTree/manga-tracker/?branch=master)
 
 # manga-tracker
 A cross-site manga tracker. Inspired by [AllMangasReader](https://github.com/AllMangasReader-dev/AMR) and [NovelUpdates](http://www.novelupdates.com/).  
