@@ -173,7 +173,7 @@ class Tracker_Model extends CI_Model {
 	}
 	private function updateTitleById(int $id, string $latestChapter) {
 		//FIXME: Really not too happy with how we're doing history stuff here, it just feels messy.
-		$query = $this->db->select('latest_chapter, last_updated')
+		$query = $this->db->select('latest_chapter AS current_chapter')
 		                  ->from('tracker_titles')
 		                  ->where('id', $id)
 		                  ->get();
@@ -184,7 +184,8 @@ class Tracker_Model extends CI_Model {
 		                    ->update('tracker_titles');
 
 		//Update History
-		$this->History->updateTitleHistory($id, $row->latest_chapter, $row->last_updated);
+		//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
+		$this->History->updateTitleHistory($id, $row->current_chapter, $latestChapter, (string) time());
 
 		return (bool) $success;
 	}
@@ -205,7 +206,8 @@ class Tracker_Model extends CI_Model {
 		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 		$titleID = $this->db->insert_id();
 
-		return $this->db->insert_id();
+		$this->History->updateTitleHistory((int) $titleID, NULL, $titleData['latest_chapter'], $titleData['last_updated']);
+		return $titleID;
 	}
 
 	/**
@@ -251,8 +253,6 @@ class Tracker_Model extends CI_Model {
 						         ->where('id', $row->id)
 						         ->update('tracker_titles');
 
-						//Update History
-						$this->History->updateTitleHistory((int) $row->id, $titleData['latest_chapter'], $titleData['last_updated']);
 						print " - ({$titleData['latest_chapter']})\n";
 					}
 				} else {

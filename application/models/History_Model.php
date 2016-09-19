@@ -7,17 +7,7 @@ class History_Model extends CI_Model {
 		$this->load->database();
 	}
 
-	public function updateTitleHistory(int $titleID, string $newChapter, string $newChapterTimestamp, bool $isNewTitle = FALSE) {
-		$oldChapter = NULL;
-		if(!$isNewTitle) {
-			$query = $this->db->select('latest_chapter')
-			                  ->from('tracker_titles')
-			                  ->where('id', $titleID)
-			                  ->get();
-
-			$oldChapter = $query->row()->latest_chapter;
-		}
-
+	public function updateTitleHistory(int $titleID, $oldChapter, string $newChapter, string $newChapterTimestamp) {
 		$success = TRUE;
 		if($oldChapter !== $newChapter) {
 			$success = $this->db->insert('tracker_titles_history', [
