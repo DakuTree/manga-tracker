@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.1.1]
+### Added
+- Started tracking when titles get updated. In the short-term this is useless, in the long term it should allow us to automate changing update-times!
+  - No plans on making this data public at the moment.
+
 ### Changes
 - We're using Scrutinizer-CI now. Couldn't use before since repo was private.
 

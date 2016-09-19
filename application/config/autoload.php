@@ -128,5 +128,6 @@ $autoload['language'] = array('auth');
 $autoload['model'] = array(
 	'User_Model'         => 'User',
 	'User_Options_Model' => 'User_Options',
-	'Tracker_Model'      => 'Tracker'
+	'Tracker_Model'      => 'Tracker',
+	'History_Model'      => 'History'
 );

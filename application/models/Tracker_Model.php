@@ -172,9 +172,19 @@ class Tracker_Model extends CI_Model {
 		return (bool) $success;
 	}
 	private function updateTitleById(int $id, string $latestChapter) {
+		//FIXME: Really not too happy with how we're doing history stuff here, it just feels messy.
+		$query = $this->db->select('latest_chapter, last_updated')
+		                  ->from('tracker_titles')
+		                  ->where('id', $id)
+		                  ->get();
+		$row = $query->row();
+
 		$success = $this->db->set(['latest_chapter' => $latestChapter]) //last_updated gets updated via a trigger if something changes
 		                    ->where('id', $id)
 		                    ->update('tracker_titles');
+
+		//Update History
+		$this->History->updateTitleHistory($id, $row->latest_chapter, $row->last_updated);
 
 		return (bool) $success;
 	}
@@ -193,6 +203,8 @@ class Tracker_Model extends CI_Model {
 
 		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL);
 		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
+		$titleID = $this->db->insert_id();
+
 		return $this->db->insert_id();
 	}
 
@@ -230,12 +242,17 @@ class Tracker_Model extends CI_Model {
 				print "> {$row->title} <{$row->site_class}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if(!is_null($titleData['latest_chapter'])) {
+					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
+					//       Should we even use this? Y/N
 					if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
 						//Make sure last_checked is always updated on successful run.
+						//CHECK: Is there a reason we aren't just doing this in updateTitleById?
 						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
 						         ->where('id', $row->id)
 						         ->update('tracker_titles');
 
+						//Update History
+						$this->History->updateTitleHistory((int) $row->id, $titleData['latest_chapter'], $titleData['last_updated']);
 						print " - ({$titleData['latest_chapter']})\n";
 					}
 				} else {

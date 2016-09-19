@@ -60,6 +60,7 @@
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
  * @property Tracker_Model      $Tracker
+ * @property History_Model      $History
  */
 class CI_Controller {}
 
@@ -123,6 +124,7 @@ class CI_Controller {}
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
  * @property Tracker_Model      $Tracker
+ * @property History_Model      $History
  */
 class CI_Model {}
 
@@ -187,5 +189,6 @@ class CI_Model {}
  * @property Auth_model         $Auth
  * @property Ion_auth_model     $ion_auth
  * @property Tracker_Model      $Tracker
+ * @property History_Model      $History
  */
 class TestCase {}
