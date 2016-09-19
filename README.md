@@ -6,7 +6,7 @@ This site is intended to be used alongside a [userscript](https://github.com/Dak
 
 A full CHANGELOG of what is currently implemented can be found [here](https://github.com/DakuTree/manga-tracker/blob/master/public/CHANGELOG.md).
 
-Screenshot: ![](http://i.imgur.com/tZYYKlJ.png)
+Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 
 ## Sites supported
 *  MangaFox
