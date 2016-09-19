@@ -259,7 +259,6 @@ class Tracker_Model extends CI_Model {
 				} else {
 					log_message('error', "{$row->title} failed to update successfully");
 					print " - FAILED TO PARSE\n";
-					//FIXME: Something went wrong! Alert admin!
 				}
 			}
 		}

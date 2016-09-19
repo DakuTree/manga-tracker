@@ -118,7 +118,7 @@ class Migration_Install_ion_auth extends CI_Migration {
 		$this->dbforge->create_table('auth_users');
 
 		// Dumping data for table 'auth_users'
-		//FIXME: This shouldn't be public, even if the password is just password.
+		// NOTE: This "password" is just password, it's changed on production though so no worries here.
 		$data = array(
 			'id'                      => '1',
 			'ip_address'              => '127.0.0.1',
