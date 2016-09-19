@@ -14,9 +14,9 @@
 // @include      /^https?:\/\/mangastream.com\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
-// @include      /^http:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
-// @updated      2016-09-12
-// @version      1.0.3
+// @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
+// @updated      2016-09-20
+// @version      1.0.4
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
