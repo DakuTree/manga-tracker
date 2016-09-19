@@ -11,12 +11,12 @@ class History_Model extends CI_Model {
 		$success = TRUE;
 		if($oldChapter !== $newChapter) {
 			$success = $this->db->insert('tracker_titles_history', [
-				'title_id' => $titleID,
+				'title_id'    => $titleID,
 
 				'old_chapter' => $oldChapter,
 				'new_chapter' => $newChapter,
 
-				'updated_at' => $newChapterTimestamp
+				'updated_at'  => $newChapterTimestamp
 			]);
 		}
 		return (bool) $success;

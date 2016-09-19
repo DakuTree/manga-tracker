@@ -185,7 +185,8 @@ class Tracker_Model extends CI_Model {
 
 		//Update History
 		//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
-		$this->History->updateTitleHistory($id, $row->current_chapter, $latestChapter, (string) time());
+		//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
+		$this->History->updateTitleHistory($id, $row->current_chapter, $latestChapter, date('Y-m-d H:i:s'));
 
 		return (bool) $success;
 	}
