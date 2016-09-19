@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.1.1]
+### Changes
+- We're using Scrutinizer-CI now. Couldn't use before since repo was private.
+
 ## [1.1.0] - 2016-09-16
 ### Notice
 - We went open-source! - https://github.com/DakuTree/manga-tracker
