@@ -1,5 +1,5 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2016/09/20):</strong> Added support for <a href="gameofscanlation.moe">gameofscanlation.moe</a>
+	<strong>Update (2016/09/20):</strong> Added support for <a href="https://gameofscanlation.moe">gameofscanlation.moe</a>
 </div>
 
 <div>
