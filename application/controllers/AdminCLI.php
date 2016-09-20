@@ -34,6 +34,6 @@ class AdminCLI extends CLI_Controller {
 	}
 
 	public function test() {
-		print_r($this->Tracker->sites->{'WebToons'}->getTitleData('93:--:en:--:girls-of-the-wilds:--:action'));
+		print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
 	}
 }

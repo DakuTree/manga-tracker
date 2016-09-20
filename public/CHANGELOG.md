@@ -6,7 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
-## [1.1.1]
+## [1.1.2] - 2016-09-20
+### Added
+- Added support for gameofscanlation.moe
+
+### Fixes
+- Userscript should work on KireiCake again. Forgot to update @include to https.
+
+## [1.1.1] - 2016-09-19
 ### Added
 - Started tracking when titles get updated. In the short-term this is useless, in the long term it should allow us to automate changing update-times!
   - No plans on making this data public at the moment.

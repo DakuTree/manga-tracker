@@ -1,5 +1,5 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2016/09/16):</strong> <a href="https://github.com/DakuTree/manga-tracker">trackr.moe is now open-source! <i class="fa fa-github" aria-hidden="true"></i></a>
+	<strong>Update (2016/09/20):</strong> Added support for <a href="gameofscanlation.moe">gameofscanlation.moe</a>
 </div>
 
 <div>

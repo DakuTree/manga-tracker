@@ -179,6 +179,11 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'id'         => '9',
 				'site'       => 'reader.kireicake.com',
 				'site_class' => 'KireiCake'
+			),
+			array(
+				'id'         => '10',
+				'site'       => 'gameofscanlation.moe',
+				'site_class' => 'GameOfScanlation'
 			)
 		);
 		$this->db->insert_batch('tracker_sites', $typesData);

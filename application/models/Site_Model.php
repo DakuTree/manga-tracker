@@ -45,19 +45,21 @@ class Sites_Model extends CI_Model {
 	public $WebToons;
 	public $KissManga;
 	public $KireiCake;
+	public $GameOfScanlation;
 
 	public function __construct() {
 		parent::__construct();
 
-		$this->MangaFox     = new MangaFox();
-		$this->MangaHere    = new MangaHere();
-		$this->Batoto       = new Batoto();
-		$this->DynastyScans = new DynastyScans();
-		$this->MangaPanda   = new MangaPanda();
-		$this->MangaStream  = new MangaStream();
-		$this->WebToons     = new WebToons();
-		$this->KissManga    = new KissManga();
-		$this->KireiCake    = new KireiCake();
+		$this->MangaFox         = new MangaFox();
+		$this->MangaHere        = new MangaHere();
+		$this->Batoto           = new Batoto();
+		$this->DynastyScans     = new DynastyScans();
+		$this->MangaPanda       = new MangaPanda();
+		$this->MangaStream      = new MangaStream();
+		$this->WebToons         = new WebToons();
+		$this->KissManga        = new KissManga();
+		$this->KireiCake        = new KireiCake();
+		$this->GameOfScanlation = new GameOfScanlation();
 	}
 }
 
@@ -102,7 +104,7 @@ class MangaFox extends Site_Model {
 
 			$nodes_title = $xpath->query("//meta[@property='og:title']");
 			$nodes_row   = $xpath->query("//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]");
-			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
 				$titleData['title'] = html_entity_decode(substr($nodes_title[0]->getAttribute('content'), 0, -6));
 
@@ -162,7 +164,7 @@ class MangaHere extends Site_Model {
 			$xpath = new DOMXPath($dom);
 			$nodes_title = $xpath->query("//meta[@property='og:title']");
 			$nodes_row   = $xpath->query("//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]");
-			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
 				$titleData['title'] = $nodes_title[0]->getAttribute('content');
 
@@ -434,7 +436,7 @@ class MangaPanda extends Site_Model {
 
 			$nodes_title = $xpath->query("//h2[@class='aname']");
 			$nodes_row   = $xpath->query("(//table[@id='listing']/tr)[last()]");
-			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
 				$titleData['title'] = $nodes_title[0]->nodeValue;
 
@@ -493,7 +495,7 @@ class MangaStream extends Site_Model {
 
 			$nodes_title = $xpath->query("//div[contains(@class, 'content')]/div[1]/h1");
 			$nodes_row   = $xpath->query("//div[contains(@class, 'content')]/div[1]/table/tr[2]"); //Missing tbody here..
-			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				$titleData['title'] = $nodes_title[0]->nodeValue;
 
 				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
@@ -637,7 +639,7 @@ class KissManga extends Site_Model {
 
 				$nodes_title = $xpath->query("//a[@class='bigChar']");
 				$nodes_row   = $xpath->query("//table[@class='listing']/tr[3]");
-				if($nodes_title->length === 1 & $nodes_row->length === 1) {
+				if($nodes_title->length === 1 && $nodes_row->length === 1) {
 					$titleData['title'] = $nodes_title[0]->textContent;
 
 					$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
@@ -703,7 +705,7 @@ class KireiCake extends Site_Model {
 
 			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
 			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='element'][1]");
-			if($nodes_title->length === 1 & $nodes_row->length === 1) {
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				$titleData['title'] = trim($nodes_title[0]->textContent);
 
 
@@ -713,6 +715,67 @@ class KireiCake extends Site_Model {
 				$link = (string) $nodes_chapter[0]->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
+			}
+		} else {
+			//TODO: Throw ERRORS;
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+class GameOfScanlation extends Site_Model {
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://gameofscanlation.moe/forums/{$title_url}/";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9-]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (GameOfScanlation): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^[a-z0-9\.-]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (GameOfScanlation): '.$chapter);
+		return $success;
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		return [
+			'url'    => "https://gameofscanlation.moe/projects/".preg_replace("/\\.[0-9]+$/", "", $title_url).'/'.$chapter.'/',
+			'number' => preg_replace("/chapter-/", "c", preg_replace("/\\.[0-9]+$/", "", $chapter))
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$data = $this->get_content($fullURL);
+		if(strpos($data, '404 Page Not Found') === FALSE) {
+			//$data = preg_replace('/^[\S\s]*(<ol[\S\s]*)<\/ol>[\S\s]*$/', '$1', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//meta[@property='og:title']");
+			$nodes_row   = $xpath->query("//ol[@class='discussionListItems']/li[1]/div[@class='home_list']/ul/li/div[@class='list_press_text']");
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				$titleData['title'] = html_entity_decode($nodes_title[0]->getAttribute('content'));
+
+				$nodes_latest  = $xpath->query("p[@class='author']/abbr", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("p[@class='text_work']/a", $nodes_row[0]);
+
+				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/^projects\/.*?\/(.*?)\/$/', '$1', $link);
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", (int) $nodes_latest[0]->getAttribute('data-time'));
+			} else {
+				log_message('error', "GameOfScanlation: Unable to find nodes.");
+				return NULL;
 			}
 		} else {
 			//TODO: Throw ERRORS;
