@@ -18,4 +18,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 *  ~~KissManga.com~~ Looks like the server got IP banned from tracking this...
 *  KireiCake.com
 *  DynastyScans (beta)
-
+*  Game of Scanlation
