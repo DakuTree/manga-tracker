@@ -21,13 +21,4 @@ class History_Model extends CI_Model {
 		}
 		return (bool) $success;
 	}
-
-	public function getCurrentChapter(int $titleID) : string {
-		$query = $this->db->select('latest_chapter')
-		                  ->from('tracker_titles')
-		                  ->where('id', $titleID)
-		                  ->get();
-
-		return $query->row()->latest_chapter;
-	}
 }
