@@ -750,7 +750,8 @@ body {
 	z-index: 1;
 	top: 25px;
 
-	width: 924px;
+	width: 100%;
+	max-width: 1000px;
 }
 #page[data-page="terms"] > header {
 	text-align: center;
