@@ -257,11 +257,14 @@ $(function(){
 	var list_table = $('#list-nav + table');
 	$window.scroll(function() {
 		//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
+		//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
 		if($window.scrollTop() >= (119 - 26)) {
 			nav.addClass('fixed-header');
+			nav.css('width', $('#list-nav').parent().width() + 'px');
 			list_table.css('margin-top', '97px');
 		} else {
 			nav.removeClass('fixed-header');
+			nav.css('width', 'initial');
 			list_table.css('margin-top', '5px');
 		}
 	});
