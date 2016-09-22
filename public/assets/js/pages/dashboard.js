@@ -228,7 +228,6 @@ $(function(){
 		}
 	});
 
-
 	//Initialize header update timer
 	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer) {
 		var timer_obj = $('#update-timer'),
@@ -251,6 +250,21 @@ $(function(){
 			}
 		}, 1000);
 	}
+
+	//Sticky List Header
+	var $window = $(window);
+	var nav     = $('#list-nav');
+	var list_table = $('#list-nav + table');
+	$window.scroll(function() {
+		//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
+		if($window.scrollTop() >= (119 - 26)) {
+			nav.addClass('fixed-header');
+			list_table.css('margin-top', '97px');
+		} else {
+			nav.removeClass('fixed-header');
+			list_table.css('margin-top', '5px');
+		}
+	});
 
 	/* http://stackoverflow.com/a/3710226/1168377 */
 	function isJsonString(str) {

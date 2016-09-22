@@ -644,6 +644,9 @@ body {
 
 	text-align: right;
 }
+#page[data-page="dashboard"] > div#list-nav {
+	background-color: white;
+}
 #page[data-page="dashboard"] > div > nav ul > li.active {
 	background-color: #EEEEEE;
 }
@@ -741,6 +744,13 @@ body {
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) > .update-read {
 	cursor: pointer;
+}
+#page[data-page="dashboard"] #list-nav.fixed-header {
+	position: fixed;
+	z-index: 1;
+	top: 25px;
+
+	width: 924px;
 }
 #page[data-page="terms"] > header {
 	text-align: center;

@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - N/A
 
+## [1.1.4] - 2016-09-22
+### Added
+- Sticky list header. No more needing to scroll to top to see update time!.
+
+## [1.1.3] - 2016-09-21
+### Added 
+- Test for Game of Scanlation.
+
 ## [1.1.2] - 2016-09-20
 ### Added
 - Added support for gameofscanlation.moe

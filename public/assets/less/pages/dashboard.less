@@ -9,6 +9,9 @@
 			padding-right: 4px;
 		}
 
+		&#list-nav {
+			background-color: white;
+		}
 		& > nav {
 			& ul {
 				& > li {
@@ -109,5 +112,14 @@
 				}
 			}
 		}
+	}
+
+	#list-nav.fixed-header {
+		position: fixed;
+		top: 25px;
+
+		width: 924px;
+
+		z-index: 1;
 	}
 }

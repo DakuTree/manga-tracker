@@ -2,7 +2,7 @@
 	<strong>Update (2016/09/20):</strong> Added support for <a href="https://gameofscanlation.moe">gameofscanlation.moe</a>
 </div>
 
-<div>
+<div id="list-nav">
 	<div class="list-header">
 		<a href="<?=base_url('help')?>">Need help?</a>
 	</div>
