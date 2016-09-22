@@ -130,6 +130,8 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_GameOfScanlation() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
 		$result = $this->Sites_Model->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99');
 
 		$this->assertInternalType('array', $result);
