@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- N/A
+- User History
+  - This is implemented on the DB side, but needs a rewrite of the Tracker Model to get it working there..
 
 ## [1.1.4] - 2016-09-22
 ### Added
