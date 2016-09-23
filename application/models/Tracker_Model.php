@@ -352,6 +352,9 @@ class Tracker_Model extends CI_Model {
 			foreach($idList as $id) {
 				if(!(ctype_digit($id) && $this->setCategoryTrackerByID($this->User->id, (int) $id, $category))) {
 					$status['code'] = 1;
+				} else {
+					//Category update was successful, update history too.
+					$this->History->userUpdateCategory((int) $id, $category);
 				}
 			}
 		} else {
