@@ -139,30 +139,48 @@ class Tracker_Model extends CI_Model {
 				log_message('error', "TitleID = 0 for {$title} @ {$siteData->id}");
 				return FALSE;
 			}
-			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
-				$success = $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
+
+			$idQuery = $this->db->select('id')
+			                    ->where('user_id', $userID)
+			                    ->where('title_id', $titleID)
+			                    ->get('tracker_chapters');
+			if($idQuery->num_rows() > 0) {
+				$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
 				                    ->where('user_id', $userID)
 				                    ->where('title_id', $titleID)
 				                    ->update('tracker_chapters');
+
+				if($success) {
+					$idQueryRow = $idQuery->row();
+					$this->History->userUpdateTitle((int) $idQueryRow->id, $chapter);
+				}
 			} else {
-				$success = $this->db->insert('tracker_chapters', [
+				$category = $this->User_Options->get_by_userid('default_series_category', $userID);
+				$success = (bool) $this->db->insert('tracker_chapters', [
 					'user_id'         => $userID,
 					'title_id'        => $titleID,
 					'current_chapter' => $chapter,
-					'category'        => $this->User_Options->get_by_userid('default_series_category', $userID)
+					'category'        => $category
 				]);
+
+				if($success) {
+					$this->History->userAddTitle((int) $this->db->insert_id(), $chapter, $category);
+				}
 			}
 		}
-		return (bool) $success;
+		return $success;
 	}
 
 	public function updateTrackerByID(int $userID, int $chapterID, string $chapter) : bool {
-		$success = $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
+		$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
 		                    ->where('user_id', $userID)
 		                    ->where('id', $chapterID)
 		                    ->update('tracker_chapters');
 
-		return (bool) $success;
+		if($success) {
+			$this->History->userUpdateTitle($chapterID, $chapter);
+		}
+		return  $success;
 	}
 
 	public function deleteTrackerByID(int $userID, int $chapterID) {
@@ -341,6 +359,9 @@ class Tracker_Model extends CI_Model {
 		foreach($idList as $id) {
 			if(!(ctype_digit($id) && $this->deleteTrackerByID($this->User->id, (int) $id))) {
 				$status['code'] = 1;
+			} else {
+				//Delete was successful, update history too.
+				$this->History->userRemoveTitle((int) $id);
 			}
 		}
 

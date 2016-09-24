@@ -3,9 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- N/A
+
+## [1.1.5] - 2016-09-24
 ### Added
-- User History
-  - This is implemented on the DB side, but needs a rewrite of the Tracker Model to get it working there..
+- User History (Adding/editing/removing series, editing tags & changing categories)
+  - At the moment this is being logged on the DB side. I'll get around to adding something the user can view at a later date.
+
+### Changed
+- Rows are no longer removed from the DB when a user stops tracking a series, they are instead simply marked as inactive and hidden from the user.
+  - This was done to allow user history to work without doing an entire revamp of the backend.
 
 ## [1.1.4] - 2016-09-22
 ### Added
