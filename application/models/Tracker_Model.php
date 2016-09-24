@@ -38,6 +38,7 @@ class Tracker_Model extends CI_Model {
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 			->where('tracker_chapters.user_id', $userID)
+			->where('tracker_chapters.active', 'Y')
 			->get();
 
 		$arr = [];
@@ -139,7 +140,7 @@ class Tracker_Model extends CI_Model {
 				return FALSE;
 			}
 			if($this->db->select('*')->where('user_id', $userID)->where('title_id', $titleID)->get('tracker_chapters')->num_rows() > 0) {
-				$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
+				$success = $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
 				                    ->where('user_id', $userID)
 				                    ->where('title_id', $titleID)
 				                    ->update('tracker_chapters');
@@ -156,7 +157,7 @@ class Tracker_Model extends CI_Model {
 	}
 
 	public function updateTrackerByID(int $userID, int $chapterID, string $chapter) : bool {
-		$success = $this->db->set(['current_chapter' => $chapter, 'last_updated' => NULL])
+		$success = $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
 		                    ->where('user_id', $userID)
 		                    ->where('id', $chapterID)
 		                    ->update('tracker_chapters');
@@ -165,9 +166,13 @@ class Tracker_Model extends CI_Model {
 	}
 
 	public function deleteTrackerByID(int $userID, int $chapterID) {
-		$success = $this->db->where('user_id', $userID)
+		//Series are not fully deleted, they are just marked as inactive as to hide them from the user.
+		//This is to allow user history to function properly.
+
+		$success = $this->db->set(['active' => 'N', 'last_updated' => NULL])
+		                    ->where('user_id', $userID)
 		                    ->where('id', $chapterID)
-		                    ->delete('tracker_chapters');
+		                    ->update('tracker_chapters');
 
 		return (bool) $success;
 	}
@@ -231,7 +236,8 @@ class Tracker_Model extends CI_Model {
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 			->join('tracker_chapters', 'tracker_titles.id = tracker_chapters.title_id', 'left')
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
-			->where('tracker_sites.status = "enabled"')
+			->where('tracker_sites.status', 'enabled')
+			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
 			->where('(`complete` = "N" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
 			->or_where('(`complete` = "Y" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
 			->group_by('tracker_titles.id')
@@ -274,6 +280,7 @@ class Tracker_Model extends CI_Model {
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 			->where('tracker_chapters.user_id', $userID)
+			->where('tracker_chapters.active', 'Y')
 			->get();
 
 		$arr = [];
@@ -364,7 +371,7 @@ class Tracker_Model extends CI_Model {
 		return $status;
 	}
 	public function setCategoryTrackerByID(int $userID, int $chapterID, string $category) : bool {
-		$success = $this->db->set(['category' => $category, 'last_updated' => NULL])
+		$success = $this->db->set(['category' => $category, 'active' => 'Y', 'last_updated' => NULL])
 		                    ->where('user_id', $userID)
 		                    ->where('id', $chapterID)
 		                    ->update('tracker_chapters');
@@ -376,10 +383,10 @@ class Tracker_Model extends CI_Model {
 	public function updateTagsByID(int $userID, int $chapterID, string $tag_string) : bool {
 		$success = FALSE;
 		if(preg_match("/^[a-z0-9-_,]{0,255}$/", $tag_string)) {
-			$success = (bool) $this->db->set(['tags' => $tag_string, 'last_updated' => NULL])
-			                    ->where('user_id', $userID)
-			                    ->where('id', $chapterID)
-			                    ->update('tracker_chapters');
+			$success = (bool) $this->db->set(['tags' => $tag_string, 'active' => 'Y', 'last_updated' => NULL])
+			                           ->where('user_id', $userID)
+			                           ->where('id', $chapterID)
+			                           ->update('tracker_chapters');
 		}
 
 		if($success) {
@@ -395,6 +402,7 @@ class Tracker_Model extends CI_Model {
 		$query = $this->db->distinct()
 		                  ->select('category')
 		                  ->from('tracker_chapters')
+		                  ->where('tracker_chapters.active', 'Y')
 		                  ->get();
 
 		return array_column($query->result_array(), 'category');
