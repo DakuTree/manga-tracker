@@ -767,7 +767,7 @@ class GameOfScanlation extends Site_Model {
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				$titleData['title'] = html_entity_decode($nodes_title[0]->getAttribute('content'));
 
-				$nodes_latest  = $xpath->query("p[@class='author']/abbr", $nodes_row[0]);
+				$nodes_latest  = $xpath->query("p[@class='author']/span", $nodes_row[0]);
 				$nodes_chapter = $xpath->query("p[@class='text_work']/a", $nodes_row[0]);
 
 				$link = (string) $nodes_chapter[0]->getAttribute('href');

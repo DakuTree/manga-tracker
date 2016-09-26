@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.1.6] - 2016-09-26
+### Fixed
+- Fixed GameOfScanlation not working after some HTML was changed causing parsing issues.
+
 ## [1.1.5] - 2016-09-24
 ### Added
 - User History (Adding/editing/removing series, editing tags & changing categories)
