@@ -69,6 +69,8 @@
 						</a>
 
 						<ul class="dropdown-menu">
+							<li><a href="<?=base_url('user/history')?>">History</a></li>
+							<li class="divider"></li>
 							<li><a href="<?=base_url('user/options')?>">Options</a></li>
 							<li class="divider"></li>
 							<li><a href="<?=base_url('user/logout')?>">Logout</a></li>

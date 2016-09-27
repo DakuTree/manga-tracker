@@ -60,6 +60,7 @@ $route['user/forgot_password']       = 'User/Auth/Forgot_Password';
 $route['user/reset_password/(.*)']   = 'User/Auth/Forgot_Password/reset_password/$1';
 $route['user/login']                 = 'User/Auth/Login';
 $route['user/logout']                = 'User/Auth/Logout';
+$route['user/history']               = 'User/History';
 $route['user/options']               = 'User/Options';
 
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited

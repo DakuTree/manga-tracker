@@ -1,5 +1,5 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2016/09/20):</strong> Added support for <a href="https://gameofscanlation.moe">gameofscanlation.moe</a>
+	<strong>Update (2016/09/27):</strong> Added <a href="<?=base_url('user/history')?>">user history</a>! (The link for this can also be found in the dropdown at top-right)
 </div>
 
 <div id="list-nav">
