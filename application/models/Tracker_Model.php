@@ -35,7 +35,7 @@ class Tracker_Model extends CI_Model {
 			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated,
 			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
 			->from('tracker_chapters')
-			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
+			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 			->where('tracker_chapters.user_id', $userID)
 			->where('tracker_chapters.active', 'Y')
