@@ -85,20 +85,23 @@ class History_Model extends CI_Model {
 		return $success;
 	}
 
-	public function userGetHistory() : array {
+	public function userGetHistory(int $page) : array {
+		$rowsPerPage = 50;
 		$query = $this->db
-			->select('tt.title, tt.title_url,
+			->select('SQL_CALC_FOUND_ROWS
+			          tt.title, tt.title_url,
 			          ts.site, ts.site_class,
-			          tuh.type, tuh.custom1, tuh.custom2, tuh.custom3, tuh.updated_at')
+			          tuh.type, tuh.custom1, tuh.custom2, tuh.custom3, tuh.updated_at', FALSE)
 			->from('tracker_user_history AS tuh')
 			->join('tracker_chapters AS tc', 'tuh.chapter_id = tc.id', 'left')
 			->join('tracker_titles AS tt', 'tc.title_id = tt.id', 'left')
 			->join('tracker_sites AS ts', 'tt.site_id = ts.id', 'left')
 			->where('tc.user_id', $this->User->id)
 			->order_by('tuh.id DESC')
+			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
 			->get();
 
-		$arr = [];
+		$arr = ['rows' => [], 'totalCount' => 0];
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $row) {
 				$arrRow = [];
@@ -133,9 +136,9 @@ class History_Model extends CI_Model {
 						$arrRow['status'] = "Category set to '{$row->custom1}'";
 						break;
 				}
-				$arr[] = $arrRow;
+				$arr['rows'][] = $arrRow;
 			}
-			//$arr = $query->result_array();
+			$arr['totalPages'] = ceil($this->db->query('SELECT FOUND_ROWS() count;')->row()->count / $rowsPerPage);
 		}
 		return $arr;
 	}

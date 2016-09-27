@@ -5,11 +5,18 @@ class History extends Auth_Controller {
 		parent::__construct();
 	}
 
-	public function index() {
+	public function index(int $page = 1) {
+		if($page === 0) redirect('user/history/1');
+
 		$this->header_data['title'] = "History";
 		$this->header_data['page']  = "history";
 
-		$this->body_data['historyData'] = $this->History->userGetHistory();
+		$historyData = $this->History->userGetHistory($page);
+		$this->body_data['historyData'] = $historyData['rows'];
+		$this->body_data['currentPage'] = $page;
+		$this->body_data['totalPages']  = $historyData['totalPages'];
+
+		if($page > $this->body_data['totalPages']) redirect('user/history/1');
 
 		$this->_render_page('User/History');
 	}
