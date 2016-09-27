@@ -178,12 +178,12 @@ a.inline {
 .sprite {
 	display: inline-block;
 
-	vertical-align: middle;
+	vertical-align: text-bottom;
 }
 .sprite-time {
 	display: inline-block;
 
-	vertical-align: middle;
+	vertical-align: text-bottom;
 
 	background: url("../../img/time.png") no-repeat;
 }
@@ -208,7 +208,7 @@ a.inline {
 .sprite-site {
 	display: inline-block;
 
-	vertical-align: middle;
+	vertical-align: text-bottom;
 
 	background: url("../../img/sites.png") no-repeat;
 }
