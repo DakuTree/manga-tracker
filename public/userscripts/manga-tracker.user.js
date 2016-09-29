@@ -16,8 +16,8 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
-// @updated      2016-09-20
-// @version      1.0.5
+// @updated      2016-09-29
+// @version      1.0.6
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -192,7 +192,6 @@ var base_site = {
 					).append(
 						next
 					).append(
-						// $('<img/>', {class: 'bookAMR', src: bookmarkBase64, title: 'Click here to bookmark this chapter'})).append(
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report a Bug'})
 					).append(
@@ -925,15 +924,15 @@ var sites = {
 			this.title       = segments[2];
 			this.chapter     = segments[3] + '/' + segments[4] + '/' + segments[5] + (segments[6] && segments[6] !== 'page' ? '/' + segments[6] : '');
 
-			this.title_url   = 'http://reader.kireicake.com/series/'+this.title;
-			this.chapter_url = 'http://reader.kireicake.com/read/'+this.title+'/'+this.chapter;
+			this.title_url   = 'https://reader.kireicake.com/series/'+this.title;
+			this.chapter_url = 'https://reader.kireicake.com/read/'+this.title+'/'+this.chapter;
 
 			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
 			this.chapterListCurrent = this.chapter_url+'/';
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
 			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content > script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) { 
+			this.viewerCustomImageList = $('#content > script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) { 
 				return self.indexOf(value) === index;
 			}).map(function(e, i) {
 				return e.replace(/\\/g, '');

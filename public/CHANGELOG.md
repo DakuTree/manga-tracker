@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Unable to scroll on certain small screen heights.
+- Topbar not showing on Kireicake due to https now being forced.
 
 ## [1.2.0] - 2016-09-27
 ### Added
