@@ -254,11 +254,12 @@ $(function(){
 	//Sticky List Header
 	var $window = $(window);
 	var nav     = $('#list-nav');
-	var list_table = $('#list-nav + table');
+	var list_table = $('table[data-list]');
 	$window.scroll(function() {
 		//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
 		//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
-		if($window.scrollTop() >= (119 - 26)) {
+		console.log($window.scrollTop());
+		if($window.scrollTop() >= (119 - 26 + 6)) {
 			nav.addClass('fixed-header');
 			nav.css('width', $('#list-nav').parent().width() + 'px');
 			list_table.css('margin-top', '97px');

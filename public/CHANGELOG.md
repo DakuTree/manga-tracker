@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.2.1] - 2016-09-29
+### Fixed
+- Unable to scroll on certain small screen heights.
+
 ## [1.2.0] - 2016-09-27
 ### Added
 - User History page!
