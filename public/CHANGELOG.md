@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.2.1] - 2016-09-29
+### Added
+- Added a proper favicon! Cropped from: http://danbooru.donmai.us/posts/584295
+  - Apparently the old generic production favicon was around 100KB, this is only 5KB, so big bandwidth savings here!
+
 ### Fixed
 - Unable to scroll on certain small screen heights.
 
