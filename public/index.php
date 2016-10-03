@@ -62,6 +62,10 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'developm
 ini_set('post_max_size', '1M');
 ini_set('upload_max_filesize', '0M');
 
+ini_set('session.gc_probability', 1);
+ini_set('session.gc_divisor', 1000);
+ini_set('session.gc_maxlifetime', 4320); //3 days
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
