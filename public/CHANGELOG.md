@@ -5,6 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.0] - 2016-10-04
+### Added
+- Ability to favourite chapters! (This does require the series to be tracked first though!)
+  - There isn't any place to view these yet, maybe soon!
+
+### Fixed
+- CI garbage collection "should" work properly now.
+- Upload/POST limits should now apply to production as well (for some reason I had this only set on dev).
+
 ## [1.2.1] - 2016-09-29
 ### Added
 - Added a proper favicon! Cropped from: http://danbooru.donmai.us/posts/584295

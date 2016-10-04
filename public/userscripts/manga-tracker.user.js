@@ -16,8 +16,8 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
-// @updated      2016-09-29
-// @version      1.0.6
+// @updated      2016-10-04
+// @version      1.1.0
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -195,6 +195,8 @@ var base_site = {
 						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report a Bug'})
 					).append(
+						$('<i/>', {id: 'favouriteChapter', class: 'fa fa-star', 'aria-hidden': 'true', title: 'Click to favourite this chapter (Requires series to be tracked first!)'})
+					).append(
 						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})
 					).append(
 						$('<span/>', {id: 'TrackerStatus'})
@@ -234,6 +236,12 @@ var base_site = {
 				e.preventDefault();
 
 				_this.reportBug();
+			});
+			//Setup favourite event.
+			$(topbar).on('click', '#favouriteChapter', function(e) {
+				e.preventDefault();
+
+				_this.favouriteChapter();
 			});
 
 			_this.postSetupTopBar(topbar);
@@ -392,6 +400,40 @@ var base_site = {
 			} else {
 				alert('Bug text cannot be blank.');
 			}
+		}
+	},
+
+	favouriteChapter : function() {
+		if(config['api-key']) {
+			var params = {
+				'api-key' : config['api-key'],
+				'manga'   : {
+					'site'    : this.site,
+
+					//Both title and chapter can contain anything, as parsing is done on the backend.
+					'title'   : this.title,
+					'chapter' : this.chapter
+				}
+			};
+
+			$.post(main_site + '/ajax/userscript/favourite', params, function (data, textStatus, jqXHR) {
+				//TODO: We should really output this somewhere other than the topbar..
+				$('#TrackerStatus').text(jqXHR.statusText);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				switch(jqXHR.status) {
+					case 400:
+						alert('ERROR: ' + errorThrown);
+						break;
+					case 429:
+						alert('ERROR: Rate limit reached.');
+						break;
+					default:
+						alert('ERROR: Something went wrong!\n'+errorThrown);
+						break;
+				}
+			});
+		} else {
+			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.
 		}
 	},
 

@@ -417,6 +417,82 @@ class Tracker_Model extends CI_Model {
 		return $success;
 	}
 
+	public function favouriteChapter(int $userID, string $site, string $title, string $chapter) : array {
+		$success = array(
+			'status' => 'Something went wrong',
+			'bool'   => FALSE
+		);
+		if($siteData = $this->Tracker->getSiteDataFromURL($site)) {
+			//Validate user input
+			if(!$this->sites->{$siteData->site_class}->isValidTitleURL($title)) {
+				//Error is already logged via isValidTitleURL
+				$success['status'] = 'Title URL is not valid';
+				return $success;
+			}
+			if(!$this->sites->{$siteData->site_class}->isValidChapter($chapter)) {
+				//Error is already logged via isValidChapter
+				$success['status'] = 'Chapter URL is not valid';
+				return $success;
+			}
+
+			//NOTE: If the title doesn't exist it will be created. This maybe isn't perfect, but it works for now.
+			$titleID = $this->Tracker->getTitleID($title, (int) $siteData->id);
+			if($titleID === 0) {
+				//Something went wrong.
+				log_message('error', "TitleID = 0 for {$title} @ {$siteData->id}");
+				return $success;
+			}
+
+			//We need the series to be tracked
+			$idCQuery = $this->db->select('id')
+			                    ->where('user_id', $userID)
+			                    ->where('title_id', $titleID)
+			                    ->get('tracker_chapters');
+			if($idCQuery->num_rows() > 0) {
+				$idCQueryRow = $idCQuery->row();
+
+				//Check if it is already favourited
+				$idFQuery = $this->db->select('id')
+				                    ->where('chapter_id', $idCQueryRow->id)
+				                    ->where('chapter', $chapter)
+				                    ->get('tracker_favourites');
+				if($idFQuery->num_rows() > 0) {
+					//Chapter is already favourited, so remove it from DB
+					$idFQueryRow = $idFQuery->row();
+
+					$isSuccess = (bool) $this->db->where('id', $idFQueryRow->id)
+					                           ->delete('tracker_favourites');
+
+					if($isSuccess) {
+						$success = array(
+							'status' => 'Unfavourited',
+							'bool'   => TRUE
+						);
+						$this->History->userRemoveFavourite((int) $idCQueryRow->id, $chapter);
+					}
+				} else {
+					//Chapter is not favourited, so add to DB.
+					$isSuccess = (bool) $this->db->insert('tracker_favourites', [
+						'chapter_id'      => $idCQueryRow->id,
+						'chapter'         => $chapter,
+						'updated_at'      => date('Y-m-d H:i:s')
+					]);
+
+					if($isSuccess) {
+						$success = array(
+							'status' => 'Favourited',
+							'bool'   => TRUE
+						);
+						$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);
+					}
+				}
+			} else {
+				$success['status'] = 'Series needs to be tracked before we can favourite chapters';
+			}
+		}
+		return $success;
+	}
+
 	public function getUsedCategories(int $userID) : array {
 		$usedCategories = [];
 

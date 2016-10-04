@@ -24,6 +24,17 @@ class History_Model extends CI_Model {
 	}
 
 	/*** USER HISTORY ***/
+	/*
+	 * --User history types--
+	 * 1: Title Added
+	 * 2: Title Updated
+	 * 3: Title Removed
+	 * 4: Tags updated
+	 * 5: Category updated
+	 * 6: Favourite added
+	 * 7: Favourite removed
+	 */
+
 	public function userAddTitle(int $chapterID, string $chapter, string $category) : bool {
 		$success = $this->db->insert('tracker_user_history', [
 			'chapter_id'  => $chapterID,
@@ -84,6 +95,30 @@ class History_Model extends CI_Model {
 
 		return $success;
 	}
+	public function userAddFavourite(int $chapterID, string $chapter) : bool {
+		$success = $this->db->insert('tracker_user_history', [
+			'chapter_id'  => $chapterID,
+
+			'type'        => '6',
+			'custom1'     => $chapter,
+
+			'updated_at'  => date('Y-m-d H:i:s')
+		]);
+
+		return $success;
+	}
+	public function userRemoveFavourite(int $chapterID, string $chapter) : bool {
+		$success = $this->db->insert('tracker_user_history', [
+			'chapter_id'  => $chapterID,
+
+			'type'        => '7',
+			'custom1'     => $chapter,
+
+			'updated_at'  => date('Y-m-d H:i:s')
+		]);
+
+		return $success;
+	}
 
 	public function userGetHistory(int $page) : array {
 		$rowsPerPage = 50;
@@ -134,6 +169,20 @@ class History_Model extends CI_Model {
 
 					case 5:
 						$arrRow['status'] = "Category set to '{$row->custom1}'";
+						break;
+
+					case 6:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Favourited '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 7:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Unfavourited '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					default:
+						$arrRow['status'] = "Something went wrong!";
 						break;
 				}
 				$arr['rows'][] = $arrRow;
