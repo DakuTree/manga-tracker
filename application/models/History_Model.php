@@ -136,7 +136,7 @@ class History_Model extends CI_Model {
 			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
 			->get();
 
-		$arr = ['rows' => [], 'totalCount' => 0];
+		$arr = ['rows' => [], 'totalPages' => 1];
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $row) {
 				$arrRow = [];
