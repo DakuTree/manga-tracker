@@ -1,5 +1,5 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2016/09/27):</strong> Added <a href="<?=base_url('user/history')?>">user history</a>! (The link for this can also be found in the dropdown at top-right)
+	<strong>Update (2016/10/04):</strong> Added ability to <a href="<?=base_url('user/favourites')?>">favourite chapters</a>! (The link for this can also be found in the dropdown at top-right)
 </div>
 
 <div id="list-nav">

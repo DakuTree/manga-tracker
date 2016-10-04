@@ -492,6 +492,43 @@ class Tracker_Model extends CI_Model {
 		}
 		return $success;
 	}
+	public function getFavourites(int $page) : array {
+		$rowsPerPage = 50;
+		$query = $this->db
+			->select('SQL_CALC_FOUND_ROWS
+			          tt.title, tt.title_url,
+			          ts.site, ts.site_class,
+			          tf.chapter, tf.updated_at', FALSE)
+			->from('tracker_favourites AS tf')
+			->join('tracker_chapters AS tc', 'tf.chapter_id = tc.id', 'left')
+			->join('tracker_titles AS tt', 'tc.title_id = tt.id', 'left')
+			->join('tracker_sites AS ts', 'tt.site_id = ts.id', 'left')
+			->where('tc.user_id', $this->User->id) //CHECK: Is this inefficient? Would it be better to have a user_id column in tracker_favourites?
+			->order_by('tf.id DESC')
+			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
+			->get();
+
+		$arr = ['rows' => [], 'totalCount' => 0];
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$arrRow = [];
+
+				$arrRow['updated_at'] = $row->updated_at;
+				$arrRow['title']      = $row->title;
+				$arrRow['title_url']  = $this->Tracker->sites->{$row->site_class}->getFullTitleURL($row->title_url);
+
+				$arrRow['site'] = $row->site;
+				$arrRow['site_sprite'] = str_replace('.', '-', $row->site);
+
+				$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->chapter);
+				$arrRow['chapter'] = "<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>";
+				$arr['rows'][] = $arrRow;
+			}
+			$arr['totalPages'] = ceil($this->db->query('SELECT FOUND_ROWS() count;')->row()->count / $rowsPerPage);
+		}
+		return $arr;
+
+	}
 
 	public function getUsedCategories(int $userID) : array {
 		$usedCategories = [];
