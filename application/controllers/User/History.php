@@ -16,7 +16,7 @@ class History extends Auth_Controller {
 		$this->body_data['currentPage'] = $page;
 		$this->body_data['totalPages']  = $historyData['totalPages'];
 
-		if($page > $this->body_data['totalPages']) redirect('user/history/1');
+		if($page > $this->body_data['totalPages'] && $page <= 1) redirect('user/history/1');
 
 		$this->_render_page('User/History');
 	}

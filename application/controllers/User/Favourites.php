@@ -16,7 +16,7 @@ class Favourites extends Auth_Controller {
 		$this->body_data['currentPage'] = $page;
 		$this->body_data['totalPages']  = $favouriteData['totalPages'];
 
-		if($page > $this->body_data['totalPages']) redirect('user/favourites/1');
+		if($page > $this->body_data['totalPages'] && $page <= 1) redirect('user/favourites/1');
 
 		$this->_render_page('User/Favourites');
 	}
