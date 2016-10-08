@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.1] - 2016-10-08
+### Added
+- Favicon will now "go dark" to alert the user that an update has occured.
+
 ## [1.3.0] - 2016-10-04
 ### Added
 - Ability to favourite chapters! (This does require the series to be tracked first though!)

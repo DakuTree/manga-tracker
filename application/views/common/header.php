@@ -9,6 +9,8 @@
 	<meta name="description" content="A site for tracking manga across multiple sites.">
 	<meta name="author" content="https://github.com/DakuTree/manga-tracker/graphs/contributors" />
 	<link type="text/plain" rel="author" href="<?=base_url('humans.txt')?>" />
+
+	<link rel="shortcut icon" href="<?=base_url('favicon.ico')?>">
 	<meta name="robots" content="noindex">
 
 	<link rel="stylesheet" href="<?=asset_url()?>vendor/css/normalize.css">
