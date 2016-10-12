@@ -103,14 +103,33 @@ class Tracker_Model extends CI_Model {
 	}
 
 	public function getTitleID(string $titleURL, int $siteID) {
-		$query = $this->db->select('id')
+		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.complete, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
 		                  ->from('tracker_titles')
-		                  ->where('title_url', $titleURL)
-		                  ->where('site_id', $siteID)
+		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+		                  ->where('tracker_titles.title_url', $titleURL)
+		                  ->where('tracker_titles.site_id', $siteID)
 		                  ->get();
 
 		if($query->num_rows() > 0) {
-			$titleID = $query->row('id');
+			$id = (int) $query->row('id');
+
+			//This updates inactive series if they are newly added, as noted in https://github.com/DakuTree/manga-tracker/issues/5#issuecomment-247480804
+			if(((int) $query->row('active')) === 0 && $query->row('complete') === 'N') {
+				$titleData = $this->sites->{$query->row('site_class')}->getTitleData($query->row('title_url'));
+				if(!is_null($titleData['latest_chapter'])) {
+					if($this->updateTitleById((int) $id, $titleData['latest_chapter'])) {
+						//Make sure last_checked is always updated on successful run.
+						//CHECK: Is there a reason we aren't just doing this in updateTitleById?
+						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+						         ->where('id', $id)
+						         ->update('tracker_titles');
+					}
+				} else {
+					log_message('error', "{$query->row('title')} failed to update successfully");
+				}
+			}
+
+			$titleID = $id;
 		} else {
 			//TODO: Check if title is valid URL!
 			$titleID = $this->addTitle($titleURL, $siteID);

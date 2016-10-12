@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - GameOfScanlation being unable to update if update time element was <abbr> instead of <span>
+- Series which have been marked as inactive are now automatically updated if a new user starts tracking it.
 
 ## [1.3.1] - 2016-10-08
 ### Added
