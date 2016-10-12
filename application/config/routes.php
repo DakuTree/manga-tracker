@@ -84,9 +84,10 @@ $route['ajax/userscript/report_bug']['post'] = 'Ajax/Userscript/report_bug';
 
 //$route['ajax/([a-zA-Z0-9_-]+)']          = 'Ajax/$1'; //TODO: Remove me. Don't match everything.
 
-$route['help'] = 'Help';
-
 $route['report_bug'] = 'ReportBug';
+
+$route['stats'] = 'Stats';
+$route['help']  = 'Help';
 
 $route['about']         = 'About';
 $route['about/terms']   = 'About/terms';

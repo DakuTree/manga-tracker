@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.2] - 2016-10-12
+### Added
+- Site stats page!
+
 ### Fixed
 - GameOfScanlation being unable to update if update time element was <abbr> instead of <span>
 
