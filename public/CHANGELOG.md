@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.2] - 2016-10-12
+### Fixed
+- GameOfScanlation being unable to update if update time element was <abbr> instead of <span>
+
 ## [1.3.1] - 2016-10-08
 ### Added
 - Favicon will now "go dark" to alert the user that an update has occured.
