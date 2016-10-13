@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.3] - 2016-10-13
+### Changed
+- Inactive users who login with inactive series are now notified if any series have been marked as inactive, and that they will update during next update.
+
 ## [1.3.2] - 2016-10-12
 ### Added
 - Site stats page!

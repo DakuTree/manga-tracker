@@ -32,7 +32,7 @@ class Tracker_Model extends CI_Model {
 	public function get_tracker_from_user_id(int $userID) {
 		$query = $this->db
 			->select('tracker_chapters.*,
-			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated,
+			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.complete AS title_complete, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
 			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
@@ -41,9 +41,9 @@ class Tracker_Model extends CI_Model {
 			->where('tracker_chapters.active', 'Y')
 			->get();
 
-		$arr = [];
+		$arr = ['series' => [], 'has_inactive' => FALSE];
 		foreach($this->enabledCategories as $category => $name) {
-			$arr[$category] = [
+			$arr['series'][$category] = [
 				'name'         => $name,
 				'manga'        => [],
 				'unread_count' => 0
@@ -52,8 +52,8 @@ class Tracker_Model extends CI_Model {
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$is_unread     = intval($row->latest_chapter == $row->current_chapter ? '1' : '0');
-				$arr[$row->category]['unread_count'] = (($arr[$row->category]['unread_count'] ?? 0) + !$is_unread);
-				$arr[$row->category]['manga'][] = [
+				$arr['series'][$row->category]['unread_count'] = (($arr['series'][$row->category]['unread_count'] ?? 0) + !$is_unread);
+				$data = [
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
 					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
@@ -69,7 +69,8 @@ class Tracker_Model extends CI_Model {
 						'title_url'       => $row->title_url,
 						'latest_chapter'  => $row->latest_chapter,
 						'current_chapter' => $row->current_chapter,
-						'last_updated'    => $row->title_last_updated
+						'last_updated'    => $row->title_last_updated,
+						'active'          => ($row->site_status == 'disabled' || $row->title_complete == 'Y' || $row->title_active == 1)
 					],
 					'site_data' => [
 						'id'         => $row->site_id,
@@ -77,11 +78,15 @@ class Tracker_Model extends CI_Model {
 						'status'     => $row->site_status
 					]
 				];
+				$arr['series'][$row->category]['manga'][] = $data;
+
+				//if(!$data['title_data']['active']) { print $row->title.' + '.$row->site_status.'<br>'; }
+				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
 			}
 
 			//NOTE: This does not sort in the same way as tablesorter, but it works better.
-			foreach (array_keys($arr) as $category) {
-				usort($arr[$category]['manga'], function ($a, $b) {
+			foreach (array_keys($arr['series']) as $category) {
+				usort($arr['series'][$category]['manga'], function ($a, $b) {
 					return strtolower("{$a['new_chapter_exists']} - {$a['title_data']['title']}") <=> strtolower("{$b['new_chapter_exists']} - {$b['title_data']['title']}");
 				});
 			}

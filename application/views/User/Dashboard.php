@@ -1,6 +1,13 @@
-<div class="alert alert-info" role="alert">
-	<strong>Update (2016/10/04):</strong> Added ability to <a href="<?=base_url('user/favourites')?>">favourite chapters</a>! (The link for this can also be found in the dropdown at top-right)
+<!--<div class="alert alert-info" role="alert">-->
+<!--	<strong>Update (2016/10/04):</strong> Added ability to <a href="--><?//=base_url('user/favourites')?><!--">favourite chapters</a>! (The link for this can also be found in the dropdown at top-right)-->
+<!--</div>-->
+
+<?php if($has_inactive) { ?>
+<div class="alert alert-warning" role="alert">
+	Some of the series in your list have been marked as inactive and not updated due to having no active users tracking it.<br>
+	These will be updated during the next update.
 </div>
+<?php } ?>
 
 <div id="list-nav">
 	<div class="list-header">

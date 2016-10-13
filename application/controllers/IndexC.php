@@ -19,7 +19,9 @@ class IndexC extends User_Controller {
 			$this->header_data['title'] = "Dashboard";
 			$this->header_data['page']  = "dashboard";
 
-			$this->body_data['trackerData'] = $this->Tracker->get_tracker_from_user_id($this->User->id);
+			$trackerData                     = $this->Tracker->get_tracker_from_user_id($this->User->id);
+			$this->body_data['trackerData']  = $trackerData['series'];
+			$this->body_data['has_inactive'] = $trackerData['has_inactive'];
 
 			$this->body_data['category_custom_1']            = ($this->User_Options->get('category_custom_1') == 'enabled' ? TRUE : FALSE);
 			$this->body_data['category_custom_1_text']       = $this->User_Options->get('category_custom_1_text');
