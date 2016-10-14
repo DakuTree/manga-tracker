@@ -16,10 +16,12 @@ class Site_Model extends CI_Model {
 	public function isValidTitleURL(string $title_url) : bool {}
 	public function isValidChapter(string $chapter): bool {}
 
-	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = ""){
+	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+
+		if($follow_redirect)        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
 		if(!empty($cookie_string))  curl_setopt($ch, CURLOPT_COOKIE, $cookie_string);
 		if(!empty($cookiejar_path)) curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar_path);
@@ -191,12 +193,13 @@ class Batoto extends Site_Model {
 
 	public function getFullTitleURL(string $title_string) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?
+		//FIXME: This points to a generic URL which will redirect according to the ID. Preferably we'd try and get the exact URL from the title, but we can't pass it here.
 		$title_parts = explode(':--:', $title_string);
-		return "http://bato.to/comic/_/comics/".$title_parts[0];
+		return "http://bato.to/comic/_/comics/-r".$title_parts[0];
 	}
 
 	public function isValidTitleURL(string $title_url) : bool {
-		$success = (bool) preg_match('/^[a-z0-9%-]+:--:(?:English|Spanish|French|German|Portuguese|Turkish|Indonesian|Greek|Filipino|Italian|Polish|Thai|Malay|Hungarian|Romanian|Arabic|Hebrew|Russian|Vietnamese|Dutch)$/', $title_url);
+		$success = (bool) preg_match('/^[0-9]+:--:(?:English|Spanish|French|German|Portuguese|Turkish|Indonesian|Greek|Filipino|Italian|Polish|Thai|Malay|Hungarian|Romanian|Arabic|Hebrew|Russian|Vietnamese|Dutch)$/', $title_url);
 		if(!$success) log_message('error', "Invalid Title URL (Batoto): {$title_url}");
 		return $success;
 	}
@@ -230,10 +233,10 @@ class Batoto extends Site_Model {
 		//Bato.to is annoying and locks stuff behind auth. See: https://github.com/DakuTree/manga-tracker/issues/14#issuecomment-233830855
 		$cookies = [
 			"lang_option={$title_lang}",
-		    "member_id=" . $this->config->item('batoto_cookie_member_id'),
-		    "pass_hash=" . $this->config->item('batoto_cookie_pass_hash')
+			"member_id=" . $this->config->item('batoto_cookie_member_id'),
+			"pass_hash=" . $this->config->item('batoto_cookie_pass_hash')
 		];
-		$data = $this->get_content($title_url, implode("; ", $cookies));
+		$data = $this->get_content($title_url, implode("; ", $cookies), "", TRUE);
 		if(!$data) {
 			log_message('error', "Batoto: Couldn't successfully grab URL ({$title_url})");
 			return NULL;

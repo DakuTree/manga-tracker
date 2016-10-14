@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.4] - 2016-10-14
+### Changed
+- Bato.to title url no longer includes the chapter name, and redirects are followed when grabbing new chapters.
+  - This should stop duplicate series caused by series being renamed.
+  - Format: TITLE-rID:--:LANG > ID:--:LANG
+
 ## [1.3.3] - 2016-10-13
 ### Changed
 - Inactive users who login with inactive series are now notified if any series have been marked as inactive, and that they will update during next update.

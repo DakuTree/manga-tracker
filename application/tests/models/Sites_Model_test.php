@@ -40,7 +40,7 @@ class Site_Model_test extends TestCase {
 	public function test_Batoto() {
 		$this->skipTravis('Missing required cookies.');
 
-		$result = $this->Sites_Model->{'Batoto'}->getTitleData('tsugumomo-r4271:--:English');
+		$result = $this->Sites_Model->{'Batoto'}->getTitleData('4271:--:English');
 
 		$this->assertInternalType('array', $result);
 		$this->assertArrayHasKey('title', $result);
