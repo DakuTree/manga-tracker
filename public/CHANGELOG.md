@@ -5,9 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.5] - 2016-10-15
+### Changed
+- Bug Reports should now include APIKEY/USERID
+
 ## [1.3.4] - 2016-10-14
 ### Changed
-- Bato.to title url no longer includes the chapter name, and redirects are followed when grabbing new chapters.
+- Bato.to title url no longer includes the title name, and redirects are followed when grabbing new chapters.
   - This should stop duplicate series caused by series being renamed.
   - Format: TITLE-rID:--:LANG > ID:--:LANG
 

@@ -16,8 +16,8 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+\/.*$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
-// @updated      2016-10-14
-// @version      1.1.1
+// @updated      2016-10-15
+// @version      1.1.2
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -378,7 +378,7 @@ var base_site = {
 					'api-key' : config['api-key'],
 					'bug'     : {
 						url  : location.href,
-						text : bugText
+						text : 'APIKEY:'+config['api-key']+' ||| '+bugText
 					}
 				};
 
