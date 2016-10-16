@@ -23,6 +23,39 @@ class History_Model extends CI_Model {
 		return (bool) $success;
 	}
 
+	public function getTitleHistory(int $titleID, int $page = 1) : array {
+		$rowsPerPage = 50;
+		$query = $this->db
+			->select('SQL_CALC_FOUND_ROWS
+			          tt.title_url,
+			          ts.site_class,
+			          tth.updated_at, tth.new_chapter', FALSE)
+			->from('tracker_titles_history AS tth')
+			->join('tracker_titles AS tt', 'tth.title_id = tt.id', 'left')
+			->join('tracker_sites AS ts', 'tt.site_id = ts.id', 'left')
+			->where('tt.id', $titleID)
+			->order_by('tth.id DESC')
+			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
+			->get();
+
+		$arr = ['rows' => [], 'totalPages' => 1];
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$arrRow = [];
+
+				$arrRow['updated_at']  = $row->updated_at;
+
+				$newChapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->new_chapter);
+				$arrRow['new_chapter']      = "<a href=\"{$newChapterData['url']}\">{$newChapterData['number']}</a>";
+				$arrRow['new_chapter_full'] = $row->new_chapter;
+
+				$arr['rows'][] = $arrRow;
+			}
+			$arr['totalPages'] = ceil($this->db->query('SELECT FOUND_ROWS() count;')->row()->count / $rowsPerPage);
+		}
+		return $arr;
+	}
+
 	/*** USER HISTORY ***/
 	/*
 	 * --User history types--

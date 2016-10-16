@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.6] - 2016-10-16
+### Added
+- Title history can now be found under the "More Info" toggle.
+
 ### Fixed
 - KireiCake should now work on the non-page URLs.
 

@@ -66,6 +66,9 @@ $route['user/favourites']            = 'User/Favourites';
 $route['user/favourites/([0-9]+)']   = 'User/Favourites/index/$1';
 $route['user/options']               = 'User/Options';
 
+$route['history/([0-9]+)']           = 'TitleHistory/index/$1';
+$route['history/([0-9]+)/([0-9]+)']  = 'TitleHistory/index/$1/$2';
+
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
 $route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';

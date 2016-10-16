@@ -92,6 +92,8 @@
 				<div class="tags">
 				<?php } ?>
 					<small>
+						<a href="<?=base_url("history/{$row['title_data']['id']}")?>">History</a>
+						|
 						<a href="#" class="edit-tags">Edit</a>
 						|
 						Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
