@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.6] - 2016-10-16
+### Fixed
+- KireiCake should now work on the non-page URLs.
+
 ## [1.3.5] - 2016-10-15
 ### Changed
 - Bug Reports should now include APIKEY/USERID
