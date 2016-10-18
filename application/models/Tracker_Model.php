@@ -80,15 +80,74 @@ class Tracker_Model extends CI_Model {
 				];
 				$arr['series'][$row->category]['manga'][] = $data;
 
-				//if(!$data['title_data']['active']) { print $row->title.' + '.$row->site_status.'<br>'; }
 				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
 			}
 
+			//CHECK: Is this good for speed?
 			//NOTE: This does not sort in the same way as tablesorter, but it works better.
-			foreach (array_keys($arr['series']) as $category) {
-				usort($arr['series'][$category]['manga'], function ($a, $b) {
-					return strtolower("{$a['new_chapter_exists']} - {$a['title_data']['title']}") <=> strtolower("{$b['new_chapter_exists']} - {$b['title_data']['title']}");
-				});
+			switch($this->User_Options->get('list_sort_type')) {
+				case 'unread':
+					foreach (array_keys($arr['series']) as $category) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) {
+							$a_text = strtolower("{$a['new_chapter_exists']} - {$a['title_data']['title']}");
+							$b_text = strtolower("{$b['new_chapter_exists']} - {$b['title_data']['title']}");
+
+							if($this->User_Options->get('list_sort_order') == 'asc') {
+								return $a_text <=> $b_text;
+							} else {
+								return $b_text <=> $a_text;
+							}
+						});
+					}
+					break;
+
+				case 'alphabetical':
+					foreach (array_keys($arr['series']) as $category) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) {
+							$a_text = strtolower("{$a['title_data']['title']}");
+							$b_text = strtolower("{$b['title_data']['title']}");
+
+							if($this->User_Options->get('list_sort_order') == 'asc') {
+								return $a_text <=> $b_text;
+							} else {
+								return $b_text <=> $a_text;
+							}
+						});
+					}
+					break;
+
+				case 'my_status':
+					foreach (array_keys($arr['series']) as $category) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) {
+							$a_text = strtolower("{$a['generated_current_data']['number']}");
+							$b_text = strtolower("{$b['generated_current_data']['number']}");
+
+							if($this->User_Options->get('list_sort_order') == 'asc') {
+								return $a_text <=> $b_text;
+							} else {
+								return $b_text <=> $a_text;
+							}
+						});
+					}
+					break;
+
+				case 'latest':
+					foreach (array_keys($arr['series']) as $category) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) {
+							$a_text = strtolower("{$a['generated_latest_data']['number']}");
+							$b_text = strtolower("{$b['generated_latest_data']['number']}");
+
+							if($this->User_Options->get('list_sort_order') == 'asc') {
+								return $a_text <=> $b_text;
+							} else {
+								return $b_text <=> $a_text;
+							}
+						});
+					}
+					break;
+
+				default:
+					break;
 			}
 		}
 		return $arr;

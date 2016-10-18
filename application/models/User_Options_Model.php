@@ -64,6 +64,26 @@ class User_Options_Model extends CI_Model {
 				5 => 'custom3'
 			)
 		),
+
+		'list_sort_type' => array(
+			'default' => 'unread',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'unread',
+				1 => 'alphabetical',
+				2 => 'my_status',
+				3 => 'latest'
+			)
+		),
+
+		'list_sort_order' => array(
+			'default' => 'asc',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'asc',
+				1 => 'desc'
+			)
+		),
 	);
 
 	public function __construct() {

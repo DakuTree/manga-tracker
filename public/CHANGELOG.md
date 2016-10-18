@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.7] - 2016-10-18
+### Added
+- Default list order option
+
 ## [1.3.6] - 2016-10-16
 ### Added
 - Title history can now be found under the "More Info" toggle.

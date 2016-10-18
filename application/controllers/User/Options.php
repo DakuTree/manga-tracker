@@ -16,11 +16,12 @@ class Options extends Auth_Controller {
 		$usedCategories   = $this->Tracker->getUsedCategories($this->User->id);
 
 		//NOTE: The checkbox validation is handled in run()
-		$this->form_validation->set_rules('category_custom_1_text',      'Custom Category 1 Text',      'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
-		$this->form_validation->set_rules('category_custom_2_text',      'Custom Category 2 Text',      'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
-		$this->form_validation->set_rules('category_custom_3_text',      'Custom Category 3 Text',      'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
-		$this->form_validation->set_rules('default_series_category',     'Default Series Category',     'required|is_valid_option_value[default_series_category]');
-		$this->form_validation->set_rules('enable_live_countdown_timer', 'Enable Live Countdown Timer', 'required|is_valid_option_value[enable_live_countdown_timer]');
+		$this->form_validation->set_rules('category_custom_1_text',   'Custom Category 1 Text', 'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
+		$this->form_validation->set_rules('category_custom_2_text',  'Custom Category 2 Text',  'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
+		$this->form_validation->set_rules('category_custom_3_text',  'Custom Category 3 Text',  'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
+		$this->form_validation->set_rules('default_series_category', 'Default Series Category', 'required|is_valid_option_value[default_series_category]');
+		$this->form_validation->set_rules('list_sort_type',          'List Sort Type',          'required|is_valid_option_value[list_sort_type]');
+		$this->form_validation->set_rules('list_sort_order',         'List Sort Order',         'required|is_valid_option_value[list_sort_order]');
 
 		if ($isValid = $this->form_validation->run() === TRUE) {
 			foreach($customCategories as $categoryK => $category) {
@@ -34,6 +35,9 @@ class Options extends Auth_Controller {
 			$this->User_Options->set('default_series_category', $this->input->post('default_series_category'));
 
 			$this->User_Options->set('enable_live_countdown_timer', $this->input->post('enable_live_countdown_timer'));
+
+			$this->User_Options->set('list_sort_type',  $this->input->post('list_sort_type'));
+			$this->User_Options->set('list_sort_order', $this->input->post('list_sort_order'));
 		}
 
 		/*** CUSTOM CATEGORIES ***/
@@ -62,6 +66,27 @@ class Options extends Auth_Controller {
 			'enable_live_countdown_timer',
 			$this->User_Options->get('enable_live_countdown_timer')
 		));
+
+
+		$this->body_data['list_sort_type'] = array_intersect_key(
+			array(
+				'unread'       => 'Unread',
+				'alphabetical' => 'Alphabetical',
+				'my_status'    => 'My Status',
+				'latest'       => 'Latest Release'
+			),
+			array_flip(array_values($this->User_Options->options['list_sort_type']['valid_options']))
+		);
+		$this->body_data['list_sort_type_selected'] = $this->User_Options->get('list_sort_type');
+
+		$this->body_data['list_sort_order'] = array_intersect_key(
+			array(
+				'asc'  => 'ASC',
+				'desc' => 'DESC'
+			),
+			array_flip(array_values($this->User_Options->options['list_sort_order']['valid_options']))
+		);
+		$this->body_data['list_sort_order_selected'] = $this->User_Options->get('list_sort_order');
 
 		$this->_render_page('User/Options');
 	}

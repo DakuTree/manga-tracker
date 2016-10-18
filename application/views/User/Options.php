@@ -57,6 +57,17 @@
 						</div>
 					</div>
 				</div>
+
+				<div id="options-list-sort">
+					<div class="form-group">
+						<?=form_label('List Sort Order', 'list_sort')?>
+						<div class="btn-group" data-toggle="buttons">
+							<?=form_dropdown('list_sort_type', $list_sort_type, $list_sort_type_selected)?>
+							<?=form_dropdown('list_sort_order', $list_sort_order, $list_sort_order_selected)?>
+						</div>
+					</div>
+				</div>
+
 				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success')))?>
 			</form>
 		</div>
