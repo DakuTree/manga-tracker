@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Support for MangaCow (mngcow.co)
 
+### Fixed
+- bato.to now works when using https
+
 ## [1.3.7] - 2016-10-18
 ### Added
 - Default list order option

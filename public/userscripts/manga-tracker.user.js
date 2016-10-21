@@ -18,7 +18,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-10-21
-// @version      1.1.4
+// @version      1.1.5
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -665,9 +665,15 @@ var sites = {
 
 			this.title          = this.title_url.replace(/.*r([0-9]+)$/, '$1') + ':--:' + this.manga_language;
 			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
-			this.chapter_url    = 'http://bato.to/reader#'+this.chapter_hash;
+			this.chapter_url    = this.https+'://bato.to/reader#'+this.chapter_hash;
 
 			this.chapterListCurrent = this.chapter_url;
+			if(this.https == 'https') {
+				$('select[name=chapter_select]:first > option').each(function(i, e) {
+					var val = $(e).val();
+					$(e).val(val.replace(/^http/, 'https'));
+				});
+			}
 			this.chapterList        = generateChapterList($('select[name=chapter_select]:first > option').reverseObj(), 'value');
 
 			this.viewerChapterName      = this.chapter_number;
