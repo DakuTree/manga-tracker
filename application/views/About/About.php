@@ -12,8 +12,6 @@
 		The site is built using: PHP7, MySQL5.6 and CodeIgniter 3. Behind the scenes we also use: TravisCI, ScrutinizerCI, Composer.
 		<br>
 		A more complete list can be found in our <a href="<?=base_url('humans.txt')?>">humans.txt</a>.
-		<br>
-		At the moment the site is closed-source, but there is plans to go open-source soon.
 	</p>
 
 	<h3>Special Thanks</h3>
