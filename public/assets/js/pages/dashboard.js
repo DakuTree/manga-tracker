@@ -260,6 +260,7 @@ $(function(){
 
 	//Sticky List Header
 	var $window = $(window);
+	var offset  = $('#category-nav').offset().top - $('#category-nav > ul').height() - 21;
 	var nav     = $('#list-nav');
 	var list_table = $('table[data-list]');
 	$window.scroll(function() {
@@ -270,14 +271,14 @@ $(function(){
 	handleScroll(); //Make sure we also trigger on page load.
 
 	function handleScroll() {
-		if($window.scrollTop() >= (119 - 26 + 6)) {
+		if($window.scrollTop() >= offset) {
+			list_table.css('margin-top', '97px');
 			nav.addClass('fixed-header');
 			nav.css('width', $('#list-nav').parent().width() + 'px');
-			list_table.css('margin-top', '97px');
 		} else {
+			list_table.css('margin-top', '5px');
 			nav.removeClass('fixed-header');
 			nav.css('width', 'initial');
-			list_table.css('margin-top', '5px');
 		}
 	}
 
