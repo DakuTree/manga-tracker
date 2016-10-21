@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - bato.to now works when using https
+- Custom categories should work now! Never noticed these didn't work for others but myself...
 
 ## [1.3.7] - 2016-10-18
 ### Added

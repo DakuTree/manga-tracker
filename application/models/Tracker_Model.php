@@ -614,12 +614,11 @@ class Tracker_Model extends CI_Model {
 	}
 
 	public function getUsedCategories(int $userID) : array {
-		$usedCategories = [];
-
 		$query = $this->db->distinct()
 		                  ->select('category')
 		                  ->from('tracker_chapters')
 		                  ->where('tracker_chapters.active', 'Y')
+		                  ->where('user_id', $userID)
 		                  ->get();
 
 		return array_column($query->result_array(), 'category');
