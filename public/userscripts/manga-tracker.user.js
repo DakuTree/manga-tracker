@@ -16,8 +16,9 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
-// @updated      2016-10-16
-// @version      1.1.3
+// @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
+// @updated      2016-10-21
+// @version      1.1.4
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -1008,6 +1009,40 @@ var sites = {
 		},
 		postSetupTopBar : function() {
 			$('.samBannerUnit').remove(); //Remove huge header banner.
+		}
+	}),
+
+	'mngcow.co' : extendSite({
+		setObjVars : function() {
+			var segments     = window.location.pathname.split( '/' );
+
+			this.title       = segments[1];
+			this.chapter     = segments[2];
+
+			this.title_url   = 'http://mngcow.co/'+this.title+'/';
+			this.chapter_url = this.title_url+this.chapter+'/';
+
+			var _this = this;
+			$('#pageNav').find('select:first > option').each(function(i, e) {
+				var val = $(e).val();
+				$(e).val(_this.title_url + val + '/');
+			});
+			this.chapterList        = generateChapterList($('#pageNav select:first > option').reverseObj(), 'value');
+			this.chapterListCurrent = this.chapter_url;
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			// this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerCustomImageList = $('script:contains("/wp-content/manga/")').html().match(/(http:\/\/mngcow\.co\/wp-content\/manga\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		preSetupViewer : function(callback) {
+			$('#longWrap').remove();
+			$('.nav_typ, .nav_pag').remove();
+
+			$('#singleWrap').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
 		}
 	}),
 

@@ -48,6 +48,7 @@ class Sites_Model extends CI_Model {
 	public $KissManga;
 	public $KireiCake;
 	public $GameOfScanlation;
+	public $MangaCow;
 
 	public function __construct() {
 		parent::__construct();
@@ -62,6 +63,7 @@ class Sites_Model extends CI_Model {
 		$this->KissManga        = new KissManga();
 		$this->KireiCake        = new KireiCake();
 		$this->GameOfScanlation = new GameOfScanlation();
+		$this->MangaCow         = new MangaCow();
 	}
 }
 
@@ -778,6 +780,65 @@ class GameOfScanlation extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", (int) $nodes_latest[0]->getAttribute('data-time'));
 			} else {
 				log_message('error', "GameOfScanlation: Unable to find nodes.");
+				return NULL;
+			}
+		} else {
+			//TODO: Throw ERRORS;
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+class MangaCow extends Site_Model {
+	public function getFullTitleURL(string $title_url) : string {
+		return "http://mngcow.co/{$title_url}/";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-zA-Z0-9_]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (MangaCow): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^[0-9]+$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (MangaCow): '.$chapter);
+		return $success;
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		return [
+			'url'    => $this->getFullTitleURL($title_url).$chapter.'/',
+			'number' => "c{$chapter}"
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$data = $this->get_content($fullURL);
+		if(strpos($data, '404 Page Not Found') === FALSE) {
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//h4");
+			$nodes_row   = $xpath->query("//ul[contains(@class, 'mng_chp')]/li[1]/a[1]");
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				$titleData['title'] = trim($nodes_title[0]->nodeValue);
+
+				$nodes_chapter = $nodes_row;
+				$nodes_latest  = $xpath->query("b[@class='dte']", $nodes_row[0]);
+
+				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)\/$/', '$1', $link);
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($nodes_latest[0]->getAttribute('title'), 13)));
+			} else {
+				log_message('error', "MangaCow: Unable to find nodes.");
 				return NULL;
 			}
 		} else {

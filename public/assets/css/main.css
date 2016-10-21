@@ -248,29 +248,35 @@ a.inline {
 
 	background-position: -91px -1px;
 }
-.sprite-site.sprite-reader-kireicake-com {
+.sprite-site.sprite-mngcow-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -109px -1px;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-reader-kireicake-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -127px -1px;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -145px -1px;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -163px -1px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -181px -1px;
 }
 #site-header {
 	/* dropdown */

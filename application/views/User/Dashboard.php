@@ -1,6 +1,6 @@
-<!--<div class="alert alert-info" role="alert">-->
-<!--	<strong>Update (2016/10/04):</strong> Added ability to <a href="--><?//=base_url('user/favourites')?><!--">favourite chapters</a>! (The link for this can also be found in the dropdown at top-right)-->
-<!--</div>-->
+<div class="alert alert-info" role="alert">
+	<strong>Update (2016/10/21):</strong> Added support for <a href="http://mngcow.co/">MangaCow</a> (mngcow.co).
+</div>
 
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">
