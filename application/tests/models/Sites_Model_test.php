@@ -143,4 +143,16 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z0-9\.-]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+	public function test_MangaCow() {
+		$result = $this->Sites_Model->{'MangaCow'}->getTitleData('The_scholars_reincarnation');
+
+		$this->assertInternalType('array', $result);
+		$this->assertArrayHasKey('title', $result);
+		$this->assertArrayHasKey('latest_chapter', $result);
+		$this->assertArrayHasKey('last_updated', $result);
+
+		$this->assertEquals('The Scholar\'s Reincarnation', $result['title']);
+		$this->assertRegExp('/^[0-9]+$/', $result['latest_chapter']);
+		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
+	}
 }

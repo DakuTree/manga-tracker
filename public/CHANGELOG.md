@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.9] - 2016-10-22
+### Added
+- Daily Test for MangaCow
+
 ## [1.3.8] - 2016-10-21
 ### Added
 - Support for MangaCow (mngcow.co)
