@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "30d0b2da7a4af4299655792633d3206b",
-    "content-hash": "0df305cfcb54a6c16502e5680b3cf478",
+    "hash": "6b5f2624808e04be01d88ba39c37baf0",
+    "content-hash": "fa0a8178579c4313385b99836f8f3f92",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -54,6 +54,44 @@
                 "mobile-first",
                 "responsive",
                 "web"
+            ]
+        },
+        {
+            "name": "bower-asset/cookieconsent",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/insites/cookieconsent.git",
+                "reference": "e3078a53abe423874413c81e0f3829ce83c2c9af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/insites/cookieconsent/zipball/e3078a53abe423874413c81e0f3829ce83c2c9af",
+                "reference": "e3078a53abe423874413c81e0f3829ce83c2c9af",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "build/cookieconsent.min.js",
+                    "build/cookieconsent.min.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Insites' cookie consent plugin",
+            "keywords": [
+                "cookie",
+                "cookieconsent",
+                "law"
             ]
         },
         {

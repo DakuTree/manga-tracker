@@ -60,18 +60,8 @@
 		});
 	</script>
 
-	<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-	<script type="text/javascript">
-		window.cookieconsent_options = {
-			"message"   : "This website uses cookies to ensure you get the best experience on our website",
-			"dismiss"   : "Got it!",
-			"learnMore" : "More info",
-			"link"      : "<?=base_url('about/terms#cookie-policy')?>",
-			"theme"     : "dark-bottom"
-		};
-	</script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-	<!-- End Cookie Consent plugin -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.2/cookieconsent.min.js"></script>
+	<script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#edeff5","text":"#838391"},"button":{"background":"transparent","text":"#4b81e8","border":"#4b81e8"}}});</script>
 
 	<script>
 		var base_url = "<?=base_url()?>";
