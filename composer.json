@@ -15,7 +15,8 @@
 		"bower-asset/normalize.css": "4.1.*",
 		"bower-asset/html5bp" : "5.2.*",
 		"bower-asset/bootstrap" : "3.3.*",
-		"bower-asset/font-awesome" : "4.6.3"
+		"bower-asset/font-awesome" : "4.6.3",
+		"bower-asset/respond" : "1.4.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit"         : "5.3.*",
@@ -64,7 +65,8 @@
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.svg"              : "public/assets/vendor/fonts/fontawesome-webfont.svg",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.ttf"              : "public/assets/vendor/fonts/fontawesome-webfont.ttf",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff"             : "public/assets/vendor/fonts/fontawesome-webfont.woff",
-		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2"
+		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2",
+		"vendor/bower-asset/respond/dest/respond.min.js"                             : "public/assets/vendor/js/respond.min.js"
 	},
 
 	"scripts": {
