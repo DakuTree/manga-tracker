@@ -67,7 +67,9 @@
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.ttf"              : "public/assets/vendor/fonts/fontawesome-webfont.ttf",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff"             : "public/assets/vendor/fonts/fontawesome-webfont.woff",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2",
-		"vendor/bower-asset/respond/dest/respond.min.js"                             : "public/assets/vendor/js/respond.min.js"
+		"vendor/bower-asset/respond/dest/respond.min.js"                             : "public/assets/vendor/js/respond.min.js",
+		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.js"                : "public/assets/vendor/js/cookieconsent.min.js",
+		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.css"               : "public/assets/vendor/css/cookieconsent.min.css"
 	},
 
 	"scripts": {

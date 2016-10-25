@@ -27,7 +27,7 @@
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
-	<span id="fb-check" class="fa sr-only" style="display: none">&nbsp;</span>
+	<span id="fb-check" class="fa sr-only cc-grower" style="display: none">&nbsp;</span>
 	<!-- JAVASCRIPT BELOW -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-1.12.4.min.js"><\/script>')</script>
@@ -61,6 +61,15 @@
 	</script>
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.2/cookieconsent.min.js"></script>
+	<script>window.cookieconsent || document.write('<script src="<?=asset_url()?>vendor/js/cookieconsent.min.js"><\/script>')</script>
+	<script>
+		$(document).ready(function() {
+			var check = $('#fb-check');
+			if(check.css('transition') !== 'max-height 1s ease 0s') {
+				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/cookieconsent.min.css">');
+			}
+		});
+	</script>
 	<script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#edeff5","text":"#838391"},"button":{"background":"transparent","text":"#4b81e8","border":"#4b81e8"}}});</script>
 
 	<script>
