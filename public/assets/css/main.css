@@ -174,110 +174,6 @@ table > tbody > tr.danger > td, table > tbody > tr.danger > th, table > tbody > 
 a.inline {
 	display: inline;
 }
-/*** ICON SPRITES ***/
-.sprite {
-	display: inline-block;
-
-	vertical-align: text-bottom;
-}
-.sprite-time {
-	display: inline-block;
-
-	vertical-align: text-bottom;
-
-	background: url("../../img/time.png") no-repeat;
-}
-.sprite-time.sprite-day {
-	width: 16px;
-	height: 16px;
-
-	background-position: -1px -1px;
-}
-.sprite-time.sprite-month {
-	width: 16px;
-	height: 16px;
-
-	background-position: -19px -1px;
-}
-.sprite-time.sprite-week {
-	width: 16px;
-	height: 16px;
-
-	background-position: -37px -1px;
-}
-.sprite-site {
-	display: inline-block;
-
-	vertical-align: text-bottom;
-
-	background: url("../../img/sites.png") no-repeat;
-}
-.sprite-site.sprite-bato-to {
-	width: 16px;
-	height: 16px;
-
-	background-position: -1px -1px;
-}
-.sprite-site.sprite-dynasty-scans-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -19px -1px;
-}
-.sprite-site.sprite-gameofscanlation-moe {
-	width: 16px;
-	height: 16px;
-
-	background-position: -37px -1px;
-}
-.sprite-site.sprite-kissmanga-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -55px -1px;
-}
-.sprite-site.sprite-mangafox-me {
-	width: 16px;
-	height: 16px;
-
-	background-position: -73px -1px;
-}
-.sprite-site.sprite-mangastream-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -91px -1px;
-}
-.sprite-site.sprite-mngcow-co {
-	width: 16px;
-	height: 16px;
-
-	background-position: -109px -1px;
-}
-.sprite-site.sprite-reader-kireicake-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -127px -1px;
-}
-.sprite-site.sprite-www-mangahere-co {
-	width: 16px;
-	height: 16px;
-
-	background-position: -145px -1px;
-}
-.sprite-site.sprite-www-mangapanda-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -163px -1px;
-}
-.sprite-site.sprite-www-webtoons-com {
-	width: 16px;
-	height: 16px;
-
-	background-position: -181px -1px;
-}
 #site-header {
 	/* dropdown */
 }
@@ -386,6 +282,109 @@ body {
 
 	-webkit-animation: fadeIn 0.7s;
 	        animation: fadeIn 0.7s;
+}
+.sprite {
+	display: inline-block;
+
+	vertical-align: text-bottom;
+}
+.sprite-time {
+	display: inline-block;
+
+	vertical-align: text-bottom;
+
+	background: url("../../img/time.png") no-repeat;
+}
+.sprite-time.sprite-day {
+	width: 16px;
+	height: 16px;
+
+	background-position: -1px -1px;
+}
+.sprite-time.sprite-week {
+	width: 16px;
+	height: 16px;
+
+	background-position: -37px -1px;
+}
+.sprite-time.sprite-month {
+	width: 16px;
+	height: 16px;
+
+	background-position: -19px -1px;
+}
+.sprite-site {
+	display: inline-block;
+
+	vertical-align: text-bottom;
+
+	background: url("../../img/sites.png") no-repeat;
+}
+.sprite-site.sprite-bato-to {
+	width: 16px;
+	height: 16px;
+
+	background-position: -1px -1px;
+}
+.sprite-site.sprite-dynasty-scans-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -19px -1px;
+}
+.sprite-site.sprite-gameofscanlation-moe {
+	width: 16px;
+	height: 16px;
+
+	background-position: -37px -1px;
+}
+.sprite-site.sprite-kissmanga-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -55px -1px;
+}
+.sprite-site.sprite-mangafox-me {
+	width: 16px;
+	height: 16px;
+
+	background-position: -73px -1px;
+}
+.sprite-site.sprite-mangastream-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -91px -1px;
+}
+.sprite-site.sprite-mngcow-co {
+	width: 16px;
+	height: 16px;
+
+	background-position: -109px -1px;
+}
+.sprite-site.sprite-reader-kireicake-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -127px -1px;
+}
+.sprite-site.sprite-www-mangahere-co {
+	width: 16px;
+	height: 16px;
+
+	background-position: -145px -1px;
+}
+.sprite-site.sprite-www-mangapanda-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -163px -1px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -181px -1px;
 }
 /** LOADING ANIMATION **/
 @-webkit-keyframes uil-ripple {
