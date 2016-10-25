@@ -7,3 +7,6 @@ $files = new RegexIterator($flattened, '/^(.*\/)?(database|database_password|con
 foreach($files as $file) {
 	chmod($file, 0644);
 }
+
+//Make sure .gitkeep file is recreated
+touch(getcwd()."/application/tests/_ci_phpunit_test/.gitkeep");
