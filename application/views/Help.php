@@ -22,5 +22,6 @@
 		<li><del>KissManga.com</del> - KissManga has been temporarily disabled due to IP block. No ETA on fix.</li>
 		<li>KireiCake.com</li>
 		<li>GameOfScanlation.moe</li>
+		<li>MangaCow</li>
 	</ul>
 </div>

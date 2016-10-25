@@ -1,6 +1,6 @@
-<div class="alert alert-info" role="alert">
-	<strong>Update (2016/10/21):</strong> Added support for <a href="http://mngcow.co/">MangaCow</a> (mngcow.co).
-</div>
+<!--<div class="alert alert-info" role="alert">-->
+<!--	<strong>Update (2016/10/21):</strong> Added support for <a href="http://mngcow.co/">MangaCow</a> (mngcow.co).-->
+<!--</div>-->
 
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">
