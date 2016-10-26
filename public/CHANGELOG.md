@@ -7,13 +7,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.10] - 2016-10-25
 ### Added
-- Fallback for Cookieconsent & RespondJS.
+- `[Backend]` Fallback for Cookieconsent & RespondJS.
 - Added MangaCow to Supported Sites list on help page & removed the notice.
 
 ### Changes
 - Changelog will now mark backend changes with `[Backend]`. This will not be added to previous updates.
 - Updated CookieConsent lib from 1.0.9 > 3.0.2.
 - `[Backend]` Updated various composer packages.
+- `[Backend]` Moved sprite icons to seperate LESS file.
 
 ### Fixed
 - `[Backend]` .gitkeep file is now regenerated after composer update.
