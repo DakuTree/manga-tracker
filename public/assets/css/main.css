@@ -26,25 +26,6 @@ h1 {
 	font-size: 19px;
 	font-weight: normal;
 }
-/** FIXME: This is a temp solution **/
-.sticky-alert {
-	/** Use 100% to fill the width of the page **/
-	position: fixed;
-	z-index: 1050;
-	top: 0;
-	right: 0;
-	left: 0;
-
-	width: 400px;
-	height: 50px;
-	margin: 0 auto;
-	padding-top: 5px;
-	padding-bottom: 10px;
-
-	text-align: center;
-
-	background-color: rgba(0, 0, 255, 0.2);
-}
 p.footer {
 	margin: 20px 0 0 0;
 	padding: 0 10px 0 10px;
