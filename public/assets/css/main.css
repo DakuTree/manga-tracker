@@ -26,24 +26,6 @@ h1 {
 	font-size: 19px;
 	font-weight: normal;
 }
-fieldset {
-	margin: 0 2px;
-	padding: 0.35em 0.625em 0.75em;
-
-	border: 1px solid #C0C0C0;
-}
-input, select {
-	color: black;
-}
-input[readonly] {
-	border: none;
-	outline: none;
-	background-color: transparent;
-
-	font-family: inherit;
-	font-size: inherit;
-	font-weight: bold;
-}
 /** FIXME: This is a temp solution **/
 .sticky-alert {
 	/** Use 100% to fill the width of the page **/
