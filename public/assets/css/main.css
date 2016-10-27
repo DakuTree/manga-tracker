@@ -19,46 +19,12 @@ h1 {
 	margin: 0 0 14px 0;
 	padding: 14px 15px 10px 15px;
 
-	color: #444444;
-	border-bottom: 1px solid #D0D0D0;
+	color: #4F5155;
+	border-bottom: 1px solid #CCCCCC;
 	background-color: transparent;
 
 	font-size: 19px;
 	font-weight: normal;
-}
-code {
-	display: block;
-
-	margin: 14px 0 14px 0;
-	padding: 12px 10px 12px 10px;
-
-	color: #002166;
-	border: 1px solid #D0D0D0;
-	background-color: #F9F9F9;
-
-	font-family: Consolas, Monaco, Courier New, Courier, monospace;
-	font-size: 12px;
-}
-::selection, ::-moz-selection {
-	color: white;
-	background-color: #E13300;
-}
-/*** CSS ANIMATIONS ***/
-@-webkit-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
 }
 fieldset {
 	margin: 0 2px;
@@ -240,6 +206,46 @@ html {
 body {
 	/* Margin bottom by footer height */
 	margin-bottom: 40px;
+}
+@-webkit-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-moz-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-ms-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-o-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 #site-footer {
 	position: absolute;
