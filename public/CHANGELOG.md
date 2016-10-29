@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.12] - 2016-10-29
+### Changes
+- `[Backend]` More LESS tweaking. Removed a bunch of unused code.
+
 ## [1.3.11] - 2016-10-27
 ### Changes
 - `[Backend]` Lots of LESS tweaking. Initial work for allowing seperate themes.
