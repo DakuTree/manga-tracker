@@ -42,8 +42,8 @@ h1 {
 
 		#page {
 			position: relative;
-			clear: both;
-			float: left;
+			clear: both; //CHECK: Is this needed?
+			float: left; //CHECK: Is this needed?
 			width: 100%;
 			overflow: hidden;
 			//min-height: 724px;
@@ -51,30 +51,6 @@ h1 {
 			margin-bottom: 40px + 10px; //This keeps the footer from overlaying on the page
 			padding-top: 1px;
 		}
-	}
-}
-
-//http://davidjrush.com/blog/2011/12/simple-jquery-tooltip/
-//This is used alongside bootstrap tooltip as a ? icon.
-span.question {
-	cursor: pointer;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	background: rgb(51, 122, 183);
-	line-height: 16px;
-	color: white;
-	font-size: 13px;
-	font-weight: bold;
-	border-radius: 8px;
-	text-align: center;
-	position: relative;
-
-	&:hover { background-color: #265a88; }
-
-	& + .tooltip > .tooltip-inner {
-		white-space:pre;
-		max-width:none;
 	}
 }
 
