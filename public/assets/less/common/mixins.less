@@ -5,3 +5,11 @@
 	@-o-keyframes      @name { @frames(); }
 	@keyframes         @name { @frames(); }
 }
+
+.animation(@arguments) {
+	-webkit-animation: @arguments;
+	-moz-animation:    @arguments;
+	//-ms-animation:   @arguments; //This doesn't seem to exist
+	-o-animation:      @arguments;
+	animation:         @arguments;
+}
