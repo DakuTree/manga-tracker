@@ -44,7 +44,7 @@
 
 				<div id="options-countdown-timer">
 					<div class="form-group">
-						<?=form_label('Live Countdown Timer', 'enable_live_countdown_timer')?> <span class="question" data-toggle="tooltip" data-placement="left"  title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background.">?</span>
+						<?=form_label('Live Countdown Timer', 'enable_live_countdown_timer')?> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background."></i>
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-primary <?=(isset($enable_live_countdown_timer_enabled['checked']) ? 'active' : '')?>">
 								<?=form_radio($enable_live_countdown_timer_enabled)?>
