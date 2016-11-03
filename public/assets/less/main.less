@@ -1,6 +1,7 @@
 @import 'common/mixins';
 
-@import 'common/themes/light'; //FIXME: This should alternate between themes
+@themeLocation: 'NO_THEME_SPECIFIED'; //NOTE: This is modified via lessc (SEE: #72 for more info)
+@import "@{themeLocation}";
 
 @import 'common/base';
 @import 'common/header';

@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--no-color main.less --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot;" />
+      <option name="arguments" value="--no-color --modify-var=themeLocation=common\themes\light --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
       <option name="checkSyntaxErrors" value="true" />
-      <option name="description" value="Compiles .less files into .css files" />
+      <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="less" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="Less" />
-      <option name="output" value="$ProjectFileDir$/public/assets/css/main.css" />
+      <option name="name" value="Less (Light Theme)" />
+      <option name="output" value="$ProjectFileDir$/public/assets/css/main.light.css" />
       <option name="outputFilters">
         <array>
           <FilterInfo>
@@ -43,6 +43,31 @@
       <option name="scopeName" value="JS" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$/public/assets/js/" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="--no-color --modify-var=themeLocation=common\themes\dark --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="less" />
+      <option name="immediateSync" value="true" />
+      <option name="name" value="Less (Dark Theme)" />
+      <option name="output" value="$ProjectFileDir$/public/assets/css/main.dark.css" />
+      <option name="outputFilters">
+        <array>
+          <FilterInfo>
+            <option name="description" value="lessc error format" />
+            <option name="name" value="lessc" />
+            <option name="regExp" value="$MESSAGE$\Q in \E$FILE_PATH$\Q on line \E$LINE$\Q, column \E$COLUMN$" />
+          </FilterInfo>
+        </array>
+      </option>
+      <option name="outputFromStdout" value="true" />
+      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
+      <option name="scopeName" value="Project Files" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$ProjectFileDir$/public/assets/less/" />
       <envs />
     </TaskOptions>
   </component>
