@@ -68,6 +68,15 @@
 					</div>
 				</div>
 
+				<div id="options-theme">
+					<div class="form-group">
+						<?=form_label('Site Theme', 'theme')?>
+						<div class="btn-group" data-toggle="buttons">
+							<?=form_dropdown('theme', $theme, $theme_selected)?>
+						</div>
+					</div>
+				</div>
+
 				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success')))?>
 			</form>
 		</div>

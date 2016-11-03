@@ -84,6 +84,15 @@ class User_Options_Model extends CI_Model {
 				1 => 'desc'
 			)
 		),
+
+		'theme' => array(
+			'default' => 'light',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'light',
+				1 => 'dark'
+			)
+		),
 	);
 
 	public function __construct() {
