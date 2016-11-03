@@ -16,6 +16,8 @@
 					a {
 						padding-top:    5px;
 						padding-bottom: 5px;
+
+						&:hover { background-color: @backgroundSecondary; }
 					}
 				}
 			}
@@ -59,13 +61,8 @@
 		width: 100%;
 		text-align: left;
 
-		& > thead th {
-			background-color: @backgroundSecondary;
-		}
-
 		& > tbody {
 			& > tr {
-				&:nth-of-type(odd) { background-color: @backgroundQuaternary; }
 				& > td:nth-of-type(1) {
 					width: 5%;
 					text-align: center;

@@ -5,6 +5,15 @@
 
 		border-bottom: 1px solid @borderPrimary;
 
+		.navbar-brand {
+			color: @linkPrimary;
+			&:hover { color: @linkHoverPrimary }
+		}
+		.navbar-nav > li > a {
+			color: @linkPrimary;
+			&:hover, &:focus { color: @linkHoverPrimary; }
+		}
+
 		.container {
 			padding-left: 0;
 			padding-right: 0;
@@ -51,7 +60,15 @@
 	/* dropdown */
 	ul.nav {
 		li.dropdown {
-			&:hover ul.dropdown-menu { display: block; }
+			&:hover ul.dropdown-menu {
+				display: block;
+				background: @backgroundQuaternary;
+
+				& > li > a {
+					color: @linkPrimary;
+					&:hover, &:focus { color: @linkHoverPrimary; }
+				}
+			}
 
 			& > a {
 				padding-left: 4px;

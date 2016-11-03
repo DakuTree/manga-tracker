@@ -67,3 +67,10 @@ h1 {
 	background-image: none; //Because gradients are awful.
 	padding: 5px 15px; //Reduces the padding to a decent size.
 }
+
+.bg-danger { background: @backgroundDanger; }
+
+.table-striped {
+	& > thead th { background-color: @backgroundSecondary; }
+	& > tbody > tr:nth-of-type(odd) { background-color: @backgroundQuaternary; }
+}

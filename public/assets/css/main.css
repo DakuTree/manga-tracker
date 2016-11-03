@@ -56,6 +56,15 @@ h1 {
 
 	background-image: none;
 }
+.bg-danger {
+	background: #290000;
+}
+.table-striped > thead th {
+	background-color: #060606;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+	background-color: #161616;
+}
 #site-header {
 	/* dropdown */
 }
@@ -63,6 +72,18 @@ h1 {
 	border-color: #333333;
 	border-bottom: 1px solid #444444;
 	background: #161616;
+}
+#site-header > nav .navbar-brand {
+	color: #FFCC66;
+}
+#site-header > nav .navbar-brand:hover {
+	color: #FFB219;
+}
+#site-header > nav .navbar-nav > li > a {
+	color: #FFCC66;
+}
+#site-header > nav .navbar-nav > li > a:hover, #site-header > nav .navbar-nav > li > a:focus {
+	color: #FFB219;
 }
 #site-header > nav .container {
 	padding-right: 0;
@@ -103,6 +124,14 @@ h1 {
 }
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu {
 	display: block;
+
+	background: #161616;
+}
+#site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a {
+	color: #FFCC66;
+}
+#site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a:hover, #site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a:focus {
+	color: #FFB219;
 }
 #site-header ul.nav li.dropdown > a {
 	float: left;
@@ -363,6 +392,9 @@ body {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
+#page[data-page="dashboard"] > div > nav ul > li a:hover {
+	background-color: #060606;
+}
 #page[data-page="dashboard"] > div > #tracker-table-links {
 	clear: both;
 	overflow: auto;
@@ -405,12 +437,6 @@ body {
 	width: 100%;
 
 	text-align: left;
-}
-#page[data-page="dashboard"] > .tracker-table > thead th {
-	background-color: #060606;
-}
-#page[data-page="dashboard"] > .tracker-table > tbody > tr:nth-of-type(odd) {
-	background-color: #161616;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
@@ -480,8 +506,6 @@ body {
 	border: 0;
 }
 #page[data-page="terms"] > header h1 a {
-	color: #337AB7;
-
 	font-weight: bold;
 }
 #page[data-page="terms"] .anchor {
@@ -492,8 +516,8 @@ body {
 	margin: 0 0 14px 0;
 	padding: 14px 15px 10px 15px;
 
-	color: #444444;
-	border-bottom: 1px solid #D0D0D0;
+	color: #DDDDDD;
+	border-bottom: 1px solid #444444;
 	background-color: transparent;
 
 	font-size: 19px;
