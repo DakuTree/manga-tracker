@@ -396,6 +396,9 @@ body {
 
 	text-align: left;
 }
+#page[data-page="dashboard"] > .tracker-table > thead th {
+	background-color: #EEEEEE;
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
 

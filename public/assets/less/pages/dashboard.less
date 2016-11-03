@@ -15,7 +15,7 @@
 		& > nav {
 			& ul {
 				& > li {
-					&.active { background-color: @bgcolor; }
+					&.active { background-color: @backgroundSecondary; }
 					a {
 						padding-top:    5px;
 						padding-bottom: 5px;
@@ -27,7 +27,7 @@
 		& > #tracker-table-links {
 			clear: both;
 
-			background-color: @bgcolor;
+			background-color: @backgroundSecondary;
 			overflow: auto;
 
 			padding: 3px 7px;
@@ -68,6 +68,10 @@
 	& > .tracker-table {
 		width: 100%;
 		text-align: left;
+
+		& > thead th {
+			background-color: @backgroundSecondary;
+		}
 
 		& > tbody {
 			& > tr {
