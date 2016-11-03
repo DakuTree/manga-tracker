@@ -56,6 +56,20 @@ h1 {
 
 	background-image: none;
 }
+.alert-info {
+	border-color: #BCE8F1;
+	background: #D9EDF7;
+}
+.alert-info a {
+	color: #337AB7;
+}
+.alert-warning {
+	border-color: #FAEBCC;
+	background: #FCF8E3;
+}
+.alert-warning a {
+	color: #337AB7;
+}
 .bg-danger {
 	background: #290000;
 }

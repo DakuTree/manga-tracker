@@ -68,7 +68,18 @@ h1 {
 	padding: 5px 15px; //Reduces the padding to a decent size.
 }
 
-.bg-danger { background: @backgroundDanger; }
+.alert-info    {
+	background:   @backgroundInfo;
+	border-color: @borderInfo;
+	a { color: #337ab7; } //TEMP
+}
+.alert-warning {
+	background:   @backgroundWarning;
+	border-color: @borderWarning;
+	a { color: #337ab7; } //TEMP
+}
+
+.bg-danger     { background: @backgroundDanger; }
 
 .table-striped {
 	& > thead th { background-color: @backgroundSecondary; }
