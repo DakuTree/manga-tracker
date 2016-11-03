@@ -1,6 +1,6 @@
-<!--<div class="alert alert-info" role="alert">-->
-<!--	<strong>Update (2016/10/21):</strong> Added support for <a href="http://mngcow.co/">MangaCow</a> (mngcow.co).-->
-<!--</div>-->
+<div class="alert alert-info" role="alert">
+	<strong>Update (2016/11/03):</strong> Added theme support! This comes with the original light theme, and a new dark theme! Change it on the <a href="<?=base_url('user/options')?>">options page</a>!
+</div>
 
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">

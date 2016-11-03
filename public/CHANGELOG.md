@@ -6,8 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.13] - 2016-11-03
+### Added
+- Theme support! This comes with the original light theme, and a new dark theme! Change it in the options!
+
 ### Changes
-- `[Backend]` Even more LESS tweaking. Adding more color vars for eventual theme support.
+- `[Backend]` Even more LESS tweaking. Everything now uses theme vars. Got rid of more useless code aswell.
 
 ## [1.3.12] - 2016-10-29
 ### Changes
