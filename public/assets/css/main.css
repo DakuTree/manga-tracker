@@ -344,7 +344,7 @@ body {
 	text-align: right;
 }
 #page[data-page="dashboard"] > div#list-nav {
-	background-color: white;
+	background-color: transparent;
 }
 #page[data-page="dashboard"] > div > nav ul > li.active {
 	background-color: #EEEEEE;

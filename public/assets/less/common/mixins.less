@@ -13,3 +13,14 @@
 	-o-animation:      @arguments;
 	animation:         @arguments;
 }
+
+.fake-link() {
+	color: @linkPrimary;
+	background-color: transparent;
+	font-weight: normal;
+	cursor: pointer;
+	&:hover {
+		text-decoration: underline;
+
+	}
+}
