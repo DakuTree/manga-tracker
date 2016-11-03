@@ -1,8 +1,8 @@
 body {
 	margin: 40px;
 
-	color: #DDDDDD;
-	background-color: #202020;
+	color: #4F5155;
+	background-color: #FFFFFF;
 
 	font: 13px/20px normal;
 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
@@ -10,24 +10,24 @@ body {
 	line-height: 26px;
 }
 a {
-	color: #FFCC66;
+	color: #003399;
 	background-color: transparent;
 
 	font-weight: normal;
 }
 a:hover {
-	color: #FFB219;
+	color: #23527C;
 }
 select {
-	color: #DDDDDD;
-	background: #202020;
+	color: #4F5155;
+	background: #FFFFFF;
 }
 h1 {
 	margin: 0 0 14px 0;
 	padding: 14px 15px 10px 15px;
 
-	color: #DDDDDD;
-	border-bottom: 1px solid #444444;
+	color: #4F5155;
+	border-bottom: 1px solid #BBBBBB;
 	background-color: transparent;
 
 	font-size: 19px;
@@ -57,41 +57,41 @@ h1 {
 	background-image: none;
 }
 .bg-danger {
-	background: #290000;
+	background: #F2DEDE;
 }
 .table-striped > thead th {
-	background-color: #060606;
+	background-color: #EEEEEE;
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
-	background-color: #161616;
+	background-color: #F9F9F9;
 }
 #site-header {
 	/* dropdown */
 }
 #site-header > nav {
-	border-color: #333333;
-	border-bottom: 1px solid #444444;
-	background: #161616;
+	border-color: #CCCCCC;
+	border-bottom: 1px solid #BBBBBB;
+	background: #F9F9F9;
 }
 #site-header > nav .navbar-brand {
-	color: #FFCC66;
+	color: #4F5155;
 }
 #site-header > nav .navbar-brand:hover {
-	color: #FFB219;
+	color: #23527C;
 }
 #site-header > nav .navbar-nav > li > a {
-	color: #FFCC66;
+	color: #003399;
 }
 #site-header > nav .navbar-nav > li > a:hover, #site-header > nav .navbar-nav > li > a:focus {
-	color: #FFB219;
+	color: #23527C;
 }
 #site-header > nav .container {
 	padding-right: 0;
 	padding-left: 0;
 }
 #site-header > nav .container #header-nav-user {
-	border-right: 1px solid #333333;
-	border-left: 1px solid #333333;
+	border-right: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
 }
 #site-header > nav .container #header-nav-user .dropdown {
 	padding-left: 7.5px;
@@ -100,20 +100,20 @@ h1 {
 	min-width: 123px;
 	padding: 0;
 
-	border: 1px solid #555555;
-	border-top-color: #333333;
+	border: 1px solid #AAAAAA;
+	border-top-color: #CCCCCC;
 	border-radius: 0;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu .divider {
 	margin: 0;
 
-	background-color: #333333;
+	background-color: #CCCCCC;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu > li > a {
 	padding: 8px 20px;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu > li > a:hover {
-	background: #333333 none !important;
+	background: #CCCCCC none !important;
 }
 @media (min-width: 768px) {
 	#site-header > nav .container #header-nav-user .dropdown .dropdown-menu {
@@ -125,13 +125,13 @@ h1 {
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu {
 	display: block;
 
-	background: #161616;
+	background: #F9F9F9;
 }
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a {
-	color: #FFCC66;
+	color: #003399;
 }
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a:hover, #site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a:focus {
-	color: #FFB219;
+	color: #23527C;
 }
 #site-header ul.nav li.dropdown > a {
 	float: left;
@@ -204,13 +204,13 @@ body {
 	/* Set the fixed height of the footer here */
 	height: 46px;
 
-	background-color: #111111;
+	background-color: #F5F5F5;
 }
 #site-footer .container {
 	padding-top: 10px;
 }
 #site-footer a {
-	color: #888888;
+	color: #777777;
 }
 #site-footer a:hover {
 	text-decoration: none;
@@ -383,17 +383,17 @@ body {
 	text-align: right;
 }
 #page[data-page="dashboard"] > div#list-nav {
-	background-color: #202020;
+	background-color: #FFFFFF;
 }
 #page[data-page="dashboard"] > div > nav ul > li.active {
-	background-color: #060606;
+	background-color: #EEEEEE;
 }
 #page[data-page="dashboard"] > div > nav ul > li a {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
 #page[data-page="dashboard"] > div > nav ul > li a:hover {
-	background-color: #060606;
+	background-color: #EEEEEE;
 }
 #page[data-page="dashboard"] > div > #tracker-table-links {
 	clear: both;
@@ -401,7 +401,7 @@ body {
 
 	padding: 3px 7px;
 
-	background-color: #060606;
+	background-color: #EEEEEE;
 }
 #page[data-page="dashboard"] > div > #tracker-table-links #move-container {
 	margin-left: 10px;
@@ -422,7 +422,7 @@ body {
 #page[data-page="dashboard"] > div > #tracker-table-links label span {
 	cursor: pointer;
 
-	color: #FFCC66;
+	color: #003399;
 	background-color: transparent;
 
 	font-weight: normal;
@@ -516,8 +516,8 @@ body {
 	margin: 0 0 14px 0;
 	padding: 14px 15px 10px 15px;
 
-	color: #DDDDDD;
-	border-bottom: 1px solid #444444;
+	color: #4F5155;
+	border-bottom: 1px solid #BBBBBB;
 	background-color: transparent;
 
 	font-size: 19px;
