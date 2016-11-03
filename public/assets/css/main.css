@@ -421,9 +421,14 @@ body {
 	display: none;
 
 	margin-right: 15px;
+
+	cursor: pointer;
+
+	background-color: transparent;
+
+	font-weight: normal;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .more-info:hover {
-	cursor: pointer;
 	text-decoration: underline;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags {

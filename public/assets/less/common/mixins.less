@@ -14,13 +14,14 @@
 	animation:         @arguments;
 }
 
-.fake-link() {
-	color: @linkPrimary;
+.fake-link(@useColor: true) {
+	& when (@useColor = true) {
+		color: @linkPrimary;
+	}
 	background-color: transparent;
 	font-weight: normal;
 	cursor: pointer;
 	&:hover {
 		text-decoration: underline;
-
 	}
 }
