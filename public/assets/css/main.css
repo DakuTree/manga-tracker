@@ -20,7 +20,7 @@ h1 {
 	padding: 14px 15px 10px 15px;
 
 	color: #4F5155;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #BBBBBB;
 	background-color: transparent;
 
 	font-size: 19px;
@@ -53,7 +53,7 @@ h1 {
 	/* dropdown */
 }
 #site-header > nav {
-	border-bottom: 1px solid #AAAAAA;
+	border-bottom: 1px solid #BBBBBB;
 }
 #site-header > nav .container {
 	padding-right: 0;
@@ -71,7 +71,7 @@ h1 {
 	padding: 0;
 
 	border: 1px solid #AAAAAA;
-	border-top: 1px solid #CCCCCC;
+	border-top-color: #CCCCCC;
 	border-radius: 0;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu .divider {
@@ -176,7 +176,7 @@ body {
 #site-footer a:hover {
 	text-decoration: none;
 
-	color: #333333;
+	color: #373737;
 	background-color: transparent;
 }
 #site-footer #footer-left {
@@ -344,7 +344,7 @@ body {
 	text-align: right;
 }
 #page[data-page="dashboard"] > div#list-nav {
-	background-color: transparent;
+	background-color: #FFFFFF;
 }
 #page[data-page="dashboard"] > div > nav ul > li.active {
 	background-color: #EEEEEE;

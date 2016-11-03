@@ -1,21 +1,21 @@
 #site-header {
 	& > nav {
-		border-bottom: 1px solid @color2;
+		border-bottom: 1px solid @borderPrimary;
 
 		.container {
 			padding-left: 0;
 			padding-right: 0;
 
 			#header-nav-user {
-				border-left:   1px solid @color1;
-				border-right:  1px solid @color1;
+				border-left:   1px solid @borderSecondary;
+				border-right:  1px solid @borderSecondary;
 
 				.dropdown {
 					padding-left: 7.5px;
 
 					.dropdown-menu {
-						border:     1px solid @color2;
-						border-top: 1px solid @color1;
+						border: 1px solid @borderTertiary;
+						border-top-color: @borderSecondary;
 
 						border-radius: 0;
 
@@ -24,14 +24,14 @@
 						padding: 0;
 
 						.divider {
-							background-color: #CCCCCC;
+							background-color: @borderSecondary;
 							margin: 0;
 						}
 						& > li > a {
 							padding: 8px 20px;
 
 							&:hover {
-								background: #CCCCCC none !important;
+								background: @borderSecondary none !important;
 							}
 						}
 						@media (min-width: 768px) {
