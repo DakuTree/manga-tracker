@@ -1,8 +1,8 @@
 body {
 	margin: 40px;
 
-	color: #4F5155;
-	background-color: #FFFFFF;
+	color: #DDDDDD;
+	background-color: #202020;
 
 	font: 13px/20px normal;
 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
@@ -10,17 +10,24 @@ body {
 	line-height: 26px;
 }
 a {
-	color: #003399;
+	color: #FFCC66;
 	background-color: transparent;
 
 	font-weight: normal;
+}
+a:hover {
+	color: #FFB219;
+}
+select {
+	color: #DDDDDD;
+	background: #202020;
 }
 h1 {
 	margin: 0 0 14px 0;
 	padding: 14px 15px 10px 15px;
 
-	color: #4F5155;
-	border-bottom: 1px solid #BBBBBB;
+	color: #DDDDDD;
+	border-bottom: 1px solid #444444;
 	background-color: transparent;
 
 	font-size: 19px;
@@ -53,15 +60,17 @@ h1 {
 	/* dropdown */
 }
 #site-header > nav {
-	border-bottom: 1px solid #BBBBBB;
+	border-color: #333333;
+	border-bottom: 1px solid #444444;
+	background: #161616;
 }
 #site-header > nav .container {
 	padding-right: 0;
 	padding-left: 0;
 }
 #site-header > nav .container #header-nav-user {
-	border-right: 1px solid #CCCCCC;
-	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #333333;
+	border-left: 1px solid #333333;
 }
 #site-header > nav .container #header-nav-user .dropdown {
 	padding-left: 7.5px;
@@ -70,20 +79,20 @@ h1 {
 	min-width: 123px;
 	padding: 0;
 
-	border: 1px solid #AAAAAA;
-	border-top-color: #CCCCCC;
+	border: 1px solid #555555;
+	border-top-color: #333333;
 	border-radius: 0;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu .divider {
 	margin: 0;
 
-	background-color: #CCCCCC;
+	background-color: #333333;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu > li > a {
 	padding: 8px 20px;
 }
 #site-header > nav .container #header-nav-user .dropdown .dropdown-menu > li > a:hover {
-	background: #CCCCCC none !important;
+	background: #333333 none !important;
 }
 @media (min-width: 768px) {
 	#site-header > nav .container #header-nav-user .dropdown .dropdown-menu {
@@ -166,13 +175,13 @@ body {
 	/* Set the fixed height of the footer here */
 	height: 46px;
 
-	background-color: #F5F5F5;
+	background-color: #111111;
 }
 #site-footer .container {
 	padding-top: 10px;
 }
 #site-footer a {
-	color: #777777;
+	color: #888888;
 }
 #site-footer a:hover {
 	text-decoration: none;
@@ -345,10 +354,10 @@ body {
 	text-align: right;
 }
 #page[data-page="dashboard"] > div#list-nav {
-	background-color: #FFFFFF;
+	background-color: #202020;
 }
 #page[data-page="dashboard"] > div > nav ul > li.active {
-	background-color: #EEEEEE;
+	background-color: #060606;
 }
 #page[data-page="dashboard"] > div > nav ul > li a {
 	padding-top: 5px;
@@ -360,7 +369,7 @@ body {
 
 	padding: 3px 7px;
 
-	background-color: #EEEEEE;
+	background-color: #060606;
 }
 #page[data-page="dashboard"] > div > #tracker-table-links #move-container {
 	margin-left: 10px;
@@ -381,7 +390,7 @@ body {
 #page[data-page="dashboard"] > div > #tracker-table-links label span {
 	cursor: pointer;
 
-	color: #003399;
+	color: #FFCC66;
 	background-color: transparent;
 
 	font-weight: normal;
@@ -398,7 +407,10 @@ body {
 	text-align: left;
 }
 #page[data-page="dashboard"] > .tracker-table > thead th {
-	background-color: #EEEEEE;
+	background-color: #060606;
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr:nth-of-type(odd) {
+	background-color: #161616;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;

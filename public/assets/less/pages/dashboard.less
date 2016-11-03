@@ -8,9 +8,7 @@
 			padding-right: 4px;
 		}
 
-		&#list-nav {
-			background-color: @backgroundPrimary;
-		}
+		&#list-nav { background-color: @backgroundPrimary; }
 		& > nav {
 			& ul {
 				& > li {
@@ -67,6 +65,7 @@
 
 		& > tbody {
 			& > tr {
+				&:nth-of-type(odd) { background-color: @backgroundQuaternary; }
 				& > td:nth-of-type(1) {
 					width: 5%;
 					text-align: center;

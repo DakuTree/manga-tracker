@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.11] - 2016-10-27
 ### Changes
-- `[Backend]` Lots of LESS tweaking. Initial work for allowing seperate themes.
+- `[Backend]` Lots of LESS tweaking. Initial work for allowing separate themes.
 
 ## [1.3.10] - 2016-10-25
 ### Added
