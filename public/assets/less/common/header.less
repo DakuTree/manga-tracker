@@ -46,20 +46,23 @@
 	}
 
 	/* dropdown */
-	ul.nav li.dropdown:hover ul.dropdown-menu {
-		display: block;
-	}
-	ul.nav li.dropdown > a, ul.nav li.dropdown .profile-image {
-		float: left;
-	}
-	ul.nav li.dropdown > a {
-		padding-left: 4px;
-	}
-	ul.nav li.dropdown .profile-image {
-		padding: 3px;
+	ul.nav {
+		li.dropdown {
+			&:hover ul.dropdown-menu { display: block; }
 
-		//Avoid image pop-in
-		width:  50px;
-		height: 50px;
+			& > a {
+				padding-left: 4px;
+				float: left;
+			}
+			.profile-image {
+				float:left;
+
+				padding: 3px;
+
+				//Avoid image pop-in
+				width:  50px;
+				height: 50px;
+			}
+		}
 	}
 }
