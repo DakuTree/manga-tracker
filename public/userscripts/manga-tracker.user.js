@@ -19,7 +19,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-11-14
-// @version      1.1.7
+// @version      1.1.8
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -39,20 +39,16 @@ GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\//g, 'https://opensour
 Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?
 */
 
-var bookmarkBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACaElEQVQ4jX2SvU+TURTGf/d96QtYChT5CB8BU40I0SA4oA6Kootx5i8wxkaKKIszEzFRAaFGXVwciHEwaIwhDjL4FXFwESQBJQw0BQq0lL5t33scWjQgcJMnJzn3OU+e556LiLAXxh419o72+7p2u99zOHjD8G0sPEssTvWHB/0U7cQx2OM0NLXezisqyN1fdaDUV9/QtRNnV4Fgl1lz/OSFDuIhSEVpOXXp6sA15d7Oy9neGOpULsPIqWhqbukrLikoIhYCLCqr62oaG4/0BgPGHUdLODAsGkCJCK/7qrqrag+cLfQU1nqKi8vdnkKv2+12I2nAykDlImKxvhaNxtaWI9FIOLS2Gp5TIsL4gG/0TFvbZSyBdAJEwHFAVCalmBngAuUCrTI1Gs9EmPgx25mKx/PbTre2m1YCkmsgKdBp0A44AhpwsmKmBzuxj7Fvn14oEQHgnl/VHav2Pjnf7LtoGnEQnXEgm8M6CyFpW/J2cn5keiUW+CsAcNevalqqi56eO1rZnhHgn4DWoAWdEnkzFXo+GYn7e4KyvGWNPQ9lPrJuf8BOg+1A0slU2wFbZ+GoSCI51hOU5R3XWJZv1ZPK2gVAgc4+qgOGhlLL1bDrPygxzYPYacAEBxZjGxsmGN68/FzEgXQKr2E2bvK3RBjsVKVlOTm1aDfLq6b9bmbp/cjMgn9kNtQ9Phf5srpupaGAcsM8dP+6cv3nwFJU2ElDffwdnvi+svR4XeTlrWEJDQaU8TW68upnbLWjxeO9UijK7VKUAKEtWxgKqBJDOGEL0zeH5df2eIMBZWjNYUtRrRWfOx9I7A+InWebTg8pngAAAABJRU5ErkJggg==';
-var trackBase64    = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sFBAwYLqR4MpkAAAIhSURBVDjLzZLPaxNREMe/u91sSkISBTGxJcaA4EFbETy2FAQNmFxavXmQIJV4EIIpniTdg5coAb0IkUBzkiT4BxRECoVaFFtKwORiiLgRIfTH1jS7b9++3fUQs1hqvHjxC8OXBzOfN8wM8I/ifn/k83khFApdNQw6wwMR0zRBGWuKovtNMplcBWAPBVSr1TlVVfOh4MkzkfExNA5EaIQiMqJAltv29t7elsvlupdKpd4fAVQqFcnj8WRnpqe4nuDH4rsf6GgcdlQTIzbDo4tA0Gjj7coqNS0rmclkXg0AfLFYvOn1erOJRILzBY7h8fo+bpzzYT68C3+tDJ0aeLBOcSocxezcrGhZVkmSpGkHQAjJxmIxDgA+dXR4RkWcYNuAvAX+42t4PyzB4F1Y/qwh4PMiHo+7er3e8wFAoJQySikEQYBtA/5REc+WKnhyNoCXt27/SlsGGoDWAI4DuKvrl54OOuB5PlMul03GGC4E3djtqohevwMAMBUFRqcDXZZBWi2o9Tp6tRr219acIfLpdHpFUZT5QqHAvn5p4f6kGzuqCQCwKIWl67AIgaVpfSfkz2vM5XJThJAX4fGxidORKM5/a0OXZafYZgwWIbANAwe1Gi5vbHBHDgkAJ0mLV7rd7rWFicmHpNVyfrYZc0C9en0owNH3UslW63Wnbdsw+m6a0JpNB8D/7c5txvphGH03TdiMHcoRhhUfbG4emvb/q59HqiRjuY+xSgAAAABJRU5ErkJggg==';
-
 $.fn.reverseObj = function() {
 	return $(this.get().reverse());
 };
-function escapeHTML(html) { return $('<div/>').text(html).html(); }
 function getCookie(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2];}
 
 /***********************************************************************************************************/
 
-var base_site = {
+let base_site = {
 	init : function() {
-		var _this = this;
+		let _this = this;
 
 		this.preInit(function() {
 			_this.setObjVars();
@@ -77,7 +73,7 @@ var base_site = {
 
 	//Fixed Functions
 	setupTopBar : function() {
-		var _this = this;
+		let _this = this;
 
 		this.preSetupTopBar(function() {
 			GM_addStyle(`
@@ -177,11 +173,11 @@ var base_site = {
 				}
 				#TrackerBarIn select { margin: 0 !important; }
 			`);
-			var previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
-			var next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
-			var options  = $.map(_this.chapterList, function(k, v) {var o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();});
+			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
+			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
+			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();});
 
-			var topbar = $('<div/>', {id: 'TrackerBar'}).append(
+			let topbar = $('<div/>', {id: 'TrackerBar'}).append(
 				$('<div/>', {id: 'TrackerBarIn'}).append(
 					$('<a/>', {href: main_site, target: '_blank'}).append(
 						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true'}))).append(
@@ -209,7 +205,7 @@ var base_site = {
 			$(topbar).appendTo('body');
 
 			//Setup select chapter change event
-			$(topbar).on('change', 'select', function(e) {
+			$(topbar).on('change', 'select', function() {
 				console.log(this.value);
 				location.href = this.value;
 				if(this.value.indexOf('#') !== -1) {
@@ -253,7 +249,7 @@ var base_site = {
 		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
 
 		if(config['api-key']) {
-			var params = {
+			let params = {
 				'api-key' : config['api-key'],
 				'manga'   : {
 					'site'    : this.site,
@@ -288,7 +284,7 @@ var base_site = {
 		}
 	},
 	setupViewer : function() {
-		var _this = this;
+		let _this = this;
 
 		//FIXME: VIEWER: Is it possible to make sure the pages load in order without using async: false?
 		//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
@@ -323,7 +319,7 @@ var base_site = {
 				if(pageN == 1) {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
 				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer > .read_img:last'));
+					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer').find('> .read_img:last'));
 				}
 
 				if(!useCustomImageList) {
@@ -482,7 +478,7 @@ var sites = {
 			this.title       = segments[2];
 			this.chapter     = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
 
-			this.page_count  = $('#top_bar .prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
+			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
 			this.title_url   = 'http://mangafox.me/manga/'+this.title+'/';
 			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
@@ -490,7 +486,7 @@ var sites = {
 			this.chapterListCurrent = this.chapter_url;
 			this.chapterList        = {}; //This is set via preSetupTopbar
 
-			this.viewerTitle            = $('#series > strong:last > a').text().slice(0, -6);
+			this.viewerTitle            = $('#series').find('> strong:last > a').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 		},
@@ -502,10 +498,10 @@ var sites = {
 			});
 
 			//Remove page count from the header, since all pages are loaded at once now.
-			$('#tool > #series > strong:eq(1)').remove();
+			$('#tool').find('> #series > strong:eq(1)').remove();
 
 			//Float title in the header to the right. This just looks nicer and is a bit easier to read.
-			$('#tool > #series > strong:last').css('float', 'right');
+			$('#tool').find('> #series > strong:last').css('float', 'right');
 		},
 		preSetupTopBar : function(callback) {
 			var _this = this;
@@ -633,8 +629,6 @@ var sites = {
 
 	'bato.to' : extendSite({
 		preInit : function(callback) {
-			var _this = this;
-
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
 			var dfd = $.Deferred();
 			var checkSelector = setInterval(function () {
@@ -655,13 +649,13 @@ var sites = {
 
 			this.https          = location.protocol.slice(0, -1);
 
-			this.page_count     = $('#page_select:first > option').length;
+			this.page_count     = $('#page_select:first').find('> option').length;
 			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() == 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2];
 
-			this.title_url      = $('#reader a[href*="/comic/"]:first').attr('href');
+			this.title_url      = $('#reader').find('a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
 
 			this.title          = this.title_url.replace(/.*r([0-9]+)$/, '$1') + ':--:' + this.manga_language;
@@ -837,7 +831,7 @@ var sites = {
 
 	'mangastream.com' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
+			const segments     = window.location.pathname.split( '/' );
 
 			this.https       = location.protocol.slice(0, -1);
 
@@ -982,7 +976,7 @@ var sites = {
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
 			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content > script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) { 
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(e, i) {
 				return e.replace(/\\/g, '');
@@ -1098,15 +1092,16 @@ var sites = {
 			Seperate API key from general options. Always set API config when generate is clicked.
 			*/
 
+			let form = $('#userscript-form');
 			//Enable the form
 			$('#userscript-check').remove();
-			$('#userscript-form fieldset').removeAttr('disabled');
-			$('#userscript-form input[type=submit]').removeAttr('onclick');
+			$(form).find('fieldset').removeAttr('disabled');
+			$(form).find('input[type=submit]').removeAttr('onclick');
 
 			//CHECK: Is there a better way to mass-set form values from an object/array?
-			$('#userscript-form input#auto_track').attr('checked', !!config.auto_track);
+			$(form).find('input#auto_track').attr('checked', !!config.auto_track);
 
-			$('#userscript-form').submit(function(e) {
+			$(form).submit(function(e) {
 				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});
 				if(config['api-key']) {
 					data['api-key'] = config['api-key'];
@@ -1155,7 +1150,7 @@ var sites = {
 };
 
 /********************** SCRIPT *********************/
-var main_site = 'https://trackr.moe';
+const main_site = 'https://trackr.moe';
 //FIXME: We should point to dev if requested
 
 var config = JSON.parse(GM_getValue('config') || '{"init": true}');
@@ -1163,10 +1158,10 @@ console.log(config); //TODO: Disable on production
 
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
-	var hostname = location.hostname.replace(/^(?:dev|test)\./, '');
+	const hostname = location.hostname.replace(/^(?:dev|test)\./, '');
 	if(hostname == 'trackr.moe') {
 		//FF loads document-start at a different time..
-		if(typeof InstallTrigger === 'undefined') {
+		if("InstallTrigger" in window) {
 			sites[hostname].init();
 		} else {
 			$(function() {
