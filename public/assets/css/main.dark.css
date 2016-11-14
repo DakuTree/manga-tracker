@@ -340,23 +340,29 @@ body {
 
 	background-position: -127px -1px;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-reader-seaotterscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -145px -1px;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -163px -1px;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -181px -1px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -199px -1px;
 }
 /* Credit to bootsnipp.com for the css for the color graph */
 .colorgraph {
