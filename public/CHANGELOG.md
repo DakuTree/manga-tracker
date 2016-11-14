@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.14] - 2016-11-14
+## Added
+- Support for Sea Otter Scans reader (http://reader.seaotterscans.com/)
+
 ## [1.3.13] - 2016-11-03
 ### Added
 - Theme support! This comes with the original light theme, and a new dark theme! Change it in the options!

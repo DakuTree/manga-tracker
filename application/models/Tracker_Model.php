@@ -310,6 +310,7 @@ class Tracker_Model extends CI_Model {
 		                  ->get();
 
 		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL);
+		//FIXME: getTitleData can fail, which will in turn cause the below to fail aswell, we should try and account for that
 		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 		$titleID = $this->db->insert_id();
 

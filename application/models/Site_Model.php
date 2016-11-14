@@ -49,6 +49,7 @@ class Sites_Model extends CI_Model {
 	public $KireiCake;
 	public $GameOfScanlation;
 	public $MangaCow;
+	public $SeaOtterScans;
 
 	public function __construct() {
 		parent::__construct();
@@ -64,6 +65,7 @@ class Sites_Model extends CI_Model {
 		$this->KireiCake        = new KireiCake();
 		$this->GameOfScanlation = new GameOfScanlation();
 		$this->MangaCow         = new MangaCow();
+		$this->SeaOtterScans    = new SeaOtterScans();
 	}
 }
 
@@ -840,6 +842,74 @@ class MangaCow extends Site_Model {
 			} else {
 				log_message('error', "MangaCow: Unable to find nodes.");
 				return NULL;
+			}
+		} else {
+			//TODO: Throw ERRORS;
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+
+class SeaOtterScans extends Site_Model {
+	public function getFullTitleURL(string $title_url) : string {
+		return "http://reader.seaotterscans.com//series/{$title_url}";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (SeaOtterScans): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (SeaOtterScans): '.$chapter);
+		return $success;
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "https://reader.seaotterscans.com/read/{$title_url}/{$chapter}",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$data = $this->get_content($fullURL);
+		if(strpos($data, '404 Page Not Found') === FALSE) {
+			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
+			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
+
+			//SOO sometimes uses volume groups which are above recent chapters (if they haven't been grouped yet), so make sure we check for both.
+			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1]");
+			if($nodes_row->length !== 1) {
+				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
+			}
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				$titleData['title'] = trim($nodes_title[0]->textContent);
+
+
+				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
+
+				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
 			}
 		} else {
 			//TODO: Throw ERRORS;

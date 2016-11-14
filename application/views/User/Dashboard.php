@@ -1,5 +1,5 @@
 <!--<div class="alert alert-info" role="alert">-->
-<!--	<strong>Update (2016/11/03):</strong> Added a dark theme! You can change to it on the <a href="--><?//=base_url('user/options')?><!--">options page</a>!-->
+<!--	<strong>Update (2016/11/14):</strong> Added support for Sea Otter Scans reader (<a href="http://reader.seaotterscans.com">http://reader.seaotterscans.com</a>)-->
 <!--</div>-->
 
 <?php if($has_inactive) { ?>
