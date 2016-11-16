@@ -18,8 +18,8 @@
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-14
-// @version      1.1.8
+// @updated      2016-11-16
+// @version      1.1.9
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -1161,7 +1161,7 @@ if(!$.isEmptyObject(config)) {
 	const hostname = location.hostname.replace(/^(?:dev|test)\./, '');
 	if(hostname == 'trackr.moe') {
 		//FF loads document-start at a different time..
-		if("InstallTrigger" in window) {
+		if(!("InstallTrigger" in window)) {
 			sites[hostname].init();
 		} else {
 			$(function() {
