@@ -23,5 +23,6 @@
 		<li>KireiCake.com</li>
 		<li>GameOfScanlation.moe</li>
 		<li>MangaCow</li>
+		<li>SeaOtterScans</li>
 	</ul>
 </div>

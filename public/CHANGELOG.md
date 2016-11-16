@@ -5,9 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.15] - 2016-11-16
+### Fixed
+- Fixed FireFox support which was broke during linting.
+- SeaOtterScans is now listed on the help page.
+
 ## [1.3.14] - 2016-11-14
-## Added
+### Added
 - Support for Sea Otter Scans reader (http://reader.seaotterscans.com/)
+
+### Changes
+- Linting for the userscript.
 
 ## [1.3.13] - 2016-11-03
 ### Added
