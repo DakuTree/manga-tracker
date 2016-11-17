@@ -18,8 +18,8 @@
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-16
-// @version      1.1.9
+// @updated      2016-11-17
+// @version      1.1.10
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -1105,6 +1105,9 @@ var sites = {
 				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});
 				if(config['api-key']) {
 					data['api-key'] = config['api-key'];
+					if('auto_track' in data) {
+						data['auto_track'] = 'on';
+					}
 					// data['init'] = false;
 
 					GM_setValue('config', JSON.stringify(data));

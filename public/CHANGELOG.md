@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.16] - 2016-11-17
+### Fixed
+- Fixed auto_track not working.
+
 ## [1.3.15] - 2016-11-16
 ### Fixed
 - Fixed FireFox support which was broke during linting.
