@@ -19,7 +19,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-11-17
-// @version      1.1.10
+// @version      1.1.11
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -358,6 +358,7 @@ let base_site = {
 			}
 
 			//Auto-track chapter if enabled.
+
 			$(window).on("load", function() {
 				if(config.auto_track && config.auto_track == 'on') {
 					_this.trackChapter();
@@ -1099,7 +1100,7 @@ var sites = {
 			$(form).find('input[type=submit]').removeAttr('onclick');
 
 			//CHECK: Is there a better way to mass-set form values from an object/array?
-			$(form).find('input#auto_track').attr('checked', !!config.auto_track);
+			$(form).find('input[name=auto_track]').attr('checked', ('auto_track' in config));
 
 			$(form).submit(function(e) {
 				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});

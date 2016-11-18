@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.16] - 2016-11-17
 ### Fixed
 - Fixed auto_track not working.
+- Fixed auto_track not showing as enabled on options page.
 
 ## [1.3.15] - 2016-11-16
 ### Fixed
