@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `[Backend]` auto_track now uses bool value.
 - `[Backend]` Dev & Prod API keys are now separate.
+- `[Backend]` Google Analytics cookie should no longer be sent to static subdomains.
 
 ## [1.3.16] - 2016-11-17
 ### Fixed

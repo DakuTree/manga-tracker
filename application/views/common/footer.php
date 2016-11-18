@@ -89,7 +89,7 @@
 			e.src = '//www.google-analytics.com/analytics.js';
 			r.parentNode.insertBefore(e, r)
 		}(window, document, 'script', 'ga'));
-		ga('create', '<?=$analytics_tracking_id?>', 'auto');
+		ga('create', '<?=$analytics_tracking_id?>', 'none');
 		ga('send', 'pageview');
 	</script>
 	<?php } ?>
