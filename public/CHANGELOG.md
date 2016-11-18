@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.17] - 2016-11-18
+### Fixed
+- `[Backend]` auto_track now uses bool value.
+
 ## [1.3.16] - 2016-11-17
 ### Fixed
 - Fixed auto_track not working.

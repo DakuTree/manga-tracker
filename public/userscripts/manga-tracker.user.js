@@ -18,8 +18,8 @@
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-17
-// @version      1.1.11
+// @updated      2016-11-18
+// @version      1.1.12
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -360,7 +360,7 @@ let base_site = {
 			//Auto-track chapter if enabled.
 
 			$(window).on("load", function() {
-				if(config.auto_track && config.auto_track == 'on') {
+				if(config.auto_track) {
 					_this.trackChapter();
 				}
 			});
@@ -1103,13 +1103,10 @@ var sites = {
 			$(form).find('input[name=auto_track]').attr('checked', ('auto_track' in config));
 
 			$(form).submit(function(e) {
-				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = o.value; return m;}, {});
+				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value == '' ? true : o.value); return m;}, {});
 				if(config['api-key']) {
+					delete data.csrf_token;
 					data['api-key'] = config['api-key'];
-					if('auto_track' in data) {
-						data['auto_track'] = 'on';
-					}
-					// data['init'] = false;
 
 					GM_setValue('config', JSON.stringify(data));
 					$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
@@ -1162,7 +1159,7 @@ console.log(config); //TODO: Disable on production
 
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
-	const hostname = location.hostname.replace(/^(?:dev|test)\./, '');
+	const hostname = location.hostname.replace(/^(?:dev)\./, '');
 	if(hostname == 'trackr.moe') {
 		//FF loads document-start at a different time..
 		if(!("InstallTrigger" in window)) {
