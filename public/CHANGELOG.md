@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Test for SeaOtterScans
 - `[Backend]` Caching! Only for site stats at the moment, but it's a start!
 
+### Changes
+- `[Backend]` Site_Model class (and related functions) are now marked as abstract. This should avoid possible errors later down the line.
+
 ### Fixed
 - `[Backend]` auto_track now uses bool value.
 - `[Backend]` Dev & Prod API keys are now separate.

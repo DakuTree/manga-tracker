@@ -1,20 +1,20 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Site_Model extends CI_Model {
+abstract class Site_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
 		$this->load->database();
 	}
 
-	public function getFullTitleURL(string $title_url) : string {}
+	abstract public function getFullTitleURL(string $title_url) : string;
 
-	public function getChapterData(string $title_url, string $chapter) : array {}
+	abstract public function getChapterData(string $title_url, string $chapter) : array;
 
-	public function getTitleData(string $title_url) {}
+	abstract public function getTitleData(string $title_url);
 
-	public function isValidTitleURL(string $title_url) : bool {}
-	public function isValidChapter(string $chapter): bool {}
+	abstract public function isValidTitleURL(string $title_url) : bool;
+	abstract public function isValidChapter(string $chapter) : bool;
 
 	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE){
 		$ch = curl_init();
