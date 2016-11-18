@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.17] - 2016-11-18
+### Added
+- `[Backend]` Test for SeaOtterScans
+
 ### Fixed
 - `[Backend]` auto_track now uses bool value.
 - `[Backend]` Dev & Prod API keys are now separate.
