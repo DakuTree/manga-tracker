@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.17] - 2016-11-18
 ### Added
 - `[Backend]` Test for SeaOtterScans
+- `[Backend]` Caching! Only for site stats at the moment, but it's a start!
 
 ### Fixed
 - `[Backend]` auto_track now uses bool value.
