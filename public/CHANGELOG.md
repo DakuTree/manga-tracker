@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.17] - 2016-11-18
 ### Fixed
 - `[Backend]` auto_track now uses bool value.
+- `[Backend]` Dev & Prod API keys are now separate.
 
 ## [1.3.16] - 2016-11-17
 ### Fixed

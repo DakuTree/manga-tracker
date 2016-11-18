@@ -19,7 +19,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-11-18
-// @version      1.1.12
+// @version      1.1.13
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -1103,11 +1103,10 @@ var sites = {
 			$(form).find('input[name=auto_track]').attr('checked', ('auto_track' in config));
 
 			$(form).submit(function(e) {
-				var data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value == '' ? true : o.value); return m;}, {});
+				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value == '' ? true : o.value); return m;}, {});
+				delete data.csrf_token;
 				if(config['api-key']) {
-					delete data.csrf_token;
-					data['api-key'] = config['api-key'];
-
+					config = $.extend(config, data);
 					GM_setValue('config', JSON.stringify(data));
 					$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
 				} else {
@@ -1123,7 +1122,11 @@ var sites = {
 					if(json['api-key']) {
 						$('#api-key').text(json['api-key']);
 
-						config['api-key'] = json['api-key'];
+						if(location.hostname == 'dev.trackr.moe') {
+							config['api-key-dev'] = json['api-key'];
+						} else {
+							config['api-key']     = json['api-key'];
+						}
 						GM_setValue('config', JSON.stringify(config));
 					} else {
 						alert('ERROR: Something went wrong!\nJSON missing API key?');
@@ -1170,6 +1173,7 @@ if(!$.isEmptyObject(config)) {
 			});
 		}
 	} else if(sites[hostname]) {
+		if(main_site == 'https://dev.trackr.moe') config['api-key'] = config['api-key-dev']; //TEMP
 		$(function() {
 			sites[hostname].init();
 		});
