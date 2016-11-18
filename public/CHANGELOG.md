@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Dev & Prod API keys are now separate.
 - `[Backend]` Google Analytics cookie should no longer be sent to static subdomains.
 - `[Backend]` Updated Codeigniter to 3.1.2.
+- `[Backend]` Fixed MangaStream test not working with non-numeric chapters
 
 ## [1.3.16] - 2016-11-17
 ### Fixed

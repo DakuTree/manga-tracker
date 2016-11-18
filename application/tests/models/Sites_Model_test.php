@@ -86,7 +86,7 @@ class Site_Model_test extends TestCase {
 		$this->assertArrayHasKey('last_updated', $result);
 
 		$this->assertEquals('The Memorandum of Kyoko Okitegami', $result['title']);
-		$this->assertRegExp('/^[0-9]+\/[0-9]+$/', $result['latest_chapter']);
+		$this->assertRegExp('/^.*?\/[0-9]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_WebToons() {
