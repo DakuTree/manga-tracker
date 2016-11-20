@@ -18,8 +18,8 @@
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-18
-// @version      1.1.13
+// @updated      2016-11-20
+// @version      1.2.0
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -315,7 +315,7 @@ let base_site = {
 			}
 
 			//Generate the viewer using a loop & AJAX.
-			for(var pageN=1; pageN<=_this.page_count; pageN++) {
+			for(let pageN=1; pageN<=_this.page_count; pageN++) {
 				if(pageN == 1) {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
 				} else {
@@ -329,13 +329,15 @@ let base_site = {
 						page: pageN,
 						//async: false,
 						success: function(data) {
-							var original_image  = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-							var image_container = $('<div/>', {class: 'read_img'}).append(
+							let original_image  = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+							let image_container = $('<div/>', {class: 'read_img'}).append(
 								//We want to completely recreate the image element to remove all additional attributes
-								$('<img/>', {src: $(original_image).attr('src')})).append(
+								$('<img/>', {src: $(original_image).attr('src')})
+							).append(
 								//Add page number
 								$('<div/>', {class: 'pageNumber'}).append(
-									$('<div/>', {class: 'number', text: this.page}))
+									$('<div/>', {class: 'number', text: this.page})
+								)
 							);
 
 							//Replace the placeholder image_container with the real one
@@ -344,7 +346,7 @@ let base_site = {
 					});
 				} else {
 					//FIXME: We should probably split this and the above into a seperate function to avoid code duplication...
-					var image_container = $('<div/>', {class: 'read_img'}).append(
+					let image_container = $('<div/>', {class: 'read_img'}).append(
 						//We want to completely recreate the image element to remove all additional attributes
 						$('<img/>', {src: _this.viewerCustomImageList[pageN-1]})).append(
 						//Add page number
@@ -370,10 +372,10 @@ let base_site = {
 	},
 
 	reportBug : function() {
-		var bugText = prompt("Describe the bug.");
+		let bugText = prompt("Describe the bug.");
 		if(bugText) {
 			if(bugText !== '') {
-				var params = {
+				let params = {
 					'api-key' : config['api-key'],
 					'bug'     : {
 						url  : location.href,
@@ -404,7 +406,7 @@ let base_site = {
 
 	favouriteChapter : function() {
 		if(config['api-key']) {
-			var params = {
+			let params = {
 				'api-key' : config['api-key'],
 				'manga'   : {
 					'site'    : this.site,
@@ -437,6 +439,8 @@ let base_site = {
 	},
 
 	/** Variables **/
+	segments : window.location.pathname.split('/'),
+
 	//Used for tracking.
 	site    : location.hostname.replace(/^(?:dev|test)\./, ''),
 	title   : '',
@@ -460,7 +464,7 @@ let base_site = {
 };
 function extendSite(o) { return Object.assign({}, base_site, o); }
 function generateChapterList(target, attrURL) {
-	var chapterList = {};
+	let chapterList = {};
 	if(target instanceof jQuery) {
 		$(target).each(function() {
 			chapterList[$(this).attr(attrURL)] = $(this).text().trim();
@@ -471,13 +475,13 @@ function generateChapterList(target, attrURL) {
 	return chapterList;
 }
 
-var sites = {
+let sites = {
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
-			var segments     = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+			this.segments    = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
-			this.title       = segments[2];
-			this.chapter     = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
+			this.title       = this.segments[2];
+			this.chapter     = (!!this.segments[4] ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
@@ -498,14 +502,15 @@ var sites = {
 				'border'     : '0'
 			});
 
+			let tool = $('#tool');
 			//Remove page count from the header, since all pages are loaded at once now.
-			$('#tool').find('> #series > strong:eq(1)').remove();
+			tool.find('> #series > strong:eq(1)').remove();
 
 			//Float title in the header to the right. This just looks nicer and is a bit easier to read.
-			$('#tool').find('> #series > strong:last').css('float', 'right');
+			tool.find('> #series > strong:last').css('float', 'right');
 		},
 		preSetupTopBar : function(callback) {
-			var _this = this;
+			let _this = this;
 
 			//The inline chapter list is cached. This causes new chapters to not properly show on the list. (Why the cache isn't reset when a new chapter is added is beyond me)
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
@@ -518,12 +523,12 @@ var sites = {
 				cache: false,
 				success: function(response) {
 					response = response.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
-					var div = $('<div/>').append($(response));
+					let div = $('<div/>').append($(response));
 
 					$("#chapters > .chlist > li > div > a + * > a", div).reverseObj().each(function() {
-						var chapterTitle     = $('+ span.title', this).text().trim();
-						var url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
-						var realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
+						let chapterTitle     = $('+ span.title', this).text().trim(),
+						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'), //Remove trailing page number
+						    realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
 
 						_this.chapterList[url] = realChapterTitle;
 					});
@@ -547,12 +552,12 @@ var sites = {
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
-			var segments       = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
 			this.page_count    = $('.go_page:first > .right > select > option').length;
-			this.title         = segments[2];
-			this.chapter       = (!!segments[4] ? segments[3]+'/'+segments[4] : segments[3]);
+			this.title         = this.segments[2];
+			this.chapter       = (!!this.segments[4] ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
 			this.title_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
 			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
@@ -586,12 +591,13 @@ var sites = {
 			});
 
 			//Format the chapter header
-			$('.readpage_top > .title').html(function(i, html) { return html.replace('</span> / <h2', '</span><h2'); });
-			$('.readpage_top > .title > span[class^=color]').remove();
-			$('.readpage_top > .title h2').addClass('right');
+			let title = $('.readpage_top > .title');
+			title.html(function(i, html) { return html.replace('</span> / <h2', '</span><h2'); });
+			title.find('> span[class^=color]').remove();
+			title.find('h2').addClass('right');
 		},
 		preSetupTopBar : function(callback) {
-			var _this = this;
+			let _this = this;
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
 			$.ajax({
@@ -603,13 +609,12 @@ var sites = {
 				cache: false,
 				success: function(response) {
 					response = response.replace(/^[\S\s]*(<section id="main" class="main clearfix">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
-					var div = $('<div/>').append($(response).find('.detail_list > ul:first'));
+					let div = $('<div/>').append($(response).find('.detail_list > ul:first'));
 
 					$('li > span.left > a', div).reverseObj().each(function() {
-						var chapterTitle     = $(this).parent().clone().children().remove().end().text().trim();
-
-						var url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
-						var realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
+						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
+						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'), //Remove trailing page number
+						    realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
 
 						_this.chapterList[url] = realChapterTitle;
 					});
@@ -631,8 +636,8 @@ var sites = {
 	'bato.to' : extendSite({
 		preInit : function(callback) {
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
-			var dfd = $.Deferred();
-			var checkSelector = setInterval(function () {
+			let dfd = $.Deferred();
+			let checkSelector = setInterval(function () {
 				if ($('#reader').text() !== 'Loading...') {
 					//AJAX has loaded, resolve deferred.
 					dfd.resolve();
@@ -646,7 +651,8 @@ var sites = {
 			});
 		},
 		setObjVars : function() {
-			var chapterNParts   = $('select[name=chapter_select]:first > option:selected').text().trim().match(/^(?:Vol\.(\S+) )?(?:Ch.([^\s:]+)):?.*/);
+			let chapterNParts   = $('select[name=chapter_select]:first > option:selected').text().trim().match(/^(?:Vol\.(\S+) )?(?:Ch.([^\s:]+)):?.*/);
+			let reader          = $('#reader');
 
 			this.https          = location.protocol.slice(0, -1);
 
@@ -656,27 +662,27 @@ var sites = {
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2];
 
-			this.title_url      = $('#reader').find('a[href*="/comic/"]:first').attr('href');
+			this.title_url      = reader.find('a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
 
 			this.title          = this.title_url.replace(/.*r([0-9]+)$/, '$1') + ':--:' + this.manga_language;
 			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
 			this.chapter_url    = this.https+'://bato.to/reader#'+this.chapter_hash;
 
+			let chapterListOptions  = $('select[name=chapter_select]:first > option');
 			this.chapterListCurrent = this.chapter_url;
 			if(this.https == 'https') {
-				$('select[name=chapter_select]:first > option').each(function(i, e) {
-					var val = $(e).val();
-					$(e).val(val.replace(/^http/, 'https'));
+				chapterListOptions.each(function(i, e) {
+					$(e).val($(e).val().replace(/^http/, 'https'));
 				});
 			}
-			this.chapterList        = generateChapterList($('select[name=chapter_select]:first > option').reverseObj(), 'value');
+			this.chapterList        = generateChapterList(chapterListOptions.reverseObj(), 'value');
 
 			this.viewerChapterName      = this.chapter_number;
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
 			this.viewerChapterURLFormat = this.https+'://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
-			this.viewerCustomImageList  = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
+			this.viewerCustomImageList  = reader.find('#read_settings + div + div img').map(function(i, e) {
 				return $(e).attr('src');
 			});
 		},
@@ -684,11 +690,13 @@ var sites = {
 			//Nothing?
 		},
 		preSetupViewer : function(callback) {
-			this.viewerCustomImageList = $('#reader').find('#read_settings + div + div img').map(function(i, e) {
+			let reader = $('#reader');
+
+			this.viewerCustomImageList = reader.find('#read_settings + div + div img').map(function(i, e) {
 				return $(e).attr('src');
 			});
 
-			$('#reader').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			reader.replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			if(this.is_web_toon !== 1) {
 				callback();
@@ -719,7 +727,7 @@ var sites = {
 			this.chapterList = {}; //This is set in preSetupTopBar
 
 			this.viewerTitle = $('#chapter-title > b > a, #chapter-title > b').get(0).innerText; //FIXME: This doesn't prepend series names (if exists)
-			this.viewerCustomImageList = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e, i) {
+			this.viewerCustomImageList = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e) {
 				return e.replace(/^"|"$/g, '');
 			});
 			this.page_count = this.viewerCustomImageList.length;
@@ -735,7 +743,7 @@ var sites = {
 			`);
 		},
 		preSetupTopBar : function(callback) {
-			var _this = this;
+			let _this = this;
 
 			if(!_this.is_one_shot) {
 				//Sadly, we don't have any form of inline chapterlist. We need to AJAX the title page for this one.
@@ -748,7 +756,7 @@ var sites = {
 					cache: false,
 					success: function(response) {
 						response = response.replace(/^[\S\s]*(<dl class="chapter-list">[\S\s]*<\/dl>)[\S\s]*$/, '$1');
-						var div = $('<div/>').append($(response));
+						let div = $('<div/>').append($(response));
 
 						_this.chapterList = generateChapterList($(".chapter-list > dd > a.name", div), 'href');
 
@@ -779,11 +787,9 @@ var sites = {
 			}
 		},
 		setObjVars : function() {
-			var segments        = window.location.pathname.split( '/' );
-
-			this.page_count     = parseInt($('#topchapter #selectpage select > option:last').text());
-			this.title          = segments[1];
-			this.chapter        = segments[2];
+			this.page_count     = parseInt($('#topchapter').find('#selectpage select > option:last').text());
+			this.title          = this.segments[1];
+			this.chapter        = this.segments[2];
 
 			this.chapterListCurrent = '/'+this.title+'/'+this.chapter;
 			// this.chapterList = {}, //This is set via preSetupTopBar.
@@ -792,38 +798,38 @@ var sites = {
 			this.chapter_url    = 'http://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
 
 			// this.viewerChapterName      = '';
-			this.viewerTitle            = $('#mangainfo > div[style*=float] > h2').text().slice(0, -6);
+			this.viewerTitle            = $('#mangainfo').find('> div[style*=float] > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
 		},
 		stylize : function() {
+			let mangaInfo = $('#mangainfo').find('> div');
 			//Remove page count from the header, since all pages are loaded at once now.
-			$('#mangainfo > div:first .c1').remove();
+			mangaInfo.find(':first .c1').remove();
 
 			//Float title in the header to the right. This just looks nicer and is a bit easier to read.
-			$('#mangainfo > div + div:not(.clear)').css('float', 'right');
+			mangaInfo.find('+ div:not(.clear)').css('float', 'right');
 		},
 		preSetupTopBar : function(callback) {
-			var _this = this;
+			let _this = this;
 
 			//MangaPanda is tricky here. The chapter list is loaded via AJAX, and not a <script> tag. As far as I can tell, we can't watch for this to load without watching the actual element.
 			//TODO: This should auto-fail after x amount of tries.
-			var checkExist = setInterval(function() {
-				if($('#topchapter > #selectmanga > select > option').length) {
+			let option     = $('#topchapter').find('> #selectmanga > select > option');
+			let checkExist = setInterval(function() {
+				if(option.length) {
 					clearInterval(checkExist);
 
-					_this.chapterList = generateChapterList($('#topchapter > #selectmanga > select > option'), 'value');
+					_this.chapterList = generateChapterList(option, 'value');
 					callback();
 				}
 			}, 500);
 		},
-		postSetupTopBar : function(topbar) {
+		postSetupTopBar : function() {
 			//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
 			$('#topchapter > #mangainfo ~ div, #bottomchapter > #mangainfo ~ div').remove();
 		},
 		preSetupViewer : function(callback) {
-			var _this = this;
-
 			$('.episode-table').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(true);
@@ -832,13 +838,11 @@ var sites = {
 
 	'mangastream.com' : extendSite({
 		setObjVars : function() {
-			const segments     = window.location.pathname.split( '/' );
-
 			this.https       = location.protocol.slice(0, -1);
 
 			this.page_count  = parseInt($('.controls ul:last > li:last').text().replace(/[^0-9]/g, ''));
-			this.title       = segments[2];
-			this.chapter     = segments[3]+'/'+segments[4];
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3]+'/'+this.segments[4];
 
 			this.title_url   = this.https+'://mangastream.com/manga/'+this.title;
 			this.chapter_url = this.https+'://mangastream.com/r/'+this.title+'/'+this.chapter;
@@ -860,7 +864,7 @@ var sites = {
 			$('.page-wrap > #reader-sky').remove(); //Ad block
 		},
 		preSetupTopBar : function(callback) {
-			var _this = this;
+			let _this = this;
 
 			$.ajax({
 				url: _this.title_url,
@@ -870,7 +874,7 @@ var sites = {
 				},
 				cache: false,
 				success: function(response) {
-					var table = $(response.replace(/^[\S\s]*(<table[\S\s]*<\/table>)[\S\s]*$/, '$1'));
+					let table = $(response.replace(/^[\S\s]*(<table[\S\s]*<\/table>)[\S\s]*$/, '$1'));
 
 					_this.chapterList = generateChapterList($('tr:not(:first) a', table).reverseObj(), 'href');
 
@@ -882,8 +886,6 @@ var sites = {
 			$('.subnav').remove(); //Remove topbar, since we have our own
 		},
 		preSetupViewer : function(callback) {
-			var _this = this;
-
 			$('.page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback();
@@ -892,15 +894,13 @@ var sites = {
 
 	'www.webtoons.com' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
+			let title_id     = window.location.search.match(/title_no=([0-9]+)/)[1],
+			    chapter_id   = window.location.search.match(/episode_no=([0-9]+)/)[1];
+			this.title       = title_id   + ':--:' + this.segments[1] + ':--:' + this.segments[3] + ':--:' + this.segments[2];
+			this.chapter     = chapter_id + ':--:' + this.segments[4];
 
-			var title_id     = window.location.search.match(/title_no=([0-9]+)/)[1];
-			var chapter_id   = window.location.search.match(/episode_no=([0-9]+)/)[1];
-			this.title       = title_id   + ':--:' + segments[1] + ':--:' + segments[3] + ':--:' + segments[2];
-			this.chapter     = chapter_id + ':--:' + segments[4];
-
-			this.title_url   = 'http://www.webtoons.com/'+segments[1]+'/'+segments[2]+'/'+segments[3]+'/list?title_no='+title_id;
-			this.chapter_url = 'http://www.webtoons.com/'+segments[1]+'/'+segments[2]+'/'+segments[3]+'/'+segments[4]+'/viewer?title_no='+title_id+'&episode_no='+chapter_id;
+			this.title_url   = 'http://www.webtoons.com/'+this.segments[1]+'/'+this.segments[2]+'/'+this.segments[3]+'/list?title_no='+title_id;
+			this.chapter_url = 'http://www.webtoons.com/'+this.segments[1]+'/'+this.segments[2]+'/'+this.segments[3]+'/'+this.segments[4]+'/viewer?title_no='+title_id+'&episode_no='+chapter_id;
 
 			this.chapterList        = generateChapterList($('.episode_lst > .episode_cont > ul > li a'), 'href');
 			this.chapterListCurrent = this.chapter_url;
@@ -923,31 +923,31 @@ var sites = {
 			}
 		},
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
+			let chapter_id   = document.location.search.match(/id=([0-9]+)/)[1];
 
-			var chapter_id   = document.location.search.match(/id=([0-9]+)/)[1];
-
-			this.title       = segments[2];
-			this.chapter     = segments[3] + ':--:' + chapter_id;
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3] + ':--:' + chapter_id;
 
 			this.title_url   = 'http://kissmanga.com/Manga/'+this.title;
-			this.chapter_url = this.title_url+'/'+segments[3]+'?id='+chapter_id;
+			this.chapter_url = this.title_url+'/'+this.segments[3]+'?id='+chapter_id;
 
 			this.chapterList        = generateChapterList($('.selectChapter:first > option'), 'value');
-			this.chapterListCurrent = decodeURI(segments[3])+'?id='+chapter_id;
+			this.chapterListCurrent = decodeURI(this.segments[3])+'?id='+chapter_id;
 
 
 			this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
 			this.viewerTitle           = $('title').text().trim().split("\n")[1];
-			this.viewerCustomImageList = $('#headnav + div + script').html().match(/"(http:\/\/[^"]+)"/g).map(function(e, i) {
+			this.viewerCustomImageList = $('#headnav').find('+ div + script').html().match(/"(http:\/\/[^"]+)"/g).map(function(e) {
 				return e.replace(/^"|"$/g, '');
 			});
 			this.page_count = this.viewerCustomImageList.length;
 		},
 		postSetupTopBar : function() {
+			let image = $('#divImage');
+
 			//Remove extra unneeded elements.
-			$('#divImage').prevAll().remove();
-			$('#divImage').nextAll().remove();
+			image.prevAll().remove();
+			image.nextAll().remove();
 		},
 		preSetupViewer : function(callback) {
 			$('#divImage').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
@@ -957,17 +957,15 @@ var sites = {
 		},
 
 		//FIXME: TEMP SOLUTION
-		trackChapter : function(askForConfirmation) {
+		trackChapter : function() {
 			alert("KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.");
 		}
 	}),
 
 	'reader.kireicake.com' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
-
-			this.title       = segments[2];
-			this.chapter     = segments[3] + '/' + segments[4] + '/' + segments[5] + (segments[6] && segments[6] !== 'page' ? '/' + segments[6] : '');
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
 
 			this.title_url   = 'https://reader.kireicake.com/series/'+this.title;
 			this.chapter_url = 'https://reader.kireicake.com/read/'+this.title+'/'+this.chapter;
@@ -979,7 +977,7 @@ var sites = {
 			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
 			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
-			}).map(function(e, i) {
+			}).map(function(e) {
 				return e.replace(/\\/g, '');
 			});
 			this.page_count = this.viewerCustomImageList.length;
@@ -996,12 +994,10 @@ var sites = {
 
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
-
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
 			//The ID one works only on the title page, and the no ID one works on the chapter page.
-			this.title       = $('#readerHeader > .thelefted a:last').attr('href').split('/')[1];
-			this.chapter     = segments[3];
+			this.title       = $('#readerHeader').find('> .thelefted a:last').attr('href').split('/')[1];
+			this.chapter     = this.segments[3];
 
 			this.title_url   = 'https://gameofscanlation.moe/forums/'+this.title+'/';
 			this.chapter_url = 'https://gameofscanlation.moe/projects/'+this.title.replace(/\.[0-9]+$/, '')+'/'+this.chapter+'/';
@@ -1016,20 +1012,19 @@ var sites = {
 
 	'mngcow.co' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
+			let _this = this;
 
-			this.title       = segments[1];
-			this.chapter     = segments[2];
+			this.title       = this.segments[1];
+			this.chapter     = this.segments[2];
 
 			this.title_url   = 'http://mngcow.co/'+this.title+'/';
 			this.chapter_url = this.title_url+this.chapter+'/';
 
-			var _this = this;
-			$('#pageNav').find('select:first > option').each(function(i, e) {
-				var val = $(e).val();
-				$(e).val(_this.title_url + val + '/');
+			let pageNav = $('#pageNav');
+			pageNav.find('select:first > option').each(function(i, e) {
+				$(e).val(_this.title_url + $(e).val() + '/');
 			});
-			this.chapterList        = generateChapterList($('#pageNav select:first > option').reverseObj(), 'value');
+			this.chapterList        = generateChapterList(pageNav.find('select:first > option').reverseObj(), 'value');
 			this.chapterListCurrent = this.chapter_url;
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
@@ -1050,12 +1045,10 @@ var sites = {
 
 	'reader.seaotterscans.com' : extendSite({
 		setObjVars : function() {
-			var segments     = window.location.pathname.split( '/' );
+			this.https       = location.protocol.slice(0, -1);
 
-			this.https          = location.protocol.slice(0, -1);
-
-			this.title       = segments[2];
-			this.chapter     = segments[3] + '/' + segments[4] + '/' + segments[5] + (segments[6] && segments[6] !== 'page' ? '/' + segments[6] : '');
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
 
 			this.title_url   = this.https+'://reader.seaotterscans.com/series/'+this.title;
 			this.chapter_url = this.https+'://reader.seaotterscans.com/read/'+this.title+'/'+this.chapter;
@@ -1066,9 +1059,9 @@ var sites = {
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
 			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content > script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
-			}).map(function(e, i) {
+			}).map(function(e) {
 				return e.replace(/\\/g, '');
 			});
 			this.page_count = this.viewerCustomImageList.length;
@@ -1104,7 +1097,7 @@ var sites = {
 
 			$(form).submit(function(e) {
 				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value == '' ? true : o.value); return m;}, {});
-				delete data.csrf_token;
+				delete data['csrf_token'];
 				if(config['api-key']) {
 					config = $.extend(config, data);
 					GM_setValue('config', JSON.stringify(data));
@@ -1157,7 +1150,7 @@ var sites = {
 const main_site = 'https://trackr.moe';
 //FIXME: We should point to dev if requested
 
-var config = JSON.parse(GM_getValue('config') || '{"init": true}');
+let config = JSON.parse(GM_getValue('config') || '{"init": true}');
 console.log(config); //TODO: Disable on production
 
 if(!$.isEmptyObject(config)) {

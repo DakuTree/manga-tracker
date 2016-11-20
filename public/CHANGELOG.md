@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.18] - 2016-11-20
+### Changes
+- Lots of userscript tweaks. Mostly PHPStorm inspection recommendations. jQuery selector prefixing, ES6 stuff and so on.
+
 ## [1.3.17] - 2016-11-18
 ### Added
 - `[Backend]` Test for SeaOtterScans
