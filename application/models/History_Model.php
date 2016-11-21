@@ -19,12 +19,14 @@ class History_Model extends CI_Model {
 
 				'updated_at'  => $newChapterTimestamp
 			]);
+			$this->db->cache_delete('history', (string) $titleID);
 		}
 		return (bool) $success;
 	}
 
 	public function getTitleHistory(int $titleID, int $page = 1) : array {
 		$rowsPerPage = 50;
+		$this->db->cache_on();
 		$query = $this->db
 			->select('SQL_CALC_FOUND_ROWS
 			          tt.title_url,
@@ -37,6 +39,7 @@ class History_Model extends CI_Model {
 			->order_by('tth.id DESC')
 			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
 			->get();
+		$this->db->cache_off();
 
 		$arr = ['rows' => [], 'totalPages' => 1];
 		if($query->num_rows() > 0) {

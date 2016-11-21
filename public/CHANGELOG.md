@@ -7,7 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.19] - 2016-11-21
 ### Changes
-- User options are now cached. This should have some small speed improvements.
+- `[Backend]` User options are now cached. This should have some small speed improvements.
+- `[Backend]` Added the DB part of https://github.com/terrylinooo/CodeIgniter-Multi-level-Cache.
+  - Also did a few additional tweaks to change the folder structure.
+- `[Backend]` Title history pages are now cached.
 
 ## [1.3.18] - 2016-11-20
 ### Changes
