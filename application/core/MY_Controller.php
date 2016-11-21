@@ -20,8 +20,6 @@ class MY_Controller extends CI_Controller {
 	}
 
 	public function _render_page(/*(array) $paths*/) {
-		//using the union operator + makes sure global_data always takes priority
-		//SEE: http://stackoverflow.com/a/2140094/1168377
 
 		//We could just use global, but this is the only var we need in both header+footer
 		$this->footer_data['page'] = $this->header_data['page'];
@@ -32,6 +30,8 @@ class MY_Controller extends CI_Controller {
 
 			$this->load->view($path, ($this->global_data + $this->body_data));
 		}
+		//using the union operator + makes sure global_data always takes priority
+		//SEE: http://stackoverflow.com/a/2140094/1168377
 		$this->load->view('common/footer', ($this->global_data + $this->footer_data));
 	}
 	public function _render_json($json_input, bool $download = FALSE) {

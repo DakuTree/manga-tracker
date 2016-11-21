@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.19] - 2016-11-21
+### Changes
+- User options are now cached. This should have some small speed improvements.
+
 ## [1.3.18] - 2016-11-20
 ### Changes
 - Lots of userscript tweaks. Mostly PHPStorm inspection recommendations. jQuery selector prefixing, ES6 stuff and so on.

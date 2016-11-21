@@ -158,6 +158,8 @@ class User_Options_Model extends CI_Model {
 				$this->db->where($data);
 				$success = $this->db->update('user_options', $dataValues);
 			}
+
+			if($success) $this->session->unset_tempdata("option_{$option}");
 		} else {
 			$success = FALSE;
 		}
@@ -166,12 +168,16 @@ class User_Options_Model extends CI_Model {
 
 	private function get_db(string $option, int $userID) {
 		//This function assumes we've already done some basic validation.
-		$query = $this->db->select('value_str, value_int')
-		                  ->from('user_options')
-		                  ->where('user_id', $userID)
-		                  ->where('name',    $option)
-		                  ->limit(1);
-		return $query->get()->row_array();
+		if(!($data = $this->session->tempdata("option_{$option}"))) {
+			$query = $this->db->select('value_str, value_int')
+			                  ->from('user_options')
+			                  ->where('user_id', $userID)
+			                  ->where('name',    $option)
+			                  ->limit(1);
+			$data = $query->get()->row_array();
+			$this->session->set_tempdata("option_{$option}", $data, 3600);
+		}
+		return $data;
 	}
 	private function set_db(string $option, $value) : bool {}
 
