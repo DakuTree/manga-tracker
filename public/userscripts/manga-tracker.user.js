@@ -16,10 +16,11 @@
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-20
-// @version      1.2.0
+// @updated      2016-11-22
+// @version      1.2.1
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -1052,6 +1053,39 @@ let sites = {
 
 			this.title_url   = this.https+'://reader.seaotterscans.com/series/'+this.title;
 			this.chapter_url = this.https+'://reader.seaotterscans.com/read/'+this.title+'/'+this.chapter;
+
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		postSetupTopBar : function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		}
+	}),
+
+	'helveticascans.com' : extendSite({
+		setObjVars : function() {
+			this.https       = location.protocol.slice(0, -1);
+
+			this.title       = this.segments[3];
+			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
+
+			this.title_url   = this.https+'://helveticascans.com/reader/series/'+this.title;
+			this.chapter_url = this.https+'://helveticascans.com/reader/read/'+this.title+'/'+this.chapter;
 
 			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
 			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/

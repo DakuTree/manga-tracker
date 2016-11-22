@@ -1,6 +1,6 @@
-<!--<div class="alert alert-info" role="alert">-->
-<!--	<strong>Update (2016/11/14):</strong> Added support for Sea Otter Scans reader (<a href="http://reader.seaotterscans.com">http://reader.seaotterscans.com</a>)-->
-<!--</div>-->
+<div class="alert alert-info" role="alert">
+	<strong>Update (2016/11/22):</strong> Added support for HelveticaScans reader (<a href="http://helveticascans.com/reader/">http://helveticascans.com/reader/</a>)
+</div>
 
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">

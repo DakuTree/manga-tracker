@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.20] - 2016-11-22
+## Added
+- Support for HelveticaScans - http://helveticascans.com/reader
+
 ## [1.3.19] - 2016-11-21
 ### Changes
 - `[Backend]` User options are now cached. This should have some small speed improvements.
