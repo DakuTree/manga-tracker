@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.21] - 2016-11-23
+## Added
+- Support for SenseScans - http://reader.sensescans.com
+
 ## [1.3.20] - 2016-11-22
 ## Added
 - Support for HelveticaScans - http://helveticascans.com/reader

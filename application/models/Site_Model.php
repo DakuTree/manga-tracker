@@ -51,6 +51,7 @@ class Sites_Model extends CI_Model {
 	public $MangaCow;
 	public $SeaOtterScans;
 	public $HelveticaScans;
+	public $SenseScans;
 
 	public function __construct() {
 		parent::__construct();
@@ -68,6 +69,7 @@ class Sites_Model extends CI_Model {
 		$this->MangaCow         = new MangaCow();
 		$this->SeaOtterScans    = new SeaOtterScans();
 		$this->HelveticaScans   = new HelveticaScans();
+		$this->SenseScans       = new SenseScans();
 	}
 }
 
@@ -941,6 +943,70 @@ class HelveticaScans extends Site_Model {
 		$chapter_parts = explode('/', $chapter);
 		return [
 			'url'    => "http://helveticascans.com/reader/read/{$title_url}/{$chapter}",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$data = $this->get_content($fullURL);
+		if(strpos($data, '404 Page Not Found') === FALSE) {
+			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
+			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+
+			$xpath = new DOMXPath($dom);
+
+			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
+			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1]");
+			if($nodes_row->length !== 1) {
+				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
+			}
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				$titleData['title'] = trim($nodes_title[0]->textContent);
+
+
+				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
+				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
+
+				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
+			}
+		} else {
+			//TODO: Throw ERRORS;
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+class SenseScans extends Site_Model {
+	public function getFullTitleURL(string $title_url) : string {
+		return "http://reader.sensescans.com/series/{$title_url}";
+	}
+
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match('/^[a-z0-9_]+/', $title_url);
+		if(!$success) log_message('error', "Invalid Title URL (SenseScans): {$title_url}");
+		return $success;
+	}
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match('/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/', $chapter);
+		if(!$success) log_message('error', 'Invalid Chapter (SenseScans): '.$chapter);
+		return $success;
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "http://reader.sensescans.com/read/{$title_url}/{$chapter}",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}

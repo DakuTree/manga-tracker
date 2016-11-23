@@ -25,5 +25,6 @@
 		<li>MangaCow</li>
 		<li>SeaOtterScans</li>
 		<li>HelveticaScans</li>
+		<li>SenseScans</li>
 	</ul>
 </div>

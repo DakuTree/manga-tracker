@@ -1,5 +1,6 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2016/11/22):</strong> Added support for HelveticaScans reader (<a href="http://helveticascans.com/reader/">http://helveticascans.com/reader/</a>)
+	<strong>Update (2016/11/22):</strong> Added support for HelveticaScans reader (<a href="http://helveticascans.com/reader/">http://helveticascans.com/reader/</a>)<br>
+	<strong>Update (2016/11/23):</strong> Added support for SenseScans reader (<a href="http://reader.sensescans.com">http://reader.sensescans.com</a>)
 </div>
 
 <?php if($has_inactive) { ?>
