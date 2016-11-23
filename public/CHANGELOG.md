@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Added
 - Support for SenseScans - http://reader.sensescans.com
 
+## Changes
+- `[Backend]` Added global https check to userscript to avoid duplicate code
+
 ## [1.3.20] - 2016-11-22
 ## Added
 - Support for HelveticaScans - http://helveticascans.com/reader

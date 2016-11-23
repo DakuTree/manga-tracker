@@ -21,7 +21,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-11-23
-// @version      1.2.2
+// @version      1.2.3
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -442,6 +442,7 @@ let base_site = {
 
 	/** Variables **/
 	segments : window.location.pathname.split('/'),
+	https    : location.protocol.slice(0, -1),
 
 	//Used for tracking.
 	site    : location.hostname.replace(/^(?:dev|test)\./, ''),
@@ -656,8 +657,6 @@ let sites = {
 			let chapterNParts   = $('select[name=chapter_select]:first > option:selected').text().trim().match(/^(?:Vol\.(\S+) )?(?:Ch.([^\s:]+)):?.*/);
 			let reader          = $('#reader');
 
-			this.https          = location.protocol.slice(0, -1);
-
 			this.page_count     = $('#page_select:first').find('> option').length;
 			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() == 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
@@ -840,8 +839,6 @@ let sites = {
 
 	'mangastream.com' : extendSite({
 		setObjVars : function() {
-			this.https       = location.protocol.slice(0, -1);
-
 			this.page_count  = parseInt($('.controls ul:last > li:last').text().replace(/[^0-9]/g, ''));
 			this.title       = this.segments[2];
 			this.chapter     = this.segments[3]+'/'+this.segments[4];
@@ -1047,8 +1044,6 @@ let sites = {
 
 	'reader.seaotterscans.com' : extendSite({
 		setObjVars : function() {
-			this.https       = location.protocol.slice(0, -1);
-
 			this.title       = this.segments[2];
 			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
 
@@ -1080,8 +1075,6 @@ let sites = {
 
 	'helveticascans.com' : extendSite({
 		setObjVars : function() {
-			this.https       = location.protocol.slice(0, -1);
-
 			this.title       = this.segments[3];
 			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
 
@@ -1113,8 +1106,6 @@ let sites = {
 
 	'reader.sensescans.com' : extendSite({
 		setObjVars : function() {
-			this.https       = location.protocol.slice(0, -1);
-
 			this.title       = this.segments[2];
 			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
 
