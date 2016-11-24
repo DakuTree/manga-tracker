@@ -376,6 +376,9 @@ body {
 
 	background-position: -235px -1px;
 }
+#page[data-page="index"] h1 {
+	font-size: 36px;
+}
 /* Credit to bootsnipp.com for the css for the color graph */
 .colorgraph {
 	height: 5px;

@@ -13,8 +13,8 @@ class IndexC extends User_Controller {
 			//FIXME: I'm not a designer, and I have no idea how to go about making a front page for the site.
 			//       We're just going to redirect the user until we can get one done.
 
-			redirect('user/login');
-			//$this->_render_page('FrontPage');
+			//redirect('user/login');
+			$this->_render_page('FrontPage');
 		} else {
 			$this->header_data['title'] = "Dashboard";
 			$this->header_data['page']  = "dashboard";
