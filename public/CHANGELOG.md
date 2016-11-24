@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.23] - 2016-11-24
 ## Changes
-- Userscript now uses === instead of == in some cases.
+- `[Backend]` Userscript now uses === instead of == in some cases.
+- `[Backend]` Added more files to .gitignore
 
 ## [1.3.22] - 2016-11-24
 ## Added

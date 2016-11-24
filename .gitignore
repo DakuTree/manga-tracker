@@ -5,13 +5,6 @@
 !/.idea/encodings.xml
 !/.idea/watcherTasks.xml
 
-# Windows
-Thumbs.db
-ehthumbs.db
-
-Desktop.ini
-*.lnk
-
 #Composer
 composer.phar
 /vendor/
@@ -42,3 +35,6 @@ application/tests_codeception/_output
 application/tests_codeception/_support/_generated/*.php
 
 _scripts/config.ini
+_scripts/*.sh
+
+public/favicon.*.png
