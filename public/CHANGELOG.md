@@ -6,23 +6,26 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.23] - 2016-11-24
-## Changes
+### Changes
 - `[Backend]` Userscript now uses === instead of == in some cases.
 - `[Backend]` Added more files to .gitignore
 
+### Fixed 
+- bato.to chapter numbers containing dashes no longer get trimmed (previous: "13-2"/"13 - 2" > "13" | now: > "13-2")
+
 ## [1.3.22] - 2016-11-24
-## Added
+### Added
 - An actual front page! It looks like ass but it's better than auto-redirecting to the login.
 
 ## [1.3.21] - 2016-11-23
-## Added
+### Added
 - Support for SenseScans - http://reader.sensescans.com
 
-## Changes
+### Changes
 - `[Backend]` Added global https check to userscript to avoid duplicate code
 
 ## [1.3.20] - 2016-11-22
-## Added
+### Added
 - Support for HelveticaScans - http://helveticascans.com/reader
 
 ## [1.3.19] - 2016-11-21
