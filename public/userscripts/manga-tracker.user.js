@@ -20,8 +20,8 @@
 // @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-23
-// @version      1.2.3
+// @updated      2016-11-24
+// @version      1.2.4
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
@@ -31,8 +31,8 @@
 // @grant        GM_setValue
 // @run-at       document-start
 // ==/UserScript==
-/* jshint -W097, browser:true, devel:true, multistr:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue */
+/* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue, config */
 'use strict';
 
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\//g, 'https://opensource.keycdn.com/fontawesome/4.6.3/'));
@@ -658,7 +658,7 @@ let sites = {
 			let reader          = $('#reader');
 
 			this.page_count     = $('#page_select:first').find('> option').length;
-			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() == 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
+			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2];
@@ -1174,7 +1174,7 @@ let sites = {
 					if(json['api-key']) {
 						$('#api-key').text(json['api-key']);
 
-						if(location.hostname == 'dev.trackr.moe') {
+						if(location.hostname === 'dev.trackr.moe') {
 							config['api-key-dev'] = json['api-key'];
 						} else {
 							config['api-key']     = json['api-key'];
@@ -1215,7 +1215,7 @@ console.log(config); //TODO: Disable on production
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
 	const hostname = location.hostname.replace(/^(?:dev)\./, '');
-	if(hostname == 'trackr.moe') {
+	if(hostname === 'trackr.moe') {
 		//FF loads document-start at a different time..
 		if(!("InstallTrigger" in window)) {
 			sites[hostname].init();
@@ -1225,7 +1225,7 @@ if(!$.isEmptyObject(config)) {
 			});
 		}
 	} else if(sites[hostname]) {
-		if(main_site == 'https://dev.trackr.moe') config['api-key'] = config['api-key-dev']; //TEMP
+		if(main_site === 'https://dev.trackr.moe') { config['api-key'] = config['api-key-dev']; } //TEMP
 		$(function() {
 			sites[hostname].init();
 		});

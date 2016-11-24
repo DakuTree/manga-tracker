@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.23] - 2016-11-24
+## Changes
+- Userscript now uses === instead of == in some cases.
+
 ## [1.3.22] - 2016-11-24
 ## Added
 - An actual front page! It looks like ass but it's better than auto-redirecting to the login.
