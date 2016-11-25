@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.24] - 2016-11-25
 ### Fixed 
 - `[Backend]` Fixed auto-complete/inspection errors when accessing DOMDocument elements with [0] instead of ->item(0)
-- SenseScans no longer auto-redirects to series page. Apparently a missing end slash caused this :|
+- Sites using FoOlSlide no longer auto-redirects to series page. Apparently a missing end slash caused this :|
 
 ## [1.3.23] - 2016-11-24
 ### Changes

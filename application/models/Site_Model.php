@@ -699,7 +699,7 @@ class KireiCake extends Site_Model {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "https://reader.kireicake.com/read/{$title_url}/{$chapter}",
+			'url'    => "https://reader.kireicake.com/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
@@ -882,7 +882,7 @@ class SeaOtterScans extends Site_Model {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "https://reader.seaotterscans.com/read/{$title_url}/{$chapter}",
+			'url'    => "https://reader.seaotterscans.com/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
@@ -949,7 +949,7 @@ class HelveticaScans extends Site_Model {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "http://helveticascans.com/reader/read/{$title_url}/{$chapter}",
+			'url'    => "http://helveticascans.com/reader/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
@@ -993,6 +993,7 @@ class HelveticaScans extends Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
+
 class SenseScans extends Site_Model {
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://reader.sensescans.com/series/{$title_url}";
