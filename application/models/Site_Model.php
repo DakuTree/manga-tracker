@@ -116,15 +116,16 @@ class MangaFox extends Site_Model {
 			$nodes_row   = $xpath->query("//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = html_entity_decode(substr($nodes_title[0]->getAttribute('content'), 0, -6));
+				$titleData['title'] = html_entity_decode(substr($nodes_title->item(0)->getAttribute('content'), 0, -6));
 
-				$nodes_latest  = $xpath->query("div/span[@class='date']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("div/h3/a", $nodes_row[0]);
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("div/span[@class='date']", $firstRow);
+				$nodes_chapter = $xpath->query("div/h3/a",                $firstRow);
 
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
 				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -176,15 +177,16 @@ class MangaHere extends Site_Model {
 			$nodes_row   = $xpath->query("//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = $nodes_title[0]->getAttribute('content');
+				$titleData['title'] = $nodes_title->item(0)->getAttribute('content');
 
-				$nodes_latest  = $xpath->query("span[@class='right']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("span[@class='left']/a", $nodes_row[0]);
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("span[@class='right']",  $firstRow);
+				$nodes_chapter = $xpath->query("span[@class='left']/a", $firstRow);
 
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
 				$chapterURLSegments = explode('/', $link);
 				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -450,13 +452,14 @@ class MangaPanda extends Site_Model {
 			$nodes_row   = $xpath->query("(//table[@id='listing']/tr)[last()]");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = $nodes_title[0]->nodeValue;
+				$titleData['title'] = $nodes_title->item(0)->nodeValue;
 
-				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("td[2]",   $firstRow);
+				$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
 
-				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
+				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -508,13 +511,14 @@ class MangaStream extends Site_Model {
 			$nodes_title = $xpath->query("//div[contains(@class, 'content')]/div[1]/h1");
 			$nodes_row   = $xpath->query("//div[contains(@class, 'content')]/div[1]/table/tr[2]"); //Missing tbody here..
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = $nodes_title[0]->nodeValue;
+				$titleData['title'] = $nodes_title->item(0)->nodeValue;
 
-				$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("td[2]",   $firstRow);
+				$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
 
-				$titleData['latest_chapter'] = preg_replace('/^.*\/(.*?\/[0-9]+)\/[0-9]+$/', '$1', (string) $nodes_chapter[0]->getAttribute('href'));
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->nodeValue));
+				$titleData['latest_chapter'] = preg_replace('/^.*\/(.*?\/[0-9]+)\/[0-9]+$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -652,15 +656,16 @@ class KissManga extends Site_Model {
 				$nodes_title = $xpath->query("//a[@class='bigChar']");
 				$nodes_row   = $xpath->query("//table[@class='listing']/tr[3]");
 				if($nodes_title->length === 1 && $nodes_row->length === 1) {
-					$titleData['title'] = $nodes_title[0]->textContent;
+					$titleData['title'] = $nodes_title->item(0)->textContent;
 
-					$nodes_latest  = $xpath->query("td[2]", $nodes_row[0]);
-					$nodes_chapter = $xpath->query("td[1]/a", $nodes_row[0]);
+					$firstRow      = $nodes_row->item(0);
+					$nodes_latest  = $xpath->query("td[2]",   $firstRow);
+					$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
 
-					$link = (string) $nodes_chapter[0]->getAttribute('href');
+					$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 					$chapterURLSegments = explode('/', preg_replace('/\?.*$/', '', $link));
 					$titleData['latest_chapter'] = $chapterURLSegments[3] . ':--:' . preg_replace('/.*?([0-9]+)$/', '$1', $link);
-					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest[0]->textContent));
+					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->textContent));
 				}
 			} else {
 				//TODO: Throw ERRORS;
@@ -718,15 +723,15 @@ class KireiCake extends Site_Model {
 			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
 			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='element'][1]");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title[0]->textContent);
+				$titleData['title'] = trim($nodes_title->item(0)->textContent);
 
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("div[@class='meta_r']",  $firstRow);
+				$nodes_chapter = $xpath->query("div[@class='title']/a", $firstRow);
 
-				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
-
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -777,14 +782,15 @@ class GameOfScanlation extends Site_Model {
 			$nodes_title = $xpath->query("//meta[@property='og:title']");
 			$nodes_row   = $xpath->query("//ol[@class='discussionListItems']/li[1]/div[@class='home_list']/ul/li/div[@class='list_press_text']");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = html_entity_decode($nodes_title[0]->getAttribute('content'));
+				$titleData['title'] = html_entity_decode($nodes_title->item(0)->getAttribute('content'));
 
-				$nodes_latest  = $xpath->query("p[@class='author']/span|p[@class='author']/abbr", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("p[@class='text_work']/a", $nodes_row[0]);
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("p[@class='author']/span|p[@class='author']/abbr", $firstRow);
+				$nodes_chapter = $xpath->query("p[@class='text_work']/a",                         $firstRow);
 
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/^projects\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", (int) $nodes_latest[0]->getAttribute('data-time'));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", (int) $nodes_latest->item(0)->getAttribute('data-time'));
 			} else {
 				log_message('error', "GameOfScanlation: Unable to find nodes.");
 				return NULL;
@@ -836,14 +842,14 @@ class MangaCow extends Site_Model {
 			$nodes_title = $xpath->query("//h4");
 			$nodes_row   = $xpath->query("//ul[contains(@class, 'mng_chp')]/li[1]/a[1]");
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title[0]->nodeValue);
+				$titleData['title'] = trim($nodes_title->item(0)->nodeValue);
 
 				$nodes_chapter = $nodes_row;
-				$nodes_latest  = $xpath->query("b[@class='dte']", $nodes_row[0]);
+				$nodes_latest  = $xpath->query("b[@class='dte']", $nodes_row->item(0));
 
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($nodes_latest[0]->getAttribute('title'), 13)));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($nodes_latest->item(0)->getAttribute('title'), 13)));
 			} else {
 				log_message('error', "MangaCow: Unable to find nodes.");
 				return NULL;
@@ -905,13 +911,13 @@ class SeaOtterScans extends Site_Model {
 				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
 			}
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title[0]->textContent);
+				$titleData['title'] = trim($nodes_title->item(0)->textContent);
 
+				$firstRow = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query("div[@class='meta_r']",  $firstRow);
+				$nodes_chapter = $xpath->query("div[@class='title']/a", $firstRow);
 
-				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
-
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
 			}
@@ -970,15 +976,15 @@ class HelveticaScans extends Site_Model {
 				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
 			}
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title[0]->textContent);
+				$titleData['title'] = trim($nodes_title->item(0)->textContent);
 
 
 				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
 				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
 
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
 			}
 		} else {
 			//TODO: Throw ERRORS;
@@ -1034,15 +1040,14 @@ class SenseScans extends Site_Model {
 				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
 			}
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title[0]->textContent);
+				$titleData['title'] = trim($nodes_title->item(0)->textContent);
 
+				$nodes_latest    = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
+				$nodes_chapter   = $xpath->query("div[@class='title']/a", $nodes_row[0]);
 
-				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
-
-				$link = (string) $nodes_chapter[0]->getAttribute('href');
+				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1])));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
 			}
 		} else {
 			//TODO: Throw ERRORS;

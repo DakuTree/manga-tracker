@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.24] - 2016-11-25
+### Fixed 
+- `[Backend]` Fixed auto-complete/inspection errors when accessing DOMDocument elements with [0] instead of ->item(0)
+
 ## [1.3.23] - 2016-11-24
 ### Changes
 - `[Backend]` Userscript now uses === instead of == in some cases.
