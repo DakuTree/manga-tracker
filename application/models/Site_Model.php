@@ -579,12 +579,12 @@ class WebToons extends Site_Model {
 		$data = $this->get_content($fullURL);
 		if($data !== 'Can\'t find the manga series.') {
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
-			if(isset($xml->channel->item[0])) {
-				$titleData['title'] = trim((string) $xml->channel->title);
+			if(isset($xml->{'channel'}->item[0])) {
+				$titleData['title'] = trim((string) $xml->{'channel'}->title);
 
-				$chapterURLSegments = explode('/', ((string) $xml->channel->item[0]->link));
+				$chapterURLSegments = explode('/', ((string) $xml->{'channel'}->item[0]->link));
 				$titleData['latest_chapter'] = preg_replace('/^.*?([0-9]+)$/', '$1', $chapterURLSegments[7]) . ':--:' . $chapterURLSegments[6];
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->channel->item[0]->pubDate));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
 			}
 		} else {
 			//TODO: Throw ERRORS;
