@@ -47,7 +47,7 @@ system("sudo s3cmd sync --recursive --preserve /etc/letsencrypt ${S3URI}etc/");
 
 system("sudo s3cmd sync --recursive --preserve /etc/webalizer ${S3URI}etc/");
 
-system("sudo tar -zcvf config_files.tar.gz /etc/apache2/apache2.conf /etc/mysql");
+system("sudo tar -zcvf config_files.tar.gz /etc/apache2/apache2.conf /etc/mysql /etc/php/7.0");
 system("sudo s3cmd sync --recursive --preserve config_files.tar.gz ${S3URI}");
 
 system("sudo tar -zcvf virualhosts.tar.gz /etc/apache2/sites-available");
