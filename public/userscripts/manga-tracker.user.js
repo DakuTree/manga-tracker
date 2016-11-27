@@ -21,7 +21,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-11-27
-// @version      1.2.7
+// @version      1.2.8
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
@@ -816,8 +816,8 @@ let sites = {
 
 			//MangaPanda is tricky here. The chapter list is loaded via AJAX, and not a <script> tag. As far as I can tell, we can't watch for this to load without watching the actual element.
 			//TODO: This should auto-fail after x amount of tries.
-			let option     = $('#topchapter').find('> #selectmanga > select > option');
 			let checkExist = setInterval(function() {
+				let option     = $('#topchapter').find('> #selectmanga > select > option');
 				if(option.length) {
 					clearInterval(checkExist);
 

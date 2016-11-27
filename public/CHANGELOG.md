@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.25] - 2016-11-276
 ### Fixed
 - `[Backend]` Font Awesome works again, also updated to 4.7.0.
+- `[Backend]` MangaPanda now properly shows the topbar.
 
 ## [1.3.25] - 2016-11-26
 ### Changes
