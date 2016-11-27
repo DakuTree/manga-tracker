@@ -20,11 +20,11 @@
 // @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-24
-// @version      1.2.5
+// @updated      2016-11-27
+// @version      1.2.7
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
-// @resource     fontAwesome https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css
+// @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_getValue
@@ -35,7 +35,7 @@
 /* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue, config */
 'use strict';
 
-GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\//g, 'https://opensource.keycdn.com/fontawesome/4.6.3/'));
+GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
 
 /* CORE TODO
 Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?

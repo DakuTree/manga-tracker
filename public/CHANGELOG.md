@@ -5,9 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.25] - 2016-11-276
+### Fixed
+- `[Backend]` Font Awesome works again, also updated to 4.7.0.
+
 ## [1.3.25] - 2016-11-26
 ### Changes
 - `[Backend]` PHP config is now backed up properly.
+
 ## [1.3.24] - 2016-11-25
 ### Fixed 
 - `[Backend]` Fixed auto-complete/inspection errors when accessing DOMDocument elements with [0] instead of ->item(0)
