@@ -10,6 +10,8 @@ filter:
         - 'application/models/vendor/*'
         - 'application/language/*'
         - 'public/assets/vendor/*'
+        - 'public/assets/js/compiled.min.js'
+        - 'public/assets/css/*'
 
 checks:
     php:
