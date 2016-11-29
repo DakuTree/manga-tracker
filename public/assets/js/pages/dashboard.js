@@ -36,7 +36,7 @@ $(function(){
 					break;
 				default:
 					alert('ERROR: Something went wrong!\n'+errorThrown);
-					break
+					break;
 			}
 		});
 	});
@@ -63,7 +63,7 @@ $(function(){
 						break;
 					default:
 						alert('ERROR: Something went wrong!\n'+errorThrown);
-						break
+						break;
 				}
 			});
 		}
@@ -84,7 +84,7 @@ $(function(){
 				reader.onload = function (e) {
 					var json_string = e.target.result;
 					if(!isJsonString(json_string)) {
-						import_status('ERROR: File isn\'t valid JSON!')
+						import_status('ERROR: File isn\'t valid JSON!');
 					} else {
 						var data = new FormData();
 						data.append('json', json_string);
@@ -109,7 +109,7 @@ $(function(){
 										break;
 									default:
 										alert('ERROR: Something went wrong!\n'+errorThrown);
-										break
+										break;
 								}
 							},
 							contentType: false,
@@ -177,7 +177,7 @@ $(function(){
 							break;
 						default:
 							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break
+							break;
 					}
 				});
 			} else {
@@ -221,7 +221,7 @@ $(function(){
 							break;
 						default:
 							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break
+							break;
 					}
 				});
 			}
