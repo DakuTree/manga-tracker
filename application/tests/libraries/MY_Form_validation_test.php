@@ -3,6 +3,10 @@
 class MY_Form_validation_test extends TestCase {
 	private $form_validation;
 
+	public function __construct() {
+		parent::__construct();
+	}
+
 	public function setUp() {
 		$this->resetInstance();
 		$this->CI->load->library('form_validation');
