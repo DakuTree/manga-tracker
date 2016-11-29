@@ -1,8 +1,3 @@
-<div class="alert alert-info" role="alert">
-	<strong>Update (2016/11/22):</strong> Added support for HelveticaScans reader (<a href="http://helveticascans.com/reader/">http://helveticascans.com/reader/</a>)<br>
-	<strong>Update (2016/11/23):</strong> Added support for SenseScans reader (<a href="http://reader.sensescans.com">http://reader.sensescans.com</a>)
-</div>
-
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">
 	Some of the series in your list have been marked as inactive and not updated due to having no active users tracking it.<br>
