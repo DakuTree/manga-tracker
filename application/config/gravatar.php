@@ -9,16 +9,16 @@
 
 // For more information see http://en.gravatar.com/site/implement/images/
 
-$config['gravatar_base_url'] = 'http://www.gravatar.com/';
+$config['gravatar_base_url']        = 'http://www.gravatar.com/';
 $config['gravatar_secure_base_url'] = 'https://secure.gravatar.com/';
 $config['gravatar_image_extension'] = '.png';   // '', '.png' or '.jpg'.
-$config['gravatar_image_size'] = 44;
+$config['gravatar_image_size']      = 44;
 
 $config['gravatar_default_image'] = 'identicon'; // '', '404', 'mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'.
 //$config['gravatar_default_image'] = BASE_URL.'assets/img/lib/default-person.png'; // Another possible option: a custon image.
 
 $config['gravatar_force_default_image'] = false;
-$config['gravatar_rating'] = '';  // '', 'g' (default), 'pg', 'r', 'x'.
+$config['gravatar_rating']              = '';  // '', 'g' (default), 'pg', 'r', 'x'.
 
 // Useragent string for server-made requests.
 // It is for not getting 403 forbidden response.

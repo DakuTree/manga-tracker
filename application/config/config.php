@@ -47,7 +47,7 @@ $config['index_page'] = '';
 |
 | WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
 */
-$config['uri_protocol']	= 'REQUEST_URI';
+$config['uri_protocol'] = 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -180,11 +180,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['allow_get_array'] = TRUE;
+$config['allow_get_array']      = TRUE;
 $config['enable_query_strings'] = FALSE;
-$config['controller_trigger'] = 'c';
-$config['function_trigger'] = 'm';
-$config['directory_trigger'] = 'd';
+$config['controller_trigger']   = 'c';
+$config['function_trigger']     = 'm';
+$config['directory_trigger']    = 'd';
 
 /*
 |--------------------------------------------------------------------------
@@ -392,11 +392,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
-$config['cookie_path']		= '/';
-$config['cookie_secure']	= TRUE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_prefix']   = '';
+$config['cookie_domain']   = '';
+$config['cookie_path']     = '/';
+$config['cookie_secure']   = TRUE;
+$config['cookie_httponly'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -440,11 +440,11 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-$config['csrf_protection'] = TRUE;
-$config['csrf_token_name'] = 'csrf_token';
-$config['csrf_cookie_name'] = 'csrf_cookie';
-$config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_protection']   = TRUE;
+$config['csrf_token_name']   = 'csrf_token';
+$config['csrf_cookie_name']  = 'csrf_cookie';
+$config['csrf_expire']       = 7200;
+$config['csrf_regenerate']   = TRUE;
 $config['csrf_exclude_uris'] = array(
 	'ajax/userscript/update',
 	'ajax/userscript/report_bug',

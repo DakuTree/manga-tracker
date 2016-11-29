@@ -57,7 +57,6 @@ $config['less_path']     = 'less/';
 $config['js_path']       = 'js/';
 $config['img_path']      = 'img/';
 $config['swf_path']      = 'swf/';
-
 $config['download_path'] = 'assets/download/';
 $config['upload_path']   = 'assets/upload/';
 $config['xml_path']      = 'assets/xml/';
