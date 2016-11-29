@@ -7,6 +7,11 @@ class MY_Output extends CI_Output {
 		'custom' => FALSE
 	];
 
+
+	public function __construct() {
+		parent::__construct();
+	}
+
 	public function set_status_header($code = 200, $text = '') {
 		set_status_header((int) $code, (string) $text);
 		$this->current_header = [
