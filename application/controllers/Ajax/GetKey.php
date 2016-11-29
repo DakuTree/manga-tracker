@@ -19,7 +19,7 @@ class GetKey extends AJAX_Controller {
 		if($this->ion_auth->logged_in()) {
 			if(!$this->limiter->limit('new_api_key', 10)) {
 				$api_key = $this->User->get_new_api_key();
-				$json = ['api-key' => $api_key];
+				$json    = ['api-key' => $api_key];
 
 				$this->output
 					->set_content_type('application/json')

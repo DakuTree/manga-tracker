@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.26] - 2016-11-29
 ### Fixed
-- `[Backend]` Did various Scrutinizer-CI reccomendations (Missing semicolons, strict comparisons, etc.)
+- `[Backend]` Did various Scrutinizer-CI reccomendations (Missing semicolons, strict comparisons, alignment, etc.)
 
 ## [1.3.25] - 2016-11-27
 ### Fixed
