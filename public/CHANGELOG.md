@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.27] - 2016-12-02
+### Changes
+- `[Backend]` PHP7.1 is out! Added some nullable return types, travis testing.
+
 ## [1.3.26] - 2016-11-29
 ### Fixed
 - `[Backend]` Did various Scrutinizer-CI reccomendations (Missing semicolons, strict comparisons, alignment, etc.)
