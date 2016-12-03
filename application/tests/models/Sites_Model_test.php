@@ -51,6 +51,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-zA-Z0-9]+:--:[c|v][0-9\.\-]+(?:\/c[0-9\.\-]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_DynastyScans() {
 		$result = $this->Sites_Model->{'DynastyScans'}->getTitleData('qualia_the_purple:--:0');
 
@@ -63,6 +64,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^ch(?:apters)?[0-9]+(?:_[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_MangaPanda() {
 		$result = $this->Sites_Model->{'MangaPanda'}->getTitleData('relife');
 
@@ -75,6 +77,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_MangaStream() {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
@@ -89,6 +92,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^.*?\/[0-9]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_WebToons() {
 		$result = $this->Sites_Model->{'WebToons'}->getTitleData('93:--:en:--:girls-of-the-wilds:--:action');
 
@@ -101,6 +105,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^.*?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_KissManga() {
 		$this->markTestSkipped('KM is not supported for the time being');
 
@@ -117,6 +122,7 @@ class Site_Model_test extends TestCase {
 		//$this->assertRegExp('/^.*?:--:[0-9]+$/', $result['latest_chapter']);
 		//$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_KireiCake() {
 		$result = $this->Sites_Model->{'KireiCake'}->getTitleData('helck');
 
@@ -129,6 +135,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_GameOfScanlation() {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
@@ -143,6 +150,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z0-9\.-]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_MangaCow() {
 		$result = $this->Sites_Model->{'MangaCow'}->getTitleData('The_scholars_reincarnation');
 
@@ -155,6 +163,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_SeaOtterScans() {
 		$result = $this->Sites_Model->{'SeaOtterScans'}->getTitleData('marry_me');
 
@@ -167,6 +176,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_HelveticaScans() {
 		$result = $this->Sites_Model->{'HelveticaScans'}->getTitleData('mousou-telepathy');
 
@@ -179,6 +189,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+
 	public function test_SenseScans() {
 		$result = $this->Sites_Model->{'SenseScans'}->getTitleData('to_you_the_immortal');
 
