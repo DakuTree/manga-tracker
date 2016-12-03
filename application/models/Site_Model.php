@@ -129,7 +129,8 @@ class MangaFox extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
-			//TODO: Throw ERRORS;
+			log_message('error', "Series missing? (MangaFox): {$title_url}");
+			return NULL;
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
@@ -190,7 +191,8 @@ class MangaHere extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
-			//TODO: Throw ERRORS;
+			log_message('error', "Series missing? (MangaHere): {$title_url}");
+			return NULL;
 		}
 		return (!empty($titleData) ? $titleData : NULL);
 	}
@@ -439,7 +441,7 @@ class MangaPanda extends Site_Model {
 		$fullURL = "http://www.mangapanda.com/{$title_url}";
 
 		$data = $this->get_content($fullURL);
-		if($data !== 'Can\'t find the manga series.') {
+		if($data !== '<h1>404 Not Found</h1>') {
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
 			$dom = new DOMDocument();
@@ -463,7 +465,8 @@ class MangaPanda extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
-			//TODO: Throw ERRORS;
+			log_message('error', "Series missing? (MangaPanda): {$title_url}");
+			return NULL;
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
@@ -499,7 +502,7 @@ class MangaStream extends Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 
 		$data = $this->get_content($fullURL);
-		if($data !== 'Can\'t find the manga series.') {
+		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
 			$dom = new DOMDocument();
@@ -522,7 +525,8 @@ class MangaStream extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
 			}
 		} else {
-			//TODO: Throw ERRORS;
+			log_message('error', "Series missing? (MangaStream): {$title_url}");
+			return NULL;
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
@@ -578,7 +582,7 @@ class WebToons extends Site_Model {
 		$fullURL = "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/rss?title_no={$title_parts[0]}";
 
 		$data = $this->get_content($fullURL);
-		if($data !== 'Can\'t find the manga series.') {
+		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 			if(isset($xml->{'channel'}->item[0])) {
 				$titleData['title'] = trim((string) $xml->{'channel'}->title);
@@ -588,7 +592,8 @@ class WebToons extends Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
 			}
 		} else {
-			//TODO: Throw ERRORS;
+			log_message('error', "Series missing? (WebToons): {$title_url}");
+			return NULL;
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
