@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.28] - 2016-12-03
+### Changes
+- `[Backend]` Re-enabled CURLOPT_SSL_VERIFYPEER when parsing sites.
+- `[Backend]` Got rid of the unused config.init.
+
 ## [1.3.27] - 2016-12-02
 ### Changes
 - `[Backend]` PHP7.1 is out! Added some nullable return types, travis testing.

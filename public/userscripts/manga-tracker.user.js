@@ -20,8 +20,8 @@
 // @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-11-27
-// @version      1.2.8
+// @updated      2016-12-03
+// @version      1.2.9
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
@@ -1197,10 +1197,6 @@ let sites = {
 					}
 				});
 			});
-
-			if(config.init === true) {
-				//TODO: Point user to generating API key.
-			}
 		}
 	}
 };
@@ -1209,8 +1205,8 @@ let sites = {
 const main_site = 'https://trackr.moe';
 //FIXME: We should point to dev if requested
 
-let config = JSON.parse(GM_getValue('config') || '{"init": true}');
-console.log(config); //TODO: Disable on production
+let config = JSON.parse(GM_getValue('config') || '{}');
+console.log(config);
 
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
