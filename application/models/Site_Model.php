@@ -11,7 +11,8 @@ abstract class Site_Model extends CI_Model {
 
 	abstract public function getChapterData(string $title_url, string $chapter) : array;
 
-	abstract public function getTitleData(string $title_url) : ?array;
+	//TODO: When ci-phpunit-test supports PHP Parser 3.x, add " : ?array"
+	abstract public function getTitleData(string $title_url);
 
 	abstract public function isValidTitleURL(string $title_url) : bool;
 	abstract public function isValidChapter(string $chapter) : bool;
@@ -97,13 +98,13 @@ class MangaFox extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = "http://mangafox.me/manga/{$title_url}";
 
 		$data = $this->get_content($fullURL);
-		if($data !== 'Can\'t find the manga series.') {
+		if($data !== '') {
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
 			$dom = new DOMDocument();
@@ -160,7 +161,7 @@ class MangaHere extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = "http://www.mangahere.co/manga/{$title_url}/";
@@ -235,7 +236,7 @@ class Batoto extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_string) : ?array {
+	public function getTitleData(string $title_string) {
 		$title_parts = explode(':--:', $title_string);
 		$title_url   = $this->getFullTitleURL($title_string);
 		$title_lang  = $title_parts[1];
@@ -362,7 +363,7 @@ class DynastyScans extends Site_Model {
 		return $chapterData;
 	}
 
-	public function getTitleData(string $title_string) : ?array {
+	public function getTitleData(string $title_string) {
 		$title_parts = explode(':--:', $title_string);
 		$title_url   = $title_parts[0];
 
@@ -435,7 +436,7 @@ class MangaPanda extends Site_Model {
 		return $success;
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = "http://www.mangapanda.com/{$title_url}";
@@ -496,7 +497,7 @@ class MangaStream extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -575,7 +576,7 @@ class WebToons extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$title_parts = explode(':--:', $title_url);
@@ -638,7 +639,7 @@ class KissManga extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		//Check if cookiejar is a day old (so we can know if something went wrong)
@@ -710,7 +711,7 @@ class KireiCake extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -770,7 +771,7 @@ class GameOfScanlation extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -832,7 +833,7 @@ class MangaCow extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -893,7 +894,7 @@ class SeaOtterScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -960,7 +961,7 @@ class HelveticaScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -1025,7 +1026,7 @@ class SenseScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) : ?array {
+	public function getTitleData(string $title_url) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
