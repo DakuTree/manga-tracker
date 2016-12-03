@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changes
 - `[Backend]` Re-enabled CURLOPT_SSL_VERIFYPEER when parsing sites.
 - `[Backend]` Got rid of the unused config.init.
+- `[Backend]` Composer update (for ci-phpunit-test 1.3.0).
 
 ## [1.3.27] - 2016-12-02
 ### Changes
