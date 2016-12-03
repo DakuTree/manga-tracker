@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.28] - 2016-12-03
+### Added
+- `[Backend]` Tests for Mangafox failing to grab data.
+
 ### Changes
 - `[Backend]` Re-enabled CURLOPT_SSL_VERIFYPEER when parsing sites.
 - `[Backend]` Got rid of the unused config.init.
