@@ -6,8 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.3.29] - 2016-12-04
+### Added
+- `[Backend]` parseTitleDataDOM function to remove duplication, better error logging/detection
+- `[Backend]` Failure testing for MangaFox & MangaHere.
+
 ### Changes
 - `[Backend]` get_content now returns an array including both headers & content. This should allow better error checking.
+- `[Backend]` parseTitleDataDOM function to help remove duplication from the si
 
 ## [1.3.28] - 2016-12-03
 ### Added

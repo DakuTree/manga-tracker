@@ -54,7 +54,7 @@ abstract class Site_Model extends CI_Model {
 	/**
 	 * @return DOMElement[]|false
 	 */
-	public function parseTitleDataDOM(array $content, string $site, string $title_url, string $node_title_string, string $node_row_string, string $node_latest_string, string $node_chapter_string) {
+	public function parseTitleDataDOM(array $content, string $site, string $title_url, string $node_title_string, string $node_row_string, string $node_latest_string, string $node_chapter_string, string $failure_string = "") {
 		//list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content; //TODO: PHP 7.1
 		$headers     = $content['headers'];
 		$status_code = $content['status_code'];
@@ -66,6 +66,8 @@ abstract class Site_Model extends CI_Model {
 			log_message('error', "{$site} : {$title_url} | Bad Status Code ({$status_code})");
 		} else if(empty($data)) {
 			log_message('error', "{$site} : {$title_url} | Data is empty? (Status code: {$status_code})");
+		} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
+			log_message('error', "{$site} : {$title_url} | Failure string matched");
 		} else {
 			$dom = new DOMDocument();
 			libxml_use_internal_errors(TRUE);
@@ -171,18 +173,13 @@ class MangaFox extends Site_Model {
 			"div/h3/a"
 		);
 		if($data) {
-			//list('nodes_title' => $nodes_title, 'nodes_chapter' => $nodes_chapter, 'nodes_latest' => $nodes_latest) = $data; //FIXME: PHP7.1
-			$nodes_title   = $data['nodes_title'];
-			$nodes_chapter = $data['nodes_chapter'];
-			$nodes_latest  = $data['nodes_latest'];
-
 			//This seems to be be the only viable way to grab the title...
-			$titleData['title'] = html_entity_decode(substr($nodes_title->textContent, 0, -6));
+			$titleData['title'] = html_entity_decode(substr($data['nodes_title']->textContent, 0, -6));
 
-			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->getAttribute('href'));
+			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 			$chapterURLSegments = explode('/', $link);
 			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->nodeValue));
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
@@ -215,38 +212,29 @@ class MangaHere extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
-		$fullURL = "http://www.mangahere.co/manga/{$title_url}/";
-
+		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if($data !== 'Can\'t find the manga series.') {
-			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'MangaHere',
+			$title_url,
+			"//meta[@property='og:title']/@content",
+			"//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]",
+			"span[@class='right']",
+			"span[@class='left']/a",
+			"<div class=\"error_text\">Sorry, the page you have requested can’t be found."
+		);
+		if($data) {
+			//This seems to be be the only viable way to grab the title...
+			$titleData['title'] = $data['nodes_title']->textContent;
 
-			$xpath = new DOMXPath($dom);
-			$nodes_title = $xpath->query("//meta[@property='og:title']");
-			$nodes_row   = $xpath->query("//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = $nodes_title->item(0)->getAttribute('content');
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("span[@class='right']",  $firstRow);
-				$nodes_chapter = $xpath->query("span[@class='left']/a", $firstRow);
-
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
-				$chapterURLSegments = explode('/', $link);
-				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
-			}
-		} else {
-			log_message('error', "Series missing? (MangaHere): {$title_url}");
-			return NULL;
+			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
+			$chapterURLSegments = explode('/', $link);
+			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 		}
+
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
