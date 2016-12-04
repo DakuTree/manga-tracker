@@ -38,11 +38,62 @@ abstract class Site_Model extends CI_Model {
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$response = curl_exec($ch);
 
+		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$header     = substr($response, 0, $header_size);
-		$body       = substr($response, $header_size);
+		$header      = http_parse_headers(substr($response, 0, $header_size));
+		$body        = substr($response, $header_size);
 		curl_close($ch);
-		return ['header' => $header, 'body' => $body];
+
+		return [
+			'headers'      => $header,
+			'status_code' => $status_code,
+			'body'        => $body
+		];
+	}
+
+	/**
+	 * @return DOMElement[]|false
+	 */
+	public function parseTitleDataDOM(array $content, string $site, string $title_url, string $node_title_string, string $node_row_string, string $node_latest_string, string $node_chapter_string) {
+		//list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content; //TODO: PHP 7.1
+		$headers     = $content['headers'];
+		$status_code = $content['status_code'];
+		$data        = $content['body'];
+
+		$titleData = [];
+
+		if(!($status_code >= 200 && $status_code < 300)) {
+			log_message('error', "{$site} : {$title_url} | Bad Status Code ({$status_code})");
+		} else if(empty($data)) {
+			log_message('error', "{$site} : {$title_url} | Data is empty? (Status code: {$status_code})");
+		} else {
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(FALSE);
+
+			$xpath = new DOMXPath($dom);
+			$nodes_title = $xpath->query($node_title_string);
+			$nodes_row   = $xpath->query($node_row_string);
+			if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				$firstRow      = $nodes_row->item(0);
+				$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
+				$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
+
+				if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
+					return [
+						'nodes_title'   => $nodes_title->item(0),
+						'nodes_latest'  => $nodes_latest->item(0),
+						'nodes_chapter' => $nodes_chapter->item(0)
+					];
+				} else {
+					log_message('error', "{$site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+				}
+			} else {
+				log_message('error', "{$site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
+			}
+		}
+		return FALSE;
 	}
 }
 class Sites_Model extends CI_Model {
@@ -107,38 +158,31 @@ class MangaFox extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
-		$fullURL = "http://mangafox.me/manga/{$title_url}";
-
+		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if($data !== '') {
-			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'MangaFox',
+			$title_url,
+			"//meta[@property='og:title']/@content",
+			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
+			"div/span[@class='date']",
+			"div/h3/a"
+		);
+		if($data) {
+			//list('nodes_title' => $nodes_title, 'nodes_chapter' => $nodes_chapter, 'nodes_latest' => $nodes_latest) = $data; //FIXME: PHP7.1
+			$nodes_title   = $data['nodes_title'];
+			$nodes_chapter = $data['nodes_chapter'];
+			$nodes_latest  = $data['nodes_latest'];
 
-			$xpath = new DOMXPath($dom);
+			//This seems to be be the only viable way to grab the title...
+			$titleData['title'] = html_entity_decode(substr($nodes_title->textContent, 0, -6));
 
-			$nodes_title = $xpath->query("//meta[@property='og:title']");
-			$nodes_row   = $xpath->query("//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = html_entity_decode(substr($nodes_title->item(0)->getAttribute('content'), 0, -6));
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("div/span[@class='date']", $firstRow);
-				$nodes_chapter = $xpath->query("div/h3/a",                $firstRow);
-
-				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
-				$chapterURLSegments = explode('/', $link);
-				$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
-			}
-		} else {
-			log_message('error', "Series missing? (MangaFox): {$title_url}");
-			return NULL;
+			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->getAttribute('href'));
+			$chapterURLSegments = explode('/', $link);
+			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->nodeValue));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);

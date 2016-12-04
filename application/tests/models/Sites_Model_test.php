@@ -28,7 +28,7 @@ class Site_Model_test extends TestCase {
 		$result = $this->Sites_Model->{'MangaFox'}->getTitleData('i_am_a_bad_url');
 
 		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'Series missing? (MangaFox): i_am_a_bad_url']);
+		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaFox : i_am_a_bad_url | Bad Status Code (302)']);
 	}
 
 	public function test_MangaHere() {
