@@ -5,9 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.3.29] - 2016-12-04
+### Changes
+- `[Backend]` get_content now returns an array including both headers & content. This should allow better error checking.
+
 ## [1.3.28] - 2016-12-03
 ### Added
 - `[Backend]` Tests for Mangafox failing to grab data.
+- `[Backend]` More site error reporting.
 
 ### Changes
 - `[Backend]` Re-enabled CURLOPT_SSL_VERIFYPEER when parsing sites.

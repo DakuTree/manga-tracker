@@ -17,10 +17,12 @@ abstract class Site_Model extends CI_Model {
 	abstract public function isValidTitleURL(string $title_url) : bool;
 	abstract public function isValidChapter(string $chapter) : bool;
 
-	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE){
+	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+		//curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 1);
 
 		if($follow_redirect)        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
@@ -34,9 +36,13 @@ abstract class Site_Model extends CI_Model {
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
 
 		curl_setopt($ch, CURLOPT_URL, $url);
-		$data = curl_exec($ch);
+		$response = curl_exec($ch);
+
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$header     = substr($response, 0, $header_size);
+		$body       = substr($response, $header_size);
 		curl_close($ch);
-		return $data;
+		return ['header' => $header, 'body' => $body];
 	}
 }
 class Sites_Model extends CI_Model {
@@ -103,7 +109,8 @@ class MangaFox extends Site_Model {
 
 		$fullURL = "http://mangafox.me/manga/{$title_url}";
 
-		$data = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if($data !== '') {
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
@@ -166,7 +173,8 @@ class MangaHere extends Site_Model {
 
 		$fullURL = "http://www.mangahere.co/manga/{$title_url}/";
 
-		$data = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if($data !== 'Can\'t find the manga series.') {
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
@@ -250,7 +258,8 @@ class Batoto extends Site_Model {
 			"member_id=" . $this->config->item('batoto_cookie_member_id'),
 			"pass_hash=" . $this->config->item('batoto_cookie_pass_hash')
 		];
-		$data = $this->get_content($title_url, implode("; ", $cookies), "", TRUE);
+		$content = $this->get_content($title_url, implode("; ", $cookies), "", TRUE);
+		$data = $content['body'];
 		if(!$data) {
 			log_message('error', "Batoto: Couldn't successfully grab URL ({$title_url})");
 			return NULL;
@@ -371,7 +380,8 @@ class DynastyScans extends Site_Model {
 		//FIXME: Using regex here is probably a terrible idea, but we're doing it anyway....
 		//FIXME (ASAP): All the regex here should be checked to see if it even returns something, and we should probably error if possible.
 		if($title_parts[1] == '0') {
-			$data = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
+			$content = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
+			$data = $content['body'];
 
 			preg_match('/<b>.*<\/b>/', $data, $matchesT);
 			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
@@ -392,7 +402,8 @@ class DynastyScans extends Site_Model {
 			preg_match('/<small>released (.*)<\/small>/', $latest_chapter_html, $matches);
 			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(str_replace('\'', '', $matches[1])));
 		} elseif($title_parts[1] == '1') {
-			$data = $this->get_content('http://dynasty-scans.com/chapters/'.$title_url);
+			$content = $this->get_content('http://dynasty-scans.com/chapters/'.$title_url);
+			$data = $content['body'];
 
 			preg_match('/<b>.*<\/b>/', $data, $matchesT);
 			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
@@ -441,7 +452,8 @@ class MangaPanda extends Site_Model {
 
 		$fullURL = "http://www.mangapanda.com/{$title_url}";
 
-		$data = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if($data !== '<h1>404 Not Found</h1>') {
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
@@ -502,7 +514,8 @@ class MangaStream extends Site_Model {
 
 		$fullURL = $this->getFullTitleURL($title_url);
 
-		$data = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
 			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
@@ -582,7 +595,8 @@ class WebToons extends Site_Model {
 		$title_parts = explode(':--:', $title_url);
 		$fullURL = "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/rss?title_no={$title_parts[0]}";
 
-		$data = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
 			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 			if(isset($xml->{'channel'}->item[0])) {
@@ -648,7 +662,9 @@ class KissManga extends Site_Model {
 		if($cookie_last_updated && ((time() - 86400) < $cookie_last_updated)) {
 
 			$fullURL = $this->getFullTitleURL($title_url);
-			$data = $this->get_content($fullURL, '', $cookiejar_path);
+
+			$content = $this->get_content($fullURL, '', $cookiejar_path);
+			$data = $content['body'];
 			if(strpos($data, 'containerRoot') !== FALSE) {
 				//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
 				$data = preg_replace('/^[\S\s]*(<div id="leftside">[\S\s]*)<div id="rightside">[\S\s]*$/', '$1', $data);
@@ -715,7 +731,9 @@ class KireiCake extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
 			$data = preg_replace('/^[\S\s]*(<article>[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
@@ -775,7 +793,9 @@ class GameOfScanlation extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			//$data = preg_replace('/^[\S\s]*(<ol[\S\s]*)<\/ol>[\S\s]*$/', '$1', $data);
 
@@ -837,7 +857,9 @@ class MangaCow extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			$dom = new DOMDocument();
 			libxml_use_internal_errors(true);
@@ -898,7 +920,9 @@ class SeaOtterScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
 			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
@@ -965,7 +989,9 @@ class HelveticaScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
 			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
@@ -1030,7 +1056,9 @@ class SenseScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$data = $this->get_content($fullURL);
+
+		$content = $this->get_content($fullURL);
+		$data = $content['body'];
 		if(strpos($data, '404 Page Not Found') === FALSE) {
 			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
 			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
