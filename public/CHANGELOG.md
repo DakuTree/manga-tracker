@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Failure testing for Batoto.
 - `[Backend]` cleanTitleDataDOM function. This is called on the html data prior to DOM parsing. In some cases, speeds up parsing.
 
+### Changes
+- `[Backend]` get_content & parseTitleDataDOM are now marked as final. These aren't meant to be overridden.
+
 ## [1.4.0] - 2016-12-04
 ### Version Bump
 - 1.3.x was getting a bit much, and this is the start of a small Site_Model rewrite, so decided to bump it up to 1.4.x.

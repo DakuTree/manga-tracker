@@ -17,7 +17,7 @@ abstract class Site_Model extends CI_Model {
 	abstract public function isValidTitleURL(string $title_url) : bool;
 	abstract public function isValidChapter(string $chapter) : bool;
 
-	protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE) {
+	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
@@ -63,7 +63,7 @@ abstract class Site_Model extends CI_Model {
 	 *
 	 * @return DOMElement[]|false
 	 */
-	public function parseTitleDataDOM(
+	final protected function parseTitleDataDOM(
 		array $content, string $site, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
