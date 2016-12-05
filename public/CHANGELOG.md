@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.4.1] - 2016-12-05
 ### Added
-- `[Backend]` Failure testing for Batoto.
+- `[Backend]` Failure testing for Batoto, MangaPanda.
 - `[Backend]` cleanTitleDataDOM function. This is called on the html data prior to DOM parsing. In some cases, speeds up parsing.
 
 ### Changes

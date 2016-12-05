@@ -190,7 +190,6 @@ class MangaFox extends Site_Model {
 			"div/h3/a"
 		);
 		if($data) {
-			//This seems to be be the only viable way to grab the title...
 			$titleData['title'] = html_entity_decode(substr($data['nodes_title']->textContent, 0, -6));
 
 			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
@@ -243,7 +242,6 @@ class MangaHere extends Site_Model {
 			"<div class=\"error_text\">Sorry, the page you have requested can’t be found."
 		);
 		if($data) {
-			//This seems to be be the only viable way to grab the title...
 			$titleData['title'] = $data['nodes_title']->textContent;
 
 			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
@@ -345,6 +343,7 @@ class Batoto extends Site_Model {
 	}
 }
 
+//FIXME: Convert DynastyScans to new format.
 class DynastyScans extends Site_Model {
 	//FIXME: This has some major issues. SEE: https://github.com/DakuTree/manga-tracker/issues/58
 	public function getFullTitleURL(string $title_string) : string {
@@ -468,7 +467,8 @@ class MangaPanda extends Site_Model {
 	}
 
 	public function isValidTitleURL(string $title_url) : bool {
-		$success = (bool) preg_match('/^[a-z0-9-]+$/', $title_url);
+		//NOTE: MangaPanda has manga pages under the root URL, so we need to filter out pages we know that aren't manga.
+		$success = (bool) preg_match('/^(?!(?:latest|search|popular|random|alphabetical|privacy)$)([a-z0-9-]+)$/', $title_url);
 		if(!$success) log_message('error', "Invalid Title URL (MangaPanda): {$title_url}");
 		return $success;
 	}
@@ -481,37 +481,26 @@ class MangaPanda extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
-		$fullURL = "http://www.mangapanda.com/{$title_url}";
-
+		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if($data !== '<h1>404 Not Found</h1>') {
-			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'MangaPanda',
+			$title_url,
+			"//h2[@class='aname']",
+			"(//table[@id='listing']/tr)[last()]",
+			"td[2]",
+			"td[1]/a"
+		);
+		if($data) {
+			$titleData['title'] = $data['nodes_title']->textContent;
 
-			$xpath = new DOMXPath($dom);
+			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
-			$nodes_title = $xpath->query("//h2[@class='aname']");
-			$nodes_row   = $xpath->query("(//table[@id='listing']/tr)[last()]");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				//This seems to be be the only viable way to grab the title...
-				$titleData['title'] = $nodes_title->item(0)->nodeValue;
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("td[2]",   $firstRow);
-				$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
-
-				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
-			}
-		} else {
-			log_message('error', "Series missing? (MangaPanda): {$title_url}");
-			return NULL;
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 		}
+
 
 		return (!empty($titleData) ? $titleData : NULL);
 	}
