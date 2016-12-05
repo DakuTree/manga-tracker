@@ -5,7 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
-## [1.3.29] - 2016-12-04
+## [1.4.1] - 2016-12-05
+### Added
+- `[Backend]` Failure testing for Batoto.
+- `[Backend]` cleanTitleDataDOM function. This is called on the html data prior to DOM parsing. In some cases, speeds up parsing.
+
+## [1.4.0] - 2016-12-04
+### Version Bump
+- 1.3.x was getting a bit much, and this is the start of a small Site_Model rewrite, so decided to bump it up to 1.4.x.
+
 ### Added
 - `[Backend]` parseTitleDataDOM function to remove duplication, better error logging/detection
 - `[Backend]` Failure testing for MangaFox & MangaHere.

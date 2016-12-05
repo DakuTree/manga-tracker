@@ -52,15 +52,26 @@ abstract class Site_Model extends CI_Model {
 	}
 
 	/**
+	 * @param array  $content
+	 * @param string $site
+	 * @param string $title_url
+	 * @param string $node_title_string
+	 * @param string $node_row_string
+	 * @param string $node_latest_string
+	 * @param string $node_chapter_string
+	 * @param string $failure_string
+	 *
 	 * @return DOMElement[]|false
 	 */
-	public function parseTitleDataDOM(array $content, string $site, string $title_url, string $node_title_string, string $node_row_string, string $node_latest_string, string $node_chapter_string, string $failure_string = "") {
+	public function parseTitleDataDOM(
+		array $content, string $site, string $title_url,
+		string $node_title_string, string $node_row_string,
+		string $node_latest_string, string $node_chapter_string,
+		string $failure_string = "") {
 		//list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content; //TODO: PHP 7.1
 		$headers     = $content['headers'];
 		$status_code = $content['status_code'];
 		$data        = $content['body'];
-
-		$titleData = [];
 
 		if(!($status_code >= 200 && $status_code < 300)) {
 			log_message('error', "{$site} : {$title_url} | Bad Status Code ({$status_code})");
@@ -69,6 +80,8 @@ abstract class Site_Model extends CI_Model {
 		} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
 			log_message('error', "{$site} : {$title_url} | Failure string matched");
 		} else {
+			$data = $this->cleanTitleDataDOM($data); //This allows us to clean the DOM prior to parsing. It's faster to grab the only part we need THEN parse it.
+
 			$dom = new DOMDocument();
 			libxml_use_internal_errors(TRUE);
 			$dom->loadHTML($data);
@@ -96,6 +109,10 @@ abstract class Site_Model extends CI_Model {
 			}
 		}
 		return FALSE;
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
+		return $data;
 	}
 }
 class Sites_Model extends CI_Model {
@@ -276,73 +293,55 @@ class Batoto extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_string) {
-		$title_parts = explode(':--:', $title_string);
-		$title_url   = $this->getFullTitleURL($title_string);
-		$title_lang  = $title_parts[1];
-		//TODO: Validate title_lang from array?
-
+	public function getTitleData(string $title_url) {
 		$titleData = [];
+
+		$title_parts = explode(':--:', $title_url);
+		$fullURL     = $this->getFullTitleURL($title_url);
+		$lang        = $title_parts[1]; //TODO: Validate title_lang from array?
+
 
 		//Bato.to is annoying and locks stuff behind auth. See: https://github.com/DakuTree/manga-tracker/issues/14#issuecomment-233830855
 		$cookies = [
-			"lang_option={$title_lang}",
-			"member_id=" . $this->config->item('batoto_cookie_member_id'),
-			"pass_hash=" . $this->config->item('batoto_cookie_pass_hash')
+			"lang_option={$lang}",
+			"member_id={$this->config->item('batoto_cookie_member_id')}",
+			"pass_hash={$this->config->item('batoto_cookie_pass_hash')}"
 		];
-		$content = $this->get_content($title_url, implode("; ", $cookies), "", TRUE);
-		$data = $content['body'];
-		if(!$data) {
-			log_message('error', "Batoto: Couldn't successfully grab URL ({$title_url})");
-			return NULL;
+		$content = $this->get_content($fullURL, implode("; ", $cookies), "", TRUE);
+
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'Batoto',
+			$title_url,
+			"//h1[@class='ipsType_pagetitle']",
+			"//table[contains(@class, 'chapters_list')]/tbody/tr[2]",
+			"td[last()]",
+			"td/a[contains(@href,'reader')]",
+			">Register now<"
+		);
+		if($data) {
+			$titleData['title'] = html_entity_decode(trim($data['nodes_title']->textContent));
+
+			///^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/
+			preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', trim($data['nodes_chapter']->nodeValue), $text);
+			$titleData['latest_chapter'] = substr($data['nodes_chapter']->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
+
+			$dateString = $data['nodes_latest']->nodeValue;
+			if($dateString == 'An hour ago') {
+				$dateString = '1 hour ago';
+			}
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
 		}
 
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
 		$data = preg_replace('/^[\s\S]+<!-- ::: CONTENT ::: -->/', '<!-- ::: CONTENT ::: -->', $data);
 		$data = preg_replace('/<!-- end mainContent -->[\s\S]+$/', '<!-- end mainContent -->', $data);
 		$data = preg_replace('/<div id=\'commentsStart\' class=\'ipsBox\'>[\s\S]+$/', '</div></div><!-- end mainContent -->', $data);
-		if(strpos($data, '>Register now<') === FALSE) {
-			//Auth was successful
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
 
-			$xpath = new DOMXPath($dom);
-			$nodes = $xpath->query("(//div/div)[last()]/table/tbody/tr[2]");
-			if($nodes->length === 1) {
-				$node = $nodes[0];
-
-				$nodes_chapter = $xpath->query('td/a[contains(@href,\'reader\')]', $node);
-				$nodes_updated = $xpath->query('td[last()]', $node);
-				if($nodes_chapter->length === 1 && $nodes_updated->length === 1) {
-					$chapter_element = $nodes_chapter->item(0);
-					$updated_element = $nodes_updated->item(0);
-
-					///^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/
-					preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', trim($chapter_element->nodeValue), $text);
-
-					$titleData['title']          = html_entity_decode(trim($xpath->query('//h1[@class="ipsType_pagetitle"]')->item(0)->nodeValue));
-					$titleData['latest_chapter'] = substr($chapter_element->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
-
-					$dateString = $updated_element->nodeValue;
-					if($dateString == 'An hour ago') {
-						$dateString = '1 hour ago';
-					}
-					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
-				} else {
-					log_message('error', "Batoto: Regex missing <td> ({$title_url})");
-					return NULL;
-				}
-			} else {
-				log_message('error', "Batoto: Regex missing <tr> ({$title_url})");
-				return NULL;
-			}
-		} else {
-			//Auth was not successful. Alert the admin / Try to login.
-			log_message('error', "Batoto: Auth not successful ({$title_url})");
-			return NULL;
-		}
-		return (!empty($titleData) ? $titleData : NULL);
+		return $data;
 	}
 }
 

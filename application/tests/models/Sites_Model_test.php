@@ -65,6 +65,13 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-zA-Z0-9]+:--:[c|v][0-9\.\-]+(?:\/c[0-9\.\-]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+	public function test_Batoto_fail() {
+		MonkeyPatch::patchFunction('log_message', NULL, 'Batoto'); //Stop logging stuff...
+		$result = $this->Sites_Model->{'Batoto'}->getTitleData('00000:--:bad_lang');
+
+		$this->assertNull($result);
+		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'Batoto : 00000:--:bad_lang | Bad Status Code (404)']);
+	}
 
 	public function test_DynastyScans() {
 		$result = $this->Sites_Model->{'DynastyScans'}->getTitleData('qualia_the_purple:--:0');
