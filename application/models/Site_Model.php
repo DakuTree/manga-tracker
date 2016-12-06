@@ -37,6 +37,10 @@ abstract class Site_Model extends CI_Model {
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$response = curl_exec($ch);
+		if($response === FALSE) {
+			log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
+			return FALSE;
+		}
 
 		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
