@@ -9,13 +9,17 @@ A full CHANGELOG of what is currently implemented can be found [here](https://gi
 Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 
 ## Sites supported
-*  MangaFox
-*  Bato.to (with multi-lang support) (Requires login)
-*  MangaHere
-*  MangaStream
-*  MangaPanda
-*  WebToons.com
-*  ~~KissManga.com~~ Looks like the server got IP banned from tracking this...
-*  KireiCake.com
-*  DynastyScans (beta)
-*  Game of Scanlation
+* MangaFox
+* Bato.to (with multi-lang support) (Requires login)
+* MangaHere
+* MangaStream
+* MangaPanda
+* WebToons.com
+* ~~KissManga.com~~ Looks like the server got IP banned from tracking this...
+* KireiCake.com
+* DynastyScans (beta)
+* Game of Scanlation
+* MangaCow
+* SeaOtterScans
+* HelveticaScans
+* SenseScans
