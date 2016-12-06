@@ -120,6 +120,13 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^.*?\/[0-9]+$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+	public function test_MangaStream_fail() {
+		MonkeyPatch::patchFunction('log_message', NULL, 'MangaStream'); //Stop logging stuff...
+		$result = $this->Sites_Model->{'MangaStream'}->getTitleData('i_am_a_bad_url');
+
+		$this->assertNull($result);
+		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaStream : i_am_a_bad_url | Bad Status Code (302)']);
+	}
 
 	public function test_WebToons() {
 		$result = $this->Sites_Model->{'WebToons'}->getTitleData('93:--:en:--:girls-of-the-wilds:--:action');

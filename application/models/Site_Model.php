@@ -501,7 +501,6 @@ class MangaPanda extends Site_Model {
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 		}
 
-
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 }
@@ -533,34 +532,24 @@ class MangaStream extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
-			//$data = preg_replace('/^[\S\s]*(<body id="body">[\S\s]*<\/body>)[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'MangaStream',
+			$title_url,
+			"//div[contains(@class, 'content')]/div[1]/h1",
+			"//div[contains(@class, 'content')]/div[1]/table/tr[2]",
+			"td[2]",
+			"td[1]/a",
+			"<h1>Page Not Found</h1>"
+		);
+		if($data) {
+			$titleData['title'] = $data['nodes_title']->textContent;
 
-			$xpath = new DOMXPath($dom);
+			$titleData['latest_chapter'] = preg_replace('/^.*\/(.*?\/[0-9]+)\/[0-9]+$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
-			$nodes_title = $xpath->query("//div[contains(@class, 'content')]/div[1]/h1");
-			$nodes_row   = $xpath->query("//div[contains(@class, 'content')]/div[1]/table/tr[2]"); //Missing tbody here..
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = $nodes_title->item(0)->nodeValue;
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("td[2]",   $firstRow);
-				$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
-
-				$titleData['latest_chapter'] = preg_replace('/^.*\/(.*?\/[0-9]+)\/[0-9]+$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
-			}
-		} else {
-			log_message('error', "Series missing? (MangaStream): {$title_url}");
-			return NULL;
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
