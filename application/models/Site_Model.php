@@ -744,38 +744,33 @@ class KireiCake extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
-			$data = preg_replace('/^[\S\s]*(<article>[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'KireiCake',
+			$title_url,
+			"//div[@class='large comic']/h1[@class='title']",
+			"(//div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+			"div[@class='meta_r']",
+			"div[@class='title']/a"
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$xpath = new DOMXPath($dom);
+			$link = (string) $data['nodes_chapter']->getAttribute('href');
+			$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 
-			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
-			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='element'][1]");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title->item(0)->textContent);
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("div[@class='meta_r']",  $firstRow);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $firstRow);
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
+		$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+		return $data;
 	}
 }
 
@@ -933,43 +928,33 @@ class SeaOtterScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
-			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'SeaOtterScans',
+			$title_url,
+			"//div[@class='large comic']/h1[@class='title']",
+			"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+			"div[@class='meta_r']",
+			"div[@class='title']/a"
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$xpath = new DOMXPath($dom);
+			$link = (string) $data['nodes_chapter']->getAttribute('href');
+			$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 
-			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
-
-			//SOO sometimes uses volume groups which are above recent chapters (if they haven't been grouped yet), so make sure we check for both.
-			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1]");
-			if($nodes_row->length !== 1) {
-				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
-			}
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title->item(0)->textContent);
-
-				$firstRow = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("div[@class='meta_r']",  $firstRow);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $firstRow);
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1]))));
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
+		$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+		return $data;
 	}
 }
 
@@ -1002,41 +987,33 @@ class HelveticaScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
-			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'HelveticaScans',
+			$title_url,
+			"//div[@class='large comic']/h1[@class='title']",
+			"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+			"div[@class='meta_r']",
+			"div[@class='title']/a"
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$xpath = new DOMXPath($dom);
+			$link = (string) $data['nodes_chapter']->getAttribute('href');
+			$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 
-			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
-			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1]");
-			if($nodes_row->length !== 1) {
-				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
-			}
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title->item(0)->textContent);
-
-
-				$nodes_latest  = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
-				$nodes_chapter = $xpath->query("div[@class='title']/a", $nodes_row[0]);
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
+		$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+		return $data;
 	}
 }
 
@@ -1069,39 +1046,32 @@ class SenseScans extends Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
-			$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'SenseScans',
+			$title_url,
+			"//div[@class='large comic']/h1[@class='title']",
+			"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+			"div[@class='meta_r']",
+			"div[@class='title']/a"
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$xpath = new DOMXPath($dom);
+			$link = (string) $data['nodes_chapter']->getAttribute('href');
+			$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 
-			$nodes_title = $xpath->query("//div[@class='large comic']/h1[@class='title']");
-			$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1]");
-			if($nodes_row->length !== 1) {
-				$nodes_row   = $xpath->query("//div[@class='list']/div[@class='group'][1]/div[@class='element'][1]");
-			}
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title->item(0)->textContent);
-
-				$nodes_latest    = $xpath->query("div[@class='meta_r']", $nodes_row[0]);
-				$nodes_chapter   = $xpath->query("div[@class='title']/a", $nodes_row[0]);
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $nodes_latest->item(0)->textContent)[1])));
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function cleanTitleDataDOM(string $data) : string {
+		$data = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $data);
+
+		return $data;
 	}
 }
