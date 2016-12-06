@@ -43,7 +43,7 @@ install:
   - php public/index.php admin/migrate
 
 script:
-  - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover
+  - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
   # FIXME: Acceptance testing is completely disabled until https://github.com/ariya/phantomjs/issues/14286 gets fixed.
 #  - phantomjs --webdriver=4444 > /dev/null 2>&1 &
 #  - sleep 3
@@ -54,12 +54,9 @@ script:
 #  - sleep 3
 #  - travis_wait 1 php vendor/bin/codecept run acceptance --colors
 
-after_script:
-  - cd $TRAVIS_BUILD_DIR
-
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
 
 after_failure:
-  - cat application/logs/*
+  - cd $TRAVIS_BUILD_DIR && cat application/logs/*
