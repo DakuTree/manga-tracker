@@ -45,7 +45,7 @@ abstract class Site_Model extends CI_Model {
 		curl_close($ch);
 
 		return [
-			'headers'      => $header,
+			'headers'     => $header,
 			'status_code' => $status_code,
 			'body'        => $body
 		];
@@ -959,7 +959,7 @@ class SeaOtterScans extends Site_Model {
 
 				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] = (string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1]);
+				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(((string) str_replace('.', '', explode(',', $nodes_latest[0]->textContent)[1]))));
 			}
 		} else {
 			//TODO: Throw ERRORS;
