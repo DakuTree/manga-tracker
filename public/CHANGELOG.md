@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.4.2] - 2016-12-06
+### Changes
+- `[Backend]` Curl now logs if it fails.
+- `[Backend]` Travis now outputs logs on failure.
+
 ### Fixed
 - `[Backend]` SeaOtterScans failing due to forced https.
 

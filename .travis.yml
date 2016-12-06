@@ -57,3 +57,6 @@ script:
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
+
+after_failure:
+  - cat application/logs/*
