@@ -121,6 +121,8 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_MangaStream_fail() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
 		MonkeyPatch::patchFunction('log_message', NULL, 'MangaStream'); //Stop logging stuff...
 		$result = $this->Sites_Model->{'MangaStream'}->getTitleData('i_am_a_bad_url');
 
