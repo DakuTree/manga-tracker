@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changes
 - `[Backend]` Curl now logs if it fails.
 - `[Backend]` Travis now outputs logs on failure.
+- `[Backend]` Sites using FoOlSlide now use parseFoolSlide.
 
 ### Fixed
 - `[Backend]` SeaOtterScans failing due to forced https.

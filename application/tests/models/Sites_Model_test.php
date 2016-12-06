@@ -144,7 +144,7 @@ class Site_Model_test extends TestCase {
 	}
 
 	public function test_KissManga() {
-		$this->markTestSkipped('KM is not supported for the time being');
+		$this->markTestSkipped('KissManga is not supported for the time being');
 
 		//$this->skipTravis('Missing required cookies.');
 		//
