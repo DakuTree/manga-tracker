@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Curl now logs if it fails.
 - `[Backend]` Travis now outputs logs on failure.
 - `[Backend]` Sites using FoOlSlide now use parseFoolSlide.
+- `[Backend]` site, titleFormat & chapterFormat vars, this removes the need for isValidTitleURL/isValidChapter.
 
 ### Fixed
 - `[Backend]` SeaOtterScans failing due to forced https.
