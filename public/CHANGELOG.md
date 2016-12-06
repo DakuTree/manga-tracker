@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.2] - 2016-12-06
+### Fixed
+- `[Backend]` SeaOtterScans failing due to forced https.
+
 ## [1.4.1] - 2016-12-05
 ### Added
 - `[Backend]` Failure testing for Batoto, MangaPanda, MangaStream
