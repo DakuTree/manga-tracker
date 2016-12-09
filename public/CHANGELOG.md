@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.3] - 2016-12-09
+### Fixed
+- Being unable to update manga. This would have been fixed sooner, but I have been without internet for 3 days! Sorry!
+- FoOlSlide sites not working if title url contains a dash.
+
 ## [1.4.2] - 2016-12-06
 ### Changes
 - `[Backend]` Curl now logs if it fails.

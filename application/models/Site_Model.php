@@ -18,13 +18,13 @@ abstract class Site_Model extends CI_Model {
 	//TODO: When ci-phpunit-test supports PHP Parser 3.x, add " : ?array"
 	abstract public function getTitleData(string $title_url);
 
-	public function isValidTitleURL(string $title_url, string $regex) : bool {
-		$success = (bool) preg_match($regex, $title_url);
+	public function isValidTitleURL(string $title_url) : bool {
+		$success = (bool) preg_match($this->titleFormat, $title_url);
 		if(!$success) log_message('error', "Invalid Title URL ({$this->site}): {$title_url}");
 		return $success;
 	}
-	public function isValidChapter(string $chapter, string $regex) : bool {
-		$success = (bool) preg_match($regex, $chapter);
+	public function isValidChapter(string $chapter) : bool {
+		$success = (bool) preg_match($this->chapterFormat, $chapter);
 		if(!$success) log_message('error', "Invalid Chapter ({$this->site}): {$chapter}");
 		return $success;
 	}
@@ -700,7 +700,7 @@ class KissManga extends Site_Model {
 
 class KireiCake extends Site_Model {
 	public $site          = 'KireiCake';
-	public $titleFormat   = '/^[a-z0-9_]+$/';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -835,7 +835,7 @@ class MangaCow extends Site_Model {
 
 class SeaOtterScans extends Site_Model {
 	public $site          = 'SeaOtterScans';
-	public $titleFormat   = '/^[a-z0-9_]+$/';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -859,7 +859,7 @@ class SeaOtterScans extends Site_Model {
 
 class HelveticaScans extends Site_Model {
 	public $site          = 'HelveticaScans';
-	public $titleFormat   = '/^[a-z0-9_]+$/';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -883,7 +883,7 @@ class HelveticaScans extends Site_Model {
 
 class SenseScans extends Site_Model {
 	public $site          = 'SenseScans';
-	public $titleFormat   = '/^[a-z0-9_]+$/';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
