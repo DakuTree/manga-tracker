@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.3] - 2016-12-10
 ### Changed
 - `[Backend]` CodeIgniter no longer uses the composer autoloader. I actually have no idea why this was enabled to be begin with..
-
+- `[Backend]` Moved inline composer php to it's own file. We can simply include this and call the functions we need.
 
 ## [1.4.3] - 2016-12-09
 ### Fixed
