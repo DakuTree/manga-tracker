@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.3] - 2016-12-10
+### Changed
+- `[Backend]` CodeIgniter no longer uses the composer autoloader. I actually have no idea why this was enabled to be begin with..
+
+
 ## [1.4.3] - 2016-12-09
 ### Fixed
 - Being unable to update manga. This would have been fixed sooner, but I have been without internet for 3 days! Sorry!
