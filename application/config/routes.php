@@ -103,7 +103,7 @@ if(is_cli()) {
 
 /*** DISALLOWED ROUTING ***/
 // disallow everything else
-$route['(.*)']                 = 'error'; //for whatever stupid reason, (:any) doesn't work here
+//$route['(.*)']                 = 'error'; //for whatever stupid reason, (:any) doesn't work here
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -5,7 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
-## [1.4.3] - 2016-12-10
+## [1.4.5] - 2016-12-12
+### Fixed
+- `[Backend]` Bad URLs are no longer redirected to the non-existent error controller.
+
+## [1.4.4] - 2016-12-10
 ### Changed
 - `[Backend]` CodeIgniter no longer uses the composer autoloader. I actually have no idea why this was enabled to be begin with..
 - `[Backend]` Moved inline composer php to it's own file. We can simply include this and call the functions we need.
@@ -16,7 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - FoOlSlide sites not working if title url contains a dash.
 
 ## [1.4.2] - 2016-12-06
-### Changes
+### Changed
 - `[Backend]` Curl now logs if it fails.
 - `[Backend]` Travis now outputs logs on failure.
 - `[Backend]` Sites using FoOlSlide now use parseFoolSlide.
