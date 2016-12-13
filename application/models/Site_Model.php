@@ -51,6 +51,7 @@ abstract class Site_Model extends CI_Model {
 		$response = curl_exec($ch);
 		if($response === FALSE) {
 			log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
+			//FIXME: We don't always account for FALSE return
 			return FALSE;
 		}
 
@@ -698,30 +699,6 @@ class KissManga extends Site_Model {
 	}
 }
 
-class KireiCake extends Site_Model {
-	public $site          = 'KireiCake';
-	public $titleFormat   = '/^[a-z0-9_-]+$/';
-	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
-
-	public function getFullTitleURL(string $title_url) : string {
-		return "https://reader.kireicake.com/series/{$title_url}";
-	}
-
-	public function getChapterData(string $title_url, string $chapter) : array {
-		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
-		$chapter_parts = explode('/', $chapter);
-		return [
-			'url'    => "https://reader.kireicake.com/read/{$title_url}/{$chapter}/",
-			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
-		];
-	}
-
-	public function getTitleData(string $title_url) {
-		$fullURL = $this->getFullTitleURL($title_url);
-		return $this->parseFoolSlide($fullURL, $title_url);
-	}
-}
-
 class GameOfScanlation extends Site_Model {
 	public $site          = 'GameOfScanlation';
 	public $titleFormat   = '/^[a-z0-9-]+$/';
@@ -830,6 +807,30 @@ class MangaCow extends Site_Model {
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
+class KireiCake extends Site_Model {
+	public $site          = 'KireiCake';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
+	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://reader.kireicake.com/series/{$title_url}";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "https://reader.kireicake.com/read/{$title_url}/{$chapter}/",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$fullURL = $this->getFullTitleURL($title_url);
+		return $this->parseFoolSlide($fullURL, $title_url);
 	}
 }
 
