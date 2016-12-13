@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.4.6] - 2016-12-12
+### Added
+- `[Backend]` Logs are now sent to my email daily via email_logs.pl. This should mean quicker fixes for bugs hopefully.
 ### Changes
 - `[Backend]` Added robots.txt + removed noindex <meta> tag.
 
