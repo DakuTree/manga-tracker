@@ -24,11 +24,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_MangaFox_fail() {
-		MonkeyPatch::patchFunction('log_message', NULL, 'MangaFox'); //Stop logging stuff...
-		$result = $this->Sites_Model->{'MangaFox'}->getTitleData('i_am_a_bad_url');
-
-		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaFox : i_am_a_bad_url | Bad Status Code (302)']);
+		$this->_testSiteFailure('MangaFox', 'Bad Status Code (302)');
 	}
 
 	public function test_MangaHere() {
@@ -44,11 +40,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_MangaHere_fail() {
-		MonkeyPatch::patchFunction('log_message', NULL, 'MangaHere'); //Stop logging stuff...
-		$result = $this->Sites_Model->{'MangaHere'}->getTitleData('i_am_a_bad_url');
-
-		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaHere : i_am_a_bad_url | Failure string matched']);
+		$this->_testSiteFailure('MangaHere', 'Failure string matched');
 	}
 
 	public function test_Batoto() {
@@ -66,11 +58,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_Batoto_fail() {
-		MonkeyPatch::patchFunction('log_message', NULL, 'Batoto'); //Stop logging stuff...
-		$result = $this->Sites_Model->{'Batoto'}->getTitleData('00000:--:bad_lang');
-
-		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'Batoto : 00000:--:bad_lang | Bad Status Code (404)']);
+		$this->_testSiteFailure('MangaHere', 'Bad Status Code (404)', '00000:--:bad_lang');
 	}
 
 	public function test_DynastyScans() {
@@ -99,11 +87,7 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
 	public function test_MangaPanda_fail() {
-		MonkeyPatch::patchFunction('log_message', NULL, 'MangaPanda'); //Stop logging stuff...
-		$result = $this->Sites_Model->{'MangaPanda'}->getTitleData('i_am_a_bad_url');
-
-		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaPanda : i_am_a_bad_url | Bad Status Code (404)']);
+		$this->_testSiteFailure('MangaPanda', 'Bad Status Code (404)');
 	}
 
 	public function test_MangaStream() {
@@ -123,11 +107,7 @@ class Site_Model_test extends TestCase {
 	public function test_MangaStream_fail() {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
-		MonkeyPatch::patchFunction('log_message', NULL, 'MangaStream'); //Stop logging stuff...
-		$result = $this->Sites_Model->{'MangaStream'}->getTitleData('i_am_a_bad_url');
-
-		$this->assertNull($result);
-		MonkeyPatch::verifyInvokedOnce('log_message', ['error', 'MangaStream : i_am_a_bad_url | Bad Status Code (302)']);
+		$this->_testSiteFailure('MangaStream', 'Bad Status Code (302)');
 	}
 
 	public function test_WebToons() {
@@ -238,5 +218,13 @@ class Site_Model_test extends TestCase {
 		$this->assertEquals('To You, The Immortal', $result['title']);
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
+	}
+
+	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
+		MonkeyPatch::patchFunction('log_message', NULL, $siteName); //Stop logging stuff...
+		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
+
+		$this->assertNull($result);
+		MonkeyPatch::verifyInvokedOnce('log_message', ['error', "{$siteName} : {$title_url} | {$errorMessage}"]);
 	}
 }
