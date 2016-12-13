@@ -8,7 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.6] - 2016-12-12
 ### Added
 - `[Backend]` Logs are now sent to my email daily via email_logs.pl. This should mean quicker fixes for bugs hopefully.
-### Changes
+
+### Changed
 - `[Backend]` Added robots.txt + removed noindex <meta> tag.
 
 ## [1.4.5] - 2016-12-12
@@ -40,7 +41,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Failure testing for Batoto, MangaPanda, MangaStream
 - `[Backend]` cleanTitleDataDOM function. This is called on the html data prior to DOM parsing. In some cases, speeds up parsing.
 
-### Changes
+### Changed
 - `[Backend]` get_content & parseTitleDataDOM are now marked as final. These aren't meant to be overridden.
 
 ## [1.4.0] - 2016-12-04
@@ -51,7 +52,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` parseTitleDataDOM function to remove duplication, better error logging/detection
 - `[Backend]` Failure testing for MangaFox & MangaHere.
 
-### Changes
+### Changed
 - `[Backend]` get_content now returns an array including both headers & content. This should allow better error checking.
 - `[Backend]` parseTitleDataDOM function to help remove duplication from the si
 
@@ -60,13 +61,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Tests for Mangafox failing to grab data.
 - `[Backend]` More site error reporting.
 
-### Changes
+### Changed
 - `[Backend]` Re-enabled CURLOPT_SSL_VERIFYPEER when parsing sites.
 - `[Backend]` Got rid of the unused config.init.
 - `[Backend]` Composer update (for ci-phpunit-test 1.3.0).
 
 ## [1.3.27] - 2016-12-02
-### Changes
+### Changed
 - `[Backend]` PHP7.1 is out! Added some nullable return types, travis testing.
 
 ## [1.3.26] - 2016-11-29
@@ -79,7 +80,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` MangaPanda now properly shows the topbar.
 
 ## [1.3.25] - 2016-11-26
-### Changes
+### Changed
 - `[Backend]` PHP config is now backed up properly.
 
 ## [1.3.24] - 2016-11-25
@@ -88,7 +89,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Sites using FoOlSlide no longer auto-redirects to series page. Apparently a missing end slash caused this :|
 
 ## [1.3.23] - 2016-11-24
-### Changes
+### Changed
 - `[Backend]` Userscript now uses === instead of == in some cases.
 - `[Backend]` Added more files to .gitignore
 
@@ -103,7 +104,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Support for SenseScans - http://reader.sensescans.com
 
-### Changes
+### Changed
 - `[Backend]` Added global https check to userscript to avoid duplicate code
 
 ## [1.3.20] - 2016-11-22
@@ -111,14 +112,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Support for HelveticaScans - http://helveticascans.com/reader
 
 ## [1.3.19] - 2016-11-21
-### Changes
+### Changed
 - `[Backend]` User options are now cached. This should have some small speed improvements.
 - `[Backend]` Added the DB part of https://github.com/terrylinooo/CodeIgniter-Multi-level-Cache.
   - Also did a few additional tweaks to change the folder structure.
 - `[Backend]` Title history pages are now cached.
 
 ## [1.3.18] - 2016-11-20
-### Changes
+### Changed
 - Lots of userscript tweaks. Mostly PHPStorm inspection recommendations. jQuery selector prefixing, ES6 stuff and so on.
 
 ## [1.3.17] - 2016-11-18
@@ -126,7 +127,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Test for SeaOtterScans
 - `[Backend]` Caching! Only for site stats at the moment, but it's a start!
 
-### Changes
+### Changed
 - `[Backend]` Site_Model class (and related functions) are now marked as abstract. This should avoid possible errors later down the line.
 
 ### Fixed
@@ -150,22 +151,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Support for Sea Otter Scans reader (http://reader.seaotterscans.com/)
 
-### Changes
+### Changed
 - Linting for the userscript.
 
 ## [1.3.13] - 2016-11-03
 ### Added
 - Theme support! This comes with the original light theme, and a new dark theme! Change it in the options!
 
-### Changes
+### Changed
 - `[Backend]` Even more LESS tweaking. Everything now uses theme vars. Got rid of more useless code aswell.
 
 ## [1.3.12] - 2016-10-29
-### Changes
+### Changed
 - `[Backend]` More LESS tweaking. Removed a bunch of unused code.
 
 ## [1.3.11] - 2016-10-27
-### Changes
+### Changed
 - `[Backend]` Lots of LESS tweaking. Initial work for allowing separate themes.
 
 ## [1.3.10] - 2016-10-25
@@ -173,8 +174,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Fallback for Cookieconsent & RespondJS.
 - Added MangaCow to Supported Sites list on help page & removed the notice.
 
-### Changes
-- Changelog will now mark backend changes with `[Backend]`. This will not be added to previous updates.
+### Changed
+- Changelog will now mark backend Changed with `[Backend]`. This will not be added to previous updates.
 - Updated CookieConsent lib from 1.0.9 > 3.0.2.
 - `[Backend]` Updated various composer packages.
 - `[Backend]` Moved sprite icons to seperate LESS file.
@@ -292,7 +293,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Started tracking when titles get updated. In the short-term this is useless, in the long term it should allow us to automate changing update-times!
   - No plans on making this data public at the moment.
 
-### Changes
+### Changed
 - We're using Scrutinizer-CI now. Couldn't use before since repo was private.
 
 ## [1.1.0] - 2016-09-16
@@ -303,7 +304,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bato.to now logs errors if it fails while grabbing info.
 - Default config file.
 
-### Changes
+### Changed
 - Backup script now uses perl instead of bash.
 - LICENSE V3. Slight re-wording here and there.
 
@@ -311,7 +312,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bato.to series with the latest date marked as "An hour ago" no longer cause the updater to fail.
 
 ## [1.0.5] - 2016-09-15
-### Changes
+### Changed
 - Perl scripts now output start time (so we can actually know if they are working).
 - Titles with a disabled site now have a warning icon to try and better notify the user of the issue.
 - Titles can now be updated if they haven't updated in the past 12 hours, instead of 14.
@@ -324,7 +325,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Terms/Cookie/Privacy policy page. Also re-added the terms requirement on signup.
 
-### Changes
+### Changed
 - Moved to Perl for backend scripting. Much easier to securely use config files with this.
   - This is part of a slow move to eventually allow the project to go open-source.
 - All email should now be coming from no-reply@trackr.moe instead of admin@codeanimu.net.
@@ -343,18 +344,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixes
 - MangaFox & Dynastyscans now properly decode HTML entities in titles. Existing titles have been fixed too.
 
-### Changes
+### Changed
 - Changed the padding on the alert.
 
 ## [1.0.2] - 2016-09-12
 ### Added
 - Support for marking a site as disabled, as well as a way to notify the user of it.
 
-### Changes
+### Changed
 - KissManga disabled due to IP ban.
 
 ## [1.0.1] - 2016-09-11
-### Changes
+### Changed
 - Reenabled username AJAX check
 
 ### Fixed
