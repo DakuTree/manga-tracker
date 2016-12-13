@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.6] - 2016-12-12
+### Changes
+- `[Backend]` Added robots.txt + removed noindex <meta> tag.
+
 ## [1.4.5] - 2016-12-12
 ### Fixed
 - `[Backend]` Bad URLs are no longer redirected to the non-existent error controller.

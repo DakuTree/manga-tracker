@@ -11,7 +11,6 @@
 	<link type="text/plain" rel="author" href="<?=base_url('humans.txt')?>" />
 
 	<link rel="shortcut icon" href="<?=base_url('favicon.ico')?>">
-	<meta name="robots" content="noindex">
 
 	<link rel="stylesheet" href="<?=asset_url()?>vendor/css/normalize.css">
 	<link rel="stylesheet" href="<?=asset_url()?>vendor/css/boilerplate.css">
