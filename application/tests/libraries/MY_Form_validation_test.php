@@ -1,6 +1,7 @@
 <?php
 
 class MY_Form_validation_test extends TestCase {
+	/** @var $form_validation MY_Form_validation */
 	private $form_validation;
 
 	public function __construct() {
@@ -103,6 +104,87 @@ class MY_Form_validation_test extends TestCase {
 
 		$result = $validation->is_unique_email('foo@bar.com');
 		$this->assertEquals('The email already exists in our database.', $this->get_error_message('is_unique_email', $validation));
+		$this->assertFalse($result);
+	}
+
+	public function test_is_valid_json_pass() {
+		//json is valid, return true
+		$result = $this->form_validation->is_valid_json('{"foo":"bar"}');
+		$this->assertTrue($result);
+	}
+	public function test_is_valid_json_fail_1() {
+		//json is not json, return false
+		$result = $this->form_validation->is_valid_json('i_am_a_bad_string');
+		$this->assertFalse($result);
+	}
+	public function test_is_valid_json_fail_2() {
+		//json is json but still has error (in this case, bad utf8), return false
+		$result = $this->form_validation->is_valid_json('{"foo": "'."\xB1\x31".'"}');
+		$this->assertFalse($result);
+	}
+
+	public function test_is_valid_tag_string_pass_1() {
+		//tag string is empty, return true
+		$result = $this->form_validation->is_valid_tag_string('');
+		$this->assertTrue($result);
+	}
+	public function test_is_valid_tag_string_pass_2() {
+		//tag string is max length, return true
+		$result = $this->form_validation->is_valid_tag_string('nski5zusfopc1e8fxguykxa9nt9wj7rtqe8xnkhaqmjgpyywkp3izocdyxaxval4qo1oapfjjs3ejglvqakqf4n92sbiwosvcakgky6mfitvw8ruoj9yqpp4xel8syfvuofo5657mcuz9lxaukautp2vzzj26vyufvvxdxwudqbhhzgdufq9hljg5vq7vb4rsocqvc6mohwqkk9yipvekaqhvj17xbv3xp0iq8vqlexibaa4k0qzpblkpefxzfy');
+		$this->assertTrue($result);
+	}
+	public function test_is_valid_tag_string_pass_3() {
+		//tag string contains valid special characters, return true
+		$result = $this->form_validation->is_valid_tag_string('this,is-a,vali_d,tagstr1ng');
+		$this->assertTrue($result);
+	}
+	public function test_is_valid_tag_string_fail_1() {
+		//tag string contains invalid special characters, return true
+		$result = $this->form_validation->is_valid_tag_string('bad tag');
+		$this->assertFalse($result);
+	}
+	public function test_is_valid_tag_string_fail_2() {
+		//tag string contains invalid special characters, return true
+		$result = $this->form_validation->is_valid_tag_string('thisistoolongnski5zusfopc1e8fxguykxa9nt9wj7rtqe8xnkhaqmjgpyywkp3izocdyxaxval4qo1oapfjjs3ejglvqakqf4n92sbiwosvcakgky6mfitvw8ruoj9yqpp4xel8syfvuofo5657mcuz9lxaukautp2vzzj26vyufvvxdxwudqbhhzgdufq9hljg5vq7vb4rsocqvc6mohwqkk9yipvekaqhvj17xbv3xp0iq8vqlexibaa4k0qzpblkpefxzfy');
+		$this->assertFalse($result);
+	}
+
+	public function test_is_valid_category_pass() {
+		//category is valid, return true
+
+		//TODO: Testing this is tricky since we need the user to have enabled one of the custom categories.
+		$this->markTestNotImplemented();
+	}
+	public function test_is_valid_category_fail_1() {
+		//category is invalid, return false
+		$result = $this->form_validation->is_valid_category('bad_category');
+		$this->assertFalse($result);
+	}
+	public function test_is_valid_category_fail_2() {
+		//category is valid but user does not have it enabled, return false
+		$result = $this->form_validation->is_valid_category('custom_3');
+		$this->assertFalse($result);
+	}
+
+	public function test_not_contains_pass() {
+		//string does not contain string, return true
+		$result = $this->form_validation->not_contains('i am a string', 'foobar');
+		$this->assertTrue($result);
+	}
+	public function test_not_contains_fail() {
+		//string contains string, return false
+		$result = $this->form_validation->not_contains('i am a foobar', 'foobar');
+		$this->assertFalse($result);
+	}
+
+	public function test_is_valid_option_value_pass() {
+		//option value is valid, return true
+		$result = $this->form_validation->is_valid_option_value('alphabetical', 'list_sort_type');
+		$this->assertTrue($result);
+	}
+	public function test_is_valid_option_value_fail() {
+		//option value is invalid, return false
+		$result = $this->form_validation->is_valid_option_value('rainbow', 'theme');
 		$this->assertFalse($result);
 	}
 

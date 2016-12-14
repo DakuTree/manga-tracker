@@ -5,11 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
-## [1.4.6] - 2016-12-12
+## [1.4.6] - 2016-12-14
 ### Added
 - `[Backend]` Logs are now sent to my email daily via email_logs.pl. This should mean quicker fixes for bugs hopefully.
 - `[Backend]` _testSiteFailure test function to remove duplication.
 - `[Backend]` Failure tests for FoolSlide sites.
+- `[Backend]` More tests for MY_Form_validation.
 
 ### Changed
 - `[Backend]` Added robots.txt + removed noindex <meta> tag.
