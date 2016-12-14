@@ -1,6 +1,7 @@
 <?php
 
 class User_Model_test extends TestCase {
+	/** @var $User_Model User_Model */
 	private $User_Model;
 
 	public function setUp() {
@@ -150,9 +151,5 @@ class User_Model_test extends TestCase {
 
 		//NOTE: Gravatar lib changes between using http & https depending on what is being used, tests only use http though.
 		$this->assertRegExp('/^http:\/\/www\.gravatar\.com\/avatar\/[a-z0-9]+\.png\?s=[0-9]+\&d=[a-z]/i', $result);
-	}
-
-	public function test_getPrivacyLevel() {
-		$this->markTestNotImplemented('Plan on remaking how privacy works.');
 	}
 }
