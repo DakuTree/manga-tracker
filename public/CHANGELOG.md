@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `[Backend]` Added robots.txt + removed noindex <meta> tag.
 - `[Backend]` Updated Ion Auth lib + removed used of mcrypt_create_iv which is deprecated in 7.1.
+- Next Update info hover is now aligned to left so it doesn't get cut off.
 
 ## [1.4.5] - 2016-12-12
 ### Fixed
