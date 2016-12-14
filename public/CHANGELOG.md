@@ -11,12 +11,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` _testSiteFailure test function to remove duplication.
 - `[Backend]` Failure tests for FoolSlide sites.
 - `[Backend]` More tests for MY_Form_validation.
+- `[Backend]` _testSiteSuccess test function to remove even more duplication.
 
 ### Changed
 - `[Backend]` Added robots.txt + removed noindex <meta> tag.
 - `[Backend]` Updated Ion Auth lib + removed used of mcrypt_create_iv which is deprecated in 7.1.
 - Next Update info hover is now aligned to left so it doesn't get cut off.
 - Switched to our own time icons. I kinda prefer the old ones, but they were just taken from AMR.
+- `[Backend]` MangaCow now uses parseTitleDataDOM.
+- `[Backend]` parseTitleDataDOM now checks if $content is_array. curl can fail, but still return data which is weird.
 
 ## [1.4.5] - 2016-12-12
 ### Fixed
