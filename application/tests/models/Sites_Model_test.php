@@ -181,6 +181,10 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+	public function test_KireiCake_fail() {
+		$this->_testSiteFailure('KireiCake', 'Bad Status Code (404)');
+	}
+
 	public function test_SeaOtterScans() {
 		$result = $this->Sites_Model->{'SeaOtterScans'}->getTitleData('marry_me');
 
@@ -192,6 +196,9 @@ class Site_Model_test extends TestCase {
 		$this->assertEquals('Marry Me!', $result['title']);
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
+	}
+	public function test_SeaOtterScans_fail() {
+		$this->_testSiteFailure('SeaOtterScans', 'Bad Status Code (404)');
 	}
 
 	public function test_HelveticaScans() {
@@ -206,6 +213,9 @@ class Site_Model_test extends TestCase {
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
 	}
+	public function test_HelveticaScans_fail() {
+		$this->_testSiteFailure('HelveticaScans', 'Bad Status Code (404)');
+	}
 
 	public function test_SenseScans() {
 		$result = $this->Sites_Model->{'SenseScans'}->getTitleData('to_you_the_immortal');
@@ -218,6 +228,9 @@ class Site_Model_test extends TestCase {
 		$this->assertEquals('To You, The Immortal', $result['title']);
 		$this->assertRegExp('/^[a-z]+\/[0-9]+\/[0-9]+(?:\/[0-9]+)?$/', $result['latest_chapter']);
 		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
+	}
+	public function test_SenseScans_fail() {
+		$this->_testSiteFailure('SenseScans', 'Bad Status Code (404)');
 	}
 
 	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
