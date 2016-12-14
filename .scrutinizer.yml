@@ -17,7 +17,7 @@ filter:
 checks:
     php:
         uppercase_constants: true
-        align_assignments: true
+        align_assignments: false #preferably we'd have this as true, but it doesn't like line breaks
         avoid_usage_of_logical_operators: false
         no_commented_out_code: false
         one_class_per_file: false
