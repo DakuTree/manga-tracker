@@ -81,7 +81,7 @@ abstract class Site_Model extends CI_Model {
 	 * @return DOMElement[]|false
 	 */
 	final protected function parseTitleDataDOM(
-		array $content, string $site, string $title_url,
+		$content, string $site, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
 		string $failure_string = "") {
@@ -90,7 +90,9 @@ abstract class Site_Model extends CI_Model {
 		$status_code = $content['status_code'];
 		$data        = $content['body'];
 
-		if(!($status_code >= 200 && $status_code < 300)) {
+		if(!is_array($content)) {
+			log_message('error', "{$site} : {$title_url} | Failed to grab URL (See above curl error)");
+		} else if(!($status_code >= 200 && $status_code < 300)) {
 			log_message('error', "{$site} : {$title_url} | Bad Status Code ({$status_code})");
 		} else if(empty($data)) {
 			log_message('error', "{$site} : {$title_url} | Data is empty? (Status code: {$status_code})");
@@ -110,7 +112,12 @@ abstract class Site_Model extends CI_Model {
 			if($nodes_title->length === 1 && $nodes_row->length === 1) {
 				$firstRow      = $nodes_row->item(0);
 				$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
-				$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
+
+				if($node_chapter_string !== '') {
+					$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
+				} else {
+					$nodes_chapter = $nodes_row;
+				}
 
 				if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
 					return [
@@ -778,32 +785,23 @@ class MangaCow extends Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
 
-			$xpath = new DOMXPath($dom);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			'MangaCow',
+			$title_url,
+			"//h4",
+			"//ul[contains(@class, 'mng_chp')]/li[1]/a[1]",
+			"b[@class='dte']",
+			"",
+			"404 Page Not Found"
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$nodes_title = $xpath->query("//h4");
-			$nodes_row   = $xpath->query("//ul[contains(@class, 'mng_chp')]/li[1]/a[1]");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = trim($nodes_title->item(0)->nodeValue);
+			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)\/$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
-				$nodes_chapter = $nodes_row;
-				$nodes_latest  = $xpath->query("b[@class='dte']", $nodes_row->item(0));
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($nodes_latest->item(0)->getAttribute('title'), 13)));
-			} else {
-				log_message('error', "MangaCow: Unable to find nodes.");
-				return NULL;
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($data['nodes_latest']->getAttribute('title'), 13)));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
