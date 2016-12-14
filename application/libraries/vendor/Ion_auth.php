@@ -1,25 +1,23 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* Name:  Ion Auth
-*
-* Version: 2.5.2
-*
-* Author: Ben Edmunds
-*		  ben.edmunds@gmail.com
-*         @benedmunds
-*
-* Added Awesomeness: Phil Sturgeon
-*
-* Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
-*
-* Created:  10.01.2009
-*
-* Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
-* Original Author name has been kept but that does not mean that the method has not been modified.
-*
-* Requirements: PHP5 or above
-*
-*/
+ * Name:  Ion Auth
+ *
+ * Author: Ben Edmunds
+ *		  ben.edmunds@gmail.com
+ *         @benedmunds
+ *
+ * Added Awesomeness: Phil Sturgeon
+ *
+ * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
+ *
+ * Created:  10.01.2009
+ *
+ * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
+ * Original Author name has been kept but that does not mean that the method has not been modified.
+ *
+ * Requirements: PHP5 or above
+ *
+ */
 
 class Ion_auth
 {
@@ -54,9 +52,8 @@ class Ion_auth
 	/**
 	 * __construct
 	 *
-	 * @return void
 	 * @author Ben
-	 **/
+	 */
 	public function __construct()
 	{
 		$this->load->config('ion_auth', TRUE);
@@ -91,7 +88,11 @@ class Ion_auth
 	 *
 	 * Acts as a simple way to call model methods without loads of stupid alias'
 	 *
-	 **/
+	 * @param $method
+	 * @param $arguments
+	 * @return mixed
+	 * @throws Exception
+	 */
 	public function __call($method, $arguments)
 	{
 		if (!method_exists( $this->ion_auth_model, $method) )
@@ -129,16 +130,17 @@ class Ion_auth
 	/**
 	 * forgotten password feature
 	 *
-	 * @return mixed  boolian / array
+	 * @param $identity
+	 * @return mixed boolean / array
 	 * @author Mathew
-	 **/
+	 */
 	public function forgotten_password($identity)    //changed $email to $identity
 	{
 		if ( $this->ion_auth_model->forgotten_password($identity) )   //changed
 		{
 			// Get user information
-      $identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
-      $user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  // changed to get_user_by_identity from email
+			$identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
+			$user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  // changed to get_user_by_identity from email
 
 			if ($user)
 			{
@@ -189,9 +191,10 @@ class Ion_auth
 	/**
 	 * forgotten_password_complete
 	 *
-	 * @return void
+	 * @param $code
 	 * @author Mathew
-	 **/
+	 * @return bool
+	 */
 	public function forgotten_password_complete($code)
 	{
 		$this->ion_auth_model->trigger_events('pre_password_change');
@@ -218,7 +221,7 @@ class Ion_auth
 			{
 				$this->set_message('password_change_successful');
 				$this->ion_auth_model->trigger_events(array('post_password_change', 'password_change_successful'));
-					return $data;
+				return $data;
 			}
 			else
 			{
@@ -253,9 +256,10 @@ class Ion_auth
 	/**
 	 * forgotten_password_check
 	 *
-	 * @return void
+	 * @param $code
 	 * @author Michael
-	 **/
+	 * @return bool
+	 */
 	public function forgotten_password_check($code)
 	{
 		$profile = $this->where('forgotten_password_code', $code)->users()->row(); //pass the code to profile
@@ -284,19 +288,24 @@ class Ion_auth
 	/**
 	 * register
 	 *
-	 * @return void
+	 * @param $identity
+	 * @param $password
+	 * @param $email
+	 * @param array $additional_data
+	 * @param array $group_ids
 	 * @author Mathew
-	 **/
+	 * @return bool
+	 */
 	public function register($identity, $password, $email, $additional_data = array(), $group_ids = array()) //need to test email activation
 	{
 		$this->ion_auth_model->trigger_events('pre_account_creation');
 
 		$email_activation = $this->config->item('email_activation', 'ion_auth');
-		
+
 		$id = $this->ion_auth_model->register($identity, $password, $email, $additional_data, $group_ids);
 
 		if (!$email_activation)
-		{	
+		{
 			if ($id !== FALSE)
 			{
 				$this->set_message('account_creation_successful');
@@ -385,14 +394,14 @@ class Ion_auth
 
 		$identity = $this->config->item('identity', 'ion_auth');
 
-                if (substr(CI_VERSION, 0, 1) == '2')
+		if (substr(CI_VERSION, 0, 1) == '2')
 		{
 			$this->session->unset_userdata( array($identity => '', 'id' => '', 'user_id' => '') );
-                }
-                else
-                {
-                	$this->session->unset_userdata( array($identity, 'id', 'user_id') );
-                }
+		}
+		else
+		{
+			$this->session->unset_userdata( array($identity, 'id', 'user_id') );
+		}
 
 		// delete the remember me cookies if they exist
 		if (get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
@@ -414,6 +423,9 @@ class Ion_auth
 		}
 		else
 		{
+			if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+				session_start();
+			}
 			$this->session->sess_regenerate(TRUE);
 		}
 
