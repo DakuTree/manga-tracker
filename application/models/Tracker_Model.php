@@ -411,8 +411,8 @@ class Tracker_Model extends CI_Model {
 		$status = ['code' => 0, 'failed_rows' => []];
 
 		$categories = array_keys($json);
-		if(count($categories) === array_intersect(['reading', 'on-hold', 'plan-to-read', 'custom1', 'custom2', 'custom3'], $categories)) {
-			$json_keys = array_keys(call_user_func_array('array_merge', $json));
+		if(count($categories) === count(array_intersect(['reading', 'on-hold', 'plan-to-read', 'custom1', 'custom2', 'custom3'], $categories))) {
+			$json_keys = array_keys(call_user_func_array('array_merge', call_user_func_array('array_merge', $json)));
 
 			if(count($json_keys) === 3 && !array_diff(array('site', 'title_url', 'current_chapter'), $json_keys)) {
 				foreach($categories as $category) {

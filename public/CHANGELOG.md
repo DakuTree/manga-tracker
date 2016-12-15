@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.7] - 2016-12-15
+### Fixed
+- Importing works now.
+
+### Changed
+- `[Backend]` Rewrote User Options set/set_db
+
 ## [1.4.6] - 2016-12-14
 ### Added
 - `[Backend]` Logs are now sent to my email daily via email_logs.pl. This should mean quicker fixes for bugs hopefully.
