@@ -107,10 +107,51 @@ class User_Options_Model extends CI_Model {
 	public function get(string $option) {
 		return $this->get_by_userid($option, (int) $this->User->id);
 	}
+
+	/**
+	 * @param string     $option
+	 * @param string|int $value
+	 *
+	 * @return bool
+	 */
+	public function set(string $option, $value) : bool {
+
+
+		//TODO: Check if user is logged in, get ID
+		//Check if user is logged in & set ID if so
+		if($userID = $this->User->id) {
+			//Check if option is valid
+			if(array_key_exists($option, $this->options)) {
+				//option is valid
+
+				$idData = array(
+					'user_id' => $this->User->id,
+					'name'    => $option,
+				);
+
+				$valueData = array();
+				if($this->options[$option]['type'] == 'int') {
+					$valueData['value_int'] = array_search($value, $this->options[$option]['valid_options']);
+				} else {
+					$valueData['value_str'] = (string) $value;
+				}
+
+				$success = $this->set_db($idData, $valueData);
+				if($success) $this->session->unset_tempdata("option_{$option}");
+			} else {
+				$success = FALSE;
+			}
+		} else {
+			$success = FALSE;
+		}
+		return $success;
+	}
+
+
 	public function get_by_userid(string $option, int $userID) {
 		//Check if option is valid
 		if(array_key_exists($option, $this->options)) {
-			//Check if userID is > 0 & user has option set...
+			//Check if userID is > 0
 			if($userID) {
 				//Check if user has option set.
 				if($row = $this->get_db($option, $userID)) {
@@ -130,42 +171,6 @@ class User_Options_Model extends CI_Model {
 		return $value;
 	}
 
-	public function set(string $option, $value) : bool {
-		//This assumes we have already validated stuff via form_validation.
-		//CHECK: Maybe this should be renamed input_set???
-
-		//TODO: Check if user is logged in, get ID
-		//Check if option is valid
-		if(array_key_exists($option, $this->options)) {
-			//Value is valid, pass it to DB.
-			$type = $this->options[$option]['type'];
-
-			$data = array(
-				'user_id' => $this->User->id,
-				'name'    => $option
-			);
-			$dataValues = array();
-			if($type == 'int') {
-				$dataValues['value_int'] = array_search($value, $this->options[$option]['valid_options']);
-			} else {
-				$dataValues['value_str'] = (string) $value;
-			}
-
-			if($this->db->get_where('user_options', $data)->num_rows() === 0) {
-				$data['type'] = ($type == 'int' ? 0 : ($type == 'string' ? 1 : 2));
-				$success = $this->db->insert('user_options', array_merge($data, $dataValues));
-			} else {
-				$this->db->where($data);
-				$success = $this->db->update('user_options', $dataValues);
-			}
-
-			if($success) $this->session->unset_tempdata("option_{$option}");
-		} else {
-			$success = FALSE;
-		}
-		return $success;
-	}
-
 	private function get_db(string $option, int $userID) {
 		//This function assumes we've already done some basic validation.
 		if(!($data = $this->session->tempdata("option_{$option}"))) {
@@ -179,9 +184,19 @@ class User_Options_Model extends CI_Model {
 		}
 		return $data;
 	}
-	private function set_db(string $option, $value) : bool {}
 
-	//FIXME: I really don't like this function.
+	private function set_db(array $idData, array $valueData) : bool {
+		if($this->db->get_where('user_options', $idData)->num_rows() === 0) {
+			$data['type'] = (isset($a['value_int']) ? 0 : (isset($a['value_str']) == 'string' ? 1 : 2));
+			$success = $this->db->insert('user_options', array_merge($idData, $valueData));
+		} else {
+			$this->db->where($idData);
+			$success = $this->db->update('user_options', $valueData);
+		}
+
+		return $success;
+	}
+
 	private function parse_value(string $option, $value_str, $value_int) {
 		$type = $this->options[$option]['type'];
 
