@@ -603,6 +603,9 @@ class WebToons extends Site_Model {
 	public function getTitleData(string $title_url) {
 		$titleData = [];
 
+		//FIXME: We don't use parseTitleDOM here due to using rss. Should probably have an alternate method for XML parsing.
+
+		//NOTE: getTitleData uses a different FullTitleURL due to it grabbing the rss ver. instead.
 		$title_parts = explode(':--:', $title_url);
 		$fullURL = "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/rss?title_no={$title_parts[0]}";
 
@@ -728,35 +731,22 @@ class GameOfScanlation extends Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 
 		$content = $this->get_content($fullURL);
-		$data = $content['body'];
-		if(strpos($data, '404 Page Not Found') === FALSE) {
-			//$data = preg_replace('/^[\S\s]*(<ol[\S\s]*)<\/ol>[\S\s]*$/', '$1', $data);
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			$this->site,
+			$title_url,
+			"//meta[@property='og:title']",
+			"//ol[@class='discussionListItems']/li[1]/div[@class='home_list']/ul/li/div[@class='list_press_text']",
+			"p[@class='author']/span|p[@class='author']/abbr",
+			"p[@class='text_work']/a"
+		);
+		if($data) {
+			$titleData['title'] = trim(html_entity_decode($data['nodes_title']->getAttribute('content')));
 
-			$xpath = new DOMXPath($dom);
+			$titleData['latest_chapter'] = preg_replace('/^projects\/.*?\/(.*?)\/$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
-			$nodes_title = $xpath->query("//meta[@property='og:title']");
-			$nodes_row   = $xpath->query("//ol[@class='discussionListItems']/li[1]/div[@class='home_list']/ul/li/div[@class='list_press_text']");
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$titleData['title'] = html_entity_decode($nodes_title->item(0)->getAttribute('content'));
-
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query("p[@class='author']/span|p[@class='author']/abbr", $firstRow);
-				$nodes_chapter = $xpath->query("p[@class='text_work']/a",                         $firstRow);
-
-				$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/^projects\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", (int) $nodes_latest->item(0)->getAttribute('data-time'));
-			} else {
-				log_message('error', "GameOfScanlation: Unable to find nodes.");
-				return NULL;
-			}
-		} else {
-			//TODO: Throw ERRORS;
+			$titleData['last_updated'] =  date("Y-m-d H:i:s",(int) $data['nodes_latest']->getAttribute('title'));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);

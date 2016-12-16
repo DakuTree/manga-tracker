@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added remaining site fail tests (WebToons, GameOfScanlation & MangaCow)
 
+### Changed
+- `[Backend]` GameOfScanlation now uses parseTitleDataDOM.
+
 ## [1.4.7] - 2016-12-15
 ### Fixed
 - Importing works now.
