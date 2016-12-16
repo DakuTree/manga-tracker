@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.8] - 2016-12-16
+### Added
+- Added remaining site fail tests (WebToons, GameOfScanlation & MangaCow)
+
 ## [1.4.7] - 2016-12-15
 ### Fixed
 - Importing works now.

@@ -63,7 +63,7 @@ class Site_Model_test extends TestCase {
 		$this->_testSiteSuccess('WebToons', '93:--:en:--:girls-of-the-wilds:--:action', 'Girls of the Wild\'s');
 	}
 	public function test_WebToons_fail() {
-		$this->markTestNotImplemented();
+		$this->_testSiteFailure('WebToons', 'Bad Status Code (404)', '0:--:en:--:-:--:-');
 	}
 
 	public function test_KissManga() {
@@ -93,14 +93,14 @@ class Site_Model_test extends TestCase {
 		$this->_testSiteSuccess('GameOfScanlation', 'legendary-moonlight-sculptor.99', 'Legendary Moonlight Sculptor');
 	}
 	public function test_GameOfScanlation_fail() {
-		$this->markTestNotImplemented();
+		$this->_testSiteFailure('GameOfScanlation', 'Bad Status Code (404)');
 	}
 
 	public function test_MangaCow() {
 		$this->_testSiteSuccess('MangaCow', 'The_scholars_reincarnation', 'The Scholar\'s Reincarnation');
 	}
 	public function test_MangaCow_fail() {
-		$this->markTestNotImplemented();
+		$this->_testSiteFailure('MangaCow', 'Bad Status Code (404)');
 	}
 
 	public function test_KireiCake() {
