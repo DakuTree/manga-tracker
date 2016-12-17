@@ -711,7 +711,7 @@ class KissManga extends Site_Model {
 
 class GameOfScanlation extends Site_Model {
 	public $site          = 'GameOfScanlation';
-	public $titleFormat   = '/^[a-z0-9-]+$/';
+	public $titleFormat   = '/^[a-z0-9\.-]+$/';
 	public $chapterFormat = '/^[a-z0-9\.-]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {

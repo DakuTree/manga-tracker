@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.9] - 2016-12-17
 ### Fixed
 - GameOfScanlation now works with manga which use /projects/ instead of /forums/ as their listing page.
+- GameOfScanlation now works with manga using /fourms/, which must have broke with some recent changes..
 
 ## [1.4.8] - 2016-12-16
 ### Added

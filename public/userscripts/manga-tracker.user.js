@@ -20,8 +20,8 @@
 // @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-12-03
-// @version      1.2.9
+// @updated      2016-12-17
+// @version      1.2.10
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
@@ -998,6 +998,11 @@ let sites = {
 			this.title       = $('#readerHeader').find('> .thelefted a:last').attr('href').split('/')[1];
 			this.chapter     = this.segments[3];
 
+			if(this.title.indexOf('.') !== -1) {
+				this.title_url   = 'https://gameofscanlation.moe/forums/'+this.title+'/';
+			} else {
+				this.title_url   = 'https://gameofscanlation.moe/projects/'+this.title+'/';
+			}
 			this.title_url   = 'https://gameofscanlation.moe/forums/'+this.title+'/';
 			this.chapter_url = 'https://gameofscanlation.moe/projects/'+this.title.replace(/\.[0-9]+$/, '')+'/'+this.chapter+'/';
 
