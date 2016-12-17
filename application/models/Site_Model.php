@@ -715,7 +715,16 @@ class GameOfScanlation extends Site_Model {
 	public $chapterFormat = '/^[a-z0-9\.-]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://gameofscanlation.moe/forums/{$title_url}/";
+		/* NOTE: GoS is a bit weird in that it has two separate title URL formats. One uses /projects/ and the other uses /fourms/.
+		         The bad thing is these are interchangeable, despite them showing the exact same listing page.
+		         Thankfully the title_url of manga which use /forums/ seem to be appended with ".%ID%" which means we can easily check them. */
+
+		if (strpos($title_url, '.') !== FALSE) {
+			$format = "https://gameofscanlation.moe/forums/{$title_url}/";
+		} else {
+			$format = "https://gameofscanlation.moe/projects/{$title_url}/";
+		}
+		return $format;
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {

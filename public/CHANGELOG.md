@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.9] - 2016-12-17
+### Fixed
+- GameOfScanlation now works with manga which use /projects/ instead of /forums/ as their listing page.
+
 ## [1.4.8] - 2016-12-16
 ### Added
 - Added remaining site fail tests (WebToons, GameOfScanlation & MangaCow)
