@@ -16,7 +16,7 @@ class MY_Output extends CI_Output {
 		set_status_header((int) $code, (string) $text);
 		$this->current_header = [
 			'code'   => (int) $code,
-			'text'   => (string) '',
+			'text'   => (string) $text,
 			'custom' => TRUE
 		];
 		return $this;
