@@ -94,6 +94,8 @@ class Site_Model_test extends TestCase {
 		$this->_testSiteSuccess('GameOfScanlation', 'legendary-moonlight-sculptor.99', 'Legendary Moonlight Sculptor');
 	}
 	public function test_GameOfScanlation_fail() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
 		$this->_testSiteFailure('GameOfScanlation', 'Bad Status Code (404)');
 	}
 
