@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.10] - 2016-12-18
+### Changed
+- Tags now allow colons. This is for the eventual support of MAL sync'ing. See #42 for more info.
+
 ## [1.4.9] - 2016-12-17
 ### Fixed
 - GameOfScanlation now works with manga which use /projects/ instead of /forums/ as their listing page.

@@ -66,7 +66,7 @@ class MY_Form_validation extends CI_Form_validation {
 	}
 
 	public function is_valid_tag_string(string $tag_string) : bool {
-		return (bool) preg_match('/^[a-z0-9-_,]{0,255}$/', $tag_string);
+		return (bool) preg_match('/^[a-z0-9\\-_,:]{0,255}$/', $tag_string);
 	}
 
 	public function is_valid_category(string $category) : bool {

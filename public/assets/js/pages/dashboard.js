@@ -161,7 +161,7 @@ $(function(){
 		    id       = $(this).closest('tr').attr('data-id');
 
 		//Validation
-		if(/^[a-z0-9,\-_]{0,255}$/.test(tag_list)) {
+		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
 			var tag_array = tag_list.split(',');
 			if($.inArray('none', tag_array) === -1) {
 				$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
@@ -185,7 +185,7 @@ $(function(){
 			}
 		} else {
 			//Tag list is invalid.
-			alert('Tags can only contain: lowercase a-z, 0-9, - & _.');
+			alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _.');
 		}
 	});
 
