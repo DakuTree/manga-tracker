@@ -198,6 +198,7 @@ class Tracker_Model extends CI_Model {
 			//TODO: Check if title is valid URL!
 			$titleID = $this->addTitle($titleURL, $siteID);
 		}
+		if(!$titleID) $titleID = 0;
 
 		return $titleID;
 	}
@@ -310,12 +311,17 @@ class Tracker_Model extends CI_Model {
 		                  ->get();
 
 		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL);
-		//FIXME: getTitleData can fail, which will in turn cause the below to fail aswell, we should try and account for that
-		$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
-		$titleID = $this->db->insert_id();
 
-		$this->History->updateTitleHistory((int) $titleID, NULL, $titleData['latest_chapter'], $titleData['last_updated']);
-		return $titleID;
+		//FIXME: getTitleData can fail, which will in turn cause the below to fail aswell, we should try and account for that
+		if($titleData) {
+			$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
+			$titleID = $this->db->insert_id();
+
+			$this->History->updateTitleHistory((int) $titleID, NULL, $titleData['latest_chapter'], $titleData['last_updated']);
+		} else {
+			log_message('error', "getTitleData failed for: {$query->row()->site_class} | {$titleURL}");
+		}
+		return $titleID ?? 0;
 	}
 
 	/**
