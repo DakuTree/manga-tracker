@@ -21,7 +21,7 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @updated      2016-12-22
-// @version      1.2.11
+// @version      1.2.12
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
@@ -1213,9 +1213,9 @@ const main_site = 'https://trackr.moe';
 let config = JSON.parse(GM_getValue('config') || '{}');
 console.log(config);
 
+const hostname = location.hostname.replace(/^(?:dev)\./, '');
 if(!$.isEmptyObject(config)) {
 	//Config is loaded, do stuff.
-	const hostname = location.hostname.replace(/^(?:dev)\./, '');
 	if(hostname === 'trackr.moe') {
 		//FF loads document-start at a different time..
 		if(!("InstallTrigger" in window)) {
@@ -1232,5 +1232,16 @@ if(!$.isEmptyObject(config)) {
 		});
 	}
 } else {
-	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
+	if(hostname === 'trackr.moe') {
+		//FF loads document-start at a different time..
+		if(!("InstallTrigger" in window)) {
+			sites[hostname].init();
+		} else {
+			$(function() {
+				sites[hostname].init();
+			});
+		}
+	} else {
+		alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
+	}
 }
