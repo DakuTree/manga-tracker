@@ -4,20 +4,21 @@
 	"type" : "project",
 
 	"require": {
-		"php": ">=5.5.0",
-		"codeigniter/framework": "3.1.*",
-		"kenjis/ci-phpunit-test": "0.13.*",
+		"php"                           : ">=7.1.0",
+		"codeigniter/framework"         : "3.1.*",
+		"kenjis/ci-phpunit-test"        : "0.13.*",
+		"se/selenium-server-standalone" : "3.0.1",
 
-		"fxp/composer-asset-plugin": "1.2.*",
-		"bower-asset/jquery": "1.12.4",
-		"bower-asset/jquery-validation": "1.15.0",
-		"bower-asset/html5shiv": "3.7.*",
-		"bower-asset/normalize.css": "4.1.*",
-		"bower-asset/html5bp" : "5.2.*",
-		"bower-asset/bootstrap" : "3.3.*",
-		"bower-asset/font-awesome" : "4.6.3",
-		"bower-asset/respond" : "1.4.2",
-		"bower-asset/cookieconsent" : "3.0.2"
+		"fxp/composer-asset-plugin"     : "1.2.2",
+		"bower-asset/jquery"            : "1.12.4",
+		"bower-asset/jquery-validation" : "1.15.0",
+		"bower-asset/html5shiv"         : "3.7.*",
+		"bower-asset/normalize.css"     : "4.1.*",
+		"bower-asset/html5bp"           : "5.2.*",
+		"bower-asset/bootstrap"         : "3.3.*",
+		"bower-asset/font-awesome"      : "4.6.3",
+		"bower-asset/respond"           : "1.4.2",
+		"bower-asset/cookieconsent"     : "3.0.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit"         : "5.3.*",

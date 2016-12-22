@@ -15,7 +15,6 @@ cache:
   directories:
     - vendor
     - $HOME/.composer/cache
-#    - travis_phantomjs
 
 matrix:
   fast_finish: true
@@ -27,32 +26,23 @@ before_install:
   - travis_retry composer self-update && composer --version #travis is bad at updating composer
   - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
   #NOTE: Database creation is done in composer.json scripts.
-  #NOTE: Travis is using an extemely old version of phantomjs for some reason | SEE: https://github.com/travis-ci/travis-ci/issues/3225
-  # FIXME: Acceptance testing is completely disabled until https://github.com/ariya/phantomjs/issues/14286 gets fixed.
-#  - phantomjs --version
-#  - export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH
-#  - phantomjs --version
-#  - if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi
-#  - if [ $(phantomjs --version) != '2.1.1' ]; then wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi
-#  - if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi
-#  - phantomjs --version
 
 install:
-  - composer install
+  - composer global require "fxp/composer-asset-plugin:~1.2.2"
+  - composer install -n --prefer-dist
   - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
   - php public/index.php admin/migrate
 
 script:
+  #phpunit testing
   - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover && cd $TRAVIS_BUILD_DIR
-  # FIXME: Acceptance testing is completely disabled until https://github.com/ariya/phantomjs/issues/14286 gets fixed.
-#  - phantomjs --webdriver=4444 > /dev/null 2>&1 &
-#  - sleep 3
+  #codeception acceptance testing
+  - java -jar "vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar" -port 4444 &
   #BUG: We can't specify CI_ENV normally due to a bug: https://bugs.php.net/bug.php?id=67808
-  #Because of this, we need to edit the index.php.
-#  - sed -i "1s/.*/<\?php \$_SERVER['CI_ENV'] = 'testing'; \$_SERVER['CI_TESTING'] = 'TRUE';/" public/index.php
-#  - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
-#  - sleep 3
-#  - travis_wait 1 php vendor/bin/codecept run acceptance --colors
+  #     Because of this, we need to edit the index.php.
+  - sed -i "1s/.*/<\?php \$_SERVER['CI_ENV'] = 'testing'; \$_SERVER['CI_TESTING'] = 'TRUE';/" public/index.php
+  - php -S 127.0.0.1:8000 -t public/ -f index.php > /dev/null 2>&1 &
+  - travis_wait 1 php vendor/bin/codecept run acceptance --colors
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
