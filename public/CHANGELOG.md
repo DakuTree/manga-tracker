@@ -5,8 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.11] - 2016-12-22
+### Fixed
+- Userscript now properly points the user to trackr.moe (and not tracker.moe) if the API key isn't setup.
+- Userscript now works again for new users. WHOOPS.
+
+### Changed
+- `[Backend]` DynastyScans now uses parseTitleDataDOM for non-oneshots.
+- `[Backend]` parseTitleDataDOM no longer requires passing a $site var, as it now uses $this->site which is always set.
+
 ## [1.4.10] - 2016-12-18
-#### Fixed
+### Fixed
 - `[Backend]` Series that fail now return properly on failure. Also more logging.
 
 ### Changed
