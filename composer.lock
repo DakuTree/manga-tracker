@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eef3fab903075291c9377da0c6d85713",
-    "content-hash": "e3bcd706d2f7e7fd3ba4d6865217ead2",
+    "hash": "63ee7057af3482676a7c19edc8b0e198",
+    "content-hash": "d7a2d8a291fb32f2af3f03641acd4923",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -434,45 +434,6 @@
                 "unit testing"
             ],
             "time": "2016-11-20 12:00:54"
-        },
-        {
-            "name": "se/selenium-server-standalone",
-            "version": "v3.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "13ec9af08ab56261da4e85fa61efbda3d693cd70"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/13ec9af08ab56261da4e85fa61efbda3d693cd70",
-                "reference": "13ec9af08ab56261da4e85fa61efbda3d693cd70",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "bin/selenium-server-standalone"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache 2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Sven Eisenschmidt",
-                    "email": "sven.eisenschmidt@gmail.com"
-                }
-            ],
-            "description": "Composer distribution of Selenium Server Standalone, the browser automation framework. Adds a executable to your composer bin directory.",
-            "homepage": "https://github.com/sveneisenschmidt/selenium-server-standalone",
-            "keywords": [
-                "selenium",
-                "testing"
-            ],
-            "time": "2016-12-13 10:48:27"
         }
     ],
     "packages-dev": [
