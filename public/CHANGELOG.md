@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.10] - 2016-12-18
 #### Fixed
 - `[Backend]` Series that fail now return properly on failure. Also more logging.
+
 ### Changed
 - Tags now allow colons. This is for the eventual support of MAL sync'ing. See #42 for more info.
 
