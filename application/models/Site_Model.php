@@ -426,7 +426,8 @@ class DynastyScans extends Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
 
-		switch(explode(':--:', $title_url)[1]) {
+		$title_parts = explode(':--:', $title_url);
+		switch($title_parts[1]) {
 			case '0':
 				//Normal series.
 				$data = $this->parseTitleDataDOM(
@@ -446,7 +447,7 @@ class DynastyScans extends Site_Model {
 					}
 
 					$chapterURLSegments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
-					$titleData['latest_chapter'] = $chapterURLSegments[2];
+					$titleData['latest_chapter'] = substr($chapterURLSegments[2], strlen($title_parts[0])+1);
 
 					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(str_replace("'", '', substr((string) $data['nodes_latest']->textContent, 9))));
 				}
