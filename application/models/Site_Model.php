@@ -425,53 +425,60 @@ class DynastyScans extends Site_Model {
 		return $chapterData;
 	}
 
-	public function getTitleData(string $title_string) {
-		$title_parts = explode(':--:', $title_string);
-		$title_url   = $title_parts[0];
-
+	public function getTitleData(string $title_url) {
 		$titleData = [];
-		//FIXME: Using regex here is probably a terrible idea, but we're doing it anyway....
-		//FIXME (ASAP): All the regex here should be checked to see if it even returns something, and we should probably error if possible.
-		if($title_parts[1] == '0') {
-			$content = $this->get_content('http://dynasty-scans.com/series/'.$title_url);
-			$data = $content['body'];
 
-			preg_match('/<b>.*<\/b>/', $data, $matchesT);
-			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
-			$titleData['title'] = (!empty($matchesD) ? (substr($matchesD[1], 0, -7) !== 'Original' ? substr($matchesD[1], 0, -7).' - ' : '') : '') . substr($matchesT[0], 3, -4);
+		$fullURL = $this->getFullTitleURL($title_url);
+		$content = $this->get_content($fullURL);
 
-			$data = preg_replace('/^[\S\s]*(<dl class=\'chapter-list\'>[\S\s]*<\/dl>)[\S\s]*$/', '$1', $data);
-			preg_match_all('/<dd>[\s\S]+?(?=<\/dd>)<\/dd>/', $data, $matches);
-			$latest_chapter_html = array_pop($matches[0]);
+		switch(explode(':--:', $title_url)[1]) {
+			case '0':
+				//Normal series.
+				$data = $this->parseTitleDataDOM(
+					$content,
+					$this->site,
+					$title_url,
+					"//h2[@class='tag-title']/b[1]",
+					"(//dl[@class='chapter-list']/dd[a[contains(@href,'/chapters/')]])[last()]",
+					"small",
+					"a[@class='name']"
+				);
+				if($data) {
+					$titleData['title'] = $data['nodes_title']->textContent;
+					//In cases where the series is a doujin, try and prepend the copyright.
+					preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $content['body'], $matchesD);
+					if(!empty($matchedD) && substr($matchesD[1], 0, -7) !== 'Original') {
+						$titleData['title'] = substr($matchesD[1], 0, -7).' - '.$titleData['title'];
+					}
 
-			preg_match('/\/chapters\/([^"]+)/', $latest_chapter_html, $matches);
-			$titleData['latest_chapter'] = substr($matches[1], strlen($title_url)+1);
-			//FIXME: THIS IS A TEMP FIX, SEE https://github.com/DakuTree/manga-tracker/issues/58
-			if(!$titleData['latest_chapter']) {
-				log_message('error', 'DynastyScans::getTitleData cannot parse title properly as it contains oneshot. || URL: '.$title_url);
-				return NULL;
-			}
+					$chapterURLSegments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
+					$titleData['latest_chapter'] = $chapterURLSegments[2];
 
-			preg_match('/<small>released (.*)<\/small>/', $latest_chapter_html, $matches);
-			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(str_replace('\'', '', $matches[1])));
-		} elseif($title_parts[1] == '1') {
-			$content = $this->get_content('http://dynasty-scans.com/chapters/'.$title_url);
-			$data = $content['body'];
+					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(str_replace("'", '', substr((string) $data['nodes_latest']->textContent, 9))));
+				}
+				break;
 
-			preg_match('/<b>.*<\/b>/', $data, $matchesT);
-			preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
-			$titleData['title'] = (!empty($matchesD) ? ($matchesD[1] !== 'Original' ? $matchesD[1].' - ' : '') : '') . substr($matchesT[0], 3, -4);
+			case '1':
+				//Oneshot.
+				$data = $content['body'];
 
-			$titleData['latest_chapter'] = 'oneshot'; //This will never change
+				preg_match('/<b>.*<\/b>/', $data, $matchesT);
+				preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $data, $matchesD);
+				$titleData['title'] = (!empty($matchesD) ? ($matchesD[1] !== 'Original' ? $matchesD[1].' - ' : '') : '') . substr($matchesT[0], 3, -4);
 
-			preg_match('/<i class="icon-calendar"><\/i> (.*)<\/span>/', $data, $matches);
-			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime($matches[1]));
+				$titleData['latest_chapter'] = 'oneshot'; //This will never change
 
-			//Oneshots are special, and really shouldn't need to be re-tracked
-			//FIXME: We need to have a specific "no-track" complete param.
-			$titleData['complete'] = 'Y';
-		} else {
-			//FIXME: WTF?
+				preg_match('/<i class="icon-calendar"><\/i> (.*)<\/span>/', $data, $matches);
+				$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime($matches[1]));
+
+				//Oneshots are special, and really shouldn't need to be re-tracked
+				//FIXME: We need to have a specific "no-track" complete param.
+				$titleData['complete'] = 'Y';
+				break;
+
+			default:
+				//something went wrong
+				break;
 		}
 		return (!empty($titleData) ? $titleData : NULL);
 	}
