@@ -20,8 +20,8 @@
 // @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
-// @updated      2016-12-17
-// @version      1.2.10
+// @updated      2016-12-22
+// @version      1.2.11
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.user.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
@@ -1232,5 +1232,5 @@ if(!$.isEmptyObject(config)) {
 		});
 	}
 } else {
-	alert('Tracker isn\'t setup! Go to tracker.moe/user/options to set things up.');
+	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 }
