@@ -70,7 +70,6 @@ abstract class Site_Model extends CI_Model {
 
 	/**
 	 * @param array  $content
-	 * @param string $site
 	 * @param string $title_url
 	 * @param string $node_title_string
 	 * @param string $node_row_string
@@ -81,7 +80,7 @@ abstract class Site_Model extends CI_Model {
 	 * @return DOMElement[]|false
 	 */
 	final protected function parseTitleDataDOM(
-		$content, string $site, string $title_url,
+		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
 		string $failure_string = "") {
@@ -91,13 +90,13 @@ abstract class Site_Model extends CI_Model {
 		$data        = $content['body'];
 
 		if(!is_array($content)) {
-			log_message('error', "{$site} : {$title_url} | Failed to grab URL (See above curl error)");
+			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
 		} else if(!($status_code >= 200 && $status_code < 300)) {
-			log_message('error', "{$site} : {$title_url} | Bad Status Code ({$status_code})");
+			log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
 		} else if(empty($data)) {
-			log_message('error', "{$site} : {$title_url} | Data is empty? (Status code: {$status_code})");
+			log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
 		} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
-			log_message('error', "{$site} : {$title_url} | Failure string matched");
+			log_message('error', "{$this->site} : {$title_url} | Failure string matched");
 		} else {
 			$data = $this->cleanTitleDataDOM($data); //This allows us to clean the DOM prior to parsing. It's faster to grab the only part we need THEN parse it.
 
@@ -126,10 +125,10 @@ abstract class Site_Model extends CI_Model {
 						'nodes_chapter' => $nodes_chapter->item(0)
 					];
 				} else {
-					log_message('error', "{$site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
 				}
 			} else {
-				log_message('error', "{$site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
+				log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
 			}
 		}
 		return FALSE;
@@ -148,7 +147,6 @@ abstract class Site_Model extends CI_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			$this->site,
 			$title_url,
 			"//div[@class='large comic']/h1[@class='title']",
 			"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
@@ -227,7 +225,6 @@ class MangaFox extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'MangaFox',
 			$title_url,
 			"//meta[@property='og:title']/@content",
 			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
@@ -271,7 +268,6 @@ class MangaHere extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'MangaHere',
 			$title_url,
 			"//meta[@property='og:title']/@content",
 			"//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]",
@@ -339,7 +335,6 @@ class Batoto extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'Batoto',
 			$title_url,
 			"//h1[@class='ipsType_pagetitle']",
 			"//table[contains(@class, 'chapters_list')]/tbody/tr[2]",
@@ -436,7 +431,6 @@ class DynastyScans extends Site_Model {
 				//Normal series.
 				$data = $this->parseTitleDataDOM(
 					$content,
-					$this->site,
 					$title_url,
 					"//h2[@class='tag-title']/b[1]",
 					"(//dl[@class='chapter-list']/dd[a[contains(@href,'/chapters/')]])[last()]",
@@ -509,7 +503,6 @@ class MangaPanda extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'MangaPanda',
 			$title_url,
 			"//h2[@class='aname']",
 			"(//table[@id='listing']/tr)[last()]",
@@ -552,7 +545,6 @@ class MangaStream extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'MangaStream',
 			$title_url,
 			"//div[contains(@class, 'content')]/div[1]/h1",
 			"//div[contains(@class, 'content')]/div[1]/table/tr[2]",
@@ -750,7 +742,6 @@ class GameOfScanlation extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			$this->site,
 			$title_url,
 			"//meta[@property='og:title']",
 			"//ol[@class='discussionListItems']/li[1]/div[@class='home_list']/ul/li/div[@class='list_press_text']",
@@ -794,7 +785,6 @@ class MangaCow extends Site_Model {
 
 		$data = $this->parseTitleDataDOM(
 			$content,
-			'MangaCow',
 			$title_url,
 			"//h4",
 			"//ul[contains(@class, 'mng_chp')]/li[1]/a[1]",
