@@ -9,7 +9,5 @@ modules:
     enabled:
         - WebDriver:
             url: http://127.0.0.1:8000/
-            browser: phantomjs
-            capabilities:
-                phantomjs.page.settings.resourceTimeout: 10000
+            browser: firefox
         - \Helper\Acceptance
