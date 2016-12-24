@@ -21,7 +21,7 @@
       </option>
       <option name="outputFromStdout" value="true" />
       <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
-      <option name="scopeName" value="Main" />
+      <option name="scopeName" value="LESS" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$/public/assets/less/" />
       <envs />
@@ -65,9 +65,28 @@
       </option>
       <option name="outputFromStdout" value="true" />
       <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
-      <option name="scopeName" value="Project Files" />
+      <option name="scopeName" value="LESS" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$/public/assets/less/" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="get-updateblock -u -d -i manga-tracker.user.js -o manga-tracker.meta.js" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="js" />
+      <option name="immediateSync" value="true" />
+      <option name="name" value="Generate .meta.js" />
+      <option name="output" value="" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/userscript-utils.cmd" />
+      <option name="scopeName" value="Userscript" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$/public/userscripts" />
       <envs />
     </TaskOptions>
   </component>
