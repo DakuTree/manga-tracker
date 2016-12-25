@@ -523,7 +523,7 @@ class MangaPanda extends Site_Model {
 }
 
 class MangaStream extends Site_Model {
-	public $site          = 'MangaPanda';
+	public $site          = 'MangaStream';
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(.*?)\/[0-9]+$/';
 

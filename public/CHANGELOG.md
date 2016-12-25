@@ -5,7 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
-## [1.4.12] - 2016-12-22
+## [1.4.13] - 2016-12-25
+### Fixed
+- MangaStream now has the proper site name (was MangaPanda by mistake).
+
+## [1.4.12] - 2016-12-24
 ### Added
 - Userscript now has uses a .meta.js file for updating, which is also auto-generated on .user.js change.
 - Userscript now has uses a @downloadURL param.
