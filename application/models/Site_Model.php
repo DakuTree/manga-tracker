@@ -57,12 +57,12 @@ abstract class Site_Model extends CI_Model {
 
 		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$header      = http_parse_headers(substr($response, 0, $header_size));
+		$headers     = http_parse_headers(substr($response, 0, $header_size));
 		$body        = substr($response, $header_size);
 		curl_close($ch);
 
 		return [
-			'headers'     => $header,
+			'headers'     => $headers,
 			'status_code' => $status_code,
 			'body'        => $body
 		];
@@ -85,52 +85,56 @@ abstract class Site_Model extends CI_Model {
 		string $node_latest_string, string $node_chapter_string,
 		string $failure_string = "") {
 		//list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content; //TODO: PHP 7.1
-		$headers     = $content['headers'];
-		$status_code = $content['status_code'];
-		$data        = $content['body'];
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
-		} else if(!($status_code >= 200 && $status_code < 300)) {
-			log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
-		} else if(empty($data)) {
-			log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
-		} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
-			log_message('error', "{$this->site} : {$title_url} | Failure string matched");
 		} else {
-			$data = $this->cleanTitleDataDOM($data); //This allows us to clean the DOM prior to parsing. It's faster to grab the only part we need THEN parse it.
+			$headers     = $content['headers'];
+			$status_code = $content['status_code'];
+			$data        = $content['body'];
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(TRUE);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(FALSE);
-
-			$xpath = new DOMXPath($dom);
-			$nodes_title = $xpath->query($node_title_string);
-			$nodes_row   = $xpath->query($node_row_string);
-			if($nodes_title->length === 1 && $nodes_row->length === 1) {
-				$firstRow      = $nodes_row->item(0);
-				$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
-
-				if($node_chapter_string !== '') {
-					$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
-				} else {
-					$nodes_chapter = $nodes_row;
-				}
-
-				if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
-					return [
-						'nodes_title'   => $nodes_title->item(0),
-						'nodes_latest'  => $nodes_latest->item(0),
-						'nodes_chapter' => $nodes_chapter->item(0)
-					];
-				} else {
-					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
-				}
+			if(!($status_code >= 200 && $status_code < 300)) {
+				log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
+			} else if(empty($data)) {
+				log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
+			} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
+				log_message('error', "{$this->site} : {$title_url} | Failure string matched");
 			} else {
-				log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
+				$data = $this->cleanTitleDataDOM($data); //This allows us to clean the DOM prior to parsing. It's faster to grab the only part we need THEN parse it.
+
+				$dom = new DOMDocument();
+				libxml_use_internal_errors(TRUE);
+				$dom->loadHTML($data);
+				libxml_use_internal_errors(FALSE);
+
+				$xpath = new DOMXPath($dom);
+				$nodes_title = $xpath->query($node_title_string);
+				$nodes_row   = $xpath->query($node_row_string);
+				if($nodes_title->length === 1 && $nodes_row->length === 1) {
+					$firstRow      = $nodes_row->item(0);
+					$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
+
+					if($node_chapter_string !== '') {
+						$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
+					} else {
+						$nodes_chapter = $nodes_row;
+					}
+
+					if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
+						return [
+							'nodes_title'   => $nodes_title->item(0),
+							'nodes_latest'  => $nodes_latest->item(0),
+							'nodes_chapter' => $nodes_chapter->item(0)
+						];
+					} else {
+						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+					}
+				} else {
+					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
+				}
 			}
 		}
+
 		return FALSE;
 	}
 
@@ -142,24 +146,25 @@ abstract class Site_Model extends CI_Model {
 	final public function parseFoolSlide(string $fullURL, string $title_url) {
 		$titleData = [];
 
-		$content         = $this->get_content($fullURL);
-		$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
+		if($content = $this->get_content($fullURL)) {
+			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
 
-		$data = $this->parseTitleDataDOM(
-			$content,
-			$title_url,
-			"//div[@class='large comic']/h1[@class='title']",
-			"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
-			"div[@class='meta_r']",
-			"div[@class='title']/a"
-		);
-		if($data) {
-			$titleData['title'] = trim($data['nodes_title']->textContent);
+			$data = $this->parseTitleDataDOM(
+				$content,
+				$title_url,
+				"//div[@class='large comic']/h1[@class='title']",
+				"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+				"div[@class='meta_r']",
+				"div[@class='title']/a"
+			);
+			if($data) {
+				$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$link = (string) $data['nodes_chapter']->getAttribute('href');
-			$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
+				$link                        = (string) $data['nodes_chapter']->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
 
-			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
+				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
+			}
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);

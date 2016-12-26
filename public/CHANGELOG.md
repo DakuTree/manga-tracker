@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.13] - 2016-12-26
+### Fixed
+- `[Backend]` Only set parseTitleDataDOM vars when we know $content is array.
+
 ## [1.4.13] - 2016-12-25
 ### Fixed
 - MangaStream now has the proper site name (was MangaPanda by mistake).
