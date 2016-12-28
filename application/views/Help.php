@@ -26,5 +26,6 @@
 		<li>SeaOtterScans</li>
 		<li>HelveticaScans</li>
 		<li>SenseScans</li>
+		<li>JaiminisBox</li>
 	</ul>
 </div>

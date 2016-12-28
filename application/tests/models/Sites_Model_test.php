@@ -134,6 +134,13 @@ class Site_Model_test extends TestCase {
 		$this->_testSiteFailure('SenseScans', 'Bad Status Code (404)');
 	}
 
+	public function test_JaiminisBox() {
+		$this->_testSiteSuccess('JaiminisBox', 'black_clover', 'Black Clover');
+	}
+	public function test_JaiminisBox_fail() {
+		$this->_testSiteFailure('JaiminisBox', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 

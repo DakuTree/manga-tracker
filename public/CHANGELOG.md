@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.14] - 2016-12-28
 ### Added
 - `[Backend]` Autocompletion for CI_Migration.
+- Support for Jaimini's Box. - https://jaiminisbox.com/
 
 ### Changed
 - `[Backend]` tracker_titles now uses a status column instead of complete.

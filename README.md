@@ -23,3 +23,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * SeaOtterScans
 * HelveticaScans
 * SenseScans
+* JaiminisBox

@@ -171,6 +171,7 @@ abstract class Site_Model extends CI_Model {
 	}
 }
 class Sites_Model extends CI_Model {
+	//FIXME: Is it possible to automatically generate this in some way or another?
 	public $MangaFox;
 	public $MangaHere;
 	public $Batoto;
@@ -185,6 +186,7 @@ class Sites_Model extends CI_Model {
 	public $SeaOtterScans;
 	public $HelveticaScans;
 	public $SenseScans;
+	public $JaiminisBox;
 
 	public function __construct() {
 		parent::__construct();
@@ -203,6 +205,7 @@ class Sites_Model extends CI_Model {
 		$this->SeaOtterScans    = new SeaOtterScans();
 		$this->HelveticaScans   = new HelveticaScans();
 		$this->SenseScans       = new SenseScans();
+		$this->JaiminisBox      = new JaiminisBox();
 	}
 }
 
@@ -809,6 +812,8 @@ class MangaCow extends Site_Model {
 	}
 }
 
+/*** FoolSlide sites ***/
+
 class KireiCake extends Site_Model {
 	public $site          = 'KireiCake';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
@@ -895,6 +900,30 @@ class SenseScans extends Site_Model {
 		$chapter_parts = explode('/', $chapter);
 		return [
 			'url'    => "http://reader.sensescans.com/read/{$title_url}/{$chapter}/",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url) {
+		$fullURL = $this->getFullTitleURL($title_url);
+		return $this->parseFoolSlide($fullURL, $title_url);
+	}
+}
+
+class JaiminisBox extends Site_Model {
+	public $site          = 'JaiminisBox';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
+	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://jaiminisbox.com/reader/series/{$title_url}";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "https://jaiminisbox.com/reader/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
