@@ -70,7 +70,9 @@ class Tracker_Model extends CI_Model {
 						'latest_chapter'  => $row->latest_chapter,
 						'current_chapter' => $row->current_chapter,
 						'last_updated'    => $row->title_last_updated,
-						'active'          => ($row->site_status == 'disabled' || $row->title_status > 0 || $row->title_active == 1) //CHECK: Is this reversed??
+						//NOTE: active is used to warn the user if a title hasn't updated (Maybe due to nobody active tracking it or other reasons).
+						//      This will ONLY be false when an actively updating series (site enabled & title status = 0) hasn't updated within the past week.
+						'active'          => ($row->site_status == 'disabled' || in_array([/*complete*/ 1, /* one-shot */ 2, /* ignored */ 255], $row->title_status) || $row->title_active == 1)
 					],
 					'site_data' => [
 						'id'         => $row->site_id,
@@ -346,9 +348,11 @@ class Tracker_Model extends CI_Model {
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
 			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
+			//Check if title is marked as on-going, and update if latest_chapter isn't set or hasn't updated within last 12 hours
 			->where('(`status` = 0 AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
-			//FIXME: Account for different status numbers.
-			->or_where('(`status` > 0 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			//Check if title is marked as complete, and update if it hasn't updated in the last week.
+			->or_where('(`status` = 1 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 			->group_by('tracker_titles.id')
 			->having('timestamp IS NOT NULL')
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
