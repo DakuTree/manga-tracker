@@ -135,9 +135,13 @@ class Site_Model_test extends TestCase {
 	}
 
 	public function test_JaiminisBox() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
 		$this->_testSiteSuccess('JaiminisBox', 'black_clover', 'Black Clover');
 	}
 	public function test_JaiminisBox_fail() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
 		$this->_testSiteFailure('JaiminisBox', 'Bad Status Code (404)');
 	}
 
