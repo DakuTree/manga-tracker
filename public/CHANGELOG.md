@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `[Backend]` tracker_titles now uses a status column instead of complete.
+- One-shots/Ignored series are no longer updated.
 
 ### Fixed
 - `[Backend]` Migrations not properly adding keys to existing tables (SEE: https://github.com/bcit-ci/CodeIgniter/issues/1729)

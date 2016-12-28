@@ -72,7 +72,7 @@ class Tracker_Model extends CI_Model {
 						'last_updated'    => $row->title_last_updated,
 						//NOTE: active is used to warn the user if a title hasn't updated (Maybe due to nobody active tracking it or other reasons).
 						//      This will ONLY be false when an actively updating series (site enabled & title status = 0) hasn't updated within the past week.
-						'active'          => ($row->site_status == 'disabled' || in_array([/*complete*/ 1, /* one-shot */ 2, /* ignored */ 255], $row->title_status) || $row->title_active == 1)
+						'active'          => ($row->site_status == 'disabled' || in_array($row->title_status, [/*complete*/ 1, /* one-shot */ 2, /* ignored */ 255]) || $row->title_active == 1)
 					],
 					'site_data' => [
 						'id'         => $row->site_id,
