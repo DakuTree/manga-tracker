@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `[Backend]` Autocompletion for CI_Migration.
 - Support for Jaimini's Box. - https://jaiminisbox.com/
+- Userscript now uses the site favicon as an icon.
 
 ### Changed
 - `[Backend]` tracker_titles now uses a status column instead of complete.
