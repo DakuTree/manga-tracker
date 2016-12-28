@@ -14,8 +14,12 @@ class Migration_Tracker_Add_Active extends CI_Migration {
 				'default'   => 'Y'
 			),
 		);
-		$this->dbforge->add_key('active');
+		//$this->dbforge->add_key('active');
 		$this->dbforge->add_column('tracker_chapters', $fields, 'category');
+
+		$this->db->query("
+			ALTER TABLE `tracker_chapters` ADD INDEX `active` (`active`)
+		");
 	}
 
 	public function down() {

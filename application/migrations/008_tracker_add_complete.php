@@ -14,8 +14,12 @@ class Migration_Tracker_add_complete extends CI_Migration {
 				'default'   => 'N'
 			),
 		);
-		$this->dbforge->add_key('complete');
+		//$this->dbforge->add_key('complete');
 		$this->dbforge->add_column('tracker_titles', $fields, 'latest_chapter');
+
+		$this->db->query("
+			ALTER TABLE `tracker_titles` ADD INDEX `complete` (`complete`)
+		");
 	}
 
 	public function down() {

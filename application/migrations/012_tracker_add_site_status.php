@@ -14,8 +14,12 @@ class Migration_Tracker_Add_Site_Status extends CI_Migration {
 				'default'   => 'enabled'
 			),
 		);
-		$this->dbforge->add_key('status');
+		//$this->dbforge->add_key('status');
 		$this->dbforge->add_column('tracker_sites', $fields, 'site_class');
+
+		$this->db->query("
+			ALTER TABLE `tracker_sites` ADD INDEX `status` (`status`)
+		");
 	}
 
 	public function down() {

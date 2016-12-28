@@ -14,8 +14,12 @@ class Migration_Tracker_add_category extends CI_Migration {
 				'default'   => 'reading'
 			),
 		);
-		$this->dbforge->add_key('category');
+		//$this->dbforge->add_key('category');
 		$this->dbforge->add_column('tracker_chapters', $fields, 'tags');
+
+		$this->db->query("
+			ALTER TABLE `tracker_chapters` ADD INDEX `category` (`category`)
+		");
 	}
 
 	public function down() {

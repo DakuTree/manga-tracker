@@ -17,8 +17,12 @@ class Migration_Tracker_add_last_checked extends CI_Migration {
 			//The above format doesn't seem to work nicely here.
 			'`last_checked` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `last_updated`',
 		);
-		$this->dbforge->add_key('last_checked');
+		//$this->dbforge->add_key('last_checked');
 		$this->dbforge->add_column('tracker_titles', $fields, 'last_updated');
+
+		$this->db->query("
+			ALTER TABLE `tracker_titles` ADD INDEX `last_checked` (`last_checked`)
+		");
 
 		$this->db->query("
 			DELIMITER ;;
