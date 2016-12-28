@@ -472,8 +472,7 @@ class DynastyScans extends Site_Model {
 				$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime($matches[1]));
 
 				//Oneshots are special, and really shouldn't need to be re-tracked
-				//FIXME: We need to have a specific "no-track" complete param.
-				$titleData['complete'] = 'Y';
+				$titleData['status'] = '2';
 				break;
 
 			default:

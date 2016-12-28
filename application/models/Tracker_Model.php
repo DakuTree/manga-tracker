@@ -32,7 +32,7 @@ class Tracker_Model extends CI_Model {
 	public function get_tracker_from_user_id(int $userID) {
 		$query = $this->db
 			->select('tracker_chapters.*,
-			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.complete AS title_complete, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
+			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
 			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
@@ -70,7 +70,7 @@ class Tracker_Model extends CI_Model {
 						'latest_chapter'  => $row->latest_chapter,
 						'current_chapter' => $row->current_chapter,
 						'last_updated'    => $row->title_last_updated,
-						'active'          => ($row->site_status == 'disabled' || $row->title_complete == 'Y' || $row->title_active == 1)
+						'active'          => ($row->site_status == 'disabled' || $row->title_status > 0 || $row->title_active == 1) //CHECK: Is this reversed??
 					],
 					'site_data' => [
 						'id'         => $row->site_id,
@@ -167,7 +167,7 @@ class Tracker_Model extends CI_Model {
 	}
 
 	public function getTitleID(string $titleURL, int $siteID) {
-		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.complete, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
+		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.status, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 		                  ->where('tracker_titles.title_url', $titleURL)
@@ -178,7 +178,7 @@ class Tracker_Model extends CI_Model {
 			$id = (int) $query->row('id');
 
 			//This updates inactive series if they are newly added, as noted in https://github.com/DakuTree/manga-tracker/issues/5#issuecomment-247480804
-			if(((int) $query->row('active')) === 0 && $query->row('complete') === 'N') {
+			if(((int) $query->row('active')) === 0 && $query->row('status') === 0) {
 				$titleData = $this->sites->{$query->row('site_class')}->getTitleData($query->row('title_url'));
 				if(!is_null($titleData['latest_chapter'])) {
 					if($this->updateTitleById((int) $id, $titleData['latest_chapter'])) {
@@ -346,8 +346,9 @@ class Tracker_Model extends CI_Model {
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
 			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
-			->where('(`complete` = "N" AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
-			->or_where('(`complete` = "Y" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			->where('(`status` = 0 AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
+			//FIXME: Account for different status numbers.
+			->or_where('(`status` > 0 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
 			->group_by('tracker_titles.id')
 			->having('timestamp IS NOT NULL')
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')

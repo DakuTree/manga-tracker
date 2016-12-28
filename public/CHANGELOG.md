@@ -5,6 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.14] - 2016-12-28
+### Added
+- `[Backend]` Autocompletion for CI_Migration.
+
+### Changed
+- `[Backend]` tracker_titles now uses a status column instead of complete.
+
+### Fixed
+- `[Backend]` Migrations not properly adding keys to existing tables (SEE: https://github.com/bcit-ci/CodeIgniter/issues/1729)
+
 ## [1.4.13] - 2016-12-26
 ### Fixed
 - `[Backend]` Only set parseTitleDataDOM vars when we know $content is array.
