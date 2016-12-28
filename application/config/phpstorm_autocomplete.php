@@ -47,7 +47,7 @@
  * @property CI_Utf8             $utf8                                Provides support for UTF-8 environments
  *
  * @property MY_Controller   $my_controller
- * @property Auth_Controller $auth_controlerr
+ * @property Auth_Controller $auth_controller
  *
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
@@ -111,7 +111,7 @@ class CI_Controller {}
  * @property CI_Utf8             $utf8                                Provides support for UTF-8 environments
  *
  * @property MY_Controller      $my_controller
- * @property Auth_Controller    $auth_controlerr
+ * @property Auth_Controller    $auth_controller
  *
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
@@ -176,7 +176,7 @@ class CI_Model {}
  * @property CI_Utf8             $utf8                                Provides support for UTF-8 environments
  *
  * @property MY_Controller   $my_controller
- * @property Auth_Controller $auth_controlerr
+ * @property Auth_Controller $auth_controller
  *
  * @property Bcrypt             $bcrypt
  * @property Ion_auth           $ion_auth1
