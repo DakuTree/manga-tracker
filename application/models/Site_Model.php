@@ -455,7 +455,11 @@ class DynastyScans extends Site_Model {
 					}
 
 					$chapterURLSegments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
-					$titleData['latest_chapter'] = substr($chapterURLSegments[2], strlen($title_parts[0])+1);
+					if (strpos($chapterURLSegments[2], $title_parts[0]) !== false) {
+						$titleData['latest_chapter'] = substr($chapterURLSegments[2], strlen($title_parts[0]) + 1);
+					} else {
+						$titleData['latest_chapter'] = $chapterURLSegments[2];
+					}
 
 					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(str_replace("'", '', substr((string) $data['nodes_latest']->textContent, 9))));
 				}

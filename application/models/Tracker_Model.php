@@ -335,6 +335,7 @@ class Tracker_Model extends CI_Model {
 				tracker_titles.id,
 				tracker_titles.title,
 				tracker_titles.title_url,
+				tracker_titles.status,
 				tracker_sites.site,
 				tracker_sites.site_class,
 				tracker_sites.status,
@@ -349,9 +350,9 @@ class Tracker_Model extends CI_Model {
 			->where('tracker_sites.status', 'enabled')
 			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
 			//Check if title is marked as on-going, and update if latest_chapter isn't set or hasn't updated within last 12 hours
-			->where('(`status` = 0 AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
+			->where('(tracker_titles.status = 0 AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
 			//Check if title is marked as complete, and update if it hasn't updated in the last week.
-			->or_where('(`status` = 1 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			->or_where('(tracker_titles.status = 1 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 			->group_by('tracker_titles.id')
 			->having('timestamp IS NOT NULL')
@@ -363,7 +364,7 @@ class Tracker_Model extends CI_Model {
 			foreach ($query->result() as $row) {
 				print "> {$row->title} <{$row->site_class}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
-				if(!is_null($titleData['latest_chapter'])) {
+				if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
 					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
 					//       Should we even use this? Y/N
 					if($this->updateTitleById((int) $row->id, $titleData['latest_chapter'])) {
