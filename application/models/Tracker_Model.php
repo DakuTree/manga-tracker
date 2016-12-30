@@ -168,7 +168,7 @@ class Tracker_Model extends CI_Model {
 		return $siteData ?? FALSE;
 	}
 
-	public function getTitleID(string $titleURL, int $siteID) {
+	public function getTitleID(string $titleURL, int $siteID, bool $create = TRUE) {
 		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.status, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
@@ -198,7 +198,7 @@ class Tracker_Model extends CI_Model {
 			$titleID = $id;
 		} else {
 			//TODO: Check if title is valid URL!
-			$titleID = $this->addTitle($titleURL, $siteID);
+			if($create) $titleID = $this->addTitle($titleURL, $siteID);
 		}
 		if(!$titleID) $titleID = 0;
 

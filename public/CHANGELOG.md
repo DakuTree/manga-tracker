@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.16] - 2016-12-30
+### Added
+- `[Backend]` getTitleID now has a $create param (defaults to TRUE)
+
 ## [1.4.15] - 2016-12-29
 ### Fixed
 - Fixed updating. (Broke due to ambiguous column name & was also being halted due to DynastyScans returning BOOL for latest_chapter)
