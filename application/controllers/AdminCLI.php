@@ -33,7 +33,21 @@ class AdminCLI extends CLI_Controller {
 		$this->Tracker->updateLatestChapters();
 	}
 
+	/**
+	 * Used to check for, and update titles with new chapters from a site following list.
+	 * Called via: public/index.php admin/update_titles_custom
+	 *
+	 * This is called via a cron job every hour.
+	 * Titles will always be updated if they can be. For more info see: https://github.com/DakuTree/manga-tracker/issues/78
+	 * FIXME: The entire implementation of this is an utter mess.
+	 **/
+	public function updateTitlesCustom() {
+		$this->Tracker->updateCustom();
+	}
+
 	public function test() {
-		print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
+		//print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
+		//$this->Tracker->sites->{'Batoto'}->getTitleData('718:--:English', TRUE);
+		$this->Tracker->sites->{'Batoto'}->doCustomUpdate();
 	}
 }

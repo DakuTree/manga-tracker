@@ -384,6 +384,35 @@ class Tracker_Model extends CI_Model {
 		}
 	}
 
+	public function updateCustom() {
+		$sites = $this->getSites();
+		foreach ($sites as $site) {
+			if($titleDataList = $this->sites->{$site['site_class']}->doCustomUpdate()) {
+				foreach ($titleDataList as $titleURL => $titleData) {
+					print "> {$titleData['title']} <{$site['site_class']}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
+					if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
+						if($titleID = $this->getTitleID($titleURL, (int) $site['id'], FALSE)) {
+							if($this->updateTitleById((int) $titleID, $titleData['latest_chapter'])) {
+								//Make sure last_checked is always updated on successful run.
+								//CHECK: Is there a reason we aren't just doing this in updateTitleById?
+								$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+								         ->where('id', $titleID)
+								         ->update('tracker_titles');
+
+								print " - ({$titleData['latest_chapter']})\n";
+							}
+						} else {
+							log_message('error', "{$titleData['title']} || Title does not exist in DB??");
+						}
+					} else {
+						log_message('error', "{$titleData['title']} failed to custom update successfully");
+						print " - FAILED TO PARSE\n";
+					}
+				}
+			}
+		}
+	}
+
 	public function exportTrackerFromUserID(int $userID) {
 		$query = $this->db
 			->select('tracker_chapters.current_chapter,
@@ -495,7 +524,6 @@ class Tracker_Model extends CI_Model {
 
 		return (bool) $success;
 	}
-
 
 	public function updateTagsByID(int $userID, int $chapterID, string $tag_string) : bool {
 		$success = FALSE;
@@ -624,6 +652,15 @@ class Tracker_Model extends CI_Model {
 		}
 		return $arr;
 
+	}
+
+	public function getSites() : array {
+		$query = $this->db->select('*')
+		                  ->from('tracker_sites')
+		                  ->where('status', 'enabled')
+		                  ->get();
+
+		return $query->result_array();
 	}
 
 	public function getUsedCategories(int $userID) : array {
