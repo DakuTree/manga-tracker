@@ -312,7 +312,7 @@ class Tracker_Model extends CI_Model {
 		                  ->where('id', $siteID)
 		                  ->get();
 
-		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL);
+		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL, TRUE);
 
 		//FIXME: getTitleData can fail, which will in turn cause the below to fail aswell, we should try and account for that
 		if($titleData) {

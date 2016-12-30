@@ -7,8 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.4.16] - 2016-12-30
 ### Added
-- `[Backend]` getTitleID now has a $create param (defaults to TRUE)
+- `[Backend]` getTitleID now has a $create param (defaults to TRUE), which can be used to stop creating a title if it doesn't exist.
 - `[Backend]` get_content can now be sent as POST (with fields).
+- `[Backend]` getTitleData now has a $firstGet param (defaults to FALSE). This can be used if you want to call certain things only on the first run.
 
 ## [1.4.15] - 2016-12-29
 ### Fixed

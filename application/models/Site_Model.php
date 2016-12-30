@@ -16,7 +16,7 @@ abstract class Site_Model extends CI_Model {
 	abstract public function getChapterData(string $title_url, string $chapter) : array;
 
 	//TODO: When ci-phpunit-test supports PHP Parser 3.x, add " : ?array"
-	abstract public function getTitleData(string $title_url);
+	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE);
 
 	public function isValidTitleURL(string $title_url) : bool {
 		$success = (bool) preg_match($this->titleFormat, $title_url);
@@ -231,7 +231,7 @@ class MangaFox extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -274,7 +274,7 @@ class MangaHere extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -331,7 +331,7 @@ class Batoto extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$title_parts = explode(':--:', $title_url);
@@ -434,7 +434,7 @@ class DynastyScans extends Site_Model {
 		return $chapterData;
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -513,7 +513,7 @@ class MangaPanda extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -555,7 +555,7 @@ class MangaStream extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -617,7 +617,7 @@ class WebToons extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		//FIXME: We don't use parseTitleDOM here due to using rss. Should probably have an alternate method for XML parsing.
@@ -677,7 +677,7 @@ class KissManga extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		//Check if cookiejar is a day old (so we can know if something went wrong)
@@ -751,7 +751,7 @@ class GameOfScanlation extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -794,7 +794,7 @@ class MangaCow extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
@@ -842,7 +842,7 @@ class KireiCake extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
@@ -866,7 +866,7 @@ class SeaOtterScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
@@ -890,7 +890,7 @@ class HelveticaScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
@@ -914,7 +914,7 @@ class SenseScans extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
@@ -938,7 +938,7 @@ class JaiminisBox extends Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
