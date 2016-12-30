@@ -29,7 +29,7 @@ abstract class Site_Model extends CI_Model {
 		return $success;
 	}
 
-	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE) {
+	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
@@ -48,6 +48,12 @@ abstract class Site_Model extends CI_Model {
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
 
 		curl_setopt($ch, CURLOPT_URL, $url);
+
+		if($isPost) {
+			curl_setopt($ch,CURLOPT_POST, count($postFields));
+			curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($postFields));
+		}
+
 		$response = curl_exec($ch);
 		if($response === FALSE) {
 			log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
