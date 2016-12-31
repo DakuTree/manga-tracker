@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.17] - 2016-12-31
+### Added
+- Mangafox now auto-bookmarks series when they are added (No updating yet!)
+
 ## [1.4.16] - 2016-12-30
 ### Added
 - `[Backend]` getTitleID now has a $create param (defaults to TRUE), which can be used to stop creating a title if it doesn't exist.

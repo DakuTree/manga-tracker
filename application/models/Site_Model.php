@@ -255,9 +255,36 @@ class MangaFox extends Site_Model {
 			$chapterURLSegments = explode('/', $link);
 			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
+
+			if($firstGet) {
+				$this->doCustomFollow($content['body']);
+			}
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+
+	//FIXME: This entire thing feels like an awful implementation....BUT IT WORKS FOR NOW.
+	public function doCustomFollow(string $data = "", array $extra = []) {
+		preg_match('/var sid=(?<id>[0-9]+);/', $data, $matches);
+
+		$formData = [
+			'action' => 'add',
+			'sid'    => $matches['id']
+		];
+
+		$cookies = [
+			"mfvb_userid={$this->config->item('mangafox_userid')}",
+			"mfvb_password={$this->config->item('mangafox_password')}",
+		    "bmsort=last_chapter"
+		];
+		$content = $this->get_content('http://mangafox.me/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
+
+		return is_array($content) && in_array('status_code', $content) && $content['status_code'] === 200;
+	}
+	public function doCustomUpdate() {
+		//http://mangafox.me/bookmark/?sort=last_chapter
 	}
 }
 
