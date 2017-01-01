@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.18] - 2017-01-01
+### Changed
+- Updated footer copyright note to 2017.
+
 ## [1.4.17] - 2016-12-31
 ### Added
 - Mangafox now auto-bookmarks series when they are added (No updating yet!)
