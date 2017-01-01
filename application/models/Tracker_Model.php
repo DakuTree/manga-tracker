@@ -402,12 +402,15 @@ class Tracker_Model extends CI_Model {
 									         ->update('tracker_titles');
 
 									print " - ({$titleData['latest_chapter']})\n";
+								} else {
+									print " - Title doesn't exist? ($titleID)\n";
 								}
 							} else {
 								print " - Failed Check.\n";
 							}
 						} else {
 							log_message('error', "{$titleData['title']} || Title does not exist in DB??");
+							print " - Possibly diff language than in DB? ($titleURL)\n";
 						}
 					} else {
 						log_message('error', "{$titleData['title']} failed to custom update successfully");
