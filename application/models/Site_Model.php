@@ -448,6 +448,8 @@ class Batoto extends Site_Model {
 		return is_array($content) && in_array('status_code', $content) && $content['status_code'] === 200;
 	}
 	public function doCustomUpdate() {
+		return FALSE; /* FIXME: Bato.to is disabled for custom updates until we can fix https://github.com/DakuTree/manga-tracker/issues/78#issuecomment-269833624 */
+
 		$titleDataList = [];
 
 		$cookies = [
