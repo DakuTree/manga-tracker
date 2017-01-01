@@ -178,9 +178,7 @@ abstract class Site_Model extends CI_Model {
 
 	public function doCustomFollow(string $data = "", array $extra = []) {}
 	public function doCustomUpdate() {}
-	public function doCustomCheck(string $oldChapter, string $newChapter) {
-		return TRUE;
-	}
+	public function doCustomCheck(string $oldChapter, string $newChapter) {}
 }
 class Sites_Model extends CI_Model {
 	//FIXME: Is it possible to automatically generate this in some way or another?
