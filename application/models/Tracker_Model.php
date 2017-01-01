@@ -391,15 +391,20 @@ class Tracker_Model extends CI_Model {
 				foreach ($titleDataList as $titleURL => $titleData) {
 					print "> {$titleData['title']} <{$site['site_class']}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 					if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
-						if($titleID = $this->getTitleID($titleURL, (int) $site['id'], FALSE)) {
-							if($this->updateTitleById((int) $titleID, $titleData['latest_chapter'])) {
-								//Make sure last_checked is always updated on successful run.
-								//CHECK: Is there a reason we aren't just doing this in updateTitleById?
-								$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-								         ->where('id', $titleID)
-								         ->update('tracker_titles');
+						if($dbTitleData = $this->getTitleID($titleURL, (int) $site['id'], FALSE, TRUE)) {
+							if($this->sites->{$site['site_class']}->doCustomCheck($dbTitleData['latest_chapter'], $titleData['latest_chapter'])) {
+								$titleID = $dbTitleData['id'];
+								if($this->updateTitleById((int) $titleID, $titleData['latest_chapter'])) {
+									//Make sure last_checked is always updated on successful run.
+									//CHECK: Is there a reason we aren't just doing this in updateTitleById?
+									$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+									         ->where('id', $titleID)
+									         ->update('tracker_titles');
 
-								print " - ({$titleData['latest_chapter']})\n";
+									print " - ({$titleData['latest_chapter']})\n";
+								}
+							} else {
+								print " - Failed Check.\n";
 							}
 						} else {
 							log_message('error', "{$titleData['title']} || Title does not exist in DB??");
