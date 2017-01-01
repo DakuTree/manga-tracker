@@ -1,3 +1,7 @@
+<div class="alert alert-info" role="alert">
+	<strong>Update (2017/01/01):</strong> Happy New Year! MangaFox series are now updated every hour! (Down from 12-18hours)
+</div>
+
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">
 	Some of the series in your list have been marked as inactive and not updated due to having no active users tracking it.<br>

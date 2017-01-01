@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` option for getTitleID to return data
 -- This is bad code, but I'm planning on doing a massive rewrite of the entire Tracker_Model sometime soon.
 - `[Backend]` doCustomCheck function to validate if it's OK to update.
+- Added working custom updater for MangaFox! This pushes MangaFox updates to hourly! (From the prior 12hr~ limit)
 
 ### Changed
 - Updated footer copyright note to 2017.
