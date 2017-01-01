@@ -168,8 +168,8 @@ class Tracker_Model extends CI_Model {
 		return $siteData ?? FALSE;
 	}
 
-	public function getTitleID(string $titleURL, int $siteID, bool $create = TRUE) {
-		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.status, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
+	public function getTitleID(string $titleURL, int $siteID, bool $create = TRUE, bool $returnData = FALSE) {
+		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.status, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 		                  ->where('tracker_titles.title_url', $titleURL)
@@ -200,9 +200,9 @@ class Tracker_Model extends CI_Model {
 			//TODO: Check if title is valid URL!
 			if($create) $titleID = $this->addTitle($titleURL, $siteID);
 		}
-		if(!$titleID) $titleID = 0;
+		if(!isset($titleID) || !$titleID) $titleID = 0;
 
-		return $titleID;
+		return ($returnData && $titleID !== 0 ? $query->row_array() : $titleID);
 	}
 
 	public function updateTracker(int $userID, string $site, string $title, string $chapter) : bool {

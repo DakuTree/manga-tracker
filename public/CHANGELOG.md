@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.4.18] - 2017-01-01
+### Added
+- `[Backend]` option for getTitleID to return data
+-- This is bad code, but I'm planning on doing a massive rewrite of the entire Tracker_Model sometime soon.
+
 ### Changed
 - Updated footer copyright note to 2017.
 
