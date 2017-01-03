@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Bug Report page now also points user to posting issue on Github as alternative.
 
+### Changed
+- `[Backend]` Separated AND/OR WHERE SQL into multiple where/or_where function calls in updateLatestChapters.
 ## [1.4.18] - 2017-01-01
 ### Added
 - `[Backend]` option for getTitleID to return data

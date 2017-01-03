@@ -349,10 +349,16 @@ class Tracker_Model extends CI_Model {
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
 			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
-			//Check if title is marked as on-going, and update if latest_chapter isn't set or hasn't updated within last 12 hours
-			->where('(tracker_titles.status = 0 AND (`latest_chapter` = NULL OR `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE) //TODO: Each title should have specific interval time?
-			//Check if title is marked as complete, and update if it hasn't updated in the last week.
-			->or_where('(tracker_titles.status = 1 AND `last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			//Check if title is marked as on-going...
+			->where('(tracker_titles.status = 0', NULL, FALSE) //TODO: Each title should have specific interval time?
+				//Then check if it's NULL (only occurs for new series)
+				->where('(`latest_chapter` = NULL', NULL, FALSE)
+				//Or if it hasn't updated within the past 12 hours.
+				->or_where('`last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE)
+			//Check if title is marked as complete...
+			->or_where('(tracker_titles.status = 1', NULL, FALSE)
+				//Then check if it hasn't updated within the past week
+				->where('`last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 			->group_by('tracker_titles.id')
 			->having('timestamp IS NOT NULL')
