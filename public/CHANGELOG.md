@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `[Backend]` Separated AND/OR WHERE SQL into multiple where/or_where function calls in updateLatestChapters.
+- MangaFox title pages are now only checked once every 36-40~ hours. This is due to us now having hourly updates due to checking the following page instead.
+-- This takes us from a __minimum__ of 5544-7392 requests to MangaFox a week to 2217-2464. An improvement of around 3327-4928 requests!
+-- Still checking both as I'm not too sure how accurate the following list will be in the long run. The title pages act as kind of a confirmation that the chapter is valid.
+
 ## [1.4.18] - 2017-01-01
 ### Added
 - `[Backend]` option for getTitleID to return data

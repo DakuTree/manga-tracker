@@ -353,8 +353,12 @@ class Tracker_Model extends CI_Model {
 			->where('(tracker_titles.status = 0', NULL, FALSE) //TODO: Each title should have specific interval time?
 				//Then check if it's NULL (only occurs for new series)
 				->where('(`latest_chapter` = NULL', NULL, FALSE)
-				//Or if it hasn't updated within the past 12 hours.
-				->or_where('`last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR)))', NULL, FALSE)
+				//Or if it hasn't updated within the past 12 hours AND isn't MangaFox
+				//FIXME: We <really> shouldn't have to specify specific sites here. A DB column would probably be better.
+				->or_where('(NOT tracker_sites.site_class = "MangaFox" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR))', NULL, FALSE)
+				//Or if it hasn't updated within the past 12 hours AND isn't MangaFox
+				//FIXME: See above.
+				->or_where('`last_checked` < DATE_SUB(NOW(), INTERVAL 36 HOUR)))', NULL, FALSE)
 			//Check if title is marked as complete...
 			->or_where('(tracker_titles.status = 1', NULL, FALSE)
 				//Then check if it hasn't updated within the past week
