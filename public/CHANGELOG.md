@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.18] - 2017-01-03
+### Added
+- Bug Report page now also points user to posting issue on Github as alternative.
+
 ## [1.4.18] - 2017-01-01
 ### Added
 - `[Backend]` option for getTitleID to return data
