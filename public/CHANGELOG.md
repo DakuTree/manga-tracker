@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - MangaFox chapter URLs now point to /1.html, instead of just /. Not specifying a page auto-points to comments which doesn't work well on mobile.
+- `[Backend]` Removed a bunch of needless recursion from the userscript.
+- `[Backend]` Userscript now uses jQuery.ready for all sites.
+- `[Backend]` Did a bunch of inspection recommendations for the userscript.
 
 ### Fixed
 - MangaFox now loads pages properly again. Had to add a .6s delay between loading to makes things work nicely again.

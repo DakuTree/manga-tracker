@@ -23,7 +23,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-01-06
-// @version      1.2.18
+// @version      1.2.19
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -47,7 +47,7 @@ Setup events for topbar favourites, stop tracking. Unsure how exactly we should 
 $.fn.reverseObj = function() {
 	return $(this.get().reverse());
 };
-function getCookie(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2];}
+function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
 
 /***********************************************************************************************************/
 
@@ -180,7 +180,7 @@ let base_site = {
 			`);
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
-			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent == v) {o.attr('selected', '1');} return o.get();});
+			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
 
 			let topbar = $('<div/>', {id: 'TrackerBar'}).append(
 				$('<div/>', {id: 'TrackerBarIn'}).append(
@@ -332,7 +332,7 @@ let base_site = {
 					console.log(useDelay);
 					setTimeout(function() {
 						$.ajax({
-							url    : _this.viewerChapterURLFormat.replace('%pageN%', pageN),
+							url    : _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString()),
 							type   : 'GET',
 							page   : pageN,
 							// async: useASync,
@@ -371,6 +371,7 @@ let base_site = {
 			//Auto-track chapter if enabled.
 
 			$(window).on("load", function() {
+				/** @namespace config.auto_track */
 				if(config.auto_track) {
 					_this.trackChapter();
 				}
@@ -537,10 +538,10 @@ let sites = {
 
 					$("#chapters > .chlist > li > div > a + * > a", div).reverseObj().each(function() {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
-						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'), //Remove trailing page number
-						    realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
+						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						_this.chapterList[url] = realChapterTitle;
+						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
+						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
 					callback();
@@ -623,10 +624,10 @@ let sites = {
 
 					$('li > span.left > a', div).reverseObj().each(function() {
 						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
-						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'), //Remove trailing page number
-						    realChapterTitle = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2').replace(/^Vol\. /, '') + (chapterTitle !=='' ? ': '+chapterTitle : '');
+						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						_this.chapterList[url] = realChapterTitle;
+						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
+						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
 					callback();
@@ -665,7 +666,8 @@ let sites = {
 			let reader          = $('#reader');
 
 			this.page_count     = $('#page_select:first').find('> option').length;
-			this.is_web_toon    = ($('a[href$=_1_t]').length ? ($('a[href$=_1_t]').text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
+			let web_toon_check  = $('a[href$=_1_t]');
+			this.is_web_toon    = ($(web_toon_check).length ? ($(web_toon_check).text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2] + (chapterNParts[3] ? '-'+chapterNParts[3] : '');
@@ -679,7 +681,7 @@ let sites = {
 
 			let chapterListOptions  = $('select[name=chapter_select]:first > option');
 			this.chapterListCurrent = this.chapter_url;
-			if(this.https == 'https') {
+			if(this.https === 'https') {
 				chapterListOptions.each(function(i, e) {
 					$(e).val($(e).val().replace(/^http/, 'https'));
 				});
@@ -718,10 +720,12 @@ let sites = {
 
 	'dynasty-scans.com' : extendSite({
 		setObjVars : function() {
-			this.is_one_shot = !$('#chapter-title > b > a').length;
+			let title_ele = $('#chapter-title').find('> b > a');
+
+			this.is_one_shot = !title_ele.length;
 
 			if(!this.is_one_shot) {
-				this.title_url   = $('#chapter-title > b > a').attr('href').replace(/.*\/(.*)$/, '$1');
+				this.title_url   = title_ele.attr('href').replace(/.*\/(.*)$/, '$1');
 				this.chapter_url = location.pathname.split(this.title_url + '_').pop(); //There is really no other valid way to get the chapter_url :|
 			} else {
 				this.title_url   = location.pathname.substr(10);
@@ -1199,7 +1203,7 @@ let sites = {
 			$(form).find('input[name=auto_track]').attr('checked', ('auto_track' in config));
 
 			$(form).submit(function(e) {
-				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value == '' ? true : o.value); return m;}, {});
+				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value === '' ? true : o.value); return m;}, {});
 				delete data['csrf_token'];
 				if(config['api-key']) {
 					config = $.extend(config, data);
