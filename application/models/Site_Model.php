@@ -230,7 +230,7 @@ class MangaFox extends Site_Model {
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "http://mangafox.me/manga/{$title_url}/{$chapter}/",
+			'url'    => "http://mangafox.me/manga/{$title_url}/{$chapter}/1.html",
 			'number' => $chapter
 		];
 	}

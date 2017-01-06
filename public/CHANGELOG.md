@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.4.20] - 2017-01-04
+### Changed
+- MangaFox chapter URLs now point to /1.html, instead of just /. Not specifying a page auto-points to comments which doesn't work well on mobile.
+
 ## [1.4.19] - 2017-01-04
 ### Changed
 - Twitter handle on about page/humans.txt now points to @DakuTree.
