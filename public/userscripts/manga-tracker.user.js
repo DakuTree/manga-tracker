@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2016-12-28
-// @version      1.2.15
+// @updated      2017-01-06
+// @version      1.2.16
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -295,9 +295,10 @@ let base_site = {
 		//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
 		//FIXME: Somehow handle the viewer header code here?
 
-		this.preSetupViewer(function(useCustomHeader, useCustomImageList) {
+		this.preSetupViewer(function(useCustomHeader, useCustomImageList, useDelay) {
 			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
+			useDelay           = (typeof useDelay !== 'undefined' ? useDelay : 0);
 
 			GM_addStyle(`
 				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
@@ -321,34 +322,37 @@ let base_site = {
 
 			//Generate the viewer using a loop & AJAX.
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN == 1) {
+				if(pageN === 1) {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
 				} else {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer').find('> .read_img:last'));
 				}
 
 				if(!useCustomImageList) {
-					$.ajax({
-						url: _this.viewerChapterURLFormat.replace('%pageN%', pageN),
-						type: 'GET',
-						page: pageN,
-						//async: false,
-						success: function(data) {
-							let original_image  = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-							let image_container = $('<div/>', {class: 'read_img'}).append(
-								//We want to completely recreate the image element to remove all additional attributes
-								$('<img/>', {src: $(original_image).attr('src')})
-							).append(
-								//Add page number
-								$('<div/>', {class: 'pageNumber'}).append(
-									$('<div/>', {class: 'number', text: this.page})
-								)
-							);
+					console.log(useDelay);
+					setTimeout(function() {
+						$.ajax({
+							url    : _this.viewerChapterURLFormat.replace('%pageN%', pageN),
+							type   : 'GET',
+							page   : pageN,
+							// async: useASync,
+							success: function (data) {
+								let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+								let image_container = $('<div/>', {class: 'read_img'}).append(
+									//We want to completely recreate the image element to remove all additional attributes
+									$('<img/>', {src: $(original_image).attr('src')})
+								).append(
+									//Add page number
+									$('<div/>', {class: 'pageNumber'}).append(
+										$('<div/>', {class: 'number', text: this.page})
+									)
+								);
 
-							//Replace the placeholder image_container with the real one
-							$('#page-'+this.page).replaceWith(image_container);
-						}
-					});
+								//Replace the placeholder image_container with the real one
+								$('#page-' + this.page).replaceWith(image_container);
+							}
+						});
+					}, useDelay + (useDelay !== 0 ? (pageN * useDelay) : 0));
 				} else {
 					//FIXME: We should probably split this and the above into a seperate function to avoid code duplication...
 					let image_container = $('<div/>', {class: 'read_img'}).append(
@@ -551,7 +555,7 @@ let sites = {
 		preSetupViewer : function(callback) {
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback();
+			callback(false, false, 600);
 		}
 	}),
 

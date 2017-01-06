@@ -6,8 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.4.20] - 2017-01-04
+### Added
+- `[Backend]` setupViewer now has a useDelay param, which when passed an int will delay page loading by X ms.
+
 ### Changed
 - MangaFox chapter URLs now point to /1.html, instead of just /. Not specifying a page auto-points to comments which doesn't work well on mobile.
+
+### Fixed
+- MangaFox now loads pages properly again. Had to add a .6s delay between loading to makes things work nicely again.
 
 ## [1.4.19] - 2017-01-04
 ### Changed
