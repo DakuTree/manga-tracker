@@ -23,7 +23,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-01-06
-// @version      1.2.17
+// @version      1.2.18
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -1254,22 +1254,13 @@ console.log(config);
 
 const hostname = location.hostname.replace(/^(?:dev)\./, '');
 if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
-	//Config is loaded, do stuff.
-	if(hostname === 'trackr.moe') {
-		//FF loads document-start at a different time..
-		if(!("InstallTrigger" in window)) {
-			sites[hostname].init();
-		} else {
-			$(function() {
-				sites[hostname].init();
-			});
-		}
-	} else if(sites[hostname]) {
-		if(main_site === 'https://dev.trackr.moe') { config['api-key'] = config['api-key-dev']; } //TEMP
-		$(function() {
-			sites[hostname].init();
-		});
-	}
+	//Config exists OR site is trackr.moe.
+	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') config['api-key'] = config['api-key-dev']; //Use dev API-key if using dev site
+
+	//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
+	$(function() {
+		sites[hostname].init();
+	});
 } else {
 	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 }
