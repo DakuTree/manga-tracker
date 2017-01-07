@@ -5,7 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
-## [1.4.20] - 2017-01-04
+## [1.4.21] - 2017-01-07
+### Changed
+- `[Backend]` setupViewerContainer function to remove more duplication.
+- `[Backend]` MangaPanda now auto-fails after 25 attempts of trying to grab chapter list.
+
+## [1.4.20] - 2017-01-06
 ### Added
 - `[Backend]` setupViewer now has a useDelay param, which when passed an int will delay page loading by X ms.
 
@@ -14,7 +19,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Removed a bunch of needless recursion from the userscript.
 - `[Backend]` Userscript now uses jQuery.ready for all sites.
 - `[Backend]` Did a bunch of inspection recommendations for the userscript.
-- `[Backend]` setupViewerContainer function to remove more duplication.
 
 ### Fixed
 - MangaFox now loads pages properly again. Had to add a .6s delay between loading to makes things work nicely again.

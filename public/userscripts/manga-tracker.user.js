@@ -23,7 +23,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-01-07
-// @version      1.2.20
+// @version      1.2.21
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -436,7 +436,7 @@ let base_site = {
 				}
 			});
 		} else {
-			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.
+			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 		}
 	},
 
@@ -678,7 +678,7 @@ let sites = {
 					$(e).val($(e).val().replace(/^http/, 'https'));
 				});
 			}
-			this.chapterList        = generateChapterList(chapterListOptions.reverseObj(), 'value');
+			this.chapterList            = generateChapterList(chapterListOptions.reverseObj(), 'value');
 
 			this.viewerChapterName      = this.chapter_number;
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
@@ -818,7 +818,7 @@ let sites = {
 			let _this = this;
 
 			//MangaPanda is tricky here. The chapter list is loaded via AJAX, and not a <script> tag. As far as I can tell, we can't watch for this to load without watching the actual element.
-			//TODO: This should auto-fail after x amount of tries.
+			let attempts = 0;
 			let checkExist = setInterval(function() {
 				let option     = $('#topchapter').find('> #selectmanga > select > option');
 				if(option.length) {
@@ -827,6 +827,12 @@ let sites = {
 					_this.chapterList = generateChapterList(option, 'value');
 					callback();
 				}
+
+				if(attempts === 25) {
+					alert('ERROR: Having issues loading the chapter list.\nTry reloading the page.');
+					clearInterval(checkExist);
+				}
+				attempts++;
 			}, 500);
 		},
 		postSetupTopBar : function() {
@@ -958,7 +964,7 @@ let sites = {
 			callback(false, true);
 		},
 
-		//FIXME: TEMP SOLUTION
+		//FIXME: KissManga banned us. SEE: https://github.com/DakuTree/manga-tracker/issues/64
 		trackChapter : function() {
 			alert("KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.");
 		}
@@ -1244,10 +1250,8 @@ let sites = {
 
 /********************** SCRIPT *********************/
 const main_site = 'https://trackr.moe';
-//FIXME: We should point to dev if requested
-
-let config = JSON.parse(GM_getValue('config') || '{}');
-console.log(config);
+let   config    = JSON.parse(GM_getValue('config') || '{}');
+console.log(config); //This is useful for debugging.
 
 const hostname = location.hostname.replace(/^(?:dev)\./, '');
 if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
