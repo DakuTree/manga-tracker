@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Removed a bunch of needless recursion from the userscript.
 - `[Backend]` Userscript now uses jQuery.ready for all sites.
 - `[Backend]` Did a bunch of inspection recommendations for the userscript.
+- `[Backend]` setupViewerContainer function to remove more duplication.
 
 ### Fixed
 - MangaFox now loads pages properly again. Had to add a .6s delay between loading to makes things work nicely again.

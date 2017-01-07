@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-01-06
-// @version      1.2.19
+// @updated      2017-01-07
+// @version      1.2.20
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -285,7 +285,7 @@ let base_site = {
 				});
 			}
 		} else {
-			alert('API Key isn\'t set.'); //TODO: This should give the user more info on how to fix.
+			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 		}
 	},
 	setupViewer : function() {
@@ -338,38 +338,17 @@ let base_site = {
 							// async: useASync,
 							success: function (data) {
 								let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-								let image_container = $('<div/>', {class: 'read_img'}).append(
-									//We want to completely recreate the image element to remove all additional attributes
-									$('<img/>', {src: $(original_image).attr('src')})
-								).append(
-									//Add page number
-									$('<div/>', {class: 'pageNumber'}).append(
-										$('<div/>', {class: 'number', text: this.page})
-									)
-								);
 
-								//Replace the placeholder image_container with the real one
-								$('#page-' + this.page).replaceWith(image_container);
+								_this.setupViewerContainer($(original_image).attr('src'), this.page);
 							}
 						});
 					}, useDelay + (useDelay !== 0 ? (pageN * useDelay) : 0));
 				} else {
-					//FIXME: We should probably split this and the above into a seperate function to avoid code duplication...
-					let image_container = $('<div/>', {class: 'read_img'}).append(
-						//We want to completely recreate the image element to remove all additional attributes
-						$('<img/>', {src: _this.viewerCustomImageList[pageN-1]})).append(
-						//Add page number
-						$('<div/>', {class: 'pageNumber'}).append(
-							$('<div/>', {class: 'number', text: pageN}))
-					);
-
-					//Replace the placeholder image_container with the real one
-					$('#page-'+pageN).replaceWith(image_container);
+					_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
 				}
 			}
 
 			//Auto-track chapter if enabled.
-
 			$(window).on("load", function() {
 				/** @namespace config.auto_track */
 				if(config.auto_track) {
@@ -379,6 +358,19 @@ let base_site = {
 
 			_this.postSetupViewer();
 		});
+	},
+	setupViewerContainer : function(imgURL, pageN) {
+		let image_container = $('<div/>', {class: 'read_img'}).append(
+			//We want to completely recreate the image element to remove all additional attributes
+			$('<img/>', {src: imgURL})
+		).append(
+			//Add page number
+			$('<div/>', {class: 'pageNumber'}).append(
+				$('<div/>', {class: 'number', text: pageN}))
+		);
+
+		//Replace the placeholder image_container with the real one
+		$('#page-'+pageN).replaceWith(image_container);
 	},
 
 	reportBug : function() {
