@@ -35,7 +35,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue, config */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue */
 'use strict';
 
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
@@ -1196,7 +1196,8 @@ let sites = {
 
 			$(form).submit(function(e) {
 				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value === '' ? true : o.value); return m;}, {});
-				delete data['csrf_token'];
+				/** @namespace data.csrf_token */
+				delete data.csrf_token;
 				if(config['api-key']) {
 					config = $.extend(config, data);
 					GM_setValue('config', JSON.stringify(data));
