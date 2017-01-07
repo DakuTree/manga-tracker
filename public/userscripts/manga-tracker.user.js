@@ -23,7 +23,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-01-07
-// @version      1.2.21
+// @version      1.2.22
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -1259,9 +1259,11 @@ if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
 	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') config['api-key'] = config['api-key-dev']; //Use dev API-key if using dev site
 
 	//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
-	$(function() {
-		sites[hostname].init();
-	});
+	if(sites[hostname]) {
+		$(function () {
+			sites[hostname].init();
+		});
+	}
 } else {
 	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 }
