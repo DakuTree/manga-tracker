@@ -87,10 +87,10 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				foreach ($titleDataList as $titleURL => $titleData) {
 					print "> {$titleData['title']} <{$site['site_class']}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 					if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
-						if($dbTitleData = $this->title->getID($titleURL, (int) $site['id'], FALSE, TRUE)) {
+						if($dbTitleData = $this->Tracker->title->getID($titleURL, (int) $site['id'], FALSE, TRUE)) {
 							if($this->sites->{$site['site_class']}->doCustomCheck($dbTitleData['latest_chapter'], $titleData['latest_chapter'])) {
 								$titleID = $dbTitleData['id'];
-								if($this->title->updateByID((int) $titleID, $titleData['latest_chapter'])) {
+								if($this->Tracker->title->updateByID((int) $titleID, $titleData['latest_chapter'])) {
 									//Make sure last_checked is always updated on successful run.
 									//CHECK: Is there a reason we aren't just doing this in updateByID?
 									$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)

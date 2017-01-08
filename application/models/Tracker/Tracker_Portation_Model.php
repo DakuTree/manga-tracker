@@ -24,7 +24,7 @@ class Tracker_Portation_Model extends Tracker_Base_Model {
 			if(count($json_keys) === 3 && !array_diff(array('site', 'title_url', 'current_chapter'), $json_keys)) {
 				foreach($categories as $category) {
 					foreach($json[$category] as $row) {
-						$success = $this->list->update($this->User->id, $row['site'], $row['title_url'], $row['current_chapter']);
+						$success = $this->Tracker->list->update($this->User->id, $row['site'], $row['title_url'], $row['current_chapter']);
 						if(!$success) {
 							$status['code']          = 2;
 							$status['failed_rows'][] = $row;
@@ -40,7 +40,7 @@ class Tracker_Portation_Model extends Tracker_Base_Model {
 		return $status;
 	}
 
-	public function exportTrackerFromUserID() {
+	public function export() {
 		$query = $this->db
 			->select('tracker_chapters.current_chapter,
 			          tracker_chapters.category,
