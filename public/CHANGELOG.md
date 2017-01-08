@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta1] 2017-01-08
+### Changed
+- `[Backend]` Massive overhaul of the Tracker_Model. Everything has been split into sub-models that have their own files/classes.
+-- Previously everything was accessible via $this->Tracker->method(), now it's $this->Tracker->module->method().
+-- There will most likely be bugs, which is the reason for the beta1 version tag.
+- `[Backend]`
+
 ## [1.4.21] - 2017-01-07
 ### Changed
 - `[Backend]` setupViewerContainer function to remove more duplication.

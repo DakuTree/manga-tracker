@@ -45,7 +45,7 @@ class Userscript extends AJAX_Controller {
 			if($this->form_validation->run() === TRUE) {
 				$manga = $this->input->post('manga');
 
-				$success = $this->Tracker->updateTracker($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
+				$success = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
 				if($success) {
 					$this->output->set_status_header('200'); //Success!
 				} else {
@@ -75,7 +75,7 @@ class Userscript extends AJAX_Controller {
 			$bug = $this->input->post('bug');
 
 			//Preferably, I'd like to validate this in some way, but it's a bit too easy to bypass
-			$success = $this->Tracker->reportBug($bug['text'], NULL, $bug['url']);
+			$success = $this->Tracker->bug->report($bug['text'], NULL, $bug['url']);
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
 			} else {
@@ -105,7 +105,7 @@ class Userscript extends AJAX_Controller {
 			if($this->form_validation->run() === TRUE) {
 				$manga = $this->input->post('manga');
 
-				$success = $this->Tracker->favouriteChapter($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
+				$success = $this->Tracker->favourites->set($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
 				if($success['bool']) {
 					$this->output->set_status_header('200', $success['status']); //Success!
 				} else {

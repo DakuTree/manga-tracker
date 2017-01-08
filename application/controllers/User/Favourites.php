@@ -11,7 +11,7 @@ class Favourites extends Auth_Controller {
 		$this->header_data['title'] = "Favourites";
 		$this->header_data['page']  = "favourites";
 
-		$favouriteData = $this->Tracker->getFavourites($page);
+		$favouriteData = $this->Tracker->favourites->get($page);
 		$this->body_data['favouriteData'] = $favouriteData['rows'];
 		$this->body_data['currentPage'] = $page;
 		$this->body_data['totalPages']  = $favouriteData['totalPages'];

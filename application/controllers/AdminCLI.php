@@ -30,7 +30,7 @@ class AdminCLI extends CLI_Controller {
 	 * Titles are only checked if they haven't been updated in 16+ hours (unless they are marked as complete, to which they are only checked once a week).
 	 */
 	public function updateTitles() {
-		$this->Tracker->updateLatestChapters();
+		$this->Tracker->admin->updateLatestChapters();
 	}
 
 	/**
@@ -42,12 +42,12 @@ class AdminCLI extends CLI_Controller {
 	 * FIXME: The entire implementation of this is an utter mess.
 	 **/
 	public function updateTitlesCustom() {
-		$this->Tracker->updateCustom();
+		$this->Tracker->admin->updateCustom();
 	}
 
 	public function test() {
 		//print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
-		//$this->Tracker->sites->{'Batoto'}->getTitleData('718:--:English', TRUE);
-		$this->Tracker->sites->{'Batoto'}->doCustomUpdate();
+		$this->Tracker->sites->{'MangaFox'}->getTitleData('one_piece', TRUE);
+		//$this->Tracker->sites->{'Batoto'}->doCustomUpdate();
 	}
 }

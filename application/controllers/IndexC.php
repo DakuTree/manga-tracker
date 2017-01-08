@@ -19,7 +19,7 @@ class IndexC extends User_Controller {
 			$this->header_data['title'] = "Dashboard";
 			$this->header_data['page']  = "dashboard";
 
-			$trackerData                     = $this->Tracker->get_tracker_from_user_id($this->User->id);
+			$trackerData                     = $this->Tracker->list->get();
 			$this->body_data['trackerData']  = $trackerData['series'];
 			$this->body_data['has_inactive'] = $trackerData['has_inactive'];
 

@@ -9,7 +9,7 @@ class Stats extends MY_Controller {
 		$this->header_data['title'] = "Site Stats";
 		$this->header_data['page']  = "stats";
 
-		$this->body_data['stats'] = $this->Tracker->getStats();
+		$this->body_data['stats'] = $this->Tracker->stats->get();
 
 		$this->_render_page("Stats");
 	}

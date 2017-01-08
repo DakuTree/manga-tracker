@@ -30,7 +30,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('chapter', 'Chapter',    'required');
 
 		if($this->form_validation->run() === TRUE) {
-			$success = $this->Tracker->updateTrackerByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
+			$success = $this->Tracker->list->updateByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
 			} else {
@@ -52,7 +52,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('id[]', 'List of IDs', 'required|ctype_digit');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->deleteTrackerByIDList($this->input->post('id[]'));
+			$status = $this->Tracker->list->deleteByIDList($this->input->post('id[]'));
 			switch($status['code']) {
 				case 0:
 					$this->output->set_status_header('200'); //Success!
@@ -80,7 +80,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->importTrackerFromJSON($this->input->post('json'));
+			$status = $this->Tracker->portation->importFromJSON($this->input->post('json'));
 			switch($status['code']) {
 				case 0:
 					$this->output->set_status_header('200'); //Success
@@ -110,7 +110,7 @@ class TrackerInline extends Auth_Controller {
 	 * URL:        /export_list
 	 */
 	public function export() {
-		$trackerData = $this->Tracker->exportTrackerFromUserID($this->userID);
+		$trackerData = $this->Tracker->portation->export();
 		$this->_render_json($trackerData, TRUE);
 	}
 
@@ -126,7 +126,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_contains[none]');
 
 		if($this->form_validation->run() === TRUE) {
-			$success = $this->Tracker->updateTagsByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
+			$success = $this->Tracker->tag->updateByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
 
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
@@ -150,7 +150,7 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('category', 'Category Name', 'required|is_valid_category');
 
 		if($this->form_validation->run() === TRUE) {
-			$status = $this->Tracker->setCategoryByIDList($this->input->post('id[]'), $this->input->post('category'));
+			$status = $this->Tracker->category->setByIDList($this->input->post('id[]'), $this->input->post('category'));
 			switch($status['code']) {
 				case 0:
 					$this->output->set_status_header('200'); //Success!

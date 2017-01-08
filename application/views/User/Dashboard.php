@@ -25,7 +25,7 @@
 		</ul>
 		<div class="pull-right">
 			<div id="update-timer-container">
-				Next update in: <span id="update-timer"><?=$this->Tracker->getNextUpdateTime()?></span>
+				Next update in: <span id="update-timer"><?=$this->Tracker->admin->getNextUpdateTime()?></span>
 				<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Each series is updated at different times, but only once every 14 hours.<br>This is to avoid bombarding the sites with 100s of requests all at once."></i>
 			</div>
 		</div>

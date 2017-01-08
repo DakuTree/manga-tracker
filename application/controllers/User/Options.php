@@ -13,7 +13,7 @@ class Options extends Auth_Controller {
 		$this->header_data['page']  = "options";
 
 		$customCategories = ['custom1' => 'category_custom_1', 'custom2' => 'category_custom_2', 'custom3' => 'category_custom_3'];
-		$usedCategories   = $this->Tracker->getUsedCategories($this->User->id);
+		$usedCategories   = $this->Tracker->category->getUsed($this->User->id);
 
 		//NOTE: The checkbox validation is handled in run()
 		$this->form_validation->set_rules('category_custom_1_text',  'Custom Category 1 Text', 'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
