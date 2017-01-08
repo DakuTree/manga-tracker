@@ -41,7 +41,7 @@
 	<script>$.fn.modal || document.write('<script src="<?=asset_url()?>vendor/js/bootstrap.min.js"><\/script>')</script>
 	<script>
 		$(document).ready(function() {
-			var check = $('#fb-check');
+			let check = $('#fb-check');
 			if(check.css('width') !== '1px' && check.css('height') !== '1px') {
 				console.log(bodyColor);
 				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/bootstrap.min.css">');
@@ -53,7 +53,7 @@
 
 	<script>
 		$(document).ready(function() {
-			var check = $('#fb-check');
+			let check = $('#fb-check');
 			if (check.css('fontFamily') != 'FontAwesome') {
 				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/font-awesome.min.css">');
 			}
@@ -64,7 +64,7 @@
 	<script>window.cookieconsent || document.write('<script src="<?=asset_url()?>vendor/js/cookieconsent.min.js"><\/script>')</script>
 	<script>
 		$(document).ready(function() {
-			var check = $('#fb-check');
+			let check = $('#fb-check');
 			if(check.css('transition') !== 'max-height 1s ease 0s') {
 				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/cookieconsent.min.css">');
 			}
@@ -73,8 +73,8 @@
 	<script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#edeff5","text":"#838391"},"button":{"background":"transparent","text":"#4b81e8","border":"#4b81e8"}}});</script>
 
 	<script>
-		var base_url = "<?=base_url()?>";
-		var page     = "<?=$page?>";
+		const base_url = "<?=base_url()?>";
+		const page     = "<?=$page?>";
 	</script>
 	<script src="<?=asset_url()?>js/compiled.min.js"></script>
 
