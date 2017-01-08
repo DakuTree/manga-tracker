@@ -43,7 +43,6 @@
 		$(document).ready(function() {
 			let check = $('#fb-check');
 			if(check.css('width') !== '1px' && check.css('height') !== '1px') {
-				console.log(bodyColor);
 				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/bootstrap.min.css">');
 			}
 		});
@@ -54,7 +53,7 @@
 	<script>
 		$(document).ready(function() {
 			let check = $('#fb-check');
-			if (check.css('fontFamily') != 'FontAwesome') {
+			if (check.css('fontFamily') !== 'FontAwesome') {
 				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/font-awesome.min.css">');
 			}
 		});
