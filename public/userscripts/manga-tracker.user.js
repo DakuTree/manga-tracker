@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-01-07
-// @version      1.2.22
+// @updated      2017-01-08
+// @version      1.2.23
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -548,7 +548,7 @@ let sites = {
 		preSetupViewer : function(callback) {
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback(false, false, 600);
+			callback(false, false, 750);
 		}
 	}),
 
