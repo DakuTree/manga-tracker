@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Disabled MonkeyPatching due to it causing all tests to be slow. This also stops site failure testing sadly.
 -- Going to fix this so we don't need MonkeyPatching at later date.
 - Increased MangaFox page delay up to .75s from .6s due to 503s still appearing..
+- Temp-disabled favourite history. See #80.
 
 ## [1.4.21] - 2017-01-07
 ### Changed

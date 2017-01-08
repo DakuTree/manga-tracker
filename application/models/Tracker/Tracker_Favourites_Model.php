@@ -70,17 +70,16 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 				return $success;
 			}
 
-			//We need the series to be tracked
-			$idCQuery = $this->db->select('id')
-			                     ->where('user_id', $this->User->id)
-			                     ->where('title_id', $titleID)
-			                     ->get('tracker_chapters');
-			if($idCQuery->num_rows() > 0) {
-				$idCQueryRow = $idCQuery->row();
-
+			////We need the series to be tracked
+			//$idCQuery = $this->db->select('id')
+			//                     ->where('user_id', $this->User->id)
+			//                     ->where('title_id', $titleID)
+			//                     ->get('tracker_chapters');
+			//if($idCQuery->num_rows() > 0) {
 				//Check if it is already favourited
 				$idFQuery = $this->db->select('id')
-				                     ->where('chapter_id', $idCQueryRow->id)
+				                     ->where('user_id', $this->User->id)
+				                     ->where('title_id', $titleID)
 				                     ->where('chapter', $chapter)
 				                     ->get('tracker_favourites');
 				if($idFQuery->num_rows() > 0) {
@@ -95,12 +94,13 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 							'status' => 'Unfavourited',
 							'bool'   => TRUE
 						);
-						$this->History->userRemoveFavourite((int) $idCQueryRow->id, $chapter);
+						//$this->History->userRemoveFavourite($chapter_id, $chapter);
 					}
 				} else {
 					//Chapter is not favourited, so add to DB.
 					$isSuccess = (bool) $this->db->insert('tracker_favourites', [
-						'chapter_id'      => $idCQueryRow->id,
+						'user_id'         => $this->User->id,
+						'title_id'        => $titleID,
 						'chapter'         => $chapter,
 						'updated_at'      => date('Y-m-d H:i:s')
 					]);
@@ -110,12 +110,12 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 							'status' => 'Favourited',
 							'bool'   => TRUE
 						);
-						$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);
+						//$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);
 					}
 				}
-			} else {
-				$success['status'] = 'Series needs to be tracked before we can favourite chapters';
-			}
+			//} else {
+			//	$success['status'] = 'Series needs to be tracked before we can favourite chapters';
+			//}
 		}
 		return $success;
 	}
