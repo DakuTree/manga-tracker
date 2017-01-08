@@ -10,7 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `[Backend]` Massive overhaul of the Tracker_Model. Everything has been split into sub-models that have their own files/classes.
 -- Previously everything was accessible via $this->Tracker->method(), now it's $this->Tracker->module->method().
 -- There will most likely be bugs, which is the reason for the beta1 version tag.
-- `[Backend]`
+- `[Backend]` Disabled MonkeyPatching due to it causing all tests to be slow. This also stops site failure testing sadly.
+-- Going to fix this so we don't need MonkeyPatching at later date.
 
 ## [1.4.21] - 2017-01-07
 ### Changed
