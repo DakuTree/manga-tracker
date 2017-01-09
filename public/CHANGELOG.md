@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.5.0-beta2] 2017-01-09
 ### Added
 - Userscript tracking now tries to block accidental double-clicks when trying to track.
+- Userscript now has fallback image if it fails to load the proper one. Clicking this will attempt to grab the image again.
 
 ### Fixed
 - `[Backend]` Favouriting works again.

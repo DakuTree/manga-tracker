@@ -23,19 +23,21 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-01-09
-// @version      1.2.24
+// @version      1.2.25
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
+// @resource     reload https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
+// @grant        GM_getResourceURL
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @run-at       document-start
 // ==/UserScript==
 /* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getValue, GM_setValue */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue */
 'use strict';
 
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
@@ -339,10 +341,10 @@ let base_site = {
 				}
 
 				if(!useCustomImageList) {
-					console.log(useDelay);
 					setTimeout(function() {
+						let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
 						$.ajax({
-							url    : _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString()),
+							url    : url,
 							type   : 'GET',
 							page   : pageN,
 							// async: useASync,
@@ -350,6 +352,9 @@ let base_site = {
 								let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
 
 								_this.setupViewerContainer($(original_image).attr('src'), this.page);
+							},
+							error: function () {
+								_this.setupViewerContainerError(this.page, url);
 							}
 						});
 					}, useDelay + (useDelay !== 0 ? (pageN * useDelay) : 0));
@@ -373,6 +378,36 @@ let base_site = {
 		let image_container = $('<div/>', {class: 'read_img'}).append(
 			//We want to completely recreate the image element to remove all additional attributes
 			$('<img/>', {src: imgURL})
+		).append(
+			//Add page number
+			$('<div/>', {class: 'pageNumber'}).append(
+				$('<div/>', {class: 'number', text: pageN}))
+		);
+
+		//Replace the placeholder image_container with the real one
+		$('#page-'+pageN).replaceWith(image_container);
+	},
+	setupViewerContainerError : function(pageN, url) {
+		let _this = this;
+
+		let image_container = $('<div/>', {class: 'read_img', id: 'page-'+pageN}).append(
+			$('<img/>', {style: 'cursor: pointer', src: GM_getResourceURL('reload')}).click(function() {
+				$.ajax({
+					url    : url,
+					type   : 'GET',
+					page   : pageN,
+					// async: useASync,
+					success: function (data) {
+					let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+
+						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+					},
+					error: function () {
+						alert('Failed to load image again. Something may be wrong with the site.');
+						_this.setupViewerContainerError(this.page, url);
+					}
+				});
+			})
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
