@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta2] 2017-01-09
+### Fixed
+- `[Backend]` Favouriting works again.
+
 ## [1.5.0-beta1] 2017-01-08
 ### Changed
 - `[Backend]` Massive overhaul of the Tracker_Model. Everything has been split into sub-models that have their own files/classes.
