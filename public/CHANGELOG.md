@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - N/A
 
 ## [1.5.0-beta2] 2017-01-09
+### Added
+- Userscript tracking now tries to block accidental double-clicks when trying to track.
+
 ### Fixed
 - `[Backend]` Favouriting works again.
 

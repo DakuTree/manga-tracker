@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-01-08
-// @version      1.2.23
+// @updated      2017-01-09
+// @version      1.2.24
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -251,43 +251,53 @@ let base_site = {
 		});
 	},
 	trackChapter : function(askForConfirmation) {
+		let _this = this;
 		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
 
 		if(config['api-key']) {
-			let params = {
-				'api-key' : config['api-key'],
-				'manga'   : {
-					'site'    : this.site,
+			if(this.attemptingTrack === false) {
+				this.attemptingTrack = true;
 
-					//Both title and chapter can contain anything, as parsing is done on the backend.
-					'title'   : this.title,
-					'chapter' : this.chapter
-				}
-			};
-			//TODO: Check if everything is set, and not null.
+				let params = {
+					'api-key' : config['api-key'],
+					'manga'   : {
+						'site'    : this.site,
 
-			if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
-				$.post(main_site + '/ajax/userscript/update', params, function () {
-					//TODO: We should really output this somewhere other than the topbar..
-					$('#TrackerStatus').text('Updated');
-				}).fail(function(jqXHR, textStatus, errorThrown) {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: ' + errorThrown);
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
+						//Both title and chapter can contain anything, as parsing is done on the backend.
+						'title'   : this.title,
+						'chapter' : this.chapter
 					}
-				});
+				};
+				//TODO: Check if everything is set, and not null.
+
+				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
+					$.post(main_site + '/ajax/userscript/update', params, function () {
+						//TODO: We should really output this somewhere other than the topbar..
+						$('#TrackerStatus').text('Updated');
+					}).fail(function(jqXHR, textStatus, errorThrown) {
+						switch(jqXHR.status) {
+							case 400:
+								alert('ERROR: ' + errorThrown);
+								break;
+							case 429:
+								alert('ERROR: Rate limit reached.');
+								break;
+							default:
+								alert('ERROR: Something went wrong!\n'+errorThrown);
+								break;
+						}
+					}).always(function() {
+						_this.attemptingTrack = false;
+					});
+				}
+			} else {
+				alert('Tracker is already attempting to track..');
 			}
 		} else {
 			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 		}
 	},
+
 	setupViewer : function() {
 		let _this = this;
 
@@ -463,7 +473,9 @@ let base_site = {
 	viewerChapterURLFormat : '%pageN%', //%pageN% is replaced by the page number on load.
 	//Used for viewer AJAX (if used)
 	viewerRegex            : /^$/, // First img tag MUST be the chapter page
-	viewerCustomImageList  : [] //This is is only used if useCustomImageList is true
+	viewerCustomImageList  : [], //This is is only used if useCustomImageList is true
+
+	attemptingTrack : false //This is only changed by trackChapter
 };
 function extendSite(o) { return Object.assign({}, base_site, o); }
 function generateChapterList(target, attrURL) {
