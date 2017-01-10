@@ -98,7 +98,13 @@
 				<div id="options-auto_track">
 					<div class="form-group">
 						<?=form_checkbox('auto_track')?>
-						<?=form_label('Auto track series on page load', 'auto_track')?>
+						<?=form_label('Auto track series on page load.', 'auto_track')?>
+					</div>
+				</div>
+				<div id="options-disable_viewer">
+					<div class="form-group">
+						<?=form_checkbox('disable_viewer')?>
+						<?=form_label('Disable single page loader.', 'disable_viewer')?>
 					</div>
 				</div>
 

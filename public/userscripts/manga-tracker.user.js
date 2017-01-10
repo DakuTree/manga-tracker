@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-01-09
-// @version      1.2.25
+// @updated      2017-01-10
+// @version      1.3.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -44,6 +44,7 @@ GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn
 
 /* CORE TODO
 Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?
+Move all CSS to external site. Should allow faster loading.
 */
 
 $.fn.reverseObj = function() {
@@ -64,6 +65,8 @@ let base_site = {
 
 			_this.setupTopBar();
 
+			/** @namespace config.options.disable_viewer */
+			if(config.options.disable_viewer) return;
 			_this.setupViewer();
 		});
 	},
@@ -315,7 +318,7 @@ let base_site = {
 			GM_addStyle(`
 				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
 				#viewer > .read_img     { background: none; }
-				#viewer > .read_img img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; /*background: #FFF repeat-y; background: url("http://mangafox.me/media/loading.gif") no-repeat center;*/ min-height: 300px;}
+				#viewer > .read_img img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; min-height: 300px;}
 				.pageNumber             { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}
 				.pageNumber .number     { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important; }
 				#viewer_header          { font-weight: bolder; text-align: center; }
@@ -366,7 +369,7 @@ let base_site = {
 			//Auto-track chapter if enabled.
 			$(window).on("load", function() {
 				/** @namespace config.auto_track */
-				if(config.auto_track) {
+				if(config.options.auto_track) {
 					_this.trackChapter();
 				}
 			});
@@ -1239,21 +1242,25 @@ let sites = {
 			*/
 
 			let form = $('#userscript-form');
-			//Enable the form
-			$('#userscript-check').remove();
-			$(form).find('fieldset').removeAttr('disabled');
-			$(form).find('input[type=submit]').removeAttr('onclick');
+
+			this.enableForm(form); //Enable the form
 
 			//CHECK: Is there a better way to mass-set form values from an object/array?
-			$(form).find('input[name=auto_track]').attr('checked', ('auto_track' in config));
+			$(form).find('input[name=auto_track]').attr(    'checked', ('auto_track' in config.options));
+			$(form).find('input[name=disable_viewer]').attr('checked', ('disable_viewer' in config.options));
 
 			$(form).submit(function(e) {
-				let data = $(this).serializeArray().reduce(function(m,o){ m[o.name] = (o.value === '' ? true : o.value); return m;}, {});
+				let data = {};
+				data.options = $(this).serializeArray().reduce(function(m,o){
+					m[o.name] = (typeof o.value !== 'undefined' ? true : o.value);
+					return m;
+				}, {});
 				/** @namespace data.csrf_token */
 				delete data.csrf_token;
 				if(config['api-key']) {
 					config = $.extend(config, data);
-					GM_setValue('config', JSON.stringify(data));
+
+					GM_setValue('config', JSON.stringify(config));
 					$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
 				} else {
 					$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
@@ -1291,6 +1298,11 @@ let sites = {
 					}
 				});
 			});
+		},
+		enableForm : function(form) {
+			$('#userscript-check').remove();
+			$(form).find('fieldset').removeAttr('disabled');
+			$(form).find('input[type=submit]').removeAttr('onclick');
 		}
 	}
 };

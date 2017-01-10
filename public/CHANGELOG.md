@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta3] 2017-01-10
+### Added
+- Option to disable loading all pages in single page.
+
+### Changed
+- Userscript options are now stored under config.options rather than just config.
+
 ## [1.5.0-beta2] 2017-01-09
 ### Added
 - Userscript tracking now tries to block accidental double-clicks when trying to track.
