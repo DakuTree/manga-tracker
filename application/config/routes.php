@@ -81,6 +81,8 @@ $route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 $route['import_list']['post']         = 'Ajax/TrackerInline/import';
 
+$route['import_amr']                  = 'Import_AMR';
+
 $route['ajax/userscript/update']['post']     = 'Ajax/Userscript/update';
 $route['ajax/userscript/favourite']['post']  = 'Ajax/Userscript/favourite';
 $route['ajax/userscript/report_bug']['post'] = 'Ajax/Userscript/report_bug';

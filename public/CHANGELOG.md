@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta4] 2017-01-12
+### Added
+- AMR Import Helper tool. This can be found @ /import_amr. This converts an AMR export file into a readable list which should make it easier to track things.
+-- This is ultimately not the best solution, but it's WIP. See https://github.com/DakuTree/manga-tracker/issues/19#issuecomment-271768025 for more info.
+
 ## [1.5.0-beta3] 2017-01-10
 ### Added
 - Option to disable loading all pages in single page.
