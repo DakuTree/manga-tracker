@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.0-beta5] 2017-01-13
 ### Changed
-- updateCustom now includes site name with logs.
+- `[Backend]` updateCustom now includes site name with logs.
+- `[Backend]` Updated userscript jQuery to 3.1.1
 
 ### Fixed
 - API Key generation not working for new users again.
@@ -23,7 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Option to disable loading all pages in single page.
 
 ### Changed
-- Userscript options are now stored under config.options rather than just config.
+- `[Backend]` Userscript options are now stored under config.options rather than just config.
 
 ## [1.5.0-beta2] 2017-01-09
 ### Added
