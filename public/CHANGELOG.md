@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta5] 2017-01-13
+### Changed
+- updateCustom now includes site name with logs.
+
 ## [1.5.0-beta4] 2017-01-12
 ### Added
 - AMR Import Helper tool. This can be found @ /import_amr. This converts an AMR export file into a readable list which should make it easier to track things.

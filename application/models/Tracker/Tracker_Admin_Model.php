@@ -105,11 +105,11 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 								print " - Failed Check.\n";
 							}
 						} else {
-							log_message('error', "{$titleData['title']} || Title does not exist in DB??");
+							log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
 							print " - Possibly diff language than in DB? ($titleURL)\n";
 						}
 					} else {
-						log_message('error', "{$titleData['title']} failed to custom update successfully");
+						log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} failed to custom update successfully");
 						print " - FAILED TO PARSE\n";
 					}
 				}
