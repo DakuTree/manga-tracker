@@ -22,8 +22,8 @@
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-01-10
-// @version      1.3.0
+// @updated      2017-01-13
+// @version      1.3.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
@@ -1316,6 +1316,7 @@ const hostname = location.hostname.replace(/^(?:dev)\./, '');
 if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
 	//Config exists OR site is trackr.moe.
 	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') config['api-key'] = config['api-key-dev']; //Use dev API-key if using dev site
+	if(!config.options) config.options = {}; //We can't use the 'in' operator on this if options doesn't exist.
 
 	//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
 	if(sites[hostname]) {
