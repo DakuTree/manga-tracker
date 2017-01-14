@@ -197,6 +197,7 @@ class Sites_Model extends CI_Model {
 	public $HelveticaScans;
 	public $SenseScans;
 	public $JaiminisBox;
+	public $DokiFansubs;
 
 	public function __construct() {
 		parent::__construct();
@@ -216,6 +217,7 @@ class Sites_Model extends CI_Model {
 		$this->HelveticaScans   = new HelveticaScans();
 		$this->SenseScans       = new SenseScans();
 		$this->JaiminisBox      = new JaiminisBox();
+		$this->DokiFansubs      = new DokiFansubs();
 	}
 }
 
