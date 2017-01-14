@@ -202,22 +202,26 @@ class Sites_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
-		$this->MangaFox         = new MangaFox();
-		$this->MangaHere        = new MangaHere();
-		$this->Batoto           = new Batoto();
-		$this->DynastyScans     = new DynastyScans();
-		$this->MangaPanda       = new MangaPanda();
-		$this->MangaStream      = new MangaStream();
-		$this->WebToons         = new WebToons();
-		$this->KissManga        = new KissManga();
-		$this->KireiCake        = new KireiCake();
-		$this->GameOfScanlation = new GameOfScanlation();
-		$this->MangaCow         = new MangaCow();
-		$this->SeaOtterScans    = new SeaOtterScans();
-		$this->HelveticaScans   = new HelveticaScans();
-		$this->SenseScans       = new SenseScans();
-		$this->JaiminisBox      = new JaiminisBox();
-		$this->DokiFansubs      = new DokiFansubs();
+		$this->loadSite('MangaFox');
+		$this->loadSite('MangaHere');
+		$this->loadSite('Batoto');
+		$this->loadSite('DynastyScans');
+		$this->loadSite('MangaPanda');
+		$this->loadSite('MangaStream');
+		$this->loadSite('WebToons');
+		$this->loadSite('KissManga');
+		$this->loadSite('KireiCake');
+		$this->loadSite('GameOfScanlation');
+		$this->loadSite('MangaCow');
+		$this->loadSite('SeaOtterScans');
+		$this->loadSite('HelveticaScans');
+		$this->loadSite('SenseScans');
+		$this->loadSite('JaiminisBox');
+		$this->loadSite('DokiFansubs');
+	}
+
+	private function loadSite(string $siteName) {
+		$this->{$siteName} = new $siteName();
 	}
 }
 
@@ -280,7 +284,7 @@ class MangaFox extends Site_Model {
 		$cookies = [
 			"mfvb_userid={$this->config->item('mangafox_userid')}",
 			"mfvb_password={$this->config->item('mangafox_password')}",
-		    "bmsort=last_chapter"
+			"bmsort=last_chapter"
 		];
 		$content = $this->get_content('http://mangafox.me/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
