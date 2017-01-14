@@ -18,6 +18,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Changed
 - Updated Codeigniter to 3.1.3.
+- `[Backend]` Now using __get to dynamically load site classes. This makes things a bit easier to develop with.
+-- I'm not 100% sure if this is a good idea. Some people said to avoid, some people said it's fine. Problem with most of the research I found is it was from PHP 5.3-5.5 era, so it's a bit dated..
 
 ## [1.5.0-beta5] 2017-01-13
 ### Changed

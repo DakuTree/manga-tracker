@@ -181,43 +181,16 @@ abstract class Site_Model extends CI_Model {
 	public function doCustomCheck(string $oldChapter, string $newChapter) {}
 }
 class Sites_Model extends CI_Model {
-	//FIXME: Is it possible to automatically generate this in some way or another?
-	public $MangaFox;
-	public $MangaHere;
-	public $Batoto;
-	public $DynastyScans;
-	public $MangaPanda;
-	public $MangaStream;
-	public $WebToons;
-	public $KissManga;
-	public $KireiCake;
-	public $GameOfScanlation;
-	public $MangaCow;
-	public $SeaOtterScans;
-	public $HelveticaScans;
-	public $SenseScans;
-	public $JaiminisBox;
-	public $DokiFansubs;
-
-	public function __construct() {
-		parent::__construct();
-
-		$this->loadSite('MangaFox');
-		$this->loadSite('MangaHere');
-		$this->loadSite('Batoto');
-		$this->loadSite('DynastyScans');
-		$this->loadSite('MangaPanda');
-		$this->loadSite('MangaStream');
-		$this->loadSite('WebToons');
-		$this->loadSite('KissManga');
-		$this->loadSite('KireiCake');
-		$this->loadSite('GameOfScanlation');
-		$this->loadSite('MangaCow');
-		$this->loadSite('SeaOtterScans');
-		$this->loadSite('HelveticaScans');
-		$this->loadSite('SenseScans');
-		$this->loadSite('JaiminisBox');
-		$this->loadSite('DokiFansubs');
+	public function __get($name) {
+		//TODO: Is this a good idea? There wasn't a good consensus on if this is good practice or not..
+		//      It's probably a minor speed reduction, but that isn't much of an issue.
+		if(!class_exists($name) || !(get_parent_class($name) === 'Site_Model')) {
+			parent::__get($name);
+			return FALSE;
+		} else {
+			$this->loadSite($name);
+			return $this->{$name};
+		}
 	}
 
 	private function loadSite(string $siteName) {
