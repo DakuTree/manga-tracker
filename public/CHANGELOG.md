@@ -2,8 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+Although this tries to adhere to "Semantic Versioning", this is a website, not an app, meaning version numbers are pretty much meaningless.
+
 ## [Unreleased]
 - N/A
+
+## [1.5.0-beta6] 2017-01-14
+### Changed
+- Updated Codeigniter to 3.1.3.
 
 ## [1.5.0-beta5] 2017-01-13
 ### Changed
