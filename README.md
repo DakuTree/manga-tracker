@@ -24,3 +24,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * HelveticaScans
 * SenseScans
 * JaiminisBox
+* Doki Fansubs

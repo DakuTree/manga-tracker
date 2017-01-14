@@ -1188,3 +1188,27 @@ class JaiminisBox extends Site_Model {
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}
 }
+
+class DokiFansubs extends Site_Model {
+	public $site          = 'DokiFansubs';
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
+	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://kobato.hologfx.com/reader/series/{$title_url}";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "https://kobato.hologfx.com/reader/read/{$title_url}/{$chapter}/",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+		$fullURL = $this->getFullTitleURL($title_url);
+		return $this->parseFoolSlide($fullURL, $title_url);
+	}
+}

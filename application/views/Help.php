@@ -27,5 +27,6 @@
 		<li>HelveticaScans</li>
 		<li>SenseScans</li>
 		<li>JaiminisBox</li>
+		<li>Doki Fansubs</li>
 	</ul>
 </div>

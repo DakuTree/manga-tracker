@@ -144,6 +144,16 @@ class Site_Model_test extends TestCase {
 
 		$this->_testSiteFailure('JaiminisBox', 'Bad Status Code (404)');
 	}
+	public function test_DokiFansubs() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
+		$this->_testSiteSuccess('DokiFansubs', 'sui_youbi', 'Sui Youbi');
+	}
+	public function test_DokiFansubs_fail() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+
+		$this->_testSiteFailure('DokiFansubs', 'Bad Status Code (404)');
+	}
 
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);

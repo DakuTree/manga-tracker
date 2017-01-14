@@ -9,7 +9,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ## [1.5.0-beta6] 2017-01-14
 ### Added
-- Added sitemap.xml.
+- sitemap.xml
+- Support for Doku Fansubs - https://kobato.hologfx.com/reader/
 
 ### Changed
 - Updated Codeigniter to 3.1.3.
