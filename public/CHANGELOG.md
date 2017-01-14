@@ -12,6 +12,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - sitemap.xml
 - Support for Doku Fansubs - https://kobato.hologfx.com/reader/
 - File-based Cache Busting. This should make sure that everyone properly gets the latest files after an update.
+- `[Backend]` Sites_Model now has loadSite function to reduce duplication.
+- `[Backend]` Logs if we try call site class that doesn't exist.
+- `[Backend]` getSiteDataFromURL now returns all siteData, instead of just id/site_class.
 
 ### Changed
 - Updated Codeigniter to 3.1.3.

@@ -5,6 +5,14 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		parent::__construct();
 	}
 
+	/**
+	 * @param string $titleURL
+	 * @param int    $siteID
+	 * @param bool   $create
+	 * @param bool   $returnData
+	 *
+	 * @return array|int
+	 */
 	public function getID(string $titleURL, int $siteID, bool $create = TRUE, bool $returnData = FALSE) {
 		$query = $this->db->select('tracker_titles.id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.status, tracker_sites.site_class, (tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 3 DAY)) AS active', FALSE)
 		                  ->from('tracker_titles')
@@ -71,6 +79,12 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 	}
 
 
+	/**
+	 * @param int    $id
+	 * @param string $latestChapter
+	 *
+	 * @return bool
+	 */
 	public function updateByID(int $id, string $latestChapter) {
 		//FIXME: Really not too happy with how we're doing history stuff here, it just feels messy.
 		$query = $this->db->select('latest_chapter AS current_chapter')
@@ -92,16 +106,17 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 	}
 
 
+	/**
+	 * @param string $site_url
+	 *
+	 * @return object|null
+	 */
 	public function getSiteDataFromURL(string $site_url) {
-		$query = $this->db->select('id, site_class')
+		$query = $this->db->select('*')
 		                  ->from('tracker_sites')
 		                  ->where('site', $site_url)
 		                  ->get();
 
-		if($query->num_rows() > 0) {
-			$siteData = $query->row();
-		}
-
-		return $siteData ?? FALSE;
+		return $query->row();
 	}
 }
