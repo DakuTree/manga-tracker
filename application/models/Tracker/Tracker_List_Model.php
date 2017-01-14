@@ -136,6 +136,9 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		$success = FALSE;
 		if($siteData = $this->Tracker->title->getSiteDataFromURL($site)) {
 			//Validate user input
+			if(!$this->sites->{$siteData->site_class}) {
+				log_message('error', "{$siteData->site_class} Class doesn't exist?");
+			}
 			if(!$this->sites->{$siteData->site_class}->isValidTitleURL($title)) {
 				//Error is already logged via isValidTitleURL
 				return FALSE;
