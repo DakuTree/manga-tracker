@@ -10,7 +10,9 @@
 
 .sprite-time {
 	.sprite();
-	background: url('../../img/time.png') no-repeat;
+
+	@cache-version: 1;
+	background: url('../../img/time.@{cache-version}.png') no-repeat;
 
 	&.sprite-day   { .stitches-sprite(-1px, -1px, 16px, 16px); }
 	&.sprite-week  { .stitches-sprite(-37px, -1px, 16px, 16px); }
@@ -19,7 +21,9 @@
 
 .sprite-site {
 	.sprite();
-	background: url('../../img/sites.png') no-repeat;
+
+	@cache-version: 1;
+	background: url('../../img/sites.@{cache-version}.png') no-repeat;
 
 	&.sprite-bato-to {
 		.stitches-sprite(-1px, -1px, 16px, 16px);

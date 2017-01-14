@@ -265,7 +265,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/time.png") no-repeat;
+	background: url("../../img/time.1.png") no-repeat;
 }
 .sprite-time.sprite-day {
 	width: 16px;
@@ -290,7 +290,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.png") no-repeat;
+	background: url("../../img/sites.1.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;

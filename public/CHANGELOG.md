@@ -11,6 +11,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Added
 - sitemap.xml
 - Support for Doku Fansubs - https://kobato.hologfx.com/reader/
+- File-based Cache Busting. This should make sure that everyone properly gets the latest files after an update.
 
 ### Changed
 - Updated Codeigniter to 3.1.3.

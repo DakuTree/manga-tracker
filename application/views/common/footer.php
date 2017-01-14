@@ -75,7 +75,7 @@
 		const base_url = "<?=base_url()?>";
 		const page     = "<?=$page?>";
 	</script>
-	<script src="<?=asset_url()?>js/compiled.min.js"></script>
+	<script src="<?=$complied_js_path?>"></script>
 
 	<?php if(ENVIRONMENT == 'production') { ?>
 	<script>

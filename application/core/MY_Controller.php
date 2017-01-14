@@ -17,6 +17,12 @@ class MY_Controller extends CI_Controller {
 
 		//TODO: Move this to a lib or something.
 		$this->global_data['analytics_tracking_id'] = $this->config->item('tracking_id');
+
+		$css_path = "css/main.{$this->User_Options->get('theme')}";
+		$this->global_data['complied_css_path'] = asset_url()."{$css_path}.".filemtime("../public/assets/{$css_path}.css").".css";
+
+		$js_path = 'js/compiled.min';
+		$this->global_data['complied_js_path']  = asset_url()."{$js_path}.".filemtime("../public/assets/{$js_path}.js").".js";
 	}
 
 	public function _render_page(/*(array) $paths*/) {
