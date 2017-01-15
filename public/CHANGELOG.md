@@ -13,6 +13,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Changed
 - `[Backend]` Site Model - Use get_class($this) to set $site, instead of setting it manually.
+- `[Backend]` Updated site migration with site data.
 
 ## [1.5.0-beta6] 2017-01-14
 ### Added

@@ -134,6 +134,9 @@ class Migration_Setup_Tracker extends CI_Migration {
 
 		/*** TABLE DATA ***/
 		// Dumping data for table 'tracker_sites'
+		//FIXME: This feels like a terrible way of trying to keep this up to date.
+		//       We <should> create a new migration for every new site, but that is a massive pain to do and honestly we can just do a SQL query instead.
+		//       It may be worth including some kind of $hostname var in each Site Model, and trying to generate it via that. Tis an idea.
 		$typesData = array(
 			array(
 				'id'         => '1',
@@ -173,7 +176,8 @@ class Migration_Setup_Tracker extends CI_Migration {
 			array(
 				'id'         => '8',
 				'site'       => 'kissmanga.com',
-				'site_class' => 'KissManga'
+				'site_class' => 'KissManga',
+				'status'     => 'disabled'
 			),
 			array(
 				'id'         => '9',
@@ -184,6 +188,41 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'id'         => '10',
 				'site'       => 'gameofscanlation.moe',
 				'site_class' => 'GameOfScanlation'
+			),
+			array(
+				'id'         => '11',
+				'site'       => 'mngcow.co',
+				'site_class' => 'MangaCow'
+			),
+			array(
+				'id'         => '12',
+				'site'       => 'reader.seaotterscans.com',
+				'site_class' => 'SeaOtterScans'
+			),
+			array(
+				'id'         => '13',
+				'site'       => 'helveticascans.com',
+				'site_class' => 'HelveticaScans'
+			),
+			array(
+				'id'         => '14',
+				'site'       => 'reader.sensescans.com',
+				'site_class' => 'SenseScans'
+			),
+			array(
+				'id'         => '15',
+				'site'       => 'jaiminisbox.com',
+				'site_class' => 'JaiminisBox'
+			),
+			array(
+				'id'         => '16',
+				'site'       => 'kobato.hologfx.com',
+				'site_class' => 'DokiFansubs'
+			),
+			array(
+				'id'         => '17',
+				'site'       => 'www.demonicscans.com',
+				'site_class' => 'DemonicScans'
 			)
 		);
 		$this->db->insert_batch('tracker_sites', $typesData);
