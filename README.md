@@ -25,3 +25,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * SenseScans
 * JaiminisBox
 * Doki Fansubs
+* Demonic Scanlations

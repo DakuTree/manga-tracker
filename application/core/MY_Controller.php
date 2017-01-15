@@ -26,7 +26,6 @@ class MY_Controller extends CI_Controller {
 	}
 
 	public function _render_page(/*(array) $paths*/) {
-
 		//We could just use global, but this is the only var we need in both header+footer
 		$this->footer_data['page'] = $this->header_data['page'];
 

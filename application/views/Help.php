@@ -28,5 +28,6 @@
 		<li>SenseScans</li>
 		<li>JaiminisBox</li>
 		<li>Doki Fansubs</li>
+		<li>Demonic Scanlations</li>
 	</ul>
 </div>

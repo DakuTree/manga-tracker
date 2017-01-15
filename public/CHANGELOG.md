@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.5.0-beta7] 2017-01-15
+### Added
+- Support for Demonic Scanlations.
+
 ### Changed
 - `[Backend]` Site Model - Use get_class($this) to set $site, instead of setting it manually.
 
