@@ -9,6 +9,8 @@ abstract class Site_Model extends CI_Model {
 		parent::__construct();
 
 		$this->load->database();
+		
+		$this->site = get_class($this);
 	}
 
 	abstract public function getFullTitleURL(string $title_url) : string;
@@ -184,6 +186,7 @@ class Sites_Model extends CI_Model {
 	public function __get($name) {
 		//TODO: Is this a good idea? There wasn't a good consensus on if this is good practice or not..
 		//      It's probably a minor speed reduction, but that isn't much of an issue.
+		//      An alternate solution would simply have a function which generates a PHP file with code to load each model. Similar to: https://github.com/shish/shimmie2/blob/834bc740a4eeef751f546979e6400fd089db64f8/core/util.inc.php#L1422
 		if(!class_exists($name) || !(get_parent_class($name) === 'Site_Model')) {
 			parent::__get($name);
 			return FALSE;
@@ -199,7 +202,6 @@ class Sites_Model extends CI_Model {
 }
 
 class MangaFox extends Site_Model {
-	public $site          = 'MangaFox';
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(?:v[0-9a-zA-Z]+\/)?c[0-9\.]+$/';
 
@@ -370,7 +372,6 @@ class MangaFox extends Site_Model {
 }
 
 class MangaHere extends Site_Model {
-	public $site          = 'MangaHere';
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(?:v[0-9]+\/)?c[0-9]+(?:\.[0-9]+)?$/';
 
@@ -419,7 +420,6 @@ class Batoto extends Site_Model {
 	//title_url is stored like: "ID:--:LANGUAGE"
 	//chapter_urls are stored like "CHAPTER_ID:--:CHAPTER_NUMBER"
 
-	public $site          = 'Batoto';
 	public $titleFormat   = '/^[0-9]+:--:(?:English|Spanish|French|German|Portuguese|Turkish|Indonesian|Greek|Filipino|Italian|Polish|Thai|Malay|Hungarian|Romanian|Arabic|Hebrew|Russian|Vietnamese|Dutch)$/';
 	//FIXME: We're not validating the chapter name since we don't know what all the possible valid characters can be
 	//       Preferably we'd just use /^[0-9a-z]+:--:(v[0-9]+\/)?c[0-9]+(\.[0-9]+)?$/
@@ -609,7 +609,6 @@ class Batoto extends Site_Model {
 class DynastyScans extends Site_Model {
 	//FIXME: This has some major issues. SEE: https://github.com/DakuTree/manga-tracker/issues/58
 
-	public $site          = 'DynastyScans';
 	public $titleFormat   = '/^[a-z0-9_]+:--:(?:0|1)$/';
 	public $chapterFormat = '/^[0-9a-z_]+$/';
 
@@ -721,7 +720,6 @@ class DynastyScans extends Site_Model {
 }
 
 class MangaPanda extends Site_Model {
-	public $site          = 'MangaPanda';
 	//NOTE: MangaPanda has manga pages under the root URL, so we need to filter out pages we know that aren't manga.
 	public $titleFormat   = '/^(?!(?:latest|search|popular|random|alphabetical|privacy)$)([a-z0-9-]+)$/';
 	public $chapterFormat = '/^[0-9]+$/';
@@ -764,7 +762,6 @@ class MangaPanda extends Site_Model {
 }
 
 class MangaStream extends Site_Model {
-	public $site          = 'MangaStream';
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(.*?)\/[0-9]+$/';
 
@@ -822,7 +819,6 @@ class WebToons extends Site_Model {
 	*/
 	//private $validLang = ['en', 'zh-hant', 'zh-hans', 'th', 'id'];
 
-	public $site          = 'WebToons';
 	public $titleFormat   = '/^[0-9]+:--:(?:en|zh-hant|zh-hans|th|id):--:[a-z0-9-]+:--:(?:drama|fantasy|comedy|action|slice-of-life|romance|superhero|thriller|sports|sci-fi)$/';
 	public $chapterFormat = '/^[0-9]+:--:.*$/';
 
@@ -883,7 +879,6 @@ class KissManga extends Site_Model {
 	   I should probably also mention that the cookie generated also uses your user-agent, so if it changes the cookie will break.
 	*/
 
-	public $site          = 'KissManga';
 	public $titleFormat   = '/^[A-Za-z0-9-]+$/';
 	public $chapterFormat = '/^.*?:--:[0-9]+$/';
 
@@ -951,7 +946,6 @@ class KissManga extends Site_Model {
 }
 
 class GameOfScanlation extends Site_Model {
-	public $site          = 'GameOfScanlation';
 	public $titleFormat   = '/^[a-z0-9\.-]+$/';
 	public $chapterFormat = '/^[a-z0-9\.-]+$/';
 
@@ -1003,7 +997,6 @@ class GameOfScanlation extends Site_Model {
 }
 
 class MangaCow extends Site_Model {
-	public $site          = 'MangaCow';
 	public $titleFormat   = '/^[a-zA-Z0-9_]+$/';
 	public $chapterFormat = '/^[0-9]+$/';
 
@@ -1049,7 +1042,6 @@ class MangaCow extends Site_Model {
 /*** FoolSlide sites ***/
 
 class KireiCake extends Site_Model {
-	public $site          = 'KireiCake';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
@@ -1073,7 +1065,6 @@ class KireiCake extends Site_Model {
 }
 
 class SeaOtterScans extends Site_Model {
-	public $site          = 'SeaOtterScans';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
@@ -1097,7 +1088,6 @@ class SeaOtterScans extends Site_Model {
 }
 
 class HelveticaScans extends Site_Model {
-	public $site          = 'HelveticaScans';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
@@ -1121,7 +1111,6 @@ class HelveticaScans extends Site_Model {
 }
 
 class SenseScans extends Site_Model {
-	public $site          = 'SenseScans';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
@@ -1145,7 +1134,6 @@ class SenseScans extends Site_Model {
 }
 
 class JaiminisBox extends Site_Model {
-	public $site          = 'JaiminisBox';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
@@ -1169,7 +1157,6 @@ class JaiminisBox extends Site_Model {
 }
 
 class DokiFansubs extends Site_Model {
-	public $site          = 'DokiFansubs';
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 

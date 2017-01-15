@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.0-beta7] 2017-01-15
+### Changed
+- `[Backend]` Site Model - Use get_class($this) to set $site, instead of setting it manually.
+
 ## [1.5.0-beta6] 2017-01-14
 ### Added
 - sitemap.xml
