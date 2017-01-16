@@ -9,7 +9,8 @@ class MY_Controller extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 
-		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file')); //Sadly we can't autoload this with params
+		$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc')); //Sadly we can't autoload this with params
+		//FIXME: We would just use APC caching, but it's a bit more tricky to manage with multiple site setups..
 
 		//FIXME: This is pretty much a phpUnit hack. Without it phpUnit fails here. We need a proper way to fake user/admin testing.
 		$this->global_data['user'] = ($this->ion_auth->user() ? $this->ion_auth->user()->row() : ['username' => '']);

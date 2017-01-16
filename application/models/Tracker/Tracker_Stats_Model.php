@@ -5,8 +5,6 @@ class Tracker_Stats_Model extends Tracker_Base_Model {
 		parent::__construct();
 	}
 
-
-
 	public function get() : array {
 		if(!($stats = $this->cache->get('site_stats'))) {
 			$stats = array();

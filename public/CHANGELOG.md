@@ -7,7 +7,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.0-beta7] 2017-01-15
+## [1.5.7]
+### Changed
+- `[Backend]` Use file caching instead of APC caching.
+-- APC caching appears to not play nice when running multiple setups..
+
+## [1.5.6] 2017-01-15
 ### Added
 - Support for Demonic Scanlations.
 
@@ -15,7 +20,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - `[Backend]` Site Model - Use get_class($this) to set $site, instead of setting it manually.
 - `[Backend]` Updated site migration with site data.
 
-## [1.5.0-beta6] 2017-01-14
+## [1.5.5] 2017-01-14
 ### Added
 - sitemap.xml
 - Support for Doku Fansubs - https://kobato.hologfx.com/reader/
@@ -29,7 +34,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - `[Backend]` Now using __get to dynamically load site classes. This makes things a bit easier to develop with.
 -- I'm not 100% sure if this is a good idea. Some people said to avoid, some people said it's fine. Problem with most of the research I found is it was from PHP 5.3-5.5 era, so it's a bit dated..
 
-## [1.5.0-beta5] 2017-01-13
+## [1.5.4] 2017-01-13
 ### Changed
 - `[Backend]` updateCustom now includes site name with logs.
 - `[Backend]` Updated userscript jQuery to 3.1.1
@@ -38,19 +43,19 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - API Key generation not working for new users again.
 -- I need to stop breaking this...
 
-## [1.5.0-beta4] 2017-01-12
+## [1.5.3] 2017-01-12
 ### Added
 - AMR Import Helper tool. This can be found @ /import_amr. This converts an AMR export file into a readable list which should make it easier to track things.
 -- This is ultimately not the best solution, but it's WIP. See https://github.com/DakuTree/manga-tracker/issues/19#issuecomment-271768025 for more info.
 
-## [1.5.0-beta3] 2017-01-10
+## [1.5.2] 2017-01-10
 ### Added
 - Option to disable loading all pages in single page.
 
 ### Changed
 - `[Backend]` Userscript options are now stored under config.options rather than just config.
 
-## [1.5.0-beta2] 2017-01-09
+## [1.5.1] 2017-01-09
 ### Added
 - Userscript tracking now tries to block accidental double-clicks when trying to track.
 - Userscript now has fallback image if it fails to load the proper one. Clicking this will attempt to grab the image again.
@@ -58,7 +63,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Fixed
 - `[Backend]` Favouriting works again.
 
-## [1.5.0-beta1] 2017-01-08
+## [1.5.0] 2017-01-08
 ### Changed
 - `[Backend]` Massive overhaul of the Tracker_Model. Everything has been split into sub-models that have their own files/classes.
 -- Previously everything was accessible via $this->Tracker->method(), now it's $this->Tracker->module->method().
