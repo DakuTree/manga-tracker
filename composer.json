@@ -13,7 +13,6 @@
 		"bower-asset/jquery-validation" : "1.15.0",
 		"bower-asset/html5shiv"         : "3.7.*",
 		"bower-asset/normalize.css"     : "4.1.*",
-		"bower-asset/html5bp"           : "5.2.*",
 		"bower-asset/bootstrap"         : "3.3.*",
 		"bower-asset/font-awesome"      : "4.6.3",
 		"bower-asset/respond"           : "1.4.2",
@@ -23,17 +22,7 @@
 		"phpunit/phpunit"         : "5.3.*",
 		"codeception/codeception" : "2.2.4"
 	},
-	"extra": {
-		"asset-repositories": [
-			{
-				"type": "bower-vcs",
-				"url": "https://github.com/h5bp/html5-boilerplate.git",
-				"name": "bower-asset/html5bp"
-			}
-		]
-	},
 	"vendor-copy": {
-		"vendor/bower-asset/html5bp/dist/css/main.css"                               : "public/assets/vendor/css/boilerplate.css",
 		"vendor/bower-asset/normalize.css/normalize.css"                             : "public/assets/vendor/css/normalize.css",
 		"vendor/bower-asset/html5shiv/dist/html5shiv.js"                             : "public/assets/vendor/js/html5shiv.js",
 		"vendor/bower-asset/html5shiv/dist/html5shiv.min.js"                         : "public/assets/vendor/js/html5shiv.min.js",

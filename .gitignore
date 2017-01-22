@@ -12,6 +12,7 @@ composer.phar
 #Bower // Composer Asset Plugin
 /public/assets/vendor
 !/public/assets/vendor/**/.gitkeep
+!/public/assets/vendor/css/boilerplate.css
 
 #Testing
 application/tests/_ci_phpunit_test/
