@@ -8,7 +8,6 @@
 		"codeigniter/framework"         : "3.1.*",
 		"kenjis/ci-phpunit-test"        : "0.13.*",
 
-		"fxp/composer-asset-plugin"     : "1.2.2",
 		"bower-asset/jquery"            : "1.12.4",
 		"bower-asset/jquery-validation" : "1.15.0",
 		"bower-asset/html5shiv"         : "3.7.*",
@@ -22,6 +21,12 @@
 		"phpunit/phpunit"         : "5.3.*",
 		"codeception/codeception" : "2.2.4"
 	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
 	"vendor-copy": {
 		"vendor/bower-asset/normalize.css/normalize.css"                             : "public/assets/vendor/css/normalize.css",
 		"vendor/bower-asset/html5shiv/dist/html5shiv.js"                             : "public/assets/vendor/js/html5shiv.js",

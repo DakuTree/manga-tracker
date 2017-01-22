@@ -7,7 +7,13 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.7]
+## [1.5.8] 2017-01-22
+### Changed
+- `[Backend]` Manually committed boilerplate.css + removed from composer.
+- `[Backend]` Moved from composer-asset-plugin to asset-packagist.
+-- This is a massive speed increase when doing install/update & removes dependency on globally installed plugin.
+
+## [1.5.7] 2017-01-16
 ### Changed
 - `[Backend]` Use file caching instead of APC caching.
 -- APC caching appears to not play nice when running multiple setups..
