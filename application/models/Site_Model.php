@@ -1069,7 +1069,7 @@ class EGScans extends Site_Model {
 			"Select a manga title to get started!"
 		);
 		if($data) {
-			$titleData['title'] = html_entity_decode($data['nodes_title']->getAttribute('value'));
+			$titleData['title'] = html_entity_decode($data['nodes_title']->textContent);
 
 			$titleData['latest_chapter'] = (string) $data['nodes_chapter']->getAttribute('value');
 			$titleData['last_updated'] = now();
