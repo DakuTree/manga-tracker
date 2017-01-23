@@ -1062,7 +1062,7 @@ class EGScans extends Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//select[@name='manga']/option[@selected]",
+			"//select[@name='manga']/option[@selected='selected']",
 			"//select[@name='chapter']/option[last()]",
 			"//html", //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
 			"",
@@ -1072,7 +1072,7 @@ class EGScans extends Site_Model {
 			$titleData['title'] = html_entity_decode($data['nodes_title']->textContent);
 
 			$titleData['latest_chapter'] = (string) $data['nodes_chapter']->getAttribute('value');
-			$titleData['last_updated'] = now();
+			$titleData['last_updated'] = date("Y-m-d H:i:s", now());
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
