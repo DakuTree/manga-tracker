@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
 	margin: 40px;
 
@@ -290,7 +291,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.1.png") no-repeat;
+	background: url("../../img/sites.2.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
