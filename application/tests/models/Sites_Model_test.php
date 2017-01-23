@@ -106,6 +106,13 @@ class Site_Model_test extends TestCase {
 		$this->_testSiteFailure('MangaCow', 'Bad Status Code (404)');
 	}
 
+	public function test_EGScans() {
+		$this->_testSiteSuccess('EGScans', 'Yongbi_the_Invincible', 'Yongbi the Invincible');
+	}
+	public function test_EGScans_fail() {
+		$this->_testSiteFailure('EGScans', 'Failure string matched');
+	}
+
 	public function test_KireiCake() {
 		$this->_testSiteSuccess('KireiCake', 'helck', 'helck');
 	}
@@ -161,6 +168,13 @@ class Site_Model_test extends TestCase {
 	}
 	public function test_DemonicScans_fail() {
 		$this->_testSiteFailure('DemonicScans', 'Bad Status Code (404)');
+	}
+
+	public function test_DeathTollScans() {
+		$this->_testSiteSuccess('DeathTollScans', 'destroy_and_revolution', 'Destroy and Revolution');
+	}
+	public function test_DeathTollScans_fail() {
+		$this->_testSiteFailure('DeathTollScans', 'Bad Status Code (404)');
 	}
 
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {

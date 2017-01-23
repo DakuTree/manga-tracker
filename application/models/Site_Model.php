@@ -246,7 +246,6 @@ class MangaFox extends Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-
 	//FIXME: This entire thing feels like an awful implementation....BUT IT WORKS FOR NOW.
 	public function doCustomFollow(string $data = "", array $extra = []) {
 		preg_match('/var sid=(?<id>[0-9]+);/', $data, $matches);
@@ -1039,6 +1038,47 @@ class MangaCow extends Site_Model {
 	}
 }
 
+class EGScans extends Site_Model {
+	public $titleFormat   = '/^[A-Za-z0-9\-_\!,]+$/';
+	public $chapterFormat = '/^Chapter_[0-9]+(?:_extra)?$/';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "http://read.egscans.com/{$title_url}/";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		return [
+			'url'    => "http://read.egscans.com/{$title_url}/{$chapter}",
+			'number' => $chapter
+		];
+	}
+
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$content = $this->get_content($fullURL);
+
+		$data = $this->parseTitleDataDOM(
+			$content,
+			$title_url,
+			"//select[@name='manga']/option[@selected]",
+			"//select[@name='chapter']/option[last()]",
+			"//html", //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
+			"",
+			"Select a manga title to get started!"
+		);
+		if($data) {
+			$titleData['title'] = html_entity_decode($data['nodes_title']->getAttribute('value'));
+
+			$titleData['latest_chapter'] = (string) $data['nodes_chapter']->getAttribute('value');
+			$titleData['last_updated'] = now();
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+}
+
 /*** FoolSlide sites ***/
 
 class KireiCake extends Site_Model {
@@ -1192,6 +1232,29 @@ class DemonicScans extends Site_Model {
 		$chapter_parts = explode('/', $chapter);
 		return [
 			'url'    => "http://www.demonicscans.com/FoOlSlide/read/{$title_url}/{$chapter}/",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+		$fullURL = $this->getFullTitleURL($title_url);
+		return $this->parseFoolSlide($fullURL, $title_url);
+	}
+}
+
+class DeathTollScans extends Site_Model {
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
+	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "https://reader.deathtollscans.net/series/{$title_url}";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
+		$chapter_parts = explode('/', $chapter);
+		return [
+			'url'    => "https://reader.deathtollscans.net/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}

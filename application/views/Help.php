@@ -29,5 +29,7 @@
 		<li>JaiminisBox</li>
 		<li>Doki Fansubs</li>
 		<li>Demonic Scanlations</li>
+		<li>Death Toll Scans</li>
+		<li>Easy Going Scans</li>
 	</ul>
 </div>

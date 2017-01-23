@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.5.9] 2017-01-23
+### Added
+- Support for Easy Going Scans.
+- Support for Death Toll Scans.
+
 ### Changed
 - `[Backend]` Sites using FoolSlide can now properly load manga marked as adult.
 

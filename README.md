@@ -26,3 +26,5 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * JaiminisBox
 * Doki Fansubs
 * Demonic Scanlations
+* Death Toll Scans
+* Easy Going Scans

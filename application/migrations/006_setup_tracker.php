@@ -223,6 +223,16 @@ class Migration_Setup_Tracker extends CI_Migration {
 				'id'         => '17',
 				'site'       => 'www.demonicscans.com',
 				'site_class' => 'DemonicScans'
+			),
+			array(
+				'id'         => '18',
+				'site'       => 'read.egscans.com',
+				'site_class' => 'EGScans'
+			),
+			array(
+				'id'         => '19',
+				'site'       => 'reader.deathtollscans.net',
+				'site_class' => 'DeathTollScans'
 			)
 		);
 		$this->db->insert_batch('tracker_sites', $typesData);

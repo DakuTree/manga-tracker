@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
 	"use strict";
 	if(page !== 'signup') { return false; }
 
