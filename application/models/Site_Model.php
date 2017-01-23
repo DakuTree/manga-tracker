@@ -154,7 +154,7 @@ abstract class Site_Model extends CI_Model {
 	final public function parseFoolSlide(string $fullURL, string $title_url) {
 		$titleData = [];
 
-		if($content = $this->get_content($fullURL)) {
+		if($content = $this->get_content($fullURL, "", "", FALSE, TRUE, ['adult' => 'true'])) {
 			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
 
 			$data = $this->parseTitleDataDOM(

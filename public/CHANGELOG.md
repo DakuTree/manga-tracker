@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.9] 2017-01-23
+### Changed
+- `[Backend]` Sites using FoolSlide can now properly load manga marked as adult.
+
 ## [1.5.8] 2017-01-22
 ### Changed
 - `[Backend]` Manually committed boilerplate.css + removed from composer.
