@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.10] 2017-01-25
+### Added
+- Userscript now has a pages loaded counter.
+-- This will also mention if any pages have failed to load, and provide a link to mass-reload all failed pages.
+
 ## [1.5.9] 2017-01-23
 ### Added
 - Support for Easy Going Scans.

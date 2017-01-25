@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-01-23
-// @version      1.3.5
+// @updated      2017-01-25
+// @version      1.4.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -64,6 +64,7 @@ let base_site = {
 
 		this.preInit(function() {
 			_this.setObjVars();
+			_this.page_count = parseInt(_this.page_count); //FIXME: Is there a better place to put this?
 
 			_this.stylize();
 
@@ -107,7 +108,7 @@ let base_site = {
 					color:      black  !important;
 					text-align: center !important;
 				}
-				#TrackerBarIn {
+				#TrackerBar > * {
 					display: inline-block;
 
 					opacity: 1               !important;
@@ -120,7 +121,6 @@ let base_site = {
 					border-top:    0              !important;
 					border-radius: 0 0 6px 6px    !important;
 				}
-
 
 				#TrackerBarLayout {
 					padding: 0 !important;
@@ -214,6 +214,10 @@ let base_site = {
 						$('<span/>', {id: 'TrackerStatus'})
 					)
 				)
+			).append(
+				$('<br/>')
+			).append(
+				$('<div/>', {id: 'TrackerBarPages', text: 'Pages loaded: '+_this.pagesLoaded+'/'+_this.page_count})
 			);
 
 			$(topbar).appendTo('body');
@@ -254,6 +258,12 @@ let base_site = {
 				e.preventDefault();
 
 				_this.favouriteChapter();
+			});
+			//Setup reload page failed pages event.
+			$(topbar).on('click', '#reloadPages', function(e) {
+				e.preventDefault();
+
+				_this.reloadPages();
 			});
 
 			_this.postSetupTopBar(topbar);
@@ -314,10 +324,9 @@ let base_site = {
 		//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
 		//FIXME: Somehow handle the viewer header code here?
 
-		this.preSetupViewer(function(useCustomHeader, useCustomImageList, useDelay) {
+		this.preSetupViewer(function(useCustomHeader, useCustomImageList) {
 			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
-			useDelay           = (typeof useDelay !== 'undefined' ? useDelay : 0);
 
 			GM_addStyle(`
 				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
@@ -343,6 +352,12 @@ let base_site = {
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
 				if(pageN === 1) {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
+
+					$('#TrackerBarPages')
+						.hide('slow', function() {
+							//This saves the display css.
+							$('#TrackerBarPages').show('slow');
+						});
 				} else {
 					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer').find('> .read_img:last'));
 				}
@@ -364,7 +379,7 @@ let base_site = {
 								_this.setupViewerContainerError(this.page, url);
 							}
 						});
-					}, useDelay + (useDelay !== 0 ? (pageN * useDelay) : 0));
+					}, _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0));
 				} else {
 					_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
 				}
@@ -382,9 +397,14 @@ let base_site = {
 		});
 	},
 	setupViewerContainer : function(imgURL, pageN) {
+		let _this = this;
+
 		let image_container = $('<div/>', {class: 'read_img'}).append(
 			//We want to completely recreate the image element to remove all additional attributes
 			$('<img/>', {src: imgURL})
+				.on('load', function() {
+					_this.updatePagesLoaded(true);
+				})
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
@@ -396,6 +416,7 @@ let base_site = {
 	},
 	setupViewerContainerError : function(pageN, url) {
 		let _this = this;
+		_this.updatePagesLoaded(false);
 
 		let image_container = $('<div/>', {class: 'read_img', id: 'page-'+pageN}).append(
 			$('<img/>', {style: 'cursor: pointer', src: GM_getResourceURL('reload')}).click(function() {
@@ -405,8 +426,7 @@ let base_site = {
 					page   : pageN,
 					// async: useASync,
 					success: function (data) {
-					let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-
+						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
 						_this.setupViewerContainer($(original_image).attr('src'), this.page);
 					},
 					error: function () {
@@ -423,6 +443,44 @@ let base_site = {
 
 		//Replace the placeholder image_container with the real one
 		$('#page-'+pageN).replaceWith(image_container);
+	},
+	reloadPages : function() {
+		let _this = this;
+
+		$('#TrackerBarPages').html('Attempting to load pages...');
+		//FIXME: This is a really lazy way of doing this...
+		$('.read_img[id] img').each(function(i, v) {
+			setTimeout(function() {
+				$(v).click();
+			}, _this.delay + (_this.delay !== 0 ? (i * _this.delay) : 0));
+		})
+	},
+	updatePagesLoaded : function(loaded) {
+		this.pagesLoadedAttempts += 1;
+		if(loaded) {
+			this.pagesLoaded += 1;
+			$('#TrackerBarPages').text('Pages loaded: '+this.pagesLoaded+'/'+this.page_count);
+		}
+
+		if(this.pagesLoadedAttempts >= this.page_count) {
+			//This is last page to load, check if everything loaded correctly.
+			if(this.pagesLoaded >= this.page_count) {
+				//Everything was loaded correctly, hide the page count div.
+				setTimeout(function() {
+					$('#TrackerBarPages').html('&nbsp;').hide("slow");
+				}, 1500);
+			} else {
+				$('#TrackerBarPages')
+					.html('') //remove everything from existing container
+					.append($('<span/>', {text: 'ERROR: '+(this.page_count - this.pagesLoaded)+' pages failed to load | '}))
+					.append($('<a/>', {href: '#', id: 'reloadPages'}).append(
+						$('<i/>', {class: 'fa fa-refresh', 'aria-hidden': 'true'})
+					));
+			}
+			console.log('higher than pc: '+this.pagesLoadedAttempts);
+		} else {
+			console.log('lower than pc: '+this.pagesLoadedAttempts);
+		}
 	},
 
 	reportBug : function() {
@@ -501,6 +559,8 @@ let base_site = {
 	title   : '',
 	chapter : '',
 
+	page_count : 0,
+
 	//Used by everything for easy access
 	chapter_url : '',
 	title_url   : '',
@@ -517,7 +577,12 @@ let base_site = {
 	viewerRegex            : /^$/, // First img tag MUST be the chapter page
 	viewerCustomImageList  : [], //This is is only used if useCustomImageList is true
 
-	attemptingTrack : false //This is only changed by trackChapter
+	//Delay each page load by x ms when not using custom image list
+	delay: 0,
+
+	attemptingTrack     : false, //This is only changed by trackChapter
+	pagesLoaded         : 0,
+	pagesLoadedAttempts : 0
 };
 function extendSite(o) { return Object.assign({}, base_site, o); }
 function generateChapterList(target, attrURL) {
@@ -551,6 +616,8 @@ let sites = {
 			this.viewerTitle            = $('#series').find('> strong:last > a').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
+
+			this.delay = 750;
 		},
 		stylize : function() {
 			//This removes the old border/background. The viewer adds borders to the images now instead which looks better.
@@ -602,7 +669,7 @@ let sites = {
 		preSetupViewer : function(callback) {
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback(false, false, 750);
+			callback(false, false);
 		}
 	}),
 
