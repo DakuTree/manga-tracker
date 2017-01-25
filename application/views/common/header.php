@@ -34,12 +34,6 @@
 <body>
 
 <header id="site-header">
-	<?php if(ENVIRONMENT == 'development') { ?>
-	<div style="line-height: 40px; height: 50px; width:  400px; position: fixed; top: 0; left: 0; right: 0; margin: 0 auto; background-color: rgba(0,0,255,0.2); padding-top: 5px; padding-bottom: 10px; z-index: 1050; text-align: center;">
-		This is a development server.
-	</div>
-	<?php } ?>
-
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">

@@ -14,6 +14,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Changed
 - The example image/gif on the front page now uses the same theme as default.
+- Removed the dev banner as it's no longer needed.
 
 ## [1.5.9] 2017-01-23
 ### Added
