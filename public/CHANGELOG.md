@@ -12,6 +12,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - Userscript now has a pages loaded counter.
 -- This will also mention if any pages have failed to load, and provide a link to mass-reload all failed pages.
 
+### Changed
+- The example image/gif on the front page now uses the same theme as default.
+
 ## [1.5.9] 2017-01-23
 ### Added
 - Support for Easy Going Scans.
