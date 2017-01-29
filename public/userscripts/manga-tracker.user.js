@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-01-25
-// @version      1.4.0
+// @updated      2017-01-29
+// @version      1.4.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -217,7 +217,7 @@ let base_site = {
 			).append(
 				$('<br/>')
 			).append(
-				$('<div/>', {id: 'TrackerBarPages', text: 'Pages loaded: '+_this.pagesLoaded+'/'+_this.page_count})
+				(_this.page_count ? $('<div/>', {id: 'TrackerBarPages', text: 'Pages loaded: '+_this.pagesLoaded+'/'+_this.page_count}) : '')
 			);
 
 			$(topbar).appendTo('body');

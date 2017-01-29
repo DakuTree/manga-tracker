@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.11] 2017-01-29
+### Fixed
+- Page loaded count no longer shows on sites with a custom viewer.
+
 ## [1.5.10] 2017-01-25
 ### Added
 - Userscript now has a pages loaded counter.
