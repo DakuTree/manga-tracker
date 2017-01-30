@@ -14,6 +14,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - trackr.moe now sends all emails from no-reply@trackr.moe instead of admin@codeanimu.net
 -- This is a bit late, but free google apps doesn't allow smtp to alias domains so I was a bit restricted with what I could do.
+- Emails now note that they are sent from send-only address.
 
 ## [1.5.11] 2017-01-29
 ### Fixed

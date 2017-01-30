@@ -10,5 +10,7 @@
 	If you are unable to click on the above link, please copy and paste it into the address bar of your browser.
 	<br/><br/>
 	Thanks!
+	<br/>
+	<p><i>This email was sent from a notification-only address that can't accept incoming email. Please don't reply to this message.</i></p>
 </body>
 </html>
