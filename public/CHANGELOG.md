@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.12] 2017-01-30
+### Changed
+- trackr.moe now sends all emails from no-reply@trackr.moe instead of admin@codeanimu.net
+-- This is a bit late, but free google apps doesn't allow smtp to alias domains...
+
 ## [1.5.11] 2017-01-29
 ### Fixed
 - Page loaded count no longer shows on sites with a custom viewer.

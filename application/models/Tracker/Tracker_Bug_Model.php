@@ -16,7 +16,7 @@ class Tracker_Bug_Model extends Tracker_Base_Model {
 		        "<br>Bug report: ".htmlspecialchars(substr($text, 0, 1000));
 
 		$success = TRUE;
-		$this->email->from('bug-report@trackr.moe', $this->config->item('site_title', 'ion_auth'));
+		$this->email->from('no-reply@trackr.moe', $this->config->item('site_title', 'ion_auth'));
 		$this->email->to($this->config->item('admin_email', 'ion_auth'));
 		$this->email->subject($this->config->item('site_title', 'ion_auth')." - Bug Report");
 		$this->email->message($body);

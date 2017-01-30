@@ -3,7 +3,7 @@
 class User_Model extends CI_Model {
 	public $id;
 	public $username;
-	private $email;
+	public $email;
 
 	public function __construct() {
 		parent::__construct();

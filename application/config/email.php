@@ -13,7 +13,7 @@ $config["protocol"] = "smtp";
 
 
 //SMTP SETTINGS ARE SET IN SUB FOLDERS.
-$config['smtp_host']      = "smtp.gmail.com";
+$config['smtp_host']      = "smtp.zoho.com";
 $config['smtp_port']      = "465";
 $config["smtp_user"]      = "";
 $config["smtp_pass"]      = "";

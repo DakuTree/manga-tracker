@@ -83,7 +83,7 @@ $config['salt_prefix']    = '$2y$';
  | appropriately. If this variable set to 0, there is no maximum.
  */
 $config['site_title']                 = "Manga Tracker";     // Site Title, example.com
-$config['admin_email']                = "admin@trackr.moe";  // Admin Email, admin@example.com //TODO: Change later.
+$config['admin_email']                = "no-reply@trackr.moe";  // Admin Email, admin@example.com //TODO: Change later.
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';             // [NOTE: username can be used too] You can use any unique column in your table as identity column. The values in this column, alongside password, will be used for login purposes
