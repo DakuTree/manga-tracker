@@ -452,6 +452,7 @@ $config['csrf_exclude_uris'] = array(
 	'ajax/userscript/favourite',
 
 	//TODO: These <should> use CSRF, but for now we're going to just exclude them.
+	//      We can't include <most> of these as CSRF is regenerated on each request, and we can't always update that on the users end.
 	'ajax/username_check',
 	'ajax/update_inline',
 	'ajax/delete_inline',

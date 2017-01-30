@@ -10,7 +10,7 @@ $(function(){
 	//UX: This makes it easier to press the checkbox
 	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
 		if(!$(e.target).is('input')) {
-			var checkbox = $(this).find('> input[type=checkbox]');
+			let checkbox = $(this).find('> input[type=checkbox]');
 			$(checkbox).prop("checked", !checkbox.prop("checked"));
 		}
 	});
@@ -73,20 +73,20 @@ $(function(){
 	$('#file_import').change(function() {
 		let files = this.files;
 		if(files && files[0]) {
-			var file = files[0];
+			let file = files[0];
 
 			if(!file.name.match(/\.json$/)) {
 				import_status('ERROR: Only .json is supported!');
 			} else if(file.size > 2097152) {
 				import_status('ERROR: File too large ( < 2MB)!');
 			} else {
-				var reader = new FileReader();
+				let reader = new FileReader();
 				reader.onload = function (e) {
-					var json_string = e.target.result;
+					let json_string = e.target.result;
 					if(!isJsonString(json_string)) {
 						import_status('ERROR: File isn\'t valid JSON!');
 					} else {
-						var data = new FormData();
+						let data = new FormData();
 						data.append('json', json_string);
 
 						$.ajax({
@@ -130,7 +130,7 @@ $(function(){
 			.attr('style', (success ? 'color: rgb(0, 230 ,0)' : 'color: rgb(230, 0 ,0)'));
 	}
 
-	/****** TAG EDITTING *******/
+	/****** TAG EDITING *******/
 	//This isn't possible in pure CSS
 	$('.more-info').click(function(e) {
 		e.preventDefault();
@@ -154,15 +154,15 @@ $(function(){
 		}
 	});
 	$('.tag-edit [type=button]').click(function() {
-		var _this = this;
+		let _this = this;
 		//CHECK: We would use jQuery.validate here but I don't think it works without an actual form.
-		var input    = $(this).closest('.tag-edit').find('input'),
+		let input    = $(this).closest('.tag-edit').find('input'),
 		    tag_list = input.val().trim().replace(/,,/g, ','),
 		    id       = $(this).closest('tr').attr('data-id');
 
 		//Validation
 		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
-			var tag_array = tag_list.split(',');
+			let tag_array = tag_list.split(',');
 			if($.inArray('none', tag_array) === -1) {
 				$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
 					$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
@@ -201,11 +201,11 @@ $(function(){
 		$('.tracker-table[data-list="'+$(this).attr('data-list')+'"]').show();
 	});
 	$('#move-input').change(function() {
-		var selected = $(this).find(':selected');
+		let selected = $(this).find(':selected');
 		if(selected.is('[value]')) {
-			var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
+			let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
 			if(checked_rows.length > 0) {
-				var row_ids = $(checked_rows).map(function() {
+				let row_ids = $(checked_rows).map(function() {
 					return parseInt($(this).attr('data-id'));
 				}).toArray();
 
@@ -230,17 +230,17 @@ $(function(){
 
 	//Initialize header update timer
 	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer) {
-		var timer_obj = $('#update-timer'),
+		let timer_obj = $('#update-timer'),
 		    timer_arr = timer_obj.text().split(':'),
 		    time_left = parseInt(timer_arr[0] * 60 * 60, 10) + parseInt(timer_arr[1] * 60, 10) + parseInt(timer_arr[2], 10);
-		var timer = setInterval(function () {
-			var hours   = parseInt(time_left / 60 / 60, 10).toString(),
+		let timer = setInterval(function () {
+			let hours   = parseInt(time_left / 60 / 60, 10).toString(),
 			    minutes = parseInt(time_left / 60 % 60, 10).toString(),
 			    seconds = parseInt(time_left % 60, 10).toString();
 
-			if (hours.length == 1) hours = '0' + hours;
-			if (minutes.length == 1) minutes = '0' + minutes;
-			if (seconds.length == 1) seconds = '0' + seconds;
+			if(hours.length === 1)   hours   = '0' + hours;
+			if(minutes.length === 1) minutes = '0' + minutes;
+			if(seconds.length === 1) seconds = '0' + seconds;
 
 			timer_obj.text(hours + ':' + minutes + ':' + seconds);
 
@@ -259,10 +259,10 @@ $(function(){
 	}
 
 	//Sticky List Header
-	var $window = $(window);
-	var offset  = $('#category-nav').offset().top - $('#category-nav > ul').height() - 21;
-	var nav     = $('#list-nav');
-	var list_table = $('table[data-list]');
+	let $window = $(window),
+	    offset  = $('#category-nav').offset().top - $('#category-nav').find('> ul').height() - 21,
+	    nav     = $('#list-nav'),
+	    list_table = $('table[data-list]');
 	$window.scroll(function() {
 		//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
 		//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
