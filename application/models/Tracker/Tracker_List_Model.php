@@ -61,16 +61,17 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
 			}
 
-			//CHECK: Is this good for speed?
-			//NOTE: This does not sort in the same way as tablesorter, but it works better.
+			//FIXME: This is not good for speed, but we're kind of required to do this for UX purposes.
+			//       Tablesorter has a weird sorting algorithm and has a delay before sorting which is why I'd like to avoid it.
+			$sortOrder = $this->User_Options->get('list_sort_order');
 			switch($this->User_Options->get('list_sort_type')) {
 				case 'unread':
 					foreach (array_keys($arr['series']) as $category) {
-						usort($arr['series'][$category]['manga'], function ($a, $b) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) use($sortOrder) {
 							$a_text = strtolower("{$a['new_chapter_exists']} - {$a['title_data']['title']}");
 							$b_text = strtolower("{$b['new_chapter_exists']} - {$b['title_data']['title']}");
 
-							if($this->User_Options->get('list_sort_order') == 'asc') {
+							if($sortOrder == 'asc') {
 								return $a_text <=> $b_text;
 							} else {
 								return $b_text <=> $a_text;
@@ -81,11 +82,11 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 				case 'alphabetical':
 					foreach (array_keys($arr['series']) as $category) {
-						usort($arr['series'][$category]['manga'], function ($a, $b) {
+						usort($arr['series'][$category]['manga'], function($a, $b) use($sortOrder) {
 							$a_text = strtolower("{$a['title_data']['title']}");
 							$b_text = strtolower("{$b['title_data']['title']}");
 
-							if($this->User_Options->get('list_sort_order') == 'asc') {
+							if($sortOrder == 'asc') {
 								return $a_text <=> $b_text;
 							} else {
 								return $b_text <=> $a_text;
@@ -96,11 +97,11 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 				case 'my_status':
 					foreach (array_keys($arr['series']) as $category) {
-						usort($arr['series'][$category]['manga'], function ($a, $b) {
+						usort($arr['series'][$category]['manga'], function($a, $b) use($sortOrder) {
 							$a_text = strtolower("{$a['generated_current_data']['number']}");
 							$b_text = strtolower("{$b['generated_current_data']['number']}");
 
-							if($this->User_Options->get('list_sort_order') == 'asc') {
+							if($sortOrder == 'asc') {
 								return $a_text <=> $b_text;
 							} else {
 								return $b_text <=> $a_text;
@@ -111,11 +112,11 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 				case 'latest':
 					foreach (array_keys($arr['series']) as $category) {
-						usort($arr['series'][$category]['manga'], function ($a, $b) {
+						usort($arr['series'][$category]['manga'], function($a, $b) use($sortOrder) {
 							$a_text = strtolower("{$a['generated_latest_data']['number']}");
 							$b_text = strtolower("{$b['generated_latest_data']['number']}");
 
-							if($this->User_Options->get('list_sort_order') == 'asc') {
+							if($sortOrder == 'asc') {
 								return $a_text <=> $b_text;
 							} else {
 								return $b_text <=> $a_text;

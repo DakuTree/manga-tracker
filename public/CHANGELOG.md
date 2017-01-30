@@ -15,6 +15,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - trackr.moe now sends all emails from no-reply@trackr.moe instead of admin@codeanimu.net
 -- This is a bit late, but free google apps doesn't allow smtp to alias domains so I was a bit restricted with what I could do.
 - Emails now note that they are sent from send-only address.
+- `[Backend]` User list sort order is now stored in variable prior to usort. x3~ speed increase in page load.
+-- This was a major oversight on my part. Assumed that since user options were cached that there would no speed difference, apparently not.
 
 ## [1.5.11] 2017-01-29
 ### Fixed
