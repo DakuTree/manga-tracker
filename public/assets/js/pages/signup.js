@@ -80,8 +80,7 @@ $(function() {
 				$button
 					.removeClass('btn-default')
 					.addClass('btn-' + color + ' active');
-			}
-			else {
+			} else {
 				$button
 					.removeClass('btn-' + color + ' active')
 					.addClass('btn-default');

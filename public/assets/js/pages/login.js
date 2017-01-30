@@ -1,20 +1,20 @@
-$(function(){
+$(function () {
 	"use strict";
 	if(page !== 'login') { return false; }
 
-	$('.button-checkbox').each(function(){
-		var $widget = $(this),
-		    $button = $widget.find('button'),
-		    $checkbox = $widget.find('input:checkbox'),
-		    color = $button.data('color'),
-		    settings = {
-			    on: {
-				    icon: 'glyphicon glyphicon-check'
-			    },
-			    off: {
-				    icon: 'glyphicon glyphicon-unchecked'
-			    }
-		    };
+	$('.button-checkbox').each(function () {
+		let $widget = $(this),
+			$button = $widget.find('button'),
+			$checkbox = $widget.find('input:checkbox'),
+			color = $button.data('color'),
+			settings = {
+				on : {
+					icon: 'glyphicon glyphicon-check'
+				},
+				off: {
+					icon: 'glyphicon glyphicon-unchecked'
+				}
+			};
 
 		$button.on('click', function () {
 			$checkbox.prop('checked', !$checkbox.is(':checked'));
@@ -27,7 +27,7 @@ $(function(){
 		});
 
 		function updateDisplay() {
-			var isChecked = $checkbox.is(':checked');
+			let isChecked = $checkbox.is(':checked');
 			// Set the button's state
 			$button.data('state', (isChecked) ? "on" : "off");
 
@@ -41,14 +41,13 @@ $(function(){
 				$button
 					.removeClass('btn-default')
 					.addClass('btn-' + color + ' active');
-			}
-			else
-			{
+			} else {
 				$button
 					.removeClass('btn-' + color + ' active')
 					.addClass('btn-default');
 			}
 		}
+
 		function init() {
 			updateDisplay();
 			// Inject the icon if applicable
@@ -56,6 +55,7 @@ $(function(){
 				$button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
 			}
 		}
+
 		init();
 	});
 });

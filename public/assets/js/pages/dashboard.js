@@ -17,8 +17,8 @@ $(function(){
 
 	//Update latest chapter (via "I've read the latest chapter")
 	$('.update-read').click(function() {
-		var _this = this;
-		var row             = $(this).closest('tr'),
+		let _this = this;
+		let row             = $(this).closest('tr'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
 		    latest_chapter  = $(row).find('.latest');
@@ -45,9 +45,9 @@ $(function(){
 	$('#delete_selected').click(function(e) {
 		e.preventDefault();
 
-		var checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
+		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
 		if(checked_rows.length > 0) {
-			var row_ids = $(checked_rows).map(function() {
+			let row_ids = $(checked_rows).map(function() {
 				return parseInt($(this).attr('data-id'));
 			}).toArray();
 
@@ -71,7 +71,7 @@ $(function(){
 
 	//File import
 	$('#file_import').change(function() {
-		var files = this.files;
+		let files = this.files;
 		if(files && files[0]) {
 			var file = files[0];
 
@@ -136,7 +136,7 @@ $(function(){
 		e.preventDefault();
 
 		$(this).find('+ .tags').toggle();
-		if($(this).text() == 'More info') {
+		if($(this).text() === 'More info') {
 			$(this).text('Hide info');
 		} else {
 			$(this).text('More info');
