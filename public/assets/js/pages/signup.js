@@ -39,9 +39,8 @@ $(function() {
 
 	//This is only used for the terms checkbox button :|
 	$('.button-checkbox').each(function () {
-
 		// Settings
-		var $widget = $(this),
+		let $widget = $(this),
 		    $button = $widget.find('button'),
 		    $checkbox = $widget.find('input:checkbox'),
 		    color = $button.data('color'),
@@ -66,7 +65,7 @@ $(function() {
 
 		// Actions
 		function updateDisplay() {
-			var isChecked = $checkbox.is(':checked');
+			let isChecked = $checkbox.is(':checked');
 
 			// Set the button's state
 			$button.data('state', (isChecked) ? "on" : "off");
