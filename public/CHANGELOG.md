@@ -8,9 +8,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.5.12] 2017-01-30
+### Added
+- `[Backend]` Bug reports now have the users email set as the "Reply to" email if possible.
+
 ### Changed
 - trackr.moe now sends all emails from no-reply@trackr.moe instead of admin@codeanimu.net
--- This is a bit late, but free google apps doesn't allow smtp to alias domains...
+-- This is a bit late, but free google apps doesn't allow smtp to alias domains so I was a bit restricted with what I could do.
 
 ## [1.5.11] 2017-01-29
 ### Fixed

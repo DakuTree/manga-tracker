@@ -17,6 +17,9 @@ class Tracker_Bug_Model extends Tracker_Base_Model {
 
 		$success = TRUE;
 		$this->email->from('no-reply@trackr.moe', $this->config->item('site_title', 'ion_auth'));
+		if($this->User->id) {
+			$this->email->reply_to($this->User->email);
+		}
 		$this->email->to($this->config->item('admin_email', 'ion_auth'));
 		$this->email->subject($this->config->item('site_title', 'ion_auth')." - Bug Report");
 		$this->email->message($body);
