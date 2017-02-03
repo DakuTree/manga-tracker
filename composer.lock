@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "60685bb81e0b6788322d89ae498cef8d",
+    "content-hash": "a9d0af75c45f01fe011ea32895b2afbc",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -195,12 +195,12 @@
             "version": "1.15.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jzaefferer/jquery-validation.git",
+                "url": "https://github.com/jquery-validation/jquery-validation.git",
                 "reference": "1621cadc940900a4a7809fe29f2b568328be4340"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jzaefferer/jquery-validation/zipball/1621cadc940900a4a7809fe29f2b568328be4340",
+                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/1621cadc940900a4a7809fe29f2b568328be4340",
                 "reference": "1621cadc940900a4a7809fe29f2b568328be4340",
                 "shasum": ""
             },
@@ -317,23 +317,23 @@
         },
         {
             "name": "kenjis/ci-phpunit-test",
-            "version": "v0.13.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "5536b66461ac124df8146a5736923d4b094beff6"
+                "reference": "87d6d29a33255bfe6a5e3996b550f2dabc779357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/5536b66461ac124df8146a5736923d4b094beff6",
-                "reference": "5536b66461ac124df8146a5736923d4b094beff6",
+                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/87d6d29a33255bfe6a5e3996b550f2dabc779357",
+                "reference": "87d6d29a33255bfe6a5e3996b550f2dabc779357",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "replace": {
-                "nikic/php-parser": "2.1.0"
+                "nikic/php-parser": "2.1.1"
             },
             "type": "library",
             "extra": {
@@ -360,7 +360,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2016-11-20T12:00:54+00:00"
+            "time": "2017-02-03 11:44:41"
         }
     ],
     "packages-dev": [
@@ -790,16 +790,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.5.5",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108"
+                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/399c1f9781e222f6eb6cc238796f5200d1b7f108",
-                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
                 "shasum": ""
             },
             "require": {
@@ -828,7 +828,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2016-10-31T17:19:45+00:00"
+            "time": "2017-01-26T22:05:40+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1558,16 +1558,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "1.2.2",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "6a1ed12e8b2409076ab22e3897126211ff8b1f7f"
+                "reference": "2b7424b55f5047b47ac6e5ccb20b2aea4011d9be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/6a1ed12e8b2409076ab22e3897126211ff8b1f7f",
-                "reference": "6a1ed12e8b2409076ab22e3897126211ff8b1f7f",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/2b7424b55f5047b47ac6e5ccb20b2aea4011d9be",
+                "reference": "2b7424b55f5047b47ac6e5ccb20b2aea4011d9be",
                 "shasum": ""
             },
             "require": {
@@ -1618,7 +1618,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2016-11-19T09:18:40+00:00"
+            "time": "2017-01-29T09:50:25+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -2635,7 +2635,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kenjis/ci-phpunit-test": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

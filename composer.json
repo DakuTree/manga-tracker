@@ -6,7 +6,7 @@
 	"require": {
 		"php"                           : ">=7.0.0",
 		"codeigniter/framework"         : "3.1.*",
-		"kenjis/ci-phpunit-test"        : "0.13.*",
+		"kenjis/ci-phpunit-test"        : "dev-master#87d6d29a33255bfe6a5e3996b550f2dabc779357",
 
 		"bower-asset/jquery"            : "1.12.4",
 		"bower-asset/jquery-validation" : "1.15.0",
