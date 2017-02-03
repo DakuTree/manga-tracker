@@ -191,7 +191,7 @@ class Site_Model_test extends TestCase {
 
 	}
 	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
-		//$this->markTestSkipped('MonkeyPatching slows down our tests a ton so we\'ve disabled it for now (which has also disables tests which use it).');
+		$this->markTestSkipped('MonkeyPatching slows down our tests a ton so we\'ve disabled it for now (which has also disables tests which use it).');
 
 		MonkeyPatch::patchFunction('log_message', NULL, $siteName); //Stop logging stuff...
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
