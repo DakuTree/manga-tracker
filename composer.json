@@ -70,15 +70,17 @@
 		"post-install-cmd" : [
 			"php vendor/kenjis/ci-phpunit-test/update.php",
 			"php -r \"include('_scripts/setup.php'); setup();\"",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_production  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_testing     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_development CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
 			"php _scripts/chmod_config.php"
 		],
 		"post-update-cmd" : [
 			"php vendor/kenjis/ci-phpunit-test/update.php",
 			"php -r \"include('_scripts/setup.php'); setup();\"",
 			"php _scripts/chmod_config.php"
+		],
+		"setup-databases" : [
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_production  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_testing     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_development CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot"
 		]
 	}
 }

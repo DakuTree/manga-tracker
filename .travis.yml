@@ -28,6 +28,7 @@ before_install:
   #NOTE: Database creation is done in composer.json scripts.
 
 install:
+  - composer setup-databases
   - composer install -n --prefer-dist
   - echo '<?php $db["default"]["username"] = "root"; $db["default"]["password"] = "";' > application/config/testing/database_password.php
   - php public/index.php admin/migrate
