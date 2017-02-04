@@ -105,7 +105,7 @@ class Userscript extends AJAX_Controller {
 			if($this->form_validation->run() === TRUE) {
 				$manga = $this->input->post('manga');
 
-				$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter']);
+				$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter'], $this->userID);
 				if($success['bool']) {
 					$this->output->set_status_header('200', $success['status']); //Success!
 				} else {

@@ -42,8 +42,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 		return $favourites;
 	}
 
-	public function set(string $site, string $title, string $chapter) : array {
-
+	public function set(string $site, string $title, string $chapter, ?int $userID = NULL) : array {
 		$success = array(
 			'status' => 'Something went wrong',
 			'bool'   => FALSE
@@ -77,7 +76,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 			//if($idCQuery->num_rows() > 0) {
 				//Check if it is already favourited
 				$idFQuery = $this->db->select('id')
-				                     ->where('user_id', $this->User->id)
+				                     ->where('user_id', $userID)
 				                     ->where('title_id', $titleID)
 				                     ->where('chapter', $chapter)
 				                     ->get('tracker_favourites');
@@ -98,7 +97,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 				} else {
 					//Chapter is not favourited, so add to DB.
 					$isSuccess = (bool) $this->db->insert('tracker_favourites', [
-						'user_id'         => $this->User->id,
+						'user_id'         => $userID,
 						'title_id'        => $titleID,
 						'chapter'         => $chapter,
 						'updated_at'      => date('Y-m-d H:i:s')

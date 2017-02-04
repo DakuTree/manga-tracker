@@ -7,6 +7,15 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.14] 2017-02-04
+### Fixed
+- Favouriting should work again.
+
+## [1.5.13] 2017-02-03
+### Changed
+- Updated CI-PHPUnit-Test to test PHP7.1 support.
+-- Monkeypatching is still disabled due to speed.
+
 ## [1.5.12] 2017-01-30
 ### Added
 - `[Backend]` Bug reports now have the users email set as the "Reply to" email if possible.
