@@ -19,6 +19,9 @@ function get_time_class(string $time_string) : string {
 		} elseif($time < strtotime('-1 week')) {
 			//More than a week old, but less than a month old.
 			$time_string = "sprite-week";
+		} elseif($time < strtotime('-3 day')) {
+			//More than 3 days old but less than a week old.
+			$time_string = "sprite-3day";
 		} else {
 			//Less than a week old.
 			$time_string = "sprite-day";

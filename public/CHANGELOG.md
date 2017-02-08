@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.15] 2017-02-08
+### Added
+- Added an icon for updated 3 days ago. This should help differentiate newly updated series from ones updated a week ago.
+
 ## [1.5.14] 2017-02-04
 ### Fixed
 - Favouriting should work again.
