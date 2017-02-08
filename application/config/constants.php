@@ -83,3 +83,8 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/***** TIMEAGO CONSTANTS *****/
+defined('TIMEAGO_MONTH') OR define('TIMEAGO_MONTH', strtotime('-1 month')); //1 month ago
+defined('TIMEAGO_WEEK')  OR define('TIMEAGO_WEEK', strtotime('-1 week')); //1 week ago
+defined('TIMEAGO_3DAY')  OR define('TIMEAGO_3DAY', strtotime('-3 day')); //3 days ago

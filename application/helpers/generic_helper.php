@@ -13,13 +13,13 @@ function get_time_class(string $time_string) : string {
 	$time = strtotime($time_string);
 
 	if(is_int($time)) {
-		if($time < strtotime('-1 month')) {
+		if($time < TIMEAGO_MONTH) {
 			//More than a month old.
 			$time_string = "sprite-month";
-		} elseif($time < strtotime('-1 week')) {
+		} elseif($time < TIMEAGO_WEEK) {
 			//More than a week old, but less than a month old.
 			$time_string = "sprite-week";
-		} elseif($time < strtotime('-3 day')) {
+		} elseif($time < TIMEAGO_3DAY) {
 			//More than 3 days old but less than a week old.
 			$time_string = "sprite-3day";
 		} else {

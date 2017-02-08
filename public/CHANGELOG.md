@@ -11,6 +11,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Added
 - Added an icon for updated 3 days ago. This should help differentiate newly updated series from ones updated a week ago.
 
+### Changed
+- `[Backend]` get_time_class ... ago times are now predefined, rather than getting them on every single function call. Very minor speed increase.
+
 ## [1.5.14] 2017-02-04
 ### Fixed
 - Favouriting should work again.
