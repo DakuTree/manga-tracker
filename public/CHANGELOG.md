@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.5.15] 2017-02-08
+### Fixed
+- HelveticaScans works again after the redesign.
+
+## [1.5.15] 2017-02-08
 ### Added
 - Added an icon for updated 3 days ago. This should help differentiate newly updated series from ones updated a week ago.
 

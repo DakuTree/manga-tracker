@@ -18,7 +18,7 @@
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.sensescans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/helveticascans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/helveticascans\.com\/r(?:eader)?\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/gameofscanlation\.moe\/projects\/[a-z0-9-]+\/[a-z0-9\.-]+\/.*$/
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_]+\/[0-9]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-01-29
-// @version      1.4.1
+// @updated      2017-02-21
+// @version      1.4.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1235,12 +1235,20 @@ let sites = {
 	}),
 
 	'helveticascans.com' : extendSite({
+		preInit : function(callback) {
+			if(location.pathname.substr(0, 7) === 'reader') {
+				//If old URL, redirect to new one.
+				location.pathname = location.pathname.replace(/^\/reader/, '/r')
+			} else {
+				callback();
+			}
+		},
 		setObjVars : function() {
 			this.title       = this.segments[3];
 			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
 
-			this.title_url   = this.https+'://helveticascans.com/reader/series/'+this.title;
-			this.chapter_url = this.https+'://helveticascans.com/reader/read/'+this.title+'/'+this.chapter;
+			this.title_url   = this.https+'://helveticascans.com/r/series/'+this.title;
+			this.chapter_url = this.https+'://helveticascans.com/r/read/'+this.title+'/'+this.chapter;
 
 			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
 			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
@@ -1258,6 +1266,7 @@ let sites = {
 		postSetupTopBar : function() {
 			$('.topbar_left > .tbtitle:eq(2)').remove();
 			$('.topbar_right').remove();
+			$('.reader_top_panel').remove();
 		},
 		preSetupViewer : function(callback) {
 			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div

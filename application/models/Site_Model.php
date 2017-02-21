@@ -1132,14 +1132,14 @@ class HelveticaScans extends Site_Model {
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://helveticascans.com/reader/series/{$title_url}";
+		return "http://helveticascans.com/r/series/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "http://helveticascans.com/reader/read/{$title_url}/{$chapter}/",
+			'url'    => "http://helveticascans.com/r/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
