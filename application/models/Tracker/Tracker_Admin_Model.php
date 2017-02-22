@@ -30,7 +30,6 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->join('tracker_chapters', 'tracker_titles.id = tracker_chapters.title_id', 'left')
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
-			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
 			->group_start()
 				//Check if title is marked as on-going...
 				->where('tracker_titles.status', 0) //TODO: Each title should have specific interval time?
@@ -55,8 +54,12 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->group_end()
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 
-			->group_by('tracker_titles.id')
+			->group_by('tracker_titles.id, tracker_chapters.active')
+			//Check if the series is actually being tracked by someone
 			->having('timestamp IS NOT NULL')
+			//AND if it's currently marked as active by the user
+			->having('tracker_chapters.active', 'Y')
+			//AND if they have been active in the last 120 hours (5 days)
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 			->order_by('tracker_titles.title', 'ASC')
 			->get();

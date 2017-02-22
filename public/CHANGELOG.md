@@ -11,6 +11,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.5.17] 2017-02-22
 ### Changed
 - `[Backend]` updateLatestChapters now properly uses group_start/group_end instead of trying to group where queries ourself.
+- `[Backend]` updateLatestChapters should now properly no longer update series that aren't being tracked by anyone.
 
 ## [1.5.16] 2017-02-21
 ### Fixed
