@@ -63,6 +63,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 			//FIXME: This is not good for speed, but we're kind of required to do this for UX purposes.
 			//       Tablesorter has a weird sorting algorithm and has a delay before sorting which is why I'd like to avoid it.
+			//FIXME: Is it possible to reduce duplication here without reducing speed?
 			$sortOrder = $this->User_Options->get('list_sort_order');
 			switch($this->User_Options->get('list_sort_type')) {
 				case 'unread':

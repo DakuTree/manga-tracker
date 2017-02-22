@@ -11,6 +11,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 	 * This is ran every 6 hours via a cron job.
 	 */
 	public function updateLatestChapters() {
+		// @formatter:off
 		$query = $this->db
 			->select('
 				tracker_titles.id,
@@ -30,26 +31,36 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
 			->where('tracker_chapters.active', 'Y') //CHECK: Does this apply BEFORE the GROUP BY/HAVING is done?
-			//Check if title is marked as on-going...
-			->where('(tracker_titles.status = 0', NULL, FALSE) //TODO: Each title should have specific interval time?
-			//Then check if it's NULL (only occurs for new series)
-			->where('(`latest_chapter` = NULL', NULL, FALSE)
-			//Or if it hasn't updated within the past 12 hours AND isn't MangaFox
-			//FIXME: We <really> shouldn't have to specify specific sites here. A DB column would probably be better.
-			->or_where('(NOT tracker_sites.site_class = "MangaFox" AND `last_checked` < DATE_SUB(NOW(), INTERVAL 12 HOUR))', NULL, FALSE)
-			//Or if it hasn't updated within the past 12 hours AND isn't MangaFox
-			//FIXME: See above.
-			->or_where('`last_checked` < DATE_SUB(NOW(), INTERVAL 36 HOUR)))', NULL, FALSE)
-			//Check if title is marked as complete...
-			->or_where('(tracker_titles.status = 1', NULL, FALSE)
-			//Then check if it hasn't updated within the past week
-			->where('`last_checked` < DATE_SUB(NOW(), INTERVAL 1 WEEK))', NULL, FALSE)
+			->group_start()
+				//Check if title is marked as on-going...
+				->where('tracker_titles.status', 0) //TODO: Each title should have specific interval time?
+				//AND matches one of where queries below
+				->group_start()
+					//Then check if it's NULL (only occurs for new series)
+					->where('latest_chapter', NULL)
+					//OR if it hasn't updated within the past 12 hours AND isn't a custom update site
+					->or_group_start()
+						->where_not_in('tracker_sites.site_class', ['MangaFox']) //FIXME: This should apply to ALL custom update sites. Maybe a new DB column?
+						->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
+					->group_end()
+					//OR it is a custom update site and hasn't updated within the past 36 hours
+					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 36 HOUR)')
+				->group_end()
+			->group_end()
+			->or_group_start()
+				//Check if title is marked as complete...
+				->where('tracker_titles.status', 1)
+				//Then check if it hasn't updated within the past week
+				->where('last_checked < DATE_SUB(NOW(), INTERVAL 1 WEEK)')
+			->group_end()
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
+
 			->group_by('tracker_titles.id')
 			->having('timestamp IS NOT NULL')
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 			->order_by('tracker_titles.title', 'ASC')
 			->get();
+		// @formatter:on
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -75,6 +86,11 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
+
+	/**
+	 * Checks for any sites which support custom updating (usually via following lists) and updates them.
+	 * This is run hourly.
+	 */
 	public function updateCustom() {
 		$query = $this->db->select('*')
 		                  ->from('tracker_sites')

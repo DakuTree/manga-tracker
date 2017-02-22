@@ -7,7 +7,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.15] 2017-02-08
+
+## [1.5.17] 2017-02-22
+### Changed
+- `[Backend]` updateLatestChapters now properly uses group_start/group_end instead of trying to group where queries ourself.
+
+## [1.5.16] 2017-02-21
 ### Fixed
 - HelveticaScans works again after the redesign.
 
