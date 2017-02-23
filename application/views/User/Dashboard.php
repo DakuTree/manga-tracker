@@ -1,5 +1,5 @@
 <div class="alert alert-info" role="alert">
-	<strong>Update (2017/01/01):</strong> Happy New Year! MangaFox series are now updated every hour! (Down from 12-18hours)
+	<strong>Update (2017/02/23):</strong> Batoto is now updated every hour like MangaFox!
 </div>
 
 <?php if($has_inactive) { ?>

@@ -39,7 +39,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 					->where('latest_chapter', NULL)
 					//OR if it hasn't updated within the past 12 hours AND isn't a custom update site
 					->or_group_start()
-						->where_not_in('tracker_sites.site_class', ['MangaFox']) //FIXME: This should apply to ALL custom update sites. Maybe a new DB column?
+						->where('tracker_sites.use_custom', 'N')
 						->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
 					->group_end()
 					//OR it is a custom update site and hasn't updated within the past 36 hours

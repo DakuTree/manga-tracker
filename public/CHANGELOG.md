@@ -9,6 +9,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 
 ## [1.5.18] 2017-02-23
+### Added
+- bato.to now uses the following page for updates like MangaFox, which pushes the update time for bato.to up to hourly!
+-- Like MangaFox, if we can't guarantee that the new chapter is <actually> the new chapter, we won't update it, and it will be updated within 36~ hours instead. 
+
 ### Changed
 - `[Backend]` Reverted Favourites rework & replaced with a better method which works with history.
 -- Series that are favourited are now auto-added to the users list and marked as inactive. This allows history to work properly and makes sure the titles don't count it when updating series.
