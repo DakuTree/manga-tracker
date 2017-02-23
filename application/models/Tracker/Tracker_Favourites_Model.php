@@ -13,9 +13,10 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 			          ts.site, ts.site_class,
 			          tf.chapter, tf.updated_at', FALSE)
 			->from('tracker_favourites AS tf')
-			->join('tracker_titles AS tt',   'tf.title_id = tt.id',   'left')
+			->join('tracker_chapters AS tc', 'tf.chapter_id = tc.id', 'left')
+			->join('tracker_titles AS tt',   'tc.title_id = tt.id',   'left')
 			->join('tracker_sites AS ts',    'tt.site_id = ts.id',    'left')
-			->where('tf.user_id', $this->User->id) //CHECK: Is this inefficient? Would it be better to have a user_id column in tracker_favourites?
+			->where('tc.user_id', $this->User->id) //CHECK: Is this inefficient? Would it be better to have a user_id column in tracker_favourites?
 			->order_by('tf.id DESC')
 			->limit($rowsPerPage, ($rowsPerPage * ($page - 1)))
 			->get();
@@ -69,16 +70,25 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 			}
 
 			////We need the series to be tracked
-			//$idCQuery = $this->db->select('id')
-			//                     ->where('user_id', $this->User->id)
-			//                     ->where('title_id', $titleID)
-			//                     ->get('tracker_chapters');
-			//if($idCQuery->num_rows() > 0) {
-				//Check if it is already favourited
-				$idFQuery = $this->db->select('id')
+			$idCQuery = $this->db->select('id')
+			                     ->where('user_id', $userID)
+			                     ->where('title_id', $titleID)
+			                     ->get('tracker_chapters');
+			if(!($idCQuery->num_rows() > 0)) {
+				//NOTE: This pretty much repeats a lot of what we already did above. Is there a better way to do this?
+				$this->Tracker->list->update($userID, $site, $title, $chapter, FALSE);
+
+				$idCQuery = $this->db->select('id')
 				                     ->where('user_id', $userID)
 				                     ->where('title_id', $titleID)
-				                     ->where('chapter', $chapter)
+				                     ->get('tracker_chapters');
+			}
+			if($idCQuery->num_rows() > 0) {
+				$idCQueryRow = $idCQuery->row();
+
+				//Check if it is already favourited
+				$idFQuery = $this->db->select('id')
+				                     ->where('chapter_id', $idCQueryRow->id)
 				                     ->get('tracker_favourites');
 				if($idFQuery->num_rows() > 0) {
 					//Chapter is already favourited, so remove it from DB
@@ -92,13 +102,12 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 							'status' => 'Unfavourited',
 							'bool'   => TRUE
 						);
-						//$this->History->userRemoveFavourite($chapter_id, $chapter);
+						$this->History->userRemoveFavourite((int) $idCQueryRow->id, $chapter);
 					}
 				} else {
 					//Chapter is not favourited, so add to DB.
 					$isSuccess = (bool) $this->db->insert('tracker_favourites', [
-						'user_id'         => $userID,
-						'title_id'        => $titleID,
+						'chapter_id'      => $idCQueryRow->id,
 						'chapter'         => $chapter,
 						'updated_at'      => date('Y-m-d H:i:s')
 					]);
@@ -108,12 +117,10 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 							'status' => 'Favourited',
 							'bool'   => TRUE
 						);
-						//$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);
+						$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);
 					}
 				}
-			//} else {
-			//	$success['status'] = 'Series needs to be tracked before we can favourite chapters';
-			//}
+			}
 		}
 		return $success;
 	}

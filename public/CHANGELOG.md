@@ -8,6 +8,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.18] 2017-02-23
+### Changed
+- `[Backend]` Reverted Favourites rework & replaced with a better method which works with history.
+-- Series that are favourited are now auto-added to the users list and marked as inactive. This allows history to work properly and makes sure the titles don't count it when updating series.
+
 ## [1.5.17] 2017-02-22
 ### Changed
 - `[Backend]` updateLatestChapters now properly uses group_start/group_end instead of trying to group where queries ourself.

@@ -134,7 +134,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 	}
 
 
-	public function update(int $userID, string $site, string $title, string $chapter) : bool {
+	public function update(int $userID, string $site, string $title, string $chapter, bool $active = TRUE) : bool {
 		$success = FALSE;
 		if($siteData = $this->Tracker->title->getSiteDataFromURL($site)) {
 			//Validate user input
@@ -179,7 +179,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					'user_id'         => $userID,
 					'title_id'        => $titleID,
 					'current_chapter' => $chapter,
-					'category'        => $category
+					'category'        => $category,
+					'active'          => ($active ? 'Y' : 'N')
 				]);
 
 				if($success) {
