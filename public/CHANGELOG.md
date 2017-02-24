@@ -8,6 +8,13 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.19] 2017-02-24
+Starting to use "series" rather than "titles". Using "titles" to refer to followed series never felt right.
+
+### Added
+- Titles (actual titles, not series) are now updated once a month. Very rarely titles are changed on the site so it would be good to try and keep them up to date.
+-- This also does a normal update, so it shouldn't waste too many requests.
+
 ## [1.5.18] 2017-02-23
 ### Added
 - bato.to now uses the following page for updates like MangaFox, which pushes the update time for bato.to up to hourly!
