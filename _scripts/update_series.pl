@@ -24,9 +24,9 @@ open STDERR, ">>", "/var/log/perl-error.log" or die "Can't open file for STDERR"
 ###### SCRIPT ######{
 
 if($trackrLocation =~ /\/dev\//) {
-	system("sudo -u www-data CI_ENV=\"development\" php ${trackrLocation}/public/index.php admin/update_titles_custom");
+	system("sudo -u www-data CI_ENV=\"development\" php ${trackrLocation}/public/index.php admin/update_series");
 } else {
-	system("sudo -u www-data CI_ENV=\"production\" php ${trackrLocation}/public/index.php admin/update_titles_custom");
+	system("sudo -u www-data CI_ENV=\"production\" php ${trackrLocation}/public/index.php admin/update_series");
 }
 
 ####################}

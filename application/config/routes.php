@@ -99,8 +99,9 @@ $route['about/terms'] = 'About/terms';
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
 	$route['admin/migrate']              = 'AdminCLI/migrate';
+	$route['admin/update_series']        = 'AdminCLI/updateSeries';
+	$route['admin/update_series_custom'] = 'AdminCLI/updateSeriesCustom';
 	$route['admin/update_titles']        = 'AdminCLI/updateTitles';
-	$route['admin/update_titles_custom'] = 'AdminCLI/updateTitlesCustom';
 	$route['admin/test']                 = 'AdminCLI/test';
 }
 

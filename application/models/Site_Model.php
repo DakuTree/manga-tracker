@@ -225,13 +225,13 @@ class MangaFox extends Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//meta[@property='og:title']/@content",
+			"//title",
 			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
 			"div/span[@class='date']",
 			"div/h3/a"
 		);
 		if($data) {
-			$titleData['title'] = html_entity_decode(substr($data['nodes_title']->textContent, 0, -6));
+			$titleData['title'] = html_entity_decode(explode(' Manga - Read ', $data['nodes_title']->textContent)[0]);
 
 			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 			$chapterURLSegments = explode('/', $link);

@@ -23,26 +23,36 @@ class AdminCLI extends CLI_Controller {
 	}
 
 	/**
-	 * Used to check for, and update titles with new chapters.
-	 * Called via: public/index.php admin/update_titles
+	 * Used to check for, and update series with new chapters.
+	 * Called via: public/index.php admin/update_series
 	 *
 	 * This is called via a cron job every 6 hours.
-	 * Titles are only checked if they haven't been updated in 16+ hours (unless they are marked as complete, to which they are only checked once a week).
+	 * Series are only checked if they haven't been updated in 16+ hours (unless they are marked as complete, to which they are only checked once a week).
 	 */
-	public function updateTitles() {
+	public function updateSeries() {
 		$this->Tracker->admin->updateLatestChapters();
 	}
 
 	/**
 	 * Used to check for, and update titles with new chapters from a site following list.
-	 * Called via: public/index.php admin/update_titles_custom
+	 * Called via: public/index.php admin/update_series_custom
 	 *
 	 * This is called via a cron job every hour.
-	 * Titles will always be updated if they can be. For more info see: https://github.com/DakuTree/manga-tracker/issues/78
+	 * Series will always be updated if they can be. For more info see: https://github.com/DakuTree/manga-tracker/issues/78
 	 * FIXME: The entire implementation of this is an utter mess.
 	 **/
-	public function updateTitlesCustom() {
+	public function updateSeriesCustom() {
 		$this->Tracker->admin->updateCustom();
+	}
+
+	/**
+	 * Checks every series to see if title has changed, and update if so.
+	 * Called via: public/index.php admin/update_titles
+	 *
+	 * This is called via a cron job once a month.
+	 **/
+	public function updateTitles() {
+		$this->Tracker->admin->updateTitles();
 	}
 
 	public function test() {

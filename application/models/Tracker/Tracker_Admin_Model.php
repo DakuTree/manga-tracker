@@ -5,9 +5,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		parent::__construct();
 	}
 
-
 	/**
-	 * Checks for any titles that haven't updated in 16 hours and updates them.
+	 * Checks for any series that haven't updated in 16 hours and updates them.
 	 * This is ran every 6 hours via a cron job.
 	 */
 	public function updateLatestChapters() {
@@ -89,7 +88,6 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
-
 	/**
 	 * Checks for any sites which support custom updating (usually via following lists) and updates them.
 	 * This is run hourly.
@@ -131,6 +129,63 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 						log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} failed to custom update successfully");
 						print " - FAILED TO PARSE\n";
 					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Checks every series to see if title has changed, and update if so.
+	 * This is ran once a month via a cron job
+	 */
+	public function updateTitles() {
+		// @formatter:off
+		$query = $this->db
+			->select('
+				tracker_titles.id,
+				tracker_titles.title,
+				tracker_titles.title_url,
+				tracker_titles.status,
+				tracker_sites.site,
+				tracker_sites.site_class,
+				tracker_sites.status,
+				tracker_titles.latest_chapter,
+				tracker_titles.last_updated
+			')
+			->from('tracker_titles')
+			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+			->where('tracker_sites.status', 'enabled')
+
+			->group_by('tracker_titles.id')
+			->order_by('tracker_titles.title', 'ASC')
+			->get();
+		// @formatter:on
+
+		if($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				print "> {$row->title} <{$row->site_class}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
+				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
+				if($titleData['title'] && is_array($titleData) && !is_null($titleData['latest_chapter'])) {
+					if($titleData['title'] !== $row->title) {
+						$this->db->set('title', $titleData['title'])
+						         ->where('id', $row->id)
+						         ->update('tracker_titles');
+						//TODO: Add to history somehow?
+						print " - NEW TITLE ({$titleData['title']})\n";
+					} else {
+						print " - TITLE NOT CHANGED\n";
+					}
+
+					//We might as well try to update as well.
+					if($this->Tracker->title->updateByID((int) $row->id, $titleData['latest_chapter'])) {
+						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+						         ->where('id', $row->id)
+						         ->update('tracker_titles');
+					}
+				} else {
+					log_message('error', "{$row->title} failed to update title successfully");
+					print " - FAILED TO PARSE\n";
 				}
 			}
 		}
