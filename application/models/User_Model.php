@@ -124,4 +124,45 @@ class User_Model extends CI_Model {
 
 		return $userID ?? FALSE;
 	}
+
+	/** NOTICES **/
+
+	public function getLatestNotice() {
+		$query = $this->db
+			->select('tn.notice, tn.created_at')
+			->from('tracker_notices AS tn')
+			->where("id > IFNULL((SELECT hidden_notice_id FROM tracker_user_notices WHERE user_id = {$this->User->id}), '0')", NULL, FALSE)
+			->order_by('tn.id DESC')
+			->limit(1)
+			->get();
+
+		$noticeData = [];
+		if($query->num_rows() > 0) {
+			$row = $query->row();
+
+			$noticeData = [
+				'date' => str_replace('-', '/', substr($row->created_at, 0, 10)),
+				'text' => str_replace('|', '<br/>', htmlspecialchars($row->notice))
+			];
+		}
+
+		return $noticeData;
+	}
+	public function hideLatestNotice() {
+		$idQuery = $this->db->select('1')
+		                    ->where('user_id', $this->User->id)
+		                    ->get('tracker_user_notices');
+		if($idQuery->num_rows() > 0) {
+			$success = (bool) $this->db->set('hidden_notice_id', '(SELECT id FROM tracker_notices ORDER BY id DESC LIMIT 1)', FALSE)
+			                           ->where('user_id', $this->User->id)
+			                           ->update('tracker_user_notices');
+		} else {
+			$success = (bool) $this->db->insert('tracker_user_notices', [
+				'user_id'           => $this->User->id,
+				'hidden_notice_id'  => '(SELECT id FROM tracker_notices ORDER BY id DESC LIMIT 1)'
+			], FALSE);
+		}
+
+		return $success;
+	}
 }

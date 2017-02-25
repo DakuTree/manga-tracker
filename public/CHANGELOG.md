@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.19] 2017-02-25
+### Added
+- Proper Notice System (Issue #67) + Ability to hide notices permanently.
+
 ## [1.5.19] 2017-02-24
 Starting to use "series" rather than "titles". Using "titles" to refer to followed series never felt right.
 

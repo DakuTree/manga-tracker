@@ -1,6 +1,9 @@
-<div class="alert alert-info" role="alert">
-	<strong>Update (2017/02/23):</strong> Batoto is now updated every hour like MangaFox!
+<?php if($notice = $this->User->getLatestNotice()) { ?>
+<div id="update-notice" class="alert alert-info" role="alert">
+	<a href="#" class="close" data-dismiss="alert">&times;</a>
+	<strong>Update (<?=$notice['date']?>):</strong> <?=$notice['text']?>
 </div>
+<?php } ?>
 
 <?php if($has_inactive) { ?>
 <div class="alert alert-warning" role="alert">

@@ -77,6 +77,7 @@ $route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
 $route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
 $route['ajax/tag_update']['post']     = 'Ajax/TrackerInline/tag_update';
 $route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';
+$route['ajax/hide_notice']['post']    = 'Ajax/TrackerInline/hide_notice';
 
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 $route['import_list']['post']         = 'Ajax/TrackerInline/import';

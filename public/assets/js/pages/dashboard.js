@@ -270,6 +270,10 @@ $(function(){
 	});
 	handleScroll(); //Make sure we also trigger on page load.
 
+	$('#update-notice').on('closed.bs.alert', function () {
+		$.post(base_url + 'ajax/hide_notice');
+	});
+
 	function handleScroll() {
 		if($window.scrollTop() >= offset) {
 			list_table.css('margin-top', '97px');

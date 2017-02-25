@@ -446,6 +446,9 @@ body {
 
 	text-align: center;
 }
+#page[data-page="dashboard"] > .alert .close {
+	line-height: inherit;
+}
 #page[data-page="dashboard"] > div {
 	margin-bottom: 5px;
 }

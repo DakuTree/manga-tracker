@@ -166,4 +166,21 @@ class TrackerInline extends Auth_Controller {
 			$this->output->set_status_header('400', 'Request contained invalid elements!');
 		}
 	}
+
+	/**
+	 * Used to permanently hide the current notice.
+	 *
+	 * REQ_PARAMS: [none]
+	 * METHOD:     POST
+	 * URL:        /ajax/hide_notice
+	 */
+	public function hide_notice() {
+		$status = $this->User->hideLatestNotice();
+		if($this->User->hideLatestNotice()) {
+			$this->output->set_status_header('200'); //Success!
+		} else {
+			$this->output->set_status_header('400', 'Something went wrong');
+
+		}
+	}
 }
