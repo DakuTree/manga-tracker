@@ -8,6 +8,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.20]
+### Changed
+- `[Backend]` Updated CI-PHPUnit-Test, PHPUnit, Codeception, normalize.css, font-awesome, bootstrap, cookieconsent & jquery-validation.
+- Terms page is now linked from the footer.
+
 ## [1.5.19] 2017-02-25
 ### Added
 - Proper Notice System (Issue #67) + Ability to hide notices permanently.
