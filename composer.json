@@ -6,7 +6,7 @@
 	"require": {
 		"php"                           : ">=7.0.0",
 		"codeigniter/framework"         : "3.1.*",
-		"kenjis/ci-phpunit-test"        : "dev-master#87d6d29a33255bfe6a5e3996b550f2dabc779357",
+		"kenjis/ci-phpunit-test"        : "0.14.0",
 
 		"bower-asset/jquery"            : "1.12.4",
 		"bower-asset/jquery-validation" : "1.15.0",
@@ -18,8 +18,8 @@
 		"bower-asset/cookieconsent"     : "3.0.2"
 	},
 	"require-dev": {
-		"phpunit/phpunit"         : "5.3.*",
-		"codeception/codeception" : "2.2.4"
+		"phpunit/phpunit"         : "5.7.14",
+		"codeception/codeception" : "2.2.9"
 	},
 	"repositories": [
 		{
