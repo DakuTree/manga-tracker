@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "39856fce8de54b5580ec8e79ec9c9412",
+    "content-hash": "b7c4b648259dbb3c09a0aa9c5111bcfb",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -57,78 +57,35 @@
         },
         {
             "name": "bower-asset/cookieconsent",
-            "version": "3.0.2",
+            "version": "3.0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/insites/cookieconsent.git",
-                "reference": "e3078a53abe423874413c81e0f3829ce83c2c9af"
+                "reference": "966cd4e73b0425a6b7f4f56dfd74a74f6cfbd185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/insites/cookieconsent/zipball/e3078a53abe423874413c81e0f3829ce83c2c9af",
-                "reference": "e3078a53abe423874413c81e0f3829ce83c2c9af",
-                "shasum": ""
+                "url": "https://api.github.com/repos/insites/cookieconsent/zipball/966cd4e73b0425a6b7f4f56dfd74a74f6cfbd185",
+                "reference": "966cd4e73b0425a6b7f4f56dfd74a74f6cfbd185",
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "build/cookieconsent.min.js",
-                    "build/cookieconsent.min.css"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "bower_components",
-                    "test",
-                    "tests"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Insites' cookie consent plugin",
-            "keywords": [
-                "cookie",
-                "cookieconsent",
-                "law"
-            ]
+            "type": "library"
         },
         {
             "name": "bower-asset/font-awesome",
-            "version": "v4.6.3",
+            "version": "4.7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "8e241f209faa1dd2182c9fdc9c352d8806504a4e"
+                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/8e241f209faa1dd2182c9fdc9c352d8806504a4e",
-                "reference": "8e241f209faa1dd2182c9fdc9c352d8806504a4e",
-                "shasum": ""
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/a8386aae19e200ddb0f6845b5feeee5eb7013687",
+                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "less/font-awesome.less",
-                    "scss/font-awesome.scss"
-                ],
-                "bower-asset-ignore": [
-                    "*/.*",
-                    "*.json",
-                    "src",
-                    "*.yml",
-                    "Gemfile",
-                    "Gemfile.lock",
-                    "*.md"
-                ]
-            },
-            "license": [
-                "OFL-1.1",
-                "MIT",
-                "CC-BY-3.0"
-            ],
-            "description": "Font Awesome"
+            "type": "library"
         },
         {
             "name": "bower-asset/html5shiv",
@@ -192,72 +149,38 @@
         },
         {
             "name": "bower-asset/jquery-validation",
-            "version": "1.15.0",
+            "version": "1.16.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jquery-validation/jquery-validation.git",
-                "reference": "1621cadc940900a4a7809fe29f2b568328be4340"
+                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/1621cadc940900a4a7809fe29f2b568328be4340",
-                "reference": "1621cadc940900a4a7809fe29f2b568328be4340",
-                "shasum": ""
+                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/29b9c702b9c831419f9f774d2acb86f42f803e11",
+                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.2"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "dist/jquery.validate.js",
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "bower_components",
-                    "test",
-                    "demo",
-                    "lib"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Form validation made easy",
-            "keywords": [
-                "forms",
-                "validate",
-                "validation"
-            ]
+            "type": "library"
         },
         {
             "name": "bower-asset/normalize.css",
-            "version": "4.1.1",
+            "version": "5.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/necolas/normalize.css.git",
-                "reference": "39c21b3678ff1ebd2aebc51ec56d55d18a5a68e3"
+                "reference": "f06565fe8e0e1ad1b88f2732719e28ed97bde40f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/necolas/normalize.css/zipball/39c21b3678ff1ebd2aebc51ec56d55d18a5a68e3",
-                "reference": "39c21b3678ff1ebd2aebc51ec56d55d18a5a68e3",
-                "shasum": ""
+                "url": "https://api.github.com/repos/necolas/normalize.css/zipball/f06565fe8e0e1ad1b88f2732719e28ed97bde40f",
+                "reference": "f06565fe8e0e1ad1b88f2732719e28ed97bde40f",
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "normalize.css",
-                "bower-asset-ignore": [
-                    "CHANGELOG.md",
-                    "CONTRIBUTING.md",
-                    "package.json",
-                    "README.md",
-                    "test.html"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A modern alternative to CSS resets"
+            "type": "library"
         },
         {
             "name": "bower-asset/respond",
