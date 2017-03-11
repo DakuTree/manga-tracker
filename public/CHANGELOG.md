@@ -8,7 +8,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
-## [1.5.20]
+## [1.5.21] 2017-03-11
+### Changed
+- Updated LICENSE.md
+
+## [1.5.20] 2017-02-27
 ### Changed
 - `[Backend]` Updated CI-PHPUnit-Test, PHPUnit, Codeception, normalize.css, font-awesome, bootstrap, cookieconsent & jquery-validation.
 - Terms page is now linked from the footer.
