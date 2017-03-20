@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.22] 2017-03-20
+### Changed
+- Updated CodeIgniter to 3.1.4
+
 ## [1.5.21] 2017-03-11
 ### Changed
 - Updated LICENSE.md
