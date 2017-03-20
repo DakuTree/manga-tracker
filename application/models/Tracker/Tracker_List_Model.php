@@ -133,7 +133,6 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		return $arr;
 	}
 
-
 	public function update(int $userID, string $site, string $title, string $chapter, bool $active = TRUE) : bool {
 		$success = FALSE;
 		if($siteData = $this->Tracker->title->getSiteDataFromURL($site)) {
@@ -174,7 +173,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					$this->History->userUpdateTitle((int) $idQueryRow->id, $chapter);
 				}
 			} else {
-				$category = $this->User_Options->get_by_userid('default_series_category', $userID);
+				$category = $this->User_Options->get('default_series_category', $userID);
 				$success = (bool) $this->db->insert('tracker_chapters', [
 					'user_id'         => $userID,
 					'title_id'        => $titleID,

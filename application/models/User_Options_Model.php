@@ -104,8 +104,9 @@ class User_Options_Model extends CI_Model {
 	 * @param string $option
 	 * @return mixed Returns option value as STRING, or FALSE if option does not exist.
 	 */
-	public function get(string $option) {
-		return $this->get_by_userid($option, (int) $this->User->id);
+	public function get(string $option, ?int $userID = NULL) {
+		$userID = (is_null($userID) ? (int) $this->User->id : $userID);
+		return $this->get_by_userid($option, $userID);
 	}
 
 	/**
@@ -115,8 +116,6 @@ class User_Options_Model extends CI_Model {
 	 * @return bool
 	 */
 	public function set(string $option, $value) : bool {
-
-
 		//TODO: Check if user is logged in, get ID
 		//Check if user is logged in & set ID if so
 		if($userID = $this->User->id) {
@@ -148,7 +147,7 @@ class User_Options_Model extends CI_Model {
 	}
 
 
-	public function get_by_userid(string $option, int $userID) {
+	private function get_by_userid(string $option, int $userID) {
 		//Check if option is valid
 		if(array_key_exists($option, $this->options)) {
 			//Check if userID is > 0
