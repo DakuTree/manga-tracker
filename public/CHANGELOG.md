@@ -9,8 +9,13 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 
 ## [1.5.22] 2017-03-20
+### Added
+- Public lists! These are disabled by default and have to be enabled via the options pages.
+-- List is provided in both HTML and JSON format, and can be accessed at /list/USERNAME.FORMAT. This will 404 if the user does not have the option enabled.
+
 ### Changed
 - Updated CodeIgniter to 3.1.4
+- `[Backend]` User_Options->get() now has userID param.
 
 ## [1.5.21] 2017-03-11
 ### Changed

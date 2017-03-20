@@ -66,6 +66,9 @@ $route['user/favourites']            = 'User/Favourites';
 $route['user/favourites/([0-9]+)']   = 'User/Favourites/index/$1';
 $route['user/options']               = 'User/Options';
 
+$route['list/([a-zA-Z0-9_-]+)']              = 'User/PublicList/index/$1';
+$route['list/([a-zA-Z0-9_-]+)\.([a-zA-Z]+)'] = 'User/PublicList/index/$1/$2';
+
 $route['history/([0-9]+)']           = 'TitleHistory/index/$1';
 $route['history/([0-9]+)/([0-9]+)']  = 'TitleHistory/index/$1/$2';
 

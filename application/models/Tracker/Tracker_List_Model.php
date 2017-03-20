@@ -5,7 +5,9 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		parent::__construct();
 	}
 
-	public function get() {
+	public function get(?int $userID = NULL) {
+		$userID = (is_null($userID) ? (int) $this->User->id : $userID);
+
 		$query = $this->db
 			->select('tracker_chapters.*,
 			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
@@ -13,12 +15,13 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
-			->where('tracker_chapters.user_id', $this->User->id)
+			->where('tracker_chapters.user_id', $userID)
 			->where('tracker_chapters.active', 'Y')
 			->get();
 
 		$arr = ['series' => [], 'has_inactive' => FALSE];
-		foreach($this->enabledCategories as $category => $name) {
+		$enabledCategories = $this->getEnabledCategories($userID);
+		foreach($enabledCategories as $category => $name) {
 			$arr['series'][$category] = [
 				'name'         => $name,
 				'manga'        => [],
@@ -64,8 +67,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			//FIXME: This is not good for speed, but we're kind of required to do this for UX purposes.
 			//       Tablesorter has a weird sorting algorithm and has a delay before sorting which is why I'd like to avoid it.
 			//FIXME: Is it possible to reduce duplication here without reducing speed?
-			$sortOrder = $this->User_Options->get('list_sort_order');
-			switch($this->User_Options->get('list_sort_type')) {
+			$sortOrder = $this->User_Options->get('list_sort_order', $userID);
+			switch($this->User_Options->get('list_sort_type', $userID)) {
 				case 'unread':
 					foreach (array_keys($arr['series']) as $category) {
 						usort($arr['series'][$category]['manga'], function ($a, $b) use($sortOrder) {

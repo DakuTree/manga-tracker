@@ -31,6 +31,7 @@
 
 <body>
 
+<?php if($show_header) { ?>
 <header id="site-header">
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -74,6 +75,7 @@
 		</div>
 	</nav>
 </header>
+<?php } ?>
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <div id="page-wrap">

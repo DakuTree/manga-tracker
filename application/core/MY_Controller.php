@@ -30,6 +30,9 @@ class MY_Controller extends CI_Controller {
 		//We could just use global, but this is the only var we need in both header+footer
 		$this->footer_data['page'] = $this->header_data['page'];
 
+		$this->header_data['show_header'] = (array_key_exists('show_header', $this->header_data) ? $this->header_data['show_header'] : TRUE);
+		$this->footer_data['show_footer'] = (array_key_exists('show_footer', $this->footer_data) ? $this->footer_data['show_footer'] : TRUE);
+
 		$this->load->view('common/header', ($this->global_data + $this->header_data));
 		foreach(func_get_args() as $path) {
 			view_exists($path) or show_404(); //TODO (FIXME): This seems bad performance wise in the long run. Is there any reason to have it in production?

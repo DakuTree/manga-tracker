@@ -77,6 +77,23 @@
 					</div>
 				</div>
 
+
+				<div id="options-public-list">
+					<div class="form-group">
+						<?=form_label('Enable Public List (<a href="'.base_url("list/{$username}.html").'">HTML</a> | <a href="'.base_url("list/{$username}.json").'">JSON</a>)', 'enable_public_list')?>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary <?=(isset($enable_public_list_enabled['checked']) ? 'active' : '')?>">
+								<?=form_radio($enable_public_list_enabled)?>
+								<span>Enabled</span>
+							</label>
+							<label class="btn btn-primary <?=(isset($enable_public_list_disabled['checked']) ? 'active' : '')?>">
+								<?=form_radio($enable_public_list_disabled)?>
+								<span>Disabled</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			
 				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success')))?>
 			</form>
 		</div>

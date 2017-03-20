@@ -93,6 +93,15 @@ class User_Options_Model extends CI_Model {
 				1 => 'dark'
 			)
 		),
+
+		'enable_public_list' => array(
+			'default' => 'disabled',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'disabled',
+				1 => 'enabled'
+			)
+		),
 	);
 
 	public function __construct() {
@@ -101,11 +110,15 @@ class User_Options_Model extends CI_Model {
 
 	/**
 	 * Get user option, or default option if it does not exist.
-	 * @param string $option
+	 *
+	 * @param string   $option
+	 * @param int|null $userID
+	 *
 	 * @return mixed Returns option value as STRING, or FALSE if option does not exist.
 	 */
 	public function get(string $option, ?int $userID = NULL) {
 		$userID = (is_null($userID) ? (int) $this->User->id : $userID);
+
 		return $this->get_by_userid($option, $userID);
 	}
 
@@ -146,7 +159,6 @@ class User_Options_Model extends CI_Model {
 		return $success;
 	}
 
-
 	private function get_by_userid(string $option, int $userID) {
 		//Check if option is valid
 		if(array_key_exists($option, $this->options)) {
@@ -172,14 +184,25 @@ class User_Options_Model extends CI_Model {
 
 	private function get_db(string $option, int $userID) {
 		//This function assumes we've already done some basic validation.
-		if(!($data = $this->session->tempdata("option_{$option}"))) {
+
+		//FIXME: Query duplication.
+		if($this->User->id !== $userID) {
 			$query = $this->db->select('value_str, value_int')
 			                  ->from('user_options')
 			                  ->where('user_id', $userID)
 			                  ->where('name',    $option)
 			                  ->limit(1);
 			$data = $query->get()->row_array();
-			$this->session->set_tempdata("option_{$option}", $data, 3600);
+		} else {
+			if(!($data = $this->session->tempdata("option_{$option}"))) {
+				$query = $this->db->select('value_str, value_int')
+				                  ->from('user_options')
+				                  ->where('user_id', $userID)
+				                  ->where('name',    $option)
+				                  ->limit(1);
+				$data = $query->get()->row_array();
+				$this->session->set_tempdata("option_{$option}", $data, 3600);
+			}
 		}
 		return $data;
 	}

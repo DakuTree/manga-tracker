@@ -41,6 +41,9 @@ class Options extends Auth_Controller {
 			$this->User_Options->set('list_sort_order', $this->input->post('list_sort_order'));
 			
 			$this->User_Options->set('theme', $this->input->post('theme'));
+
+
+			$this->User_Options->set('enable_public_list', $this->input->post('enable_public_list'));
 		}
 
 		/*** CUSTOM CATEGORIES ***/
@@ -70,7 +73,6 @@ class Options extends Auth_Controller {
 			$this->User_Options->get('enable_live_countdown_timer')
 		));
 
-
 		$this->body_data['list_sort_type'] = array_intersect_key(
 			array(
 				'unread'       => 'Unread',
@@ -99,6 +101,11 @@ class Options extends Auth_Controller {
 			array_flip(array_values($this->User_Options->options['theme']['valid_options']))
 		);
 		$this->body_data['theme_selected'] = $this->User_Options->get('theme');
+
+		$this->body_data = array_merge($this->body_data, $this->User_Options->generate_radio_array(
+			'enable_public_list',
+			$this->User_Options->get('enable_public_list')
+		));
 
 		$this->_render_page('User/Options');
 	}
