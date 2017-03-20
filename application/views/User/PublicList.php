@@ -57,17 +57,7 @@
 						<div class="tags">
 							<?php } ?>
 							<small>
-								<a href="<?=base_url("history/{$row['title_data']['id']}")?>">History</a>
-								|
-								<a href="#" class="edit-tags">Edit</a>
-								|
 								Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
-								<div class="input-group hidden tag-edit">
-									<input type="text" class="form-control" placeholder="tag1,tag2,tag3" maxlength="255" pattern='[a-z0-9-_,]{0,255}' value="<?=$row['tag_list']?>">
-									<span class="input-group-btn">
-								<button class="btn btn-default" type="button">Save</button>
-							</span>
-								</div><!-- /input-group -->
 							</small>
 						</div>
 				</td>
