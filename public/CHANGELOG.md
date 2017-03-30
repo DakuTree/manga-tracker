@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.5.23] 2017-03-30
+### Fixed
+- MangaStream works again. (They changed domain for the reader)
+
 ## [1.5.22] 2017-03-20
 ### Added
 - Public lists! These are disabled by default and have to be enabled via the options pages.
