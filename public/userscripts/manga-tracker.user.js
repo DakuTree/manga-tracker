@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-03-30
-// @version      1.4.3
+// @updated      2017-03-31
+// @version      1.4.4
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -974,7 +974,7 @@ let sites = {
 			this.chapter     = this.segments[3]+'/'+this.segments[4];
 
 			this.title_url   = this.https+'://readms.net/manga/'+this.title;
-			this.chapter_url = this.https+'://readms.net/r/'+this.title+'/'+this.chapter;
+			this.chapter_url = 'http://readms.net/r/'+this.title+'/'+this.chapter; //FIXME: MS only seems to use http urls, even if you are on https
 
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
 			this.chapterListCurrent = this.chapter_url+'/1';
