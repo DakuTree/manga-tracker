@@ -977,7 +977,7 @@ let sites = {
 			this.chapter_url =  this.https+'://readms.net/r/'+this.title+'/'+this.chapter;
 
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
-			this.chapterListCurrent = this.chapter_url+'/1'.replace('https://', 'http://'); //FIXME: MS only seems to use http urls, even if you are on https
+			this.chapterListCurrent = (this.chapter_url+'/1').replace('https://', 'http://'); //FIXME: MS only seems to use http urls, even if you are on https
 
 			this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
 			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();
