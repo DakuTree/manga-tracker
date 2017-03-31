@@ -11,6 +11,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - MangaStream now uses readms.net urls. The old mangastream URLs still work, but I'd rather not take any chances.
 
+### Fixed
+- MangaStream icon works again.
+
 ## [1.5.23] 2017-03-30
 ### Fixed
 - MangaStream works again. (They changed domain for the reader)
