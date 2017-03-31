@@ -7,6 +7,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.5.24] 2014-03-30
+### Changed
+- MangaStream now uses readms.net urls. The old mangastream URLs still work, but I'd rather not take any chances.
 
 ## [1.5.23] 2017-03-30
 ### Fixed

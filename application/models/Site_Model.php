@@ -801,12 +801,12 @@ class MangaStream extends Site_Model {
 	public $chapterFormat = '/^(.*?)\/[0-9]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://mangastream.com/manga/{$title_url}/";
+		return "https://readms.net/manga/{$title_url}/";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "https://mangastream.com/r/{$title_url}/{$chapter}",
+			'url'    => "https://readms.net/r/{$title_url}/{$chapter}",
 			'number' => 'c'.explode('/', $chapter)[0]
 		];
 	}
