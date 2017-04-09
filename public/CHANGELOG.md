@@ -7,7 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.24] 2014-03-31
+## [1.5.25] 2017-04-09
+### Fixed
+- DynastyScans now uses HTTPS. (This should fix updating)
+
+## [1.5.24] 2017-03-31
 ### Changed
 - MangaStream now uses readms.net urls. The old mangastream URLs still work, but I'd rather not take any chances.
 

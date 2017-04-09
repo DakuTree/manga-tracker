@@ -651,7 +651,7 @@ class DynastyScans extends Site_Model {
 		$title_parts = explode(':--:', $title_string);
 		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
 
-		return 'http://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
+		return 'https://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
 	}
 
 	public function getChapterData(string $title_string, string $chapter) : array {
@@ -664,7 +664,7 @@ class DynastyScans extends Site_Model {
 		*/
 
 		$chapterData = [
-			'url'    => 'http://dynasty-scans.com/chapters/' . $title_parts[0].'_'.$chapter,
+			'url'    => 'https://dynasty-scans.com/chapters/' . $title_parts[0].'_'.$chapter,
 			'number' => ''
 		];
 
