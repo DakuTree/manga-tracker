@@ -46,4 +46,4 @@ after_success:
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
 
 after_failure:
-  - cd $TRAVIS_BUILD_DIR && cat application/logs/*
+  - cd $TRAVIS_BUILD_DIR && cat application/logs/* | egrep -v '^DEBUG'
