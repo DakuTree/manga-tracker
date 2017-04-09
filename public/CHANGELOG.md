@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.5.25] 2017-04-09
+### Changed
+- Travis log now only includes errors.
+- DynastyScans test no longer runs on Travis (due to SSL).
+
 ### Fixed
 - DynastyScans now uses HTTPS. (This should fix updating)
 
