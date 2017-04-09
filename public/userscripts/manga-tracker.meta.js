@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Tracker
 // @namespace    https://github.com/DakuTree/userscripts
-// @version      1.4.5
+// @version      1.4.6
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // ==/UserScript==
