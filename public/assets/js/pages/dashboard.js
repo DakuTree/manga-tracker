@@ -164,22 +164,26 @@ $(function(){
 		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
 			let tag_array = tag_list.split(',');
 			if($.inArray('none', tag_array) === -1) {
-				$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
-					$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
-					$(_this).closest('.tag-edit').toggleClass('hidden');
-				}).fail(function(jqXHR, textStatus, errorThrown) {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: ' + errorThrown);
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
-					}
-				});
+				if(tag_list.match(/mal:[0-9]+/g).length <= 1) {
+					$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
+						$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
+						$(_this).closest('.tag-edit').toggleClass('hidden');
+					}).fail(function(jqXHR, textStatus, errorThrown) {
+						switch(jqXHR.status) {
+							case 400:
+								alert('ERROR: ' + errorThrown);
+								break;
+							case 429:
+								alert('ERROR: Rate limit reached.');
+								break;
+							default:
+								alert('ERROR: Something went wrong!\n'+errorThrown);
+								break;
+						}
+					});
+				} else {
+					alert('You can only use one MAL ID tag per series');
+				}
 			} else {
 				alert('"none" is a restricted tag.');
 			}
