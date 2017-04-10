@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.5.26] 2017-04-10
 ### Changed
 - You can now only have one MAL metatag per series.
+- Duplicate and empty tags are now removed by default.
 
 ## [1.5.25] 2017-04-09
 ### Changed

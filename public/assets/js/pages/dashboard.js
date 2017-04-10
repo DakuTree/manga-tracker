@@ -162,11 +162,13 @@ $(function(){
 
 		//Validation
 		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
-			let tag_array = tag_list.split(',');
+			let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
+			    tag_list_new = tag_array.join(',');
 			if($.inArray('none', tag_array) === -1) {
 				if(tag_list.match(/mal:[0-9]+/g).length <= 1) {
-					$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_array.join(',')}, function () {
-						$(_this).closest('.tags').find('.tag-list').text(tag_array.join(',') || 'none');
+					$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_list_new}, function () {
+						$(input).val(tag_list_new);
+						$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');
 						$(_this).closest('.tag-edit').toggleClass('hidden');
 					}).fail(function(jqXHR, textStatus, errorThrown) {
 						switch(jqXHR.status) {
@@ -299,4 +301,7 @@ $(function(){
 		}
 		return true;
 	}
+
+	/* http://stackoverflow.com/a/9229821/1168377 */
+	function uniq(a) { return Array.from(new Set(a)); }
 });

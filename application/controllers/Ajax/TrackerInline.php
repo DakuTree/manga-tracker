@@ -126,8 +126,9 @@ class TrackerInline extends Auth_Controller {
 		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_contains[none]');
 
 		if($this->form_validation->run() === TRUE) {
-			$success = $this->Tracker->tag->updateByID($this->userID, $this->input->post('id'), $this->input->post('tag_string'));
+			$tag_string = $this->_clean_tag_string($this->input->post('tag_string'));
 
+			$success = $this->Tracker->tag->updateByID($this->userID, $this->input->post('id'), $tag_string);
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
 			} else {
@@ -136,6 +137,13 @@ class TrackerInline extends Auth_Controller {
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
+	}
+	private function _clean_tag_string(string $tag_string) {
+		$tag_array = explode(',', $tag_string);
+		$tag_array = array_unique($tag_array);
+		$tag_array = array_filter($tag_array);
+
+		return implode(',', $tag_array);
 	}
 
 	/**
