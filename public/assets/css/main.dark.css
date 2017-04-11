@@ -79,6 +79,12 @@ h1 {
 .table-striped > tbody > tr:nth-of-type(odd) {
 	background-color: #161616;
 }
+.tooltip {
+	white-space: nowrap;
+}
+.tooltip .tooltip-inner {
+	max-width: 100%;
+}
 #site-header {
 	/* dropdown */
 }
