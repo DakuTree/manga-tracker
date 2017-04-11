@@ -7,10 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.26] 2017-04-10
+## [1.5.26] 2017-04-10 - 2017-04-11
 ### Changed
 - You can now only have one MAL metatag per series.
 - Duplicate and empty tags are now removed by default.
+- Tooltips should no longer be partly hidden on certain sizes.
 
 ## [1.5.25] 2017-04-09
 ### Changed
