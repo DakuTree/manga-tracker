@@ -102,6 +102,16 @@ class User_Options_Model extends CI_Model {
 				1 => 'enabled'
 			)
 		),
+
+		'mal_sync' => array(
+			'default' => 'disabled',
+			'type' => 'int',
+			'valid_options' => array(
+				0 => 'disabled',
+				1 => 'csrf',
+				2 => 'api'
+			)
+		),
 	);
 
 	public function __construct() {

@@ -16,13 +16,14 @@ class Options extends Auth_Controller {
 		$usedCategories   = $this->Tracker->category->getUsed($this->User->id);
 
 		//NOTE: The checkbox validation is handled in run()
-		$this->form_validation->set_rules('category_custom_1_text',  'Custom Category 1 Text', 'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
+		$this->form_validation->set_rules('category_custom_1_text',  'Custom Category 1 Text',  'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
 		$this->form_validation->set_rules('category_custom_2_text',  'Custom Category 2 Text',  'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
 		$this->form_validation->set_rules('category_custom_3_text',  'Custom Category 3 Text',  'trim|regex_match[/^[a-zA-Z0-9-_\\s]{0,16}$/]');
 		$this->form_validation->set_rules('default_series_category', 'Default Series Category', 'required|is_valid_option_value[default_series_category]');
 		$this->form_validation->set_rules('list_sort_type',          'List Sort Type',          'required|is_valid_option_value[list_sort_type]');
 		$this->form_validation->set_rules('list_sort_order',         'List Sort Order',         'required|is_valid_option_value[list_sort_order]');
 		$this->form_validation->set_rules('theme',                   'Theme',                   'required|is_valid_option_value[theme]');
+		$this->form_validation->set_rules('mal_sync',                'MAL Sync',                'required|is_valid_option_value[mal_sync]');
 
 		if ($isValid = $this->form_validation->run() === TRUE) {
 			foreach($customCategories as $categoryK => $category) {
@@ -44,6 +45,8 @@ class Options extends Auth_Controller {
 
 
 			$this->User_Options->set('enable_public_list', $this->input->post('enable_public_list'));
+
+			$this->User_Options->set('mal_sync', $this->input->post('mal_sync'));
 		}
 
 		/*** CUSTOM CATEGORIES ***/
@@ -92,7 +95,8 @@ class Options extends Auth_Controller {
 			array_flip(array_values($this->User_Options->options['list_sort_order']['valid_options']))
 		);
 		$this->body_data['list_sort_order_selected'] = $this->User_Options->get('list_sort_order');
-		
+
+		/** THEME  **/
 		$this->body_data['theme'] = array_intersect_key(
 			array(
 				'light' => 'Light',
@@ -102,10 +106,18 @@ class Options extends Auth_Controller {
 		);
 		$this->body_data['theme_selected'] = $this->User_Options->get('theme');
 
+		/** ENABLE PUBLIC LIST **/
 		$this->body_data = array_merge($this->body_data, $this->User_Options->generate_radio_array(
 			'enable_public_list',
 			$this->User_Options->get('enable_public_list')
 		));
+
+		/** ENABLE MAL SYNC **/
+		$this->body_data = array_merge($this->body_data, $this->User_Options->generate_radio_array(
+			'mal_sync',
+			$this->User_Options->get('mal_sync')
+		));
+
 
 		$this->_render_page('User/Options');
 	}

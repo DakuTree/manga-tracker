@@ -77,7 +77,6 @@
 					</div>
 				</div>
 
-
 				<div id="options-public-list">
 					<div class="form-group">
 						<?=form_label('Enable Public List (<a href="'.base_url("list/{$username}.html").'">HTML</a> | <a href="'.base_url("list/{$username}.json").'">JSON</a>)', 'enable_public_list')?>
@@ -89,6 +88,26 @@
 							<label class="btn btn-primary <?=(isset($enable_public_list_disabled['checked']) ? 'active' : '')?>">
 								<?=form_radio($enable_public_list_disabled)?>
 								<span>Disabled</span>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div id="options-mal-sync">
+					<div class="form-group">
+						<?=form_label('Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> add a \'mal:#id#\' tag for syncing to work for that series.<br>For example, One Piece would have the \'mal:13\' tag."></i>', 'mal_sync')?>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary <?=(isset($mal_sync_disabled['checked']) ? 'active' : '')?>">
+								<?=form_radio($mal_sync_disabled)?>
+								<span>Disabled</span>
+							</label>
+							<label class="btn btn-primary <?=(isset($mal_sync_csrf['checked']) ? 'active' : '')?>">
+								<?=form_radio($mal_sync_csrf)?>
+								<span>CSRF <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses CSRF (Cross Site Request Forgery) to allow us to use MAL's internal API to update.<br>It requires the user to be logged into MAL for it to work properly."></i></span>
+							</label>
+							<label class="btn btn-primary <?=(isset($mal_sync_api['checked']) ? 'active' : '')?>" disabled>
+								<?=form_radio($mal_sync_api)?>
+								<span>API <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses the MAL API to update.<br>This requires us to store your MAL details <i>in your browser</i> in <b>plain text</b>, but it does mean you don't have to be logged in on MAL."></i></span>
 							</label>
 						</div>
 					</div>
