@@ -27,7 +27,7 @@
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @updated      2017-04-12
-// @version      1.5.1
+// @version      1.5.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -302,7 +302,7 @@ let base_site = {
 								break;
 
 							case 'csrf':
-								_this.syncMALCSRF(json['mal_id'], json['chapter']);
+								if(json['mal_id']) _this.syncMALCSRF(json['mal_id'], json['chapter']);
 								break;
 
 							case 'api':
