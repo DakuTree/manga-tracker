@@ -9,6 +9,17 @@
 	</ol>
 </div>
 
+<h1>MAL Syncing</h1>
+<div>
+	<p>MAL Syncing is a work in progress, so there may be bugs!</p>
+	<ol>
+		<li>Make sure you are logged on to MAL in the same browser you are accessing trackr.moe from.</li>
+		<li>Set the MAL Sync options on the options page to "CSRF".</li>
+		<li>Add a "mal:#ID#" tag to series you want to sync. For example, One Piece would have the 'mal:13' tag.</li>
+		<li>MAL Syncing is now setup!
+	</ol>
+</div>
+
 <h1>Supported Sites</h1>
 <div>
 	<ul>
