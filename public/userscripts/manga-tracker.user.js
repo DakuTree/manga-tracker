@@ -6,7 +6,7 @@
 // @homepageURL  https://trackr.moe
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
 // @icon         https://trackr.moe/favicon.production.png
-// @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe\/user\/options.*$/
+// @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
 // @include      /^http:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^http:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
@@ -27,7 +27,7 @@
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @updated      2017-04-12
-// @version      1.5.0
+// @version      1.5.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -43,7 +43,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync */
 'use strict';
 
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
@@ -1499,69 +1499,114 @@ let sites = {
 	//FIXME: We <probably> shouldn't have this here, but whatever.
 	'trackr.moe' : {
 		init : function() {
-			/* TODO:
-			Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
-			If userscript IS loaded, then insert data.
-			Seperate API key from general options. Always set API config when generate is clicked.
-			*/
+			switch(location.pathname) {
+				case '/':
+					//Dashboard / Front Page
+					if($('#page[data-page=dashboard]').length) {
+						//TODO: Is there a better way to do this?
+						$('.update-read').click(function() {
+							let _this = this;
+							let row             = $(this).closest('tr'),
+							    chapter_id      = $(row).attr('data-id'),
+							    current_chapter = $(row).find('.current'),
+							    latest_chapter  = $(row).find('.latest');
 
-			let form = $('#userscript-form');
+							//get mal_sync option
+							switch(mal_sync) {
+								case 'disabled':
+									//do nothing
+									break;
 
-			this.enableForm(form); //Enable the form
+								case 'csrf':
+									alert('PING');
 
-			//CHECK: Is there a better way to mass-set form values from an object/array?
-			$(form).find('input[name=auto_track]').attr(    'checked', ('auto_track' in config.options));
-			$(form).find('input[name=disable_viewer]').attr('checked', ('disable_viewer' in config.options));
+									let tag_list   = $(_this).closest('.tag-list').text(),
+									    mal_id_arr = tag_list.match(/^(?:.*?,)?(mal:[0-9]+)(?:,.*?)?$/);
 
-			$(form).submit(function(e) {
-				let data = {};
-				data.options = $(this).serializeArray().reduce(function(m,o){
-					m[o.name] = (typeof o.value !== 'undefined' ? true : o.value);
-					return m;
-				}, {});
-				/** @namespace data.csrf_token */
-				delete data.csrf_token;
-				if(config['api-key']) {
-					config = $.extend(config, data);
+									if(mal_id_arr.length > 0) {
+										_this.syncMALCSRF(mal_id_arr[1], latest_chapter.attr('data-chapter'));
+									}
 
-					GM_setValue('config', JSON.stringify(config));
-					$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
-				} else {
-					$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
-				}
+									break;
 
-				e.preventDefault();
-			});
+								case 'api':
+									//TODO: Not implemented yet.
+									break;
 
-			$('#api-key').text(config['api-key'] || "not set");
-			$('#api-key-div').on('click', '#generate-api-key', function() {
-				$.getJSON(main_site + '/ajax/get_apikey', function(json) {
-					if(json['api-key']) {
-						$('#api-key').text(json['api-key']);
+								default:
+									break;
+							}
+						});
+					}
+					break;
 
-						if(location.hostname === 'dev.trackr.moe') {
-							config['api-key-dev'] = json['api-key'];
+				case '/user/options':
+					/* TODO:
+					 Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
+					 If userscript IS loaded, then insert data.
+					 Seperate API key from general options. Always set API config when generate is clicked.
+					 */
+
+					let form = $('#userscript-form');
+
+					this.enableForm(form); //Enable the form
+
+					//CHECK: Is there a better way to mass-set form values from an object/array?
+					$(form).find('input[name=auto_track]').attr(    'checked', ('auto_track' in config.options));
+					$(form).find('input[name=disable_viewer]').attr('checked', ('disable_viewer' in config.options));
+
+					$(form).submit(function(e) {
+						let data = {};
+						data.options = $(this).serializeArray().reduce(function(m,o){
+							m[o.name] = (typeof o.value !== 'undefined' ? true : o.value);
+							return m;
+						}, {});
+						/** @namespace data.csrf_token */
+						delete data.csrf_token;
+						if(config['api-key']) {
+							config = $.extend(config, data);
+
+							GM_setValue('config', JSON.stringify(config));
+							$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
 						} else {
-							config['api-key']     = json['api-key'];
+							$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
 						}
-						GM_setValue('config', JSON.stringify(config));
-					} else {
-						alert('ERROR: Something went wrong!\nJSON missing API key?');
-					}
-				}).fail(function(jqXHR, textStatus, errorThrown) {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: Not logged in?');
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
-					}
-				});
-			});
+
+						e.preventDefault();
+					});
+
+					$('#api-key').text(config['api-key'] || "not set");
+					$('#api-key-div').on('click', '#generate-api-key', function() {
+						$.getJSON(main_site + '/ajax/get_apikey', function(json) {
+							if(json['api-key']) {
+								$('#api-key').text(json['api-key']);
+
+								if(location.hostname === 'dev.trackr.moe') {
+									config['api-key-dev'] = json['api-key'];
+								} else {
+									config['api-key']     = json['api-key'];
+								}
+								GM_setValue('config', JSON.stringify(config));
+							} else {
+								alert('ERROR: Something went wrong!\nJSON missing API key?');
+							}
+						}).fail(function(jqXHR, textStatus, errorThrown) {
+							switch(jqXHR.status) {
+								case 400:
+									alert('ERROR: Not logged in?');
+									break;
+								case 429:
+									alert('ERROR: Rate limit reached.');
+									break;
+								default:
+									alert('ERROR: Something went wrong!\n'+errorThrown);
+									break;
+							}
+						});
+					});
+
+					break;
+			}
 		},
 		enableForm : function(form) {
 			$('#userscript-check').remove();

@@ -133,4 +133,6 @@
 <script>
 	//noinspection JSAnnotator
 	const use_live_countdown_timer = <?=$use_live_countdown_timer?>;
+	//noinspection JSAnnotator
+	const mal_sync = "<?=$mal_sync?>";
 </script>

@@ -33,6 +33,7 @@ class IndexC extends User_Controller {
 			$this->body_data['category_custom_3_text'] = $this->User_Options->get('category_custom_3_text');
 
 			$this->body_data['use_live_countdown_timer'] = ($this->User_Options->get('enable_live_countdown_timer') == 'enabled' ? 'true' : 'false');
+			$this->body_data['mal_sync']                 = $this->User_Options->get('mal_sync');
 
 			$this->_render_page('User/Dashboard');
 		}
