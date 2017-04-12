@@ -46,6 +46,7 @@ h1 {
 
 	float: left;
 	clear: both;
+	overflow: hidden;
 
 	width: 100%;
 	margin-bottom: 50px;
@@ -439,6 +440,9 @@ body {
 }
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
 	background-color: #D9D9D9;
+}
+#page[data-page="options"] {
+	overflow: visible !important;
 }
 #page[data-page="options"] .alert {
 	background-image: none;
