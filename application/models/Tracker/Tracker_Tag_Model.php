@@ -27,7 +27,7 @@ class Tracker_Tag_Model extends Tracker_Base_Model {
 		                    ->where('title_id', $titleID)
 		                    ->get('tracker_chapters');
 
-		$malID = $titleID;
+		$malID = NULL;
 		if($query->num_rows() > 0 && ($tag_string = $query->row()->tags)) {
 			$arr   = preg_grep('/^mal:([0-9]+)$/', explode(',', $tag_string));
 			$malID = (int) explode(':', $arr[0])[1];
