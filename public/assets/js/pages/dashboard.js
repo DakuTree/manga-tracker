@@ -165,7 +165,7 @@ $(function(){
 			let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
 			    tag_list_new = tag_array.join(',');
 			if($.inArray('none', tag_array) === -1) {
-				if(tag_list.match(/mal:[0-9]+/g).length <= 1) {
+				if((tag_list.match(/mal:[0-9]+/g) || []).length <= 1) {
 					$.post(base_url + 'ajax/tag_update', {id: id, tag_string: tag_list_new}, function () {
 						$(input).val(tag_list_new);
 						$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');

@@ -354,7 +354,7 @@ let base_site = {
 		});
 	},
 	syncMALCSRF_continued : function(malID, chapter, csrfToken) {
-		let chapterArr = chapter.match(/^(?:v[0-9]+\/)?c([0-9]+)(?:\.[0-9]+)?$/);
+		let chapterArr = chapter.match(/^(?:v[0-9]+\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
 
 		if(chapterArr.length > 0) {
 			let json = {
@@ -1497,15 +1497,16 @@ let sites = {
 
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
-	'trackr.moe' : {
+	'trackr.moe' : extendSite({
 		init : function() {
+			let _this = this;
+
 			switch(location.pathname) {
 				case '/':
 					//Dashboard / Front Page
 					if($('#page[data-page=dashboard]').length) {
 						//TODO: Is there a better way to do this?
 						$('.update-read').click(function() {
-							let _this = this;
 							let row             = $(this).closest('tr'),
 							    chapter_id      = $(row).attr('data-id'),
 							    current_chapter = $(row).find('.current'),
@@ -1518,13 +1519,12 @@ let sites = {
 									break;
 
 								case 'csrf':
-									alert('PING');
-
-									let tag_list   = $(_this).closest('.tag-list').text(),
-									    mal_id_arr = tag_list.match(/^(?:.*?,)?(mal:[0-9]+)(?:,.*?)?$/);
+									let tag_list   = $(row).find('.tag-list').text();
+									let mal_id_arr = tag_list.match(/^(?:.*?,)?(mal:[0-9]+)(?:,.*?)?$/) || [];
 
 									if(mal_id_arr.length > 0) {
-										_this.syncMALCSRF(mal_id_arr[1], latest_chapter.attr('data-chapter'));
+										let mal_id = parseInt(mal_id_arr[1].split(':')[1]);
+										_this.syncMALCSRF(mal_id, latest_chapter.text());
 									}
 
 									break;
@@ -1613,7 +1613,7 @@ let sites = {
 			$(form).find('fieldset').removeAttr('disabled');
 			$(form).find('input[type=submit]').removeAttr('onclick');
 		}
-	}
+	})
 };
 
 /********************** SCRIPT *********************/
