@@ -7,7 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.5.26] 2017-04-10 - 2017-04-11
+## [1.6.0] 2017-04-10 - 2017-04-12
+### Added
+- Partial MAL sync implementation!
+  - This requires a few things to work properly! You need to be logged in on MAL, need to enable the "CSRF" mal sync option, and need to add a "mal:#ID#" tag to the series you want to allow syncing for.
+
 ### Changed
 - You can now only have one MAL metatag per series.
 - Duplicate and empty tags are now removed by default.

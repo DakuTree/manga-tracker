@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-04-09
-// @version      1.4.6
+// @updated      2017-04-12
+// @version      1.5.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -38,10 +38,12 @@
 // @grant        GM_getResourceURL
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_xmlhttpRequest
+// @connect      myanimelist.net
 // @run-at       document-start
 // ==/UserScript==
 /* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest */
 'use strict';
 
 GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
@@ -290,9 +292,26 @@ let base_site = {
 				//TODO: Check if everything is set, and not null.
 
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
-					$.post(main_site + '/ajax/userscript/update', params, function () {
+					$.post(main_site + '/ajax/userscript/update', params, function (json) {
 						//TODO: We should really output this somewhere other than the topbar..
 						$('#TrackerStatus').text('Updated');
+
+						switch(json['mal_sync']) {
+							case 'disabled':
+								//do nothing
+								break;
+
+							case 'csrf':
+								_this.syncMALCSRF(json['mal_id'], json['chapter']);
+								break;
+
+							case 'api':
+								//TODO: Not implemented yet.
+								break;
+							
+							default:
+								break;
+						}
 					}).fail(function(jqXHR, textStatus, errorThrown) {
 						switch(jqXHR.status) {
 							case 400:
@@ -314,6 +333,50 @@ let base_site = {
 			}
 		} else {
 			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
+		}
+	},
+	syncMALCSRF : function(malID, chapter) {
+		let _this = this;
+		GM_xmlhttpRequest({
+			method: "GET",
+			url: "https://myanimelist.net/panel.php?go=export",
+			onload: function(response) {
+				if(/https:\/\/myanimelist.net\/logout.php/.exec(response.responseText)) {
+					//user is logged in, export manga then sync
+					let csrfToken = /<meta name='csrf_token' content='([A-Za-z0-9]+)'>/.exec(response.responseText)[1];
+
+					_this.syncMALCSRF_continued(malID, chapter, csrfToken);
+				} else {
+					//user is not logged in, throw error
+					alert("Unable to sync, are you logged in on MAL?");
+				}
+			}
+		});
+	},
+	syncMALCSRF_continued : function(malID, chapter, csrfToken) {
+		let chapterArr = chapter.match(/^(?:v[0-9]+\/)?c([0-9]+)(?:\.[0-9]+)?$/);
+
+		if(chapterArr.length > 0) {
+			let json = {
+				"manga_id"          : parseInt(malID),
+				"status"            : 1, //force reading list
+				"num_read_chapters" : parseInt(chapterArr[1]),
+				"csrf_token"        : csrfToken
+			};
+			GM_xmlhttpRequest({
+				method: "POST",
+				url: 'https://myanimelist.net/ownlist/manga/edit.json',
+				data: JSON.stringify(json),
+				onload: function() {
+					$('#TrackerStatus').text('Updated & MAL Synced (c'+parseInt(chapterArr[1])+')');
+				},
+				onerror: function() {
+					$('#TrackerStatus').text('Updated (MAL Sync failed)');
+				}
+				//TODO: On success/failure show UX
+			});
+		} else {
+			$('#TrackerStatus').text('Updated (Unable to MAL Sync due to chapter format)');
 		}
 	},
 

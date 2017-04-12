@@ -45,9 +45,18 @@ class Userscript extends AJAX_Controller {
 			if($this->form_validation->run() === TRUE) {
 				$manga = $this->input->post('manga');
 
-				$success = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter']);
-				if($success) {
-					$this->output->set_status_header('200'); //Success!
+				$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], FALSE, TRUE);
+				if($titleData) {
+					$json = [
+						'mal_sync' => $this->User_Options->get('mal_sync', $this->userID),
+						'mal_id'   => $this->Tracker->tag->getMalID($this->userID, $titleData['id']),
+						'chapter'  => $titleData['chapter']
+					];
+
+					$this->output
+					     ->set_status_header('200')
+					     ->set_content_type('application/json', 'utf-8')
+					     ->set_output(json_encode($json));
 				} else {
 					//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
 					$this->output->set_status_header('400', 'Unable to update?');

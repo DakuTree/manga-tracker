@@ -46,7 +46,7 @@ class MY_Controller extends CI_Controller {
 	public function _render_json($json_input, bool $download = FALSE) {
 		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
 
-		$this->output->set_content_type('application/json');
+		$this->output->set_content_type('application/json', 'utf-8');
 		if($download) {
 			$date = date('Ymd_Hi', time());
 			$this->output->set_header('Content-Disposition: attachment; filename="tracker-'.$date.'.json"');

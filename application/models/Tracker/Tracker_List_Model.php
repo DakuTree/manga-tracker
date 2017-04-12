@@ -136,7 +136,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		return $arr;
 	}
 
-	public function update(int $userID, string $site, string $title, string $chapter, bool $active = TRUE) : bool {
+	public function update(int $userID, string $site, string $title, string $chapter, bool $active = TRUE, bool $returnTitleID = FALSE) {
 		$success = FALSE;
 		if($siteData = $this->Tracker->title->getSiteDataFromURL($site)) {
 			//Validate user input
@@ -190,7 +190,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				}
 			}
 		}
-		return $success;
+		return ($returnTitleID ? ($success ? ['id' => $titleID, 'chapter' => $chapter] : $success) : $success);
 	}
 	public function updateByID(int $userID, int $chapterID, string $chapter) : bool {
 		$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
