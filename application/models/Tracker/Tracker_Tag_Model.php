@@ -28,9 +28,11 @@ class Tracker_Tag_Model extends Tracker_Base_Model {
 		                    ->get('tracker_chapters');
 
 		$malID = NULL;
-		if($query->num_rows() > 0 && ($tag_string = $query->row()->tags)) {
+		if($query->num_rows() > 0 && ($tag_string = $query->row()->tags) && !is_null($tag_string)) {
 			$arr   = preg_grep('/^mal:([0-9]+)$/', explode(',', $tag_string));
-			$malID = (int) explode(':', $arr[0])[1];
+			if(!is_null($arr)) {
+				$malID = (int) explode(':', $arr[0])[1];
+			}
 		}
 		return $malID;
 	}
