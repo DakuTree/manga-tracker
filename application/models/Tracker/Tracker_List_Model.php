@@ -190,7 +190,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				}
 			}
 		}
-		return ($returnTitleID ? ($success ? ['id' => $titleID, 'chapter' => $chapter] : $success) : $success);
+		return ($returnTitleID ? ($success ? ['id' => $titleID, 'chapter' => $this->sites->{$siteData->site_class}->getChapterData($title, $chapter)['number']] : $success) : $success);
 	}
 	public function updateByID(int $userID, int $chapterID, string $chapter) : bool {
 		$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])

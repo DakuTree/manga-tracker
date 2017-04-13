@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.1] 2017-04-13
+### Fixed
+- MAL Sync should now grab formatted chapter number where possible.
+
 ## [1.6.0] 2017-04-10 - 2017-04-12
 ### Added
 - Partial MAL sync implementation!
