@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.2] 2017-04-13
+### Fixed
+- Series with a tag, but not a MAL metatag should work again.
+  - I really should test this properly in future...
+
 ## [1.6.1] 2017-04-13
 ### Fixed
 - MAL Sync should now grab formatted chapter number where possible.
