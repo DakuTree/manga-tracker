@@ -45,5 +45,5 @@ after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
 
-after_failure:
-  - cd $TRAVIS_BUILD_DIR && cat application/logs/* | egrep -v '^DEBUG'
+after_script:
+  - cd $TRAVIS_BUILD_DIR && cat application/logs/* | egrep -v '^DEBUG.*(Config file loaded|Global POST, GET and COOKIE|No URI present|CI_Session has already|Initialization under CLI|UTF-8 Support Enabled).*'
