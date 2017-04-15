@@ -1,0 +1,102 @@
+{
+	"sites" : [
+		{
+			"id"         : "1",
+			"site"       : "mangafox.me",
+			"site_class" : "MangaFox",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "2",
+			"site"       : "www.mangahere.co",
+			"site_class" : "MangaHere"
+		},
+		{
+			"id"         : "3",
+			"site"       : "bato.to",
+			"site_class" : "Batoto",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "4",
+			"site"       : "dynasty-scans.com",
+			"site_class" : "DynastyScans"
+		},
+		{
+			"id"         : "5",
+			"site"       : "www.mangapanda.com",
+			"site_class" : "MangaPanda"
+		},
+		{
+			"id"         : "6",
+			"site"       : "readms.net",
+			"site_class" : "MangaStream"
+		},
+		{
+			"id"         : "7",
+			"site"       : "www.webtoons.com",
+			"site_class" : "WebToons"
+		},
+		{
+			"id"         : "8",
+			"site"       : "kissmanga.com",
+			"site_class" : "KissManga",
+			"status"     : "disabled"
+		},
+		{
+			"id"         : "9",
+			"site"       : "reader.kireicake.com",
+			"site_class" : "KireiCake"
+		},
+		{
+			"id"         : "10",
+			"site"       : "gameofscanlation.moe",
+			"site_class" : "GameOfScanlation"
+		},
+		{
+			"id"         : "11",
+			"site"       : "mngcow.co",
+			"site_class" : "MangaCow"
+		},
+		{
+			"id"         : "12",
+			"site"       : "reader.seaotterscans.com",
+			"site_class" : "SeaOtterScans"
+		},
+		{
+			"id"         : "13",
+			"site"       : "helveticascans.com",
+			"site_class" : "HelveticaScans"
+		},
+		{
+			"id"         : "14",
+			"site"       : "reader.sensescans.com",
+			"site_class" : "SenseScans"
+		},
+		{
+			"id"         : "15",
+			"site"       : "jaiminisbox.com",
+			"site_class" : "JaiminisBox"
+		},
+		{
+			"id"         : "16",
+			"site"       : "kobato.hologfx.com",
+			"site_class" : "DokiFansubs"
+		},
+		{
+			"id"         : "17",
+			"site"       : "www.demonicscans.com",
+			"site_class" : "DemonicScans"
+		},
+		{
+			"id"         : "18",
+			"site"       : "read.egscans.com",
+			"site_class" : "EGScans"
+		},
+		{
+			"id"         : "19",
+			"site"       : "reader.deathtollscans.net",
+			"site_class" : "DeathTollScans"
+		}
+	]
+}
