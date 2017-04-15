@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @group SiteTests
+ */
 class Site_Model_test extends TestCase {
 	private $Sites_Model;
 
