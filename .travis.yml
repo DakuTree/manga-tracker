@@ -47,4 +47,4 @@ after_success:
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/coverage.clover
 
 after_script:
-  - cd $TRAVIS_BUILD_DIR && cat application/logs/* | egrep -v '^DEBUG.*(Config file loaded|Global POST, GET and COOKIE|No URI present|CI_Session has already|Initialization under CLI|UTF-8 Support Enabled).*'
+  - cd $TRAVIS_BUILD_DIR && cat application/logs/* | egrep -v '^DEBUG.*(Config file loaded|Global POST, GET and COOKIE|No URI present|CI_Session has already|Initialization under CLI|UTF-8 Support Enabled|Total execution time|Class Initialized|has already been instantiated).*'
