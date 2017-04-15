@@ -16,7 +16,7 @@ class MY_Loader extends CI_Loader {
 	 *
 	 * @return   object
 	 */
-	function database($params = '', $return = FALSE, $active_record = NULL) {
+	public function database($params = '', $return = FALSE, $active_record = NULL) {
 		// load our version of the CI_DB_Cache class. The database library checks
 		// if this class is already loaded before instantiating it. Loading it now
 		// makes sure our version is used when a controller enables query caching

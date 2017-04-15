@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Setup_Tracker extends MY_Migration {
+class Migration_Setup_Tracker extends CI_Migration {
 	public function __construct() {
 		parent::__construct();
 		$this->load->dbforge();
