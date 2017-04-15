@@ -140,12 +140,16 @@ class Migration_Setup_Tracker extends CI_Migration {
 		$sitesData = json_decode(file_get_contents(APPPATH.'migrations/data/tracker_sites.json'), TRUE)['sites'];
 
 		//SEE: https://github.com/bcit-ci/CodeIgniter/issues/5086
-		$keys = array_keys(array_merge(...$sitesData));
-		$defaultData = array_combine($keys, array_fill(0, count($keys), 'DEFAULT'));
-		array_walk($sitesData, function(&$arr) use ($defaultData) {
-			$arr = array_merge($defaultData, $arr);
-		});
-		$this->db->insert_batch('tracker_sites', $sitesData);
+		//$keys = array_keys(array_merge(...$sitesData));
+		//$defaultData = array_combine($keys, array_fill(0, count($keys), 'DEFAULT'));
+		//array_walk($sitesData, function(&$arr) use ($defaultData) {
+		//	$arr = array_merge($defaultData, $arr);
+		//});
+		//$this->db->insert_batch('tracker_sites', $sitesData);
+
+		foreach ($sitesData as $siteData) {
+			$this->db->insert('tracker_sites', $siteData);
+		}
 	}
 
 	public function down() {
