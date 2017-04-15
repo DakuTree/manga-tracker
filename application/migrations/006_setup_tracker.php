@@ -149,9 +149,7 @@ class Migration_Setup_Tracker extends CI_Migration {
 
 		foreach ($sitesData as $siteData) {
 			//status and enabled weren't added at this point, so filter them out
-			array_walk($siteData, function(&$arr) {
-				$arr = array_intersect_key($arr, array_flip(['id', 'site', 'site_class']));
-			});
+			$siteData = array_intersect_key($siteData, array_flip(['id', 'site', 'site_class']));
 			$this->db->insert('tracker_sites', $siteData);
 		}
 	}

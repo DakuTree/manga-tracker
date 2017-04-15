@@ -11,9 +11,8 @@ class Migration_Update_Sites_20170415 extends CI_Migration {
 
 		foreach ($sitesData as $siteData) {
 			$id = $siteData['id'];
-			array_walk($siteData, function(&$arr) {
-				$arr = array_intersect_key($arr, array_flip(['site', 'site_class', 'status', 'use_custom']));
-			});
+			$siteData = array_intersect_key($siteData, array_flip(['site', 'site_class', 'status', 'use_custom']));
+
 			$this->db->update('tracker_sites', $siteData, array('id' => $id));
 		}
 	}
