@@ -122,9 +122,9 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 	/**
 	 * @param string $site_url
 	 *
-	 * @return object|null
+	 * @return stdClass|null
 	 */
-	public function getSiteDataFromURL(string $site_url) : ?object {
+	public function getSiteDataFromURL(string $site_url) : ?stdClass {
 		$query = $this->db->select('*')
 		                  ->from('tracker_sites')
 		                  ->where('site', $site_url)
