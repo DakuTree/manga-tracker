@@ -7,6 +7,23 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.3] 2017-04-14 - 2017-04-15
+### Added
+- `[Backend]` Tracker_Title_Model tests.
+
+### Changed
+- `[Backend]` Updated to PHPUnit v6.1.0.
+- `[Backend]` Removed Codeception from Composer as it isn't currently used.
+- `[Backend]` Travis no longer runs site tests.
+  - On occasion Travis tests would fail due the odd site test failing (even though it was valid). These are still run daily on the local machine.
+- `[Backend]` Moved tracker_sites migration data to a seperate JSON file.
+  - This allows us to easily create site update migrations without scattering the data across multiple migrations.
+  - We limit the columns allowed depending on when the migration was created as to make sure the data works when columns are added/changed.
+- `[Backend]` Travis now outputs logs after every run, regardless of success. Logs are also filtered for useless DEBUG nonsense.
+
+### Fixed
+- `[Backend]` Complied JS/CSS path now uses APPPATH to avoid pathing errors.
+
 ## [1.6.2] 2017-04-13
 ### Fixed
 - Series with a tag, but not a MAL metatag should work again.

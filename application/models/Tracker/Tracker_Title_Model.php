@@ -50,6 +50,13 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		return ($returnData && $titleID !== 0 ? $query->row_array() : $titleID);
 	}
 
+	/**
+	 * @param string $title
+	 * @param string $siteURL
+	 *
+	 * @return array|int
+	 * @throws Exception
+	 */
 	public function getIDFromData(string $title, string $siteURL) {
 		if(!($siteData = $this->getSiteDataFromURL($siteURL))) {
 			throw new Exception("Site URL is invalid: {$siteURL}");
@@ -58,7 +65,13 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		return $this->getID($title, $siteData->id);
 	}
 
-	private function addTitle(string $titleURL, int $siteID) {
+	/**
+	 * @param string $titleURL
+	 * @param int    $siteID
+	 *
+	 * @return int
+	 */
+	private function addTitle(string $titleURL, int $siteID) : int {
 		$query = $this->db->select('site, site_class')
 		                  ->from('tracker_sites')
 		                  ->where('id', $siteID)
@@ -80,27 +93,27 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 
 
 	/**
-	 * @param int    $id
+	 * @param int    $titleID
 	 * @param string $latestChapter
 	 *
 	 * @return bool
 	 */
-	public function updateByID(int $id, string $latestChapter) {
+	public function updateByID(int $titleID, string $latestChapter) : bool {
 		//FIXME: Really not too happy with how we're doing history stuff here, it just feels messy.
 		$query = $this->db->select('latest_chapter AS current_chapter')
 		                  ->from('tracker_titles')
-		                  ->where('id', $id)
+		                  ->where('id', $titleID)
 		                  ->get();
 		$row = $query->row();
 
 		$success = $this->db->set(['latest_chapter' => $latestChapter]) //last_updated gets updated via a trigger if something changes
-		                    ->where('id', $id)
+		                    ->where('id', $titleID)
 		                    ->update('tracker_titles');
 
 		//Update History
 		//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
 		//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
-		$this->History->updateTitleHistory($id, $row->current_chapter, $latestChapter, date('Y-m-d H:i:s'));
+		$this->History->updateTitleHistory($titleID, $row->current_chapter, $latestChapter, date('Y-m-d H:i:s'));
 
 		return (bool) $success;
 	}
@@ -111,7 +124,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 	 *
 	 * @return object|null
 	 */
-	public function getSiteDataFromURL(string $site_url) {
+	public function getSiteDataFromURL(string $site_url) : ?object {
 		$query = $this->db->select('*')
 		                  ->from('tracker_sites')
 		                  ->where('site', $site_url)

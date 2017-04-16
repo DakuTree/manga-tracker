@@ -41,6 +41,8 @@ script:
   # FIXME: This in currently on-hold due to a bug with phantomjs freezing. See https://github.com/ariya/phantomjs/issues/14286
   # Also see link for last version of working .travis.yml - https://github.com/DakuTree/manga-tracker/blob/c636bfd728965c2e9bf5890c7b12edc31905a95f/.travis.yml
   #- php vendor/bin/codecept run acceptance --colors
+  # Fail if log contains errors.
+#  - ! cat application/logs/* | grep -q "ERROR - "
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
