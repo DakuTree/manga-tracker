@@ -23,6 +23,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Fixed
 - `[Backend]` Complied JS/CSS path now uses APPPATH to avoid pathing errors.
+- MAL Sync now works with volumes marked as TBD/TBA/NA.
 
 ## [1.6.2] 2017-04-13
 ### Fixed

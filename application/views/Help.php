@@ -18,6 +18,8 @@
 		<li>Add a "mal:#ID#" tag to series you want to sync. For example, One Piece would have the 'mal:13' tag.</li>
 		<li>MAL Syncing is now setup!
 	</ol>
+	<br/>
+	<p>Note: We know this might be a bit tedious, but it's the best method we can do at the moment.</p>
 </div>
 
 <h1>Supported Sites</h1>
