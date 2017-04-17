@@ -26,8 +26,12 @@ class Tracker_Base_Model extends CI_Model {
 			$this->enabledCategories['custom3'] = $this->User_Options->get('category_custom_3_text');
 		}
 
-		require_once(APPPATH.'models/Site_Model.php');
-		$this->sites = new Sites_Model;
+		foreach (glob(APPPATH.'models/Tracker/Sites/*.php') as $filename) {
+			/** @noinspection PhpIncludeInspection */
+			include_once $filename;
+		}
+		$this->sites = new Tracker_Sites_Model;
+
 	}
 
 	public function getEnabledCategories(?int $userID = NULL) : array {

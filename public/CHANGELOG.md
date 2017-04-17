@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.4] 2017-04-17
+### Changed
+- `[Backend]` Site classes now have their own files, as per good PHP practice.
+
 ## [1.6.3] 2017-04-14 - 2017-04-15
 ### Added
 - `[Backend]` Tracker_Title_Model tests.
