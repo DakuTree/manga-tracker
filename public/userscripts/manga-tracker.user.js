@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-04-16
-// @version      1.5.3
+// @updated      2017-04-19
+// @version      1.5.4
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -354,7 +354,7 @@ let base_site = {
 		});
 	},
 	syncMALCSRF_continued : function(malID, chapter, csrfToken) {
-		let chapterArr = chapter.match(/^(?:(?:v[0-9]+|TBD|TBA|NA)\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
+		let chapterArr = chapter.match(/^(?:(?:v(?:[0-9]+|TBD|TBA|NA))\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
 
 		if(chapterArr.length > 0) {
 			let json = {

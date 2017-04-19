@@ -7,9 +7,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.4] 2017-04-17
+## [1.6.4] 2017-04-17 - 2017-04-19
 ### Changed
 - `[Backend]` Site classes now have their own files, as per good PHP practice.
+
+### Fixed
+- MAL Sync properly works with volumes marked with TBD/TBA/NA without preceding v.
 
 ## [1.6.3] 2017-04-14 - 2017-04-15
 ### Added
