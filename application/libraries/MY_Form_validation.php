@@ -66,7 +66,7 @@ class MY_Form_validation extends CI_Form_validation {
 	}
 
 	public function is_valid_tag_string(string $tag_string) : bool {
-		return (bool) preg_match('/^[a-z0-9\\-_,:]{0,255}$/', $tag_string) && (count(preg_grep('/^mal:[0-9]+$/', explode(',', $tag_string))) <= 1);
+		return (bool) preg_match('/^[a-z0-9\\-_,:]{0,255}$/', $tag_string) && (count(preg_grep('/^mal:(?:[0-9]+|none)$/', explode(',', $tag_string))) <= 1);
 	}
 
 	public function is_valid_category(string $category) : bool {
@@ -75,6 +75,10 @@ class MY_Form_validation extends CI_Form_validation {
 
 	public function not_contains(string $haystack, string $needle) {
 		return strpos($haystack, $needle) === FALSE;
+	}
+
+	public function not_equals(string $originalString, string $matchingString) {
+		return $originalString !== $matchingString;
 	}
 
 	public function is_valid_option_value(string $value, string $option) : bool {

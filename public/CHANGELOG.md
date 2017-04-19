@@ -8,6 +8,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.4] 2017-04-17 - 2017-04-19
+### Added
+- Better errors if something goes wrong.
+- mal:none metatag, if the series doesn't have a MAL entry (webtoons etc).
+- More feedback when sync'ing.
+
 ### Changed
 - `[Backend]` Site classes now have their own files, as per good PHP practice.
 - An alert is now shown to the user if they try to update anything on the site but their session has expired.

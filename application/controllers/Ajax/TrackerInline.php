@@ -123,7 +123,7 @@ class TrackerInline extends Auth_Controller {
 	 */
 	public function tag_update() {
 		$this->form_validation->set_rules('id',         'Chapter ID', 'required|ctype_digit');
-		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_contains[none]');
+		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_equals[none]');
 
 		if($this->form_validation->run() === TRUE) {
 			$tag_string = $this->_clean_tag_string($this->input->post('tag_string'));
@@ -135,7 +135,16 @@ class TrackerInline extends Auth_Controller {
 				$this->output->set_status_header('400', 'Unable to set tags?');
 			}
 		} else {
-			$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			$errorArr = $this->form_validation->error_array();
+			if(in_array('max_length', $errorArr)) {
+				$this->output->set_status_header('400', 'Tag string is too long! Max length is 255 characters.');
+			} else if(in_array('not_equals', $errorArr)) {
+				$this->output->set_status_header('400', '"none" is a restricted tag.');
+			} else if(in_array('is_valid_tag_string', $errorArr)) {
+				$this->output->set_status_header('400', 'Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
+			} else {
+				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			}
 		}
 	}
 	private function _clean_tag_string(string $tag_string) {

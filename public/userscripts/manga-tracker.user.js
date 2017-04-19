@@ -27,7 +27,7 @@
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @updated      2017-04-19
-// @version      1.5.4
+// @version      1.5.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -294,15 +294,25 @@ let base_site = {
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
 					$.post(main_site + '/ajax/userscript/update', params, function (json) {
 						//TODO: We should really output this somewhere other than the topbar..
-						$('#TrackerStatus').text('Updated');
 
+						let status     = $('#TrackerStatus');
 						switch(json['mal_sync']) {
 							case 'disabled':
-								//do nothing
+								status.text('Updated');
 								break;
 
 							case 'csrf':
-								if(json['mal_id']) _this.syncMALCSRF(json['mal_id'], json['chapter']);
+								if(json['mal_id']) {
+									if(json['mal_id'] !== 'none') {
+										status.text('Updated (Found MAL ID, attempting update...)');
+										_this.syncMALCSRF(json['mal_id'], json['chapter']);
+									} else {
+										status.text('Updated (Not on MAL)');
+									}
+								} else {
+									status.text('Updated (No MAL ID set)');
+								}
+
 								break;
 
 							case 'api':
@@ -348,7 +358,7 @@ let base_site = {
 					_this.syncMALCSRF_continued(malID, chapter, csrfToken);
 				} else {
 					//user is not logged in, throw error
-					alert("Unable to sync, are you logged in on MAL?");
+					$('#TrackerStatus').text('Updated (MAL Sync failed, are you logged in?)');
 				}
 			}
 		});
@@ -373,7 +383,6 @@ let base_site = {
 				onerror: function() {
 					$('#TrackerStatus').text('Updated (MAL Sync failed)');
 				}
-				//TODO: On success/failure show UX
 			});
 		} else {
 			$('#TrackerStatus').text('Updated (Unable to MAL Sync due to chapter format)');
