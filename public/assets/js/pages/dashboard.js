@@ -175,6 +175,9 @@ $(function(){
 							case 400:
 								alert('ERROR: ' + errorThrown);
 								break;
+							case 401:
+								alert('Session has expired, please re-log to continue.');
+								break;
 							case 429:
 								alert('ERROR: Rate limit reached.');
 								break;

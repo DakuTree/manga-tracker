@@ -76,12 +76,17 @@ class User_Controller extends MY_Controller {
 }
 
 class Auth_Controller extends User_Controller {
-	public function __construct() {
+	public function __construct(bool $redirect = TRUE) {
 		parent::__construct();
 
 		if(!$this->ion_auth->logged_in()) {
-			$this->User->login_redirect();
-			redirect('user/login');
+			if($redirect || $_SERVER['REQUEST_METHOD'] === 'GET') {
+				$this->User->login_redirect();
+				redirect('user/login');
+			} else {
+				$this->output->set_status_header(401, 'Session has expired, please re-log to continue.');
+				exit();
+			}
 		}
 	}
 }

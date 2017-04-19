@@ -4,7 +4,7 @@ class TrackerInline extends Auth_Controller {
 	private $userID;
 
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(FALSE);
 
 		$this->load->library('vendor/Limiter');
 		$this->load->library('form_validation');
@@ -188,7 +188,6 @@ class TrackerInline extends Auth_Controller {
 			$this->output->set_status_header('200'); //Success!
 		} else {
 			$this->output->set_status_header('400', 'Something went wrong');
-
 		}
 	}
 }
