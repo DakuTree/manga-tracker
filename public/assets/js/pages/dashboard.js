@@ -51,21 +51,25 @@ $(function(){
 				return parseInt($(this).attr('data-id'));
 			}).toArray();
 
-			$.post(base_url + 'ajax/delete_inline', {'id[]' : row_ids}, function () {
-				location.reload();
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				switch(jqXHR.status) {
-					case 400:
-						alert('ERROR: ' + errorThrown);
-						break;
-					case 429:
-						alert('ERROR: Rate limit reached.');
-						break;
-					default:
-						alert('ERROR: Something went wrong!\n'+errorThrown);
-						break;
-				}
-			});
+			if(confirm('Are you sure you want to delete the selected rows?')) {
+				$.post(base_url + 'ajax/delete_inline', {'id[]' : row_ids}, function () {
+					location.reload();
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					switch(jqXHR.status) {
+						case 400:
+							alert('ERROR: ' + errorThrown);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+errorThrown);
+							break;
+					}
+				});
+			}
+		} else {
+			alert('No selected series found.');
 		}
 	});
 
