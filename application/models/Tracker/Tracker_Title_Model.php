@@ -110,6 +110,11 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		                    ->where('id', $titleID)
 		                    ->update('tracker_titles');
 
+		//Clear hidden latest chapter
+		print $this->db->set(['ignore_chapter' => 'NULL', 'last_updated' => 'last_updated'], NULL, FALSE)
+		         ->where('title_id', $titleID)
+		         ->get_compiled_update('tracker_chapters');
+
 		//Update History
 		//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
 		//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
