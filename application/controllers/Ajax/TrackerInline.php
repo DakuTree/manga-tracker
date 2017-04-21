@@ -23,7 +23,7 @@ class TrackerInline extends Auth_Controller {
 	 *
 	 * REQ_PARAMS: id, chapter
 	 * METHOD:     POST
-	 * URL:        /ajax/update_tracker_inline
+	 * URL:        /ajax/update_inline
 	 */
 	public function update() {
 		$this->form_validation->set_rules('id',      'Chapter ID', 'required|ctype_digit');
@@ -197,6 +197,30 @@ class TrackerInline extends Auth_Controller {
 			$this->output->set_status_header('200'); //Success!
 		} else {
 			$this->output->set_status_header('400', 'Something went wrong');
+		}
+	}
+
+
+	/**
+	 * Used locally to ignore the latest chapter of a series so it doesn't clog up the current unread list.
+	 *
+	 * REQ_PARAMS: id, chapter
+	 * METHOD:     POST
+	 * URL:        /ajax/ignore_inline
+	 */
+	public function ignore() {
+		$this->form_validation->set_rules('id',      'Chapter ID', 'required|ctype_digit');
+		$this->form_validation->set_rules('chapter', 'Chapter',    'required');
+
+		if($this->form_validation->run() === TRUE) {
+			$success = $this->Tracker->list->ignoreByID($this->userID, $this->input->post('id'), $this->input->post('chapter'));
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				$this->output->set_status_header('400', 'Unable to ignore?');
+			}
+		} else {
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
 }

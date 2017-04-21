@@ -110,7 +110,7 @@
 				</div>
 			</td>
 			<td>
-				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=htmlentities($row['generated_current_data']['number'])?></a>
+				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=htmlentities($row['generated_current_data']['number'])?></a><?=$row['generated_ignore_number']?>
 			</td>
 			<td>
 				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=htmlentities($row['generated_latest_data']['number'])?></a>
@@ -119,6 +119,9 @@
 				<!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>-->
 				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>
 				<?php if($row['new_chapter_exists'] == '0') { ?>
+				<span class="ignore-latest" title="Ignore latest chapter. Useful when latest chapter isn't actually the latest chapter.">
+					<i class="fa fa-bell-slash" aria-hidden="true"></i>
+				</span>
 				<span class="update-read" title="I've read the latest chapter!">
 					<i class="fa fa-refresh" aria-hidden="true"></i>
 				</span>

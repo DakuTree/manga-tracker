@@ -30,13 +30,16 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		}
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				$is_unread = intval($row->latest_chapter == $row->current_chapter ? '1' : '0');
+				$is_unread = intval(($row->latest_chapter == $row->ignore_chapter) || ($row->latest_chapter == $row->current_chapter) ? '1' : '0');
 				$arr['series'][$row->category]['unread_count'] = (($arr['series'][$row->category]['unread_count'] ?? 0) + !$is_unread);
 				$data = [
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
 					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
-					'full_title_url'         => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
+
+					'generated_ignore_number' => ($row->ignore_chapter ? ' <span class=\'hidden-chapter\' title=\'The latest chapter was marked as ignored.\'>'.htmlentities($this->sites->{$row->site_class}->getChapterData($row->title_url, $row->ignore_chapter)['number']).'</span>' : ''),
+
+					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
 					'new_chapter_exists'    => $is_unread,
 					'tag_list'              => $row->tags,
@@ -200,6 +203,19 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 		if($success) {
 			$this->History->userUpdateTitle($chapterID, $chapter);
+		}
+		return  $success;
+	}
+
+
+	public function ignoreByID(int $userID, int $chapterID, string $chapter) : bool {
+		$success = (bool) $this->db->set(['ignore_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
+		                           ->where('user_id', $userID)
+		                           ->where('id', $chapterID)
+		                           ->update('tracker_chapters');
+
+		if($success) {
+			$this->History->userIgnoreTitle($chapterID, $chapter);
 		}
 		return  $success;
 	}

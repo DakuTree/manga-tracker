@@ -24,7 +24,7 @@ $(function(){
 		    latest_chapter  = $(row).find('.latest');
 
 		$.post(base_url + 'ajax/update_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
-			$(_this).hide();
+			$(_this).parent().find('.update-read, .ignore-latest').hide();
 			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			switch(jqXHR.status) {
@@ -39,6 +39,36 @@ $(function(){
 					break;
 			}
 		});
+	});
+
+	//Ignore latest chapter
+	$('.ignore-latest').click(function() {
+		let _this = this;
+		let row             = $(this).closest('tr'),
+		    chapter_id      = $(row).attr('data-id'),
+		    current_chapter = $(row).find('.current'),
+		    latest_chapter  = $(row).find('.latest');
+
+		if(confirm('Ignore latest chapter?')) {
+			$.post(base_url + 'ajax/ignore_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
+				$(_this).parent().find('.update-read, .ignore-latest').hide();
+				$(current_chapter).parent().append(
+					$('<span/>', {class: 'hidden-chapter', title: 'This latest chapter was marked as ignored.', text: $(latest_chapter).text()})
+				);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				switch(jqXHR.status) {
+					case 400:
+						alert('ERROR: ' + errorThrown);
+						break;
+					case 429:
+						alert('ERROR: Rate limit reached.');
+						break;
+					default:
+						alert('ERROR: Something went wrong!\n'+errorThrown);
+						break;
+				}
+			});
+		}
 	});
 
 	//Delete selected series

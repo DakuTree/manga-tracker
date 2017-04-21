@@ -455,6 +455,7 @@ $config['csrf_exclude_uris'] = array(
 	//      We can't include <most> of these as CSRF is regenerated on each request, and we can't always update that on the users end.
 	'ajax/username_check',
 	'ajax/update_inline',
+	'ajax/ignore_inline',
 	'ajax/delete_inline',
 	'ajax/tag_update',
 	'ajax/set_category',

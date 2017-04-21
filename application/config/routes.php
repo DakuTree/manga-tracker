@@ -77,6 +77,7 @@ $route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
 $route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
+$route['ajax/ignore_inline']['post']  = 'Ajax/TrackerInline/ignore';
 $route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
 $route['ajax/tag_update']['post']     = 'Ajax/TrackerInline/tag_update';
 $route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';

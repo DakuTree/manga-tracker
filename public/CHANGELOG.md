@@ -7,9 +7,15 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.5] 2017-04-20
+## [1.6.5] 2017-04-20 - 2017-04-21
 ### Added
 - "Delete Selected" now has a confirm popup. It also alerts if no rows are selected.
+- Ability to hide latest chapter, but not mark it as current.
+  - This is useful for cases where the latest chapter isn't actually the latest (due to ordering, removal etc etc.).
+
+### Changed
+- Timer tooltip now mentions exceptions
+
 
 ## [1.6.4] 2017-04-17 - 2017-04-19
 ### Added

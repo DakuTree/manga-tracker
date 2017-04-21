@@ -62,13 +62,14 @@ class History_Model extends CI_Model {
 	/*** USER HISTORY ***/
 	/*
 	 * --User history types--
-	 * 1: Title Added
-	 * 2: Title Updated
-	 * 3: Title Removed
+	 * 1: Title added
+	 * 2: Title updated
+	 * 3: Title removed
 	 * 4: Tags updated
 	 * 5: Category updated
 	 * 6: Favourite added
 	 * 7: Favourite removed
+	 * 8: Title ignored
 	 */
 
 	public function userAddTitle(int $chapterID, string $chapter, string $category) : bool {
@@ -155,6 +156,18 @@ class History_Model extends CI_Model {
 
 		return $success;
 	}
+	public function userIgnoreTitle(int $chapterID, string $new_chapter) : bool {
+		$success = $this->db->insert('tracker_user_history', [
+			'chapter_id'  => $chapterID,
+
+			'type'        => '8',
+			'custom1'     => $new_chapter,
+
+			'updated_at'  => date('Y-m-d H:i:s')
+		]);
+
+		return $success;
+	}
 
 	public function userGetHistory(int $page) : array {
 		$rowsPerPage = 50;
@@ -215,6 +228,11 @@ class History_Model extends CI_Model {
 					case 7:
 						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
 						$arrRow['status'] = "Unfavourited '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 8:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Chapter ignored: '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
 						break;
 
 					default:

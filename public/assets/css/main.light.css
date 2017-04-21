@@ -563,6 +563,17 @@ body {
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) {
 	width: 20%;
 }
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter {
+	font-size: 11px;
+	font-style: italic;
+	line-height: 11px;
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:before {
+	content: " (";
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:after {
+	content: ")";
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(4) {
 	width: 20%;
 }
@@ -572,7 +583,12 @@ body {
 
 	text-align: right;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) > .update-read {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .update-read {
+	cursor: pointer;
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .ignore-latest {
+	margin-right: 5px;
+
 	cursor: pointer;
 }
 #page[data-page="dashboard"] #list-nav.fixed-header {
