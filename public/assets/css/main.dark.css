@@ -582,6 +582,7 @@ body {
 	padding: 0 5px;
 
 	text-align: right;
+	white-space: nowrap;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .update-read {
 	cursor: pointer;
