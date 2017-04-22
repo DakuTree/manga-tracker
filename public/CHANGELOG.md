@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.6] 2017-04-22
+## Changed
+- Sync & Custom Update now works if volume is marked as LMT.
+
 ## [1.6.5] 2017-04-20 - 2017-04-21
 ### Added
 - "Delete Selected" now has a confirm popup. It also alerts if no rows are selected.

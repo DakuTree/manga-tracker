@@ -203,8 +203,8 @@ class Batoto extends Base_Site_Model {
 				$oldVolume = substr(array_shift($oldChapterSegments), 1);
 				$newVolume = substr(array_shift($newChapterSegments), 1);
 
-				if(in_array($oldVolume, ['TBD', 'TBA', 'NA'])) $oldVolume = 999;
-				if(in_array($newVolume, ['TBD', 'TBA', 'NA'])) $newVolume = 999;
+				if(in_array($oldVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $oldVolume = 999;
+				if(in_array($newVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $newVolume = 999;
 
 				$oldVolume = floatval($oldVolume);
 				$newVolume = floatval($newVolume);
