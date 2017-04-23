@@ -453,7 +453,10 @@ let base_site = {
 						});
 					}, _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0));
 				} else {
-					_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
+					//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
+					setTimeout(function() {
+						_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
+					}, 100 + (pageN * 100));
 				}
 			}
 
