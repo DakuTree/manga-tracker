@@ -232,8 +232,27 @@ $(function(){
 		}
 	});
 
+	/***** TAG SEARCH *****/
+	//TODO: Improve this.
+	$('#search').on('input', function(){
+		let tag_search_string = $(this).val(),
+		    tag_lists = $('.tag-list');
+
+		let filtered_tag_lists = tag_lists.filter(function() {
+			let safe_search_string = tag_search_string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+			let regex = new RegExp(/*"\\b"+*/safe_search_string/*+"\\b"*/, 'i');
+
+			return ! (regex.test($(this).text()) || regex.test($(this).closest('tr').find('> td:nth-of-type(2) > a').text()));
+		});
+
+		let unfiltered_tag_lists = $(tag_lists).not(filtered_tag_lists);
+
+		filtered_tag_lists.closest('tr').addClass('hidden');
+		unfiltered_tag_lists.closest('tr').removeClass('hidden');
+	});
+
 	/***** CATEGORIES *****/
-	$('#category-nav > .nav > li > a').click(function(e) {
+	$('#category-nav').find('> .nav > li > a').click(function(e) {
 		e.preventDefault();
 
 		//Change category active state

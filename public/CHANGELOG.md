@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.7] 2017-04-23
+### Added
+- List Search.
+  - This is might still be a bit buggy but it works.
+
 ### Changed
 - MangaFox page loading delay has changed from 750ms > 1000ms. This should hopefully help stop pages not loading due to bot protection.
 - Delayed image loading by 100ms on sites with useCustomImageList enabled.

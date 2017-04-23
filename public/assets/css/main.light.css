@@ -495,7 +495,7 @@ body {
 
 	text-align: center;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links input {
+#page[data-page="dashboard"] > div > #tracker-table-links .pull-right input {
 	position: absolute;
 
 	visibility: hidden;
@@ -516,6 +516,12 @@ body {
 }
 #page[data-page="dashboard"] > div > #tracker-table-links #import-status {
 	margin-right: 10px;
+}
+#page[data-page="dashboard"] > div > #tracker-table-links #search {
+	height: 26px;
+	padding: 6px 8px;
+
+	font-size: 13px;
 }
 #page[data-page="dashboard"] > .tracker-table {
 	width: 100%;
