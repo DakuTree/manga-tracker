@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-04-22
-// @version      1.5.6
+// @updated      2017-04-23
+// @version      1.5.7
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -689,7 +689,7 @@ let sites = {
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 
-			this.delay = 750;
+			this.delay = 1000;
 		},
 		stylize : function() {
 			//This removes the old border/background. The viewer adds borders to the images now instead which looks better.

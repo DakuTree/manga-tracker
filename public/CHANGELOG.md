@@ -7,8 +7,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.7] 2017-04-23
+### Changed
+- MangaFox page loading delay has changed from 750ms > 1000ms. This should hopefully help stop pages not loading due to bot protection.
+
 ## [1.6.6] 2017-04-22
-## Changed
+### Changed
 - Sync & Custom Update now works if volume is marked as LMT.
 
 ## [1.6.5] 2017-04-20 - 2017-04-21
