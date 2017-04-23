@@ -47,6 +47,9 @@ class Options extends Auth_Controller {
 			$this->User_Options->set('enable_public_list', $this->input->post('enable_public_list'));
 
 			$this->User_Options->set('mal_sync', $this->input->post('mal_sync'));
+
+			//We need to force a reload to make sure the user gets the new settings.
+			header("Refresh:0");
 		}
 
 		/*** CUSTOM CATEGORIES ***/

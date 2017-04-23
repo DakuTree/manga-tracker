@@ -16,6 +16,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
   - This is much better/quicker as we only need to do one AJAX request to grab every image, rather than having to do a AJAX request for every single page.
   - This should also stop the amount of failed image loading as it bypasses having to load the actual web page (which is what has the bot protection).
 
+### Fixed
+- New theme should properly show after changing theme.
+
 ## [1.6.6] 2017-04-22
 ### Changed
 - Sync & Custom Update now works if volume is marked as LMT.
