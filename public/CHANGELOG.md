@@ -10,6 +10,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.7] 2017-04-23
 ### Changed
 - MangaFox page loading delay has changed from 750ms > 1000ms. This should hopefully help stop pages not loading due to bot protection.
+- Delayed image loading by 100ms on sites with useCustomImageList enabled.
+  - No reason to try and load every single page in one go. This should help avoid possible IP bans too.
+- MangaFox now attempts to grab image URLs via the mobile one-page loader. Will fallback to old method if it fails.
+  - This is much better/quicker as we only need to do one AJAX request to grab every image, rather than having to do a AJAX request for every single page.
+  - This should also stop the amount of failed image loading as it bypasses having to load the actual web page (which is what has the bot protection).
 
 ## [1.6.6] 2017-04-22
 ### Changed

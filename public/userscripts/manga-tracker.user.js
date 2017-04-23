@@ -27,7 +27,7 @@
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @updated      2017-04-23
-// @version      1.5.7
+// @version      1.5.8
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -40,6 +40,7 @@
 // @grant        GM_setValue
 // @grant        GM_xmlhttpRequest
 // @connect      myanimelist.net
+// @connect      m.mangafox.me
 // @run-at       document-start
 // ==/UserScript==
 /* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
@@ -691,6 +692,7 @@ let sites = {
 			this.viewerTitle            = $('#series').find('> strong:last > a').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
+			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
 			this.delay = 1000;
 		},
@@ -742,9 +744,39 @@ let sites = {
 			$('#series').css('padding-top', '0');
 		},
 		preSetupViewer : function(callback) {
+			let _this = this;
+
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback(false, false);
+			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
+			GM_xmlhttpRequest({
+				url     : _this.chapter_url.replace('mangafox.me/manga', 'm.mangafox.me/roll_manga'),
+				method  : "GET",
+				onload  : function(response) {
+					let data = response.responseText,
+					    imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.reader-page');
+
+					// console.log(imageList);
+					_this.viewerCustomImageList = imageList.map(function(i, e) {
+						return $(e).attr('data-original');
+					});
+
+					if(_this.viewerCustomImageList.length) {
+						//Sometimes the page count on the actual site isn't accurate, but the mobile sites is. Fix when possible.
+						_this.page_count = _this.viewerCustomImageList.length;
+
+						callback(false, true);
+					} else {
+						console.log('Mobile site returned no images? Falling back to old loading method');
+						callback(false, false);
+					}
+
+				},
+				onerror : function() {
+					console.log('Unable to load mobile site, fallback to old page loading method');
+					callback(false, false);
+				}
+			});
 		}
 	}),
 
