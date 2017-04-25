@@ -7,7 +7,7 @@ class TitleHistory extends Auth_Controller {
 
 	public function index(int $titleID, int $page = 1) {
 		$this->header_data['title'] = "Title History";
-		$this->header_data['page']  = "title-history";
+		$this->header_data['page']  = "history";
 
 		//CHECK: Should we only allow people to see history for series they are tracking?
 		$historyData = $this->History->getTitleHistory((int) $titleID, $page);
@@ -15,6 +15,7 @@ class TitleHistory extends Auth_Controller {
 		$this->body_data['historyData'] = $historyData['rows'];
 		$this->body_data['currentPage'] = $page;
 		$this->body_data['totalPages']  = $historyData['totalPages'];
+		$this->body_data['titleID']     = (int) $titleID;
 
 		$this->_render_page("TitleHistory");
 	}
