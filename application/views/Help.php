@@ -16,6 +16,7 @@
 		<li>Make sure you are logged on to MAL in the same browser you are accessing trackr.moe from.</li>
 		<li>Set the MAL Sync options on the options page to "CSRF".</li>
 		<li>Add a "mal:#ID#" tag to series you want to sync. For example, One Piece would have the 'mal:13' tag.</li>
+		<li>Important: You must have the series added on MAL before we can update. We can't add series for you!</li>
 		<li>Optional: Use mal:none for series without a MAL entry (webtoons etc).</li>
 		<li>MAL Syncing is now setup!
 	</ol>
