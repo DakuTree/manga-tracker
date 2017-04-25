@@ -180,6 +180,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				}
 			} else {
 				$category = $this->User_Options->get('default_series_category', $userID);
+
 				$success = (bool) $this->db->insert('tracker_chapters', [
 					'user_id'         => $userID,
 					'title_id'        => $titleID,

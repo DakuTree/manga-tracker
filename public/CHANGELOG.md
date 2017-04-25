@@ -14,6 +14,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - History page now uses [simplePagination.js](http://flaviusmatis.github.io/simplePagination.js/) for pagination. Should be a bit better for those with a big history.
 
+### Fixed
+- Newly added series are no longer automatically marked as inactive.
+  - This has been broken since the MAL Syncing update. Complete oversight on my part..
+
 ## [1.6.7] 2017-04-23
 ### Added
 - List Search.
@@ -26,6 +30,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - MangaFox now attempts to grab image URLs via the mobile one-page loader. Will fallback to old method if it fails.
   - This is much better/quicker as we only need to do one AJAX request to grab every image, rather than having to do a AJAX request for every single page.
   - This should also stop the amount of failed image loading as it bypasses having to load the actual web page (which is what has the bot protection).
+- Help page now notes that the series must be added to MAL for syncing to work.
 
 ### Fixed
 - New theme should properly show after changing theme.
