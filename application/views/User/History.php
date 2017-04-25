@@ -37,14 +37,8 @@
 <nav aria-label="Page navigation" style="text-align:center">
 	<ul id="history-pagination" class="pagination">
 		<li class="page-item <?=($currentPage == 1 ? 'disabled' : '')?>">
-			<a class="page-link" href="<?=base_url("user/history/1")?>" aria-label="First">
-				<span aria-hidden="true">First</span>
-				<span class="sr-only">First</span>
-			</a>
-		</li>
-		<li class="page-item <?=($currentPage == 1 ? 'disabled' : '')?>">
 			<a class="page-link" href="<?=base_url("user/history/".($currentPage - 1))?>" aria-label="Previous">
-				<span aria-hidden="true">Previous</span>
+				<span aria-hidden="true">&laquo;</span>
 				<span class="sr-only">Previous</span>
 			</a>
 		</li>
@@ -55,14 +49,8 @@
 
 		<li class="page-item <?=(($currentPage == 1 || $currentPage == $totalPages) ? 'disabled' : '')?>">
 			<a class="page-link" href="<?=base_url("user/history/".($currentPage + 1))?>" aria-label="Next">
-				<span aria-hidden="true">Next</span>
+				<span aria-hidden="true">&raquo;</span>
 				<span class="sr-only">Next</span>
-			</a>
-		</li>
-		<li class="page-item <?=($currentPage == $totalPages ? 'disabled' : '')?>">
-			<a class="page-link" href="<?=base_url("user/history/{$totalPages}")?>" aria-label="Last">
-				<span aria-hidden="true">Last</span>
-				<span class="sr-only">Last</span>
 			</a>
 		</li>
 	</ul>
