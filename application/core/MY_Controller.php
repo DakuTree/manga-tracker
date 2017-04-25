@@ -43,16 +43,19 @@ class MY_Controller extends CI_Controller {
 		//SEE: http://stackoverflow.com/a/2140094/1168377
 		$this->load->view('common/footer', ($this->global_data + $this->footer_data));
 	}
-	public function _render_json($json_input, bool $download = FALSE) {
+	public function _render_json($json_input, bool $download = FALSE, string $filenamePrefix = 'tracker') {
 		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
 
 		$this->output->set_content_type('application/json', 'utf-8');
+		$this->_render_content($json,'json', $download, $filenamePrefix);
+	}
+	public function _render_content(string $content, string $filenameExt, bool $download = FALSE, string $filenamePrefix = 'tracker') : void {
 		if($download) {
 			$date = date('Ymd_Hi', time());
-			$this->output->set_header('Content-Disposition: attachment; filename="tracker-'.$date.'.json"');
-			$this->output->set_header('Content-Length: '.strlen($json));
+			$this->output->set_header('Content-Disposition: attachment; filename="'.$filenamePrefix.'-'.$date.'.'.$filenameExt.'"');
+			$this->output->set_header('Content-Length: '.strlen($content));
 		}
-		$this->output->set_output($json);
+		$this->output->set_output($content);
 	}
 }
 

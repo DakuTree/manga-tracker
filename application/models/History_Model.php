@@ -245,4 +245,78 @@ class History_Model extends CI_Model {
 		}
 		return $arr;
 	}
+
+	public function userGetHistoryAll() : array {
+		$rowsPerPage = 50;
+		$query = $this->db
+			->select('SQL_CALC_FOUND_ROWS
+			          tt.title, tt.title_url,
+			          ts.site, ts.site_class,
+			          tuh.type, tuh.custom1, tuh.custom2, tuh.custom3, tuh.updated_at', FALSE)
+			->from('tracker_user_history AS tuh')
+			->join('tracker_chapters AS tc', 'tuh.chapter_id = tc.id', 'left')
+			->join('tracker_titles AS tt', 'tc.title_id = tt.id', 'left')
+			->join('tracker_sites AS ts', 'tt.site_id = ts.id', 'left')
+			->where('tc.user_id', $this->User->id)
+			->order_by('tuh.id DESC')
+			->get();
+
+		$arr = [];
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$arrRow = [];
+
+				$arrRow['updated_at'] = $row->updated_at;
+				$arrRow['title']      = $row->title;
+				$arrRow['title_url']  = $this->Tracker->sites->{$row->site_class}->getFullTitleURL($row->title_url);
+
+				$arrRow['site'] = $row->site;
+
+				switch($row->type) {
+					case 1:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Series added at '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>' to category '{$row->custom2}'";
+						break;
+
+					case 2:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Chapter updated to '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 3:
+						$arrRow['status'] = "Series removed";
+						break;
+
+					case 4:
+						$arrRow['status'] = "Tags set to '{$row->custom1}'";
+						break;
+
+					case 5:
+						$arrRow['status'] = "Category set to '{$row->custom1}'";
+						break;
+
+					case 6:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Favourited '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 7:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Unfavourited '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 8:
+						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
+						$arrRow['status'] = "Chapter ignored: '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					default:
+						$arrRow['status'] = "Something went wrong!";
+						break;
+				}
+				$arr[] = $arrRow;
+			}
+		}
+		return $arr;
+	}
 }

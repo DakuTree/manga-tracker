@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.8] 2017-04-25
+### Added
+- History can now be exported (to either CSV or JSON).
+
 ### Changed
 - History page now uses [simplePagination.js](http://flaviusmatis.github.io/simplePagination.js/) for pagination. Should be a bit better for those with a big history.
 

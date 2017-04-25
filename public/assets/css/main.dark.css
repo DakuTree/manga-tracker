@@ -606,6 +606,9 @@ body {
 	width: 100%;
 	max-width: 1000px;
 }
+#page[data-page="history"] #history-options {
+	margin-bottom: 5px;
+}
 #page[data-page="terms"] > header {
 	text-align: center;
 }

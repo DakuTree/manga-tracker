@@ -62,6 +62,7 @@ $route['user/login']                 = 'User/Auth/Login';
 $route['user/logout']                = 'User/Auth/Logout';
 $route['user/history']               = 'User/History';
 $route['user/history/([0-9]+)']      = 'User/History/index/$1';
+$route['user/history/export/(csv|json)'] = 'User/History/export/$1';
 $route['user/favourites']            = 'User/Favourites';
 $route['user/favourites/([0-9]+)']   = 'User/Favourites/index/$1';
 $route['user/options']               = 'User/Options';
