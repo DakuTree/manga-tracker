@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.8] 2017-04-25
+### Changed
+- History page now uses [simplePagination.js](http://flaviusmatis.github.io/simplePagination.js/) for pagination. Should be a bit better for those with a big history.
+
 ## [1.6.7] 2017-04-23
 ### Added
 - List Search.

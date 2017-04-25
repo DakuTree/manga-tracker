@@ -15,7 +15,8 @@
 		"bower-asset/bootstrap"         : "3.3.7",
 		"bower-asset/font-awesome"      : "4.7.0",
 		"bower-asset/respond"           : "1.4.2",
-		"bower-asset/cookieconsent"     : "3.0.4"
+		"bower-asset/cookieconsent"     : "3.0.4",
+		"bower-asset/jquery.simplePagination" : "0.0.3.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit"         : "6.1.0"
@@ -62,7 +63,8 @@
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2",
 		"vendor/bower-asset/respond/dest/respond.min.js"                             : "public/assets/vendor/js/respond.min.js",
 		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.js"                : "public/assets/vendor/js/cookieconsent.min.js",
-		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.css"               : "public/assets/vendor/css/cookieconsent.min.css"
+		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.css"               : "public/assets/vendor/css/cookieconsent.min.css",
+		"vendor/bower-asset/jquery.simplePagination/jquery.simplePagination.js"      : "public/assets/vendor/js/jquery.simplePagination.js"
 	},
 
 	"scripts": {

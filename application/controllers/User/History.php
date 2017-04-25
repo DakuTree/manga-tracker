@@ -13,7 +13,7 @@ class History extends Auth_Controller {
 
 		$historyData = $this->History->userGetHistory($page);
 		$this->body_data['historyData'] = $historyData['rows'];
-		$this->body_data['currentPage'] = $page;
+		$this->body_data['currentPage'] = (int) $page;
 		$this->body_data['totalPages']  = $historyData['totalPages'];
 
 		if($page > $this->body_data['totalPages'] && $page <= 1) redirect('user/history/1');

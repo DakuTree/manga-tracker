@@ -21,21 +21,42 @@
 </table>
 
 <nav aria-label="Page navigation" style="text-align:center">
-	<ul class="pagination">
+	<ul id="history-pagination" class="pagination">
 		<li class="page-item <?=($currentPage == 1 ? 'disabled' : '')?>">
-			<a class="page-link" href="#" aria-label="Previous">
-				<span aria-hidden="true">&laquo;</span>
+			<a class="page-link" href="<?=base_url("user/history/1")?>" aria-label="First">
+				<span aria-hidden="true">First</span>
+				<span class="sr-only">First</span>
+			</a>
+		</li>
+		<li class="page-item <?=($currentPage == 1 ? 'disabled' : '')?>">
+			<a class="page-link" href="<?=base_url("user/history/".($currentPage - 1))?>" aria-label="Previous">
+				<span aria-hidden="true">Previous</span>
 				<span class="sr-only">Previous</span>
 			</a>
 		</li>
+
 		<?php foreach(range(1, $totalPages) as $page) { ?>
 		<li class="page-item <?=($currentPage == $page ? 'active' : '')?>"><a class="page-link" href="<?=base_url("user/history/{$page}")?>"><?=$page?></a></li>
 		<?php } ?>
-		<li class="page-item <?=($currentPage == $totalPages ? 'disabled' : '')?>">
-			<a class="page-link" href="#" aria-label="Next">
-				<span aria-hidden="true">&raquo;</span>
+
+		<li class="page-item <?=(($currentPage == 1 || $currentPage == $totalPages) ? 'disabled' : '')?>">
+			<a class="page-link" href="<?=base_url("user/history/".($currentPage + 1))?>" aria-label="Next">
+				<span aria-hidden="true">Next</span>
 				<span class="sr-only">Next</span>
+			</a>
+		</li>
+		<li class="page-item <?=($currentPage == $totalPages ? 'disabled' : '')?>">
+			<a class="page-link" href="<?=base_url("user/history/{$totalPages}")?>" aria-label="Last">
+				<span aria-hidden="true">Last</span>
+				<span class="sr-only">Last</span>
 			</a>
 		</li>
 	</ul>
 </nav>
+
+
+<script src="<?=asset_url()?>vendor/js/jquery.simplePagination.js" defer></script>
+<script>
+	const currentPagination = parseInt("<?=$currentPage?>");
+	const totalPagination = parseInt("<?=$totalPages?>");
+</script>
