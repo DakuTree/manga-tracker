@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.9] 2017-04-28
+### Fixed
+- Userscript can now track properly after cancelling an update.
+
 ## [1.6.8] 2017-04-25
 ### Added
 - History can now be exported (to either CSV or JSON).

@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-04-23
-// @version      1.5.8
+// @updated      2017-04-24
+// @version      1.5.9
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -278,21 +278,21 @@ let base_site = {
 
 		if(config['api-key']) {
 			if(this.attemptingTrack === false) {
-				this.attemptingTrack = true;
-
-				let params = {
-					'api-key' : config['api-key'],
-					'manga'   : {
-						'site'    : this.site,
-
-						//Both title and chapter can contain anything, as parsing is done on the backend.
-						'title'   : this.title,
-						'chapter' : this.chapter
-					}
-				};
-				//TODO: Check if everything is set, and not null.
-
 				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
+					this.attemptingTrack = true;
+
+					//TODO: Check if everything is set, and not null.
+					let params = {
+						'api-key' : config['api-key'],
+						'manga'   : {
+							'site'    : this.site,
+
+							//Both title and chapter can contain anything, as parsing is done on the backend.
+							'title'   : this.title,
+							'chapter' : this.chapter
+						}
+					};
+
 					$.post(main_site + '/ajax/userscript/update', params, function (json) {
 						//TODO: We should really output this somewhere other than the topbar..
 
