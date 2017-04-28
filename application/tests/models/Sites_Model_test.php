@@ -9,7 +9,7 @@ class Site_Model_test extends TestCase {
 	public function setUp() {
 		$this->resetInstance();
 
-		$this->Sites_Model = new Sites_Model();
+		$this->Sites_Model = new Tracker_Sites_Model();
 	}
 
 	//TODO: Each test should check a randomized series each time instead of using the same series.
