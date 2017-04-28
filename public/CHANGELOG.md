@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.9] 2017-04-28
+### Changed
+- Userscript now gives feedback when attempting to update.
+
 ### Fixed
 - Userscript can now track properly after cancelling an update.
 

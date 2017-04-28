@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-04-24
-// @version      1.5.9
+// @updated      2017-04-28
+// @version      1.5.10
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -296,7 +296,9 @@ let base_site = {
 					$.post(main_site + '/ajax/userscript/update', params, function (json) {
 						//TODO: We should really output this somewhere other than the topbar..
 
-						let status     = $('#TrackerStatus');
+						let status = $('#TrackerStatus');
+						status.text('Attempting update...');
+
 						switch(json['mal_sync']) {
 							case 'disabled':
 								status.text('Updated');
@@ -324,6 +326,7 @@ let base_site = {
 								break;
 						}
 					}).fail(function(jqXHR, textStatus, errorThrown) {
+						status.text('Update failed?');
 						switch(jqXHR.status) {
 							case 400:
 								alert('ERROR: ' + errorThrown);
