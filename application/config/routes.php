@@ -102,6 +102,11 @@ $route['help']        = 'Help';
 $route['about']       = 'About';
 $route['about/terms'] = 'About/terms';
 
+$route['admin_panel'] = 'AdminPanel';
+$route['admin_panel/update/normal'] = 'AdminPanel/update_normal';
+$route['admin_panel/update/custom'] = 'AdminPanel/update_custom';
+$route['admin_panel/update/titles'] = 'AdminPanel/update_titles';
+
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
 	$route['admin/migrate']              = 'AdminCLI/migrate';
