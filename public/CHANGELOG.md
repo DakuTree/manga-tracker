@@ -7,7 +7,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.9] 2017-04-28 - 2017-05-01
+## [1.6.9] 2017-04-28 - 2017-05-02
 ### Added
 - Basic Admin Panel.
   - At the moment this is just for triggering manual updates.
@@ -15,6 +15,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - Userscript now gives feedback when attempting to update.
 - `[Backend]` Failed CSRF now forces reload.
+- `[Backend]` doCustomUpdate functionality has been moved to handleCustomUpdate. doCustomUpdate calls this and handles logging.
+  - SEE: #85
+
 
 ### Fixed
 - Userscript can now track properly after cancelling an update.

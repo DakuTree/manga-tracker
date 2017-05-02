@@ -46,7 +46,7 @@ class MangaFox extends Base_Site_Model {
 	}
 
 	//FIXME: This entire thing feels like an awful implementation....BUT IT WORKS FOR NOW.
-	public function doCustomFollow(string $data = "", array $extra = []) {
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
 		preg_match('/var sid=(?<id>[0-9]+);/', $data, $matches);
 
 		$formData = [
@@ -61,7 +61,7 @@ class MangaFox extends Base_Site_Model {
 		];
 		$content = $this->get_content('http://mangafox.me/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
-		return is_array($content) && in_array('status_code', $content) && $content['status_code'] === 200;
+		$callback($content, $matches['id']);
 	}
 	public function doCustomUpdate() {
 		$titleDataList = [];

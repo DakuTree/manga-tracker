@@ -200,7 +200,28 @@ abstract class Base_Site_Model extends CI_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-	public function doCustomFollow(string $data = "", array $extra = []) {}
+	final public function doCustomFollow(string $data = "", array $extra = []) {
+		$success = FALSE;
+		$this->handleCustomFollow(function($content, $id) use(&$success) {
+			if(is_array($content)) {
+				if(in_array('status_code', $content)) {
+					$statusCode = $content['status_code'];
+					if($statusCode === 200) {
+						$success = TRUE;
+						log_message('info', "doCustomFollow succeeded for {$id}");
+					} else {
+						log_message('error', "doCustomFollow failed (Invalid status code ({$statusCode})) for {$id}");
+					}
+				} else {
+					log_message('error', "doCustomFollow failed (Missing status code header?) for {$id}");
+				}
+			} else {
+				log_message('error', "doCustomFollow failed (Failed request) for {$id}");
+			}
+		}, $data, $extra);
+		return $success;
+	}
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
 	public function doCustomUpdate() {}
 	public function doCustomCheck(string $oldChapter, string $newChapter) {}
 }

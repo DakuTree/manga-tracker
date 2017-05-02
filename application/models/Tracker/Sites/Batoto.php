@@ -84,7 +84,7 @@ class Batoto extends Base_Site_Model {
 	}
 
 	//FIXME: This entire thing feels like an awful implementation....BUT IT WORKS FOR NOW.
-	public function doCustomFollow(string $data = "", array $extra = []) {
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
 		preg_match('/ipb\.vars\[\'secure_hash\'\]\s+=\s+\'(?<secure_hash>[0-9a-z]+)\';[\s\S]+ipb\.vars\[\'session_id\'\]\s+=\s+\'(?<session_id>[0-9a-z]+)\';/', $data, $text);
 
 		$params = [
@@ -111,7 +111,7 @@ class Batoto extends Base_Site_Model {
 		];
 		$content = $this->get_content('http://bato.to/forums/index.php?'.http_build_query($params), implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
-		return is_array($content) && in_array('status_code', $content) && $content['status_code'] === 200;
+		$callback($content, $extra['id']);
 	}
 	public function doCustomUpdate() {
 		$titleDataList = [];
