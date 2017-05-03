@@ -184,14 +184,14 @@ class Site_Model_test extends TestCase {
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
-		$this->assertInternalType('array', $result);
-		$this->assertArrayHasKey('title', $result);
-		$this->assertArrayHasKey('latest_chapter', $result);
-		$this->assertArrayHasKey('last_updated', $result);
+		$this->assertInternalType('array', $result, "Title URL ({$title_url}");
+		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url}");
+		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url}");
+		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url}");
 
-		$this->assertEquals($expectedTitle, $result['title']);
-		$this->assertRegExp($this->Sites_Model->{$siteName}->chapterFormat, $result['latest_chapter']);
-		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated']);
+		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url}");
+		$this->assertRegExp($this->Sites_Model->{$siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url}");
+		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated'], "Title URL ({$title_url}");
 
 	}
 	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
@@ -200,7 +200,7 @@ class Site_Model_test extends TestCase {
 		MonkeyPatch::patchFunction('log_message', NULL, $siteName); //Stop logging stuff...
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
-		$this->assertNull($result);
+		$this->assertNull($result, "Title URL ({$title_url}");
 		MonkeyPatch::verifyInvokedOnce('log_message', ['error', "{$siteName} : {$title_url} | {$errorMessage}"]);
 	}
 }
