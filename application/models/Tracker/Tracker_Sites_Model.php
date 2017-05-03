@@ -204,7 +204,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$success = FALSE;
 		$this->handleCustomFollow(function($content, $id) use(&$success) {
 			if(is_array($content)) {
-				if(in_array('status_code', $content)) {
+				if(array_key_exists('status_code', $content)) {
 					$statusCode = $content['status_code'];
 					if($statusCode === 200) {
 						$success = TRUE;
@@ -213,7 +213,7 @@ abstract class Base_Site_Model extends CI_Model {
 						log_message('error', "doCustomFollow failed (Invalid status code ({$statusCode})) for {$id}");
 					}
 				} else {
-					log_message('error', "doCustomFollow failed (Missing status code header?) for {$id}");
+					log_message('error', "doCustomFollow failed (Missing status code?) for {$id}");
 				}
 			} else {
 				log_message('error', "doCustomFollow failed (Failed request) for {$id}");

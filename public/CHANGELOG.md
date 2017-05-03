@@ -12,6 +12,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - `[Backend]` Site Tests now log title_url on failure.
 - DemonicScans has been disabled as the domain has been suspended.
 
+### Fixed
+- `[Backend]` doCustomFollow properly checks for status_code header. Apparently in_array doesn't check keys.
+
 ## [1.6.9] 2017-04-28 - 2017-05-02
 ### Added
 - Basic Admin Panel.
