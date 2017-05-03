@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 //Disabling DemonicScans
-class Migration_Update_Sites_20170415 extends CI_Migration {
+class Migration_Update_Sites_20170503 extends CI_Migration {
 	public function __construct() {
 		parent::__construct();
 		$this->load->dbforge();
