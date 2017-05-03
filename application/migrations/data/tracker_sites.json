@@ -96,7 +96,8 @@
 		{
 			"id"         : "19",
 			"site"       : "reader.deathtollscans.net",
-			"site_class" : "DeathTollScans"
+			"site_class" : "DeathTollScans",
+			"status"     : "disabled"
 		}
 	]
 }

@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.10] 2017-05-03
 ### Changed
 - `[Backend]` Site Tests now log title_url on failure.
+- DemonicScans has been disabled as the domain has been suspended.
 
 ## [1.6.9] 2017-04-28 - 2017-05-02
 ### Added

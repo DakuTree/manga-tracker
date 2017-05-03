@@ -168,10 +168,14 @@ class Site_Model_test extends TestCase {
 	}
 
 	public function test_DemonicScans() {
-		$this->_testSiteSuccess('DemonicScans', 'shen_yin_wang_zuo', 'Shen Yin Wang Zuo');
+		$this->markTestSkipped('DemonicScans no longer exists.');
+
+		//$this->_testSiteSuccess('DemonicScans', 'shen_yin_wang_zuo', 'Shen Yin Wang Zuo');
 	}
 	public function test_DemonicScans_fail() {
-		$this->_testSiteFailure('DemonicScans', 'Bad Status Code (404)');
+		$this->markTestSkipped('DemonicScans no longer exists.');
+
+		//$this->_testSiteFailure('DemonicScans', 'Bad Status Code (404)');
 	}
 
 	public function test_DeathTollScans() {
