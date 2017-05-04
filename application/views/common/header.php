@@ -60,6 +60,10 @@
 						</a>
 
 						<ul class="dropdown-menu">
+							<?php if($this->ion_auth->is_admin()) { ?>
+							<li><a href="<?=base_url('admin_panel')?>">Admin Panel</a></li>
+							<li class="divider"></li>
+							<?php } ?>
 							<li><a href="<?=base_url('user/favourites')?>">Favourites</a></li>
 							<li class="divider"></li>
 							<li><a href="<?=base_url('user/history')?>">History</a></li>
