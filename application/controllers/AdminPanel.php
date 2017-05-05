@@ -14,7 +14,8 @@ class AdminPanel extends Admin_Controller {
 		$this->header_data['title'] = "Admin Panel";
 		$this->header_data['page']  = "admin-panel";
 
-		$this->body_data['complete_list'] = $this->_list_complete_titles();
+		$this->body_data['complete_list'] = array_merge([['id', 'site_class', 'url']], $this->_list_complete_titles());
+		$this->body_data['id_sql']        = 'SELECT * FROM `tracker_titles` WHERE id IN('.implode(',', array_column($this->body_data['complete_list'], 'id')).')';
 
 		$template = array(
 			'table_open' => '<table class="table table-striped">'
@@ -46,7 +47,7 @@ class AdminPanel extends Admin_Controller {
 		                  ->where('tracker_titles.status', 0)
 		                  ->get();
 
-		$completeList = [['id', 'site_class', 'url']];
+		$completeList = [];
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $row) {
 				$data = [

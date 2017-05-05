@@ -18,6 +18,7 @@
 
 	<div>
 		<h4>Series marked as complete</h4>
+		<span>SQL Query: <pre><?=$id_sql?></pre></span>
 		<?=$this->table->generate($complete_list)?>
 	</div>
 	<!--<div>-->
