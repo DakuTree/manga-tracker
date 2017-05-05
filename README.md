@@ -25,6 +25,6 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * SenseScans
 * JaiminisBox
 * Doki Fansubs
-* Demonic Scanlations
+* ~~Demonic Scanlations~~ Domain has been disabled.
 * Death Toll Scans
 * Easy Going Scans
