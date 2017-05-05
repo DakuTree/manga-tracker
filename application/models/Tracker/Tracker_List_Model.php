@@ -169,7 +169,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			                    ->where('title_id', $titleID)
 			                    ->get('tracker_chapters');
 			if($idQuery->num_rows() > 0) {
-				$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
+				$success = (bool) $this->db->set(['current_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL, 'ignore_chapter' => NULL])
 				                           ->where('user_id', $userID)
 				                           ->where('title_id', $titleID)
 				                           ->update('tracker_chapters');

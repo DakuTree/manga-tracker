@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.11] 2014-05-05
+### Changed
+- Ignored updates should now be cleared on manual user update.
+
 ### Fixed
 - Ignored updates should now be properly cleared on title update.
 
