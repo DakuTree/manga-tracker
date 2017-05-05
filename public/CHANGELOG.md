@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.11] 2014-05-05
+### Added
+- Admin Panel now has a list of all series tagged as complete, but not marked as such.
+  - Useful for finding finished series for #4. Not a perfect solution, but it works.
+
 ### Changed
 - Ignored updates should now be cleared on manual user update.
 

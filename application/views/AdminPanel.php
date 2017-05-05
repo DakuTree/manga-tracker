@@ -16,6 +16,10 @@
 
 	<br />
 
+	<div>
+		<h4>Series marked as complete</h4>
+		<?=$this->table->generate($complete_list)?>
+	</div>
 	<!--<div>-->
 	<!--	<form class="form-inline">-->
 	<!--		<label>Move users from ID to ID: </label>-->

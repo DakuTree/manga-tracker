@@ -4,6 +4,8 @@ class AdminPanel extends Admin_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		$this->load->library('table');
+
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 	}
@@ -12,6 +14,13 @@ class AdminPanel extends Admin_Controller {
 		$this->header_data['title'] = "Admin Panel";
 		$this->header_data['page']  = "admin-panel";
 
+		$this->body_data['complete_list'] = $this->_list_complete_titles();
+
+		$template = array(
+			'table_open' => '<table class="table table-striped">'
+		);
+
+		$this->table->set_template($template);
 		$this->_render_page('AdminPanel');
 	}
 
@@ -26,5 +35,29 @@ class AdminPanel extends Admin_Controller {
 	public function update_titles() {
 		set_time_limit(0);
 		$this->Tracker->admin->updateTitles();
+	}
+
+	private function _list_complete_titles() {
+		$query = $this->db->select('tracker_titles.id, tracker_sites.site_class, tracker_titles.title, tracker_titles.title_url')
+		                  ->from('tracker_chapters')
+		                  ->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
+		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+		                  ->like('tracker_chapters.tags', 'complete')
+		                  ->where('tracker_titles.status', 0)
+		                  ->get();
+
+		$completeList = [['id', 'site_class', 'url']];
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$data = [
+					'id'         => $row->id,
+					'site_class' => $row->site_class,
+					'url'        => "<a href='".$this->Tracker->sites->{$row->site_class}->getFullTitleURL($row->title_url)."'>{$row->title}</a>"
+				];
+				$completeList[] = $data;
+			}
+		}
+
+		return $completeList;
 	}
 }
