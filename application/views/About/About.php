@@ -22,6 +22,15 @@
 		<br>
 	</p>
 
+	<h3>Support the Project</h3>
+	<p>
+		Want to support the site? Stop. Go support the actual manga industry instead!
+		<br>
+		If you want to support us in a non-monetary way however, spreading the word about the site is always a nice help.
+		<br>
+		Starring the project on <a href="https://github.com/DakuTree/manga-tracker">Github</a>, or giving me a follow on <a href="https://twitter.com/DakuTree">Twitter</a> is also a appreciated.
+	</p>
+
 	<h3>Contact</h3>
 	<p>
 		If you need contact me for whatever reason, send me an email at <a href="mailto:admin@trackr.moe">admin@trackr.moe</a> or DM me on twitter at <a href="https://twitter.com/DakuTree">@DakuTree</a>.
