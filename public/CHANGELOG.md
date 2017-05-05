@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.11] 2014-05-05
+### Fixed
+- Ignored updates should now be properly cleared on title update.
+
 ## [1.6.10] 2017-05-03
 ### Changed
 - `[Backend]` Site Tests now log title_url on failure.
