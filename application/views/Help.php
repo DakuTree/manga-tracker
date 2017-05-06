@@ -30,7 +30,7 @@
 		<li>MangaFox</li>
 		<li>Bato.to (with multi-lang support)</li>
 		<li>DynastyScans (beta)</li>
-		<li>MangaHere</li>
+		<li><del>MangaHere</del> - Disabled due to Chrome marking it as unsafe, and it also running harmful Javascript.</li>
 		<li>MangaStream</li>
 		<li>MangaPanda</li>
 		<li>WebToons.com</li>

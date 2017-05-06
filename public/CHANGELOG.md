@@ -7,7 +7,17 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.11] 2014-05-05
+## [1.6.12] 2017-05-06
+### Changed
+- MangaHere has been disabled as it has been marked as deceptive by Chrome, and also appears to be running unsafe Javascript.
+  - A bit strange since I thought they were ran by the same folks as MangaFox, but maybe not?
+
+### Fixed
+- Refixed new series not being properly added. (Somehow this didn't get committed properly?)
+- TamperMonkey dashboard should no longer throw a unsafe site error.
+  - This was caused by mangahere.co being marked as unsafe, and since TamperMonkey autoloads favicons from @include sites.
+
+## [1.6.11] 2017-05-05
 ### Added
 - Admin Panel now has a list of all series tagged as complete, but not marked as such.
   - Useful for finding finished series for #4. Not a perfect solution, but it works.

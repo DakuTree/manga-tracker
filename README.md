@@ -11,11 +11,11 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 ## Sites supported
 * MangaFox
 * Bato.to (with multi-lang support) (Requires login)
-* MangaHere
+* ~~MangaHere~~ Disabled due to Chrome marking it as unsafe, and it also running harmful Javascript.
 * MangaStream
 * MangaPanda
 * WebToons.com
-* ~~KissManga.com~~ Looks like the server got IP banned from tracking this...
+* ~~KissManga.com~~ Server got IP banned, meaning tracking is no longer possible.
 * KireiCake.com
 * DynastyScans (beta)
 * Game of Scanlation
