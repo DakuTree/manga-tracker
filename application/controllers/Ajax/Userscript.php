@@ -45,7 +45,7 @@ class Userscript extends AJAX_Controller {
 			if($this->form_validation->run() === TRUE) {
 				$manga = $this->input->post('manga');
 
-				$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], FALSE, TRUE);
+				$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], TRUE, TRUE);
 				if($titleData) {
 					$json = [
 						'mal_sync' => $this->User_Options->get('mal_sync', $this->userID),
