@@ -72,7 +72,7 @@ h1 {
 	color: #337AB7;
 }
 .bg-danger {
-	background: #F2DEDE;
+	background: #F2DEDE !important;
 }
 .table-striped > thead th {
 	background-color: #EEEEEE;
