@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-06
-// @version      1.5.11
+// @updated      2017-05-07
+// @version      1.5.12
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -47,8 +47,6 @@
 /* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync */
 'use strict';
 
-GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
-
 /* CORE TODO
 Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?
 Move all CSS to external site. Should allow faster loading.
@@ -64,6 +62,8 @@ function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]
 let base_site = {
 	init : function() {
 		let _this = this;
+
+		GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
 
 		this.preInit(function() {
 			_this.setObjVars();

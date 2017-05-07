@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.13] 2017-05-07
+### Changed
+- `[Backend]` Userscript now only injects FontAwesome into tracked sites.
+
 ## [1.6.12] 2017-05-06
 ### Changed
 - MangaHere has been disabled as it has been marked as deceptive by Chrome, and also appears to be running unsafe Javascript.
