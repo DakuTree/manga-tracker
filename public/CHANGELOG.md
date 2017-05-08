@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.14] 2017-05-08
+### Fixed
+- Title history now shows the correct amount of pages in the pagination.
+
 ## [1.6.13] 2017-05-07
 ### Changed
 - `[Backend]` Userscript now only injects FontAwesome into tracked sites.

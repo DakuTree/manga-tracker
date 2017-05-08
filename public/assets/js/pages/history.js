@@ -21,7 +21,7 @@ $(function(){
 	$('#title-history-pagination').pagination({
 		currentPage    : currentPagination,
 
-		pages          : 5,
+		pages          : totalPagination,
 		displayedPages : 10,
 
 		hrefTextPrefix : '/history/'+titleID+'/',
