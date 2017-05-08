@@ -21,7 +21,7 @@ class WebToons extends Base_Site_Model {
 
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
-		return "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/list?title_no={$title_parts[0]}/";
+		return "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/list?title_no={$title_parts[0]}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
