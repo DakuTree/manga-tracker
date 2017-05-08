@@ -24,7 +24,7 @@
 </table>
 
 <nav aria-label="Page navigation" style="text-align:center">
-	<ul id="title-history-pagination" class="pagination">
+	<ul class="pagination">
 		<li class="page-item <?=($currentPage == 1 ? 'disabled' : '')?>">
 			<a class="page-link" href="<?=base_url("user/history/".($currentPage - 1))?>" aria-label="Previous">
 				<span aria-hidden="true">&laquo;</span>

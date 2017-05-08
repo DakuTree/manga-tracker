@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.14] 2017-05-08
 ### Fixed
 - Title history now shows the correct amount of pages in the pagination.
+- `[Backend]` Pagination should no longer throw error because of missing titleID var.
 
 ## [1.6.13] 2017-05-07
 ### Changed
