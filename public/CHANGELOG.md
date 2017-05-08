@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.14] 2017-05-08
+### Changed
+- GameOfScanlation no longer shows "test" at top of page if AdBlock is enabled.
+
 ### Fixed
 - Title history now shows the correct amount of pages in the pagination.
 - `[Backend]` Pagination should no longer throw error because of missing titleID var.
