@@ -17,6 +17,8 @@ class TitleHistory extends Auth_Controller {
 		$this->body_data['totalPages']  = $historyData['totalPages'];
 		$this->body_data['titleID']     = (int) $titleID;
 
+		if($page > $this->body_data['totalPages'] && $page > 1) redirect("/history/{$titleID}/1");
+
 		$this->_render_page("TitleHistory");
 	}
 }

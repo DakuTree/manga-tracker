@@ -11,6 +11,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Fixed
 - Title history now shows the correct amount of pages in the pagination.
 - `[Backend]` Pagination should no longer throw error because of missing titleID var.
+- History pages now correctly redirect if page or TitleID is invalid.
 
 ## [1.6.13] 2017-05-07
 ### Changed
