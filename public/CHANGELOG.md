@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.15] 2017-05-09
 ### Added
 - `[Backend]` DynastyScans now has a separate test for oneshots.
+- Userscript now has a button for searching the current site (where possible).
 
 ### Changed
 - `[Backend]` Site tests are now checked against one of five possible titles.

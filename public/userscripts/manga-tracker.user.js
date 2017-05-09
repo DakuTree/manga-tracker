@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-08
-// @version      1.5.13
+// @updated      2017-05-09
+// @version      1.6.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -87,7 +87,6 @@ let base_site = {
 	postSetupTopBar : function(topbar) {},
 	preSetupViewer  : function(callback) { callback(); }, //callback must always be called
 	postSetupViewer : function(topbar) {},
-
 
 	//Fixed Functions
 	setupTopBar : function() {
@@ -207,8 +206,9 @@ let base_site = {
 					).append(
 						next
 					).append(
-						// $('<img/>', {class: 'trackStop', src: trackBase64, title: 'Stop following updates for this manga'})).append(
 						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report a Bug'})
+					).append(
+						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
 						$('<i/>', {id: 'favouriteChapter', class: 'fa fa-star', 'aria-hidden': 'true', title: 'Click to favourite this chapter (Requires series to be tracked first!)'})
 					).append(
@@ -255,6 +255,12 @@ let base_site = {
 				e.preventDefault();
 
 				_this.reportBug();
+			});
+			//Setup search.
+			$(topbar).on('click', '#trackerSearch', function(e) {
+				e.preventDefault();
+
+				_this.search();
 			});
 			//Setup favourite event.
 			$(topbar).on('click', '#favouriteChapter', function(e) {
@@ -595,6 +601,13 @@ let base_site = {
 		}
 	},
 
+	search : function() {
+		let original_search_string = prompt('Search: '),
+		    encoded_search_string  = encodeURIComponent(original_search_string);
+
+		location.href = this.searchURLFormat.replace('{%SEARCH%}', encoded_search_string);
+	},
+
 	favouriteChapter : function() {
 		if(config['api-key']) {
 			let params = {
@@ -659,6 +672,10 @@ let base_site = {
 	//Delay each page load by x ms when not using custom image list
 	delay: 0,
 
+	//Used for search.
+	searchURLFormat : '', //{%SEARCH%} is replaced with search string.
+
+	//Misc
 	attemptingTrack     : false, //This is only changed by trackChapter
 	pagesLoaded         : 0,
 	pagesLoadedAttempts : 0
@@ -696,6 +713,8 @@ let sites = {
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
+
+			this.searchURLFormat = 'http://mangafox.me/search.php?advopts=1&name={%SEARCH%}';
 
 			this.delay = 1000;
 		},
@@ -783,6 +802,7 @@ let sites = {
 		}
 	}),
 
+	//Disabled
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
@@ -918,6 +938,8 @@ let sites = {
 			this.viewerCustomImageList  = reader.find('#read_settings + div + div img').map(function(i, e) {
 				return $(e).attr('src');
 			});
+
+			this.searchURLFormat = this.https+'://bato.to/search?name={%SEARCH%}';
 		},
 		stylize : function() {
 			//Nothing?
@@ -966,6 +988,8 @@ let sites = {
 				return e.replace(/^"|"$/g, '');
 			});
 			this.page_count = this.viewerCustomImageList.length;
+
+			this.searchURLFormat = 'https://dynasty-scans.com/search?q={%SEARCH%}';
 		},
 		stylize : function() {
 			//These buttons aren't needed since we have our own viewer.
@@ -1036,6 +1060,8 @@ let sites = {
 			this.viewerTitle            = $('#mangainfo').find('> div[style*=float] > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
+
+			this.searchURLFormat = 'http://www.mangapanda.com/search/?w={%SEARCH%}';
 		},
 		stylize : function() {
 			let mangaInfo = $('#mangainfo').find('> div');
@@ -1145,9 +1171,12 @@ let sites = {
 			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerTitle = $('.subj').text();
+
+			this.searchURLFormat = 'http://www.webtoons.com/search?keyword={%SEARCH%}';
 		}
 	}),
 
+	//Disabled
 	'kissmanga.com' : extendSite({
 		preInit : function(callback) {
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
@@ -1278,6 +1307,8 @@ let sites = {
 				return self.indexOf(value) === index;
 			});
 			this.page_count = this.viewerCustomImageList.length;
+
+			this.searchURLFormat = 'http://mngcow.co/manga-list/search/{%SEARCH%}';
 		},
 		preSetupViewer : function(callback) {
 			$('#longWrap').remove();
@@ -1480,6 +1511,7 @@ let sites = {
 		}
 	}),
 
+	//Disabled
 	'www.demonicscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1510,7 +1542,6 @@ let sites = {
 			callback(true, true);
 		}
 	}),
-
 
 	'reader.deathtollscans.net' : extendSite({
 		setObjVars : function() {
