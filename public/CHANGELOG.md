@@ -7,6 +7,14 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.15] 2017-05-09
+### Added
+- `[Backend]` DynastyScans now has a separate test for oneshots.
+
+### Changed
+- `[Backend]` Site tests are now checked against one of five possible titles.
+  - This is mainly done to make sure that the tests will work on different kinds of titles. These are only ran locally so the randomization here isn't much of a problem.
+
 ## [1.6.14] 2017-05-08
 ### Changed
 - GameOfScanlation no longer shows "test" at top of page if AdBlock is enabled.
