@@ -94,7 +94,7 @@ let base_site = {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
-			GM_addStyle(`
+			GM_addStyle(`/* <gm> */
 				#TrackerBar {
 					position: fixed    !important;
 					top:      0        !important;
@@ -189,7 +189,7 @@ let base_site = {
 					color: initial;
 				}
 				#TrackerBarIn select { margin: 0 !important; }
-			`);
+			/* </gm> */`);
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
 			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
