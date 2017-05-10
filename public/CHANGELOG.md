@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.16] 2017-05-10
+### Fixed
+- Ignored chapters are now properly cleared when title update has a new chapter, and not every time.
+
 ## [1.6.15] 2017-05-09
 ### Added
 - `[Backend]` DynastyScans now has a separate test for oneshots.
