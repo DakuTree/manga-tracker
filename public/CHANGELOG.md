@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.17] 2017-05-11
+### Added
+- Update status page which shows which series will be updated during the next update.
+  - SEE: #17
+
 ### Changed
 - `[Backend]` allow passing datetime format to getNextUpdateTime()
 

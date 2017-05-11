@@ -73,6 +73,8 @@ $route['list/([a-zA-Z0-9_-]+)\.([a-zA-Z]+)'] = 'User/PublicList/index/$1/$2';
 $route['history/([0-9]+)']           = 'TitleHistory/index/$1';
 $route['history/([0-9]+)/([0-9]+)']  = 'TitleHistory/index/$1/$2';
 
+$route['update_status'] = 'UpdateStatus';
+
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
 $route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
