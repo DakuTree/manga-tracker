@@ -7,7 +7,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 	/**
 	 * Checks for any series that haven't updated in 16 hours and updates them.
-	 * This is ran every 6 hours via a cron job.
+	 * This is ran every 4 hours via a cron job.
 	 */
 	public function updateLatestChapters() {
 		// @formatter:off
@@ -193,7 +193,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
-	public function getNextUpdateTime() : string {
+	public function getNextUpdateTime(string $format = "%H:%I:%S") : string {
 		$temp_now = new DateTime();
 		$temp_now->setTimezone(new DateTimeZone('America/New_York'));
 		$temp_now_formatted = $temp_now->format('Y-m-d H:i:s');
@@ -224,6 +224,6 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 
 		$interval = $future_date->diff($now);
-		return $interval->format("%H:%I:%S");
+		return $interval->format($format);
 	}
 }
