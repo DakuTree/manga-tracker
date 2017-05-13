@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.18] 2017-05-13
+### Added
+- Userscript MAL sync success notification now has a link to the synced MAL page.
+
 ### Fixed
 - API button is no longer clickable.
 

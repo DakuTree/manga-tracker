@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-09
-// @version      1.6.0
+// @updated      2017-05-13
+// @version      1.6.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -188,6 +188,7 @@ let base_site = {
 					color: initial;
 				}
 				#TrackerBarIn select { margin: 0 !important; }
+				#TrackerBarIn .mal-link { color: initial !important; font-weight: normal !important; font-size: inherit !important; text-decoration: underline; }
 			/* </gm> */`);
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
@@ -388,7 +389,7 @@ let base_site = {
 				url: 'https://myanimelist.net/ownlist/manga/edit.json',
 				data: JSON.stringify(json),
 				onload: function() {
-					$('#TrackerStatus').text('Updated & MAL Synced (c'+parseInt(chapterArr[1])+')');
+					$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+parseInt(malID)+'" class="mal-link">MAL Synced</a> (c'+parseInt(chapterArr[1])+')');
 				},
 				onerror: function() {
 					$('#TrackerStatus').text('Updated (MAL Sync failed)');
