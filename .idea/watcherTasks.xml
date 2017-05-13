@@ -29,10 +29,10 @@
     <TaskOptions isEnabled="true">
       <option name="arguments" value="--compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
       <option name="checkSyntaxErrors" value="true" />
-      <option name="description" value="Compiles .js files" />
+      <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="js" />
-      <option name="immediateSync" value="true" />
+      <option name="immediateSync" value="false" />
       <option name="name" value="Closure Compiler" />
       <option name="output" value="compiled.min.js" />
       <option name="outputFilters">
