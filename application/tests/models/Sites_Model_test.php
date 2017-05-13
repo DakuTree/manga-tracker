@@ -353,10 +353,10 @@ class Site_Model_test extends TestCase {
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
-		$this->assertInternalType('array', $result, "Title URL ({$title_url}");
-		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url}");
-		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url}");
-		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url}");
+		$this->assertInternalType('array', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url})");
 
 		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url}");
 		$this->assertRegExp($this->Sites_Model->{$siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url}");
