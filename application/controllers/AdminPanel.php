@@ -80,8 +80,9 @@ class AdminPanel extends Admin_Controller {
 
 				if(!empty($matches)) {
 					$malID = ($matches[1] !== 'none' ? $matches[1] : '0');
+					$new_tags = implode(',', array_diff( explode(',', $row->tags), [$matches[0]]));
 
-					$this->db->set(['mal_id' => $malID, 'last_updated' => NULL])
+					$this->db->set(['mal_id' => $malID, 'tags' => $new_tags, 'last_updated' => NULL])
 					         ->where('id', $row->id)
 					         ->update('tracker_chapters');
 				}
