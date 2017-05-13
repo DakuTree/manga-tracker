@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.18] 2017-05-13
+### Fixed
+- API button is no longer clickable.
+
 ## [1.6.17] 2017-05-11
 ### Added
 - Update status page which shows which series will be updated during the next update.

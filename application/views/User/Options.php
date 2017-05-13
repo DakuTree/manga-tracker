@@ -105,8 +105,8 @@
 								<?=form_radio($mal_sync_csrf)?>
 								<span>CSRF <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses CSRF (Cross Site Request Forgery) to allow us to use MAL's internal API to update.<br>It requires the user to be logged into MAL for it to work properly."></i></span>
 							</label>
-							<label class="btn btn-primary <?=(isset($mal_sync_api['checked']) ? 'active' : '')?>" disabled>
-								<?=form_radio($mal_sync_api)?>
+							<label class="btn btn-primary <?=(isset($mal_sync_api['checked']) ? 'active' : '')?> disabled" >
+								<!--<?=form_radio($mal_sync_api)?>-->
 								<span>API <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses the MAL API to update.<br>This requires us to store your MAL details <i>in your browser</i> in <b>plain text</b>, but it does mean you don't have to be logged in on MAL."></i></span>
 							</label>
 						</div>
