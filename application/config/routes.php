@@ -85,6 +85,7 @@ $route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
 $route['ajax/tag_update']['post']     = 'Ajax/TrackerInline/tag_update';
 $route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';
 $route['ajax/hide_notice']['post']    = 'Ajax/TrackerInline/hide_notice';
+$route['ajax/set_mal_id']['post']     = 'Ajax/TrackerInline/set_mal_id';
 
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 $route['import_list']['post']         = 'Ajax/TrackerInline/import';
@@ -108,6 +109,7 @@ $route['admin_panel'] = 'AdminPanel';
 $route['admin_panel/update/normal'] = 'AdminPanel/update_normal';
 $route['admin_panel/update/custom'] = 'AdminPanel/update_custom';
 $route['admin_panel/update/titles'] = 'AdminPanel/update_titles';
+$route['admin_panel/convert_mal_tags'] = 'AdminPanel/convert_mal_tags';
 
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {

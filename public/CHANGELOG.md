@@ -10,6 +10,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.18] 2017-05-13
 ### Added
 - Userscript MAL sync success notification now has a link to the synced MAL page.
+- New MAL Sync ID system.
+  - No longer uses tags. Instead stores it separately which is a bit easier to work with. Old tag method will continue to work for the next month or so.
+  - We can now tie MAL IDs to series on the backend. This means users won't have to set MAL IDs for series where this has been done. Pretty handy.
+    - Sadly this is mostly a manual process at the moment as we need to make sure.
+  - Existing MAL tags have been converted over to using the new system. New MAL tags added AFTER this will not be auto-converted, and will have to be done manually.
 
 ### Fixed
 - API button is no longer clickable.

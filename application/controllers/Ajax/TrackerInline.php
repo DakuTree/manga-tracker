@@ -223,4 +223,33 @@ class TrackerInline extends Auth_Controller {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
+
+	/**
+	 * Used to set MAL ID
+	 *
+	 * REQ_PARAMS: id, mal_id
+	 * METHOD:     POST
+	 * URL:        /set_mal_id
+	 */
+	public function set_mal_id() {
+		$this->form_validation->set_rules('id',     'Chapter ID', 'required|ctype_digit');
+		$this->form_validation->set_rules('mal_id', 'MAL ID',     'regex_match[/^[0-9]*$/]');
+
+		if($this->form_validation->run() === TRUE) {
+			$malID = (is_numeric($this->input->post('mal_id')) ? $this->input->post('mal_id') : NULL);
+			$success = $this->Tracker->list->setMalID($this->userID, $this->input->post('id'), $malID);
+			if($success) {
+				$this->output->set_status_header('200'); //Success!
+			} else {
+				$this->output->set_status_header('400', 'Unable to set MAL ID?');
+			}
+		} else {
+			$errorArr = $this->form_validation->error_array();
+			if(in_array('regex_match', $errorArr)) {
+				$this->output->set_status_header('400', 'MAL id must be numeric or null.');
+			} else {
+				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			}
+		}
+	}
 }

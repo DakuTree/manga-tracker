@@ -47,9 +47,10 @@ class Userscript extends AJAX_Controller {
 
 				$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], TRUE, TRUE);
 				if($titleData) {
+					$malID = $this->Tracker->list->getMalID($this->userID, $titleData['id']);
 					$json = [
 						'mal_sync' => $this->User_Options->get('mal_sync', $this->userID),
-						'mal_id'   => $this->Tracker->tag->getMalID($this->userID, $titleData['id']),
+						'mal_id'   => $malID['id'] ?? NULL,
 						'chapter'  => $titleData['chapter']
 					];
 

@@ -37,6 +37,10 @@ class AdminPanel extends Admin_Controller {
 		set_time_limit(0);
 		$this->Tracker->admin->updateTitles();
 	}
+	public function convert_mal_tags() {
+		set_time_limit(0);
+		$this->_update_mal_id();
+	}
 
 	private function _list_complete_titles() {
 		$query = $this->db->select('tracker_titles.id, tracker_sites.site_class, tracker_titles.title, tracker_titles.title_url')
@@ -60,5 +64,28 @@ class AdminPanel extends Admin_Controller {
 		}
 
 		return $completeList;
+	}
+
+	private function _update_mal_id() : void {
+		$query = $this->db->select('id, tags')
+		                  ->from('tracker_chapters')
+		                  ->where('tags REGEXP "[[:<:]]mal:([0-9]+|none)[[:>:]]"', NULL, FALSE)
+		                  ->where('mal_id', NULL)
+		                  ->get();
+
+
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				preg_match('/\\bmal:([0-9]+|none)\\b/', $row->tags, $matches);
+
+				if(!empty($matches)) {
+					$malID = ($matches[1] !== 'none' ? $matches[1] : '0');
+
+					$this->db->set(['mal_id' => $malID, 'last_updated' => NULL])
+					         ->where('id', $row->id)
+					         ->update('tracker_chapters');
+				}
+			}
+		}
 	}
 }

@@ -459,7 +459,8 @@ $config['csrf_exclude_uris'] = array(
 	'ajax/delete_inline',
 	'ajax/tag_update',
 	'ajax/set_category',
-	'ajax/hide_notice'
+	'ajax/hide_notice',
+	'ajax/set_mal_id'
 );
 
 /*

@@ -303,121 +303,133 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.3.png") no-repeat;
+	background: url("../../img/sites.5.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
 	height: 16px;
 
-	background-position: -1px -1px;
+	background-position: -2px -2px;
 }
 .sprite-site.sprite-dynasty-scans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -19px -1px;
+	background-position: -22px -2px;
 }
 .sprite-site.sprite-gameofscanlation-moe {
 	width: 16px;
 	height: 16px;
 
-	background-position: -37px -1px;
+	background-position: -42px -2px;
 }
 .sprite-site.sprite-helveticascans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -55px -1px;
+	background-position: -62px -2px;
 }
 .sprite-site.sprite-jaiminisbox-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -73px -1px;
+	background-position: -82px -2px;
 }
 .sprite-site.sprite-kissmanga-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -91px -1px;
+	background-position: -102px -2px;
 }
 .sprite-site.sprite-kobato-hologfx-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -109px -1px;
+	background-position: -122px -2px;
 }
 .sprite-site.sprite-mangafox-me {
 	width: 16px;
 	height: 16px;
 
-	background-position: -127px -1px;
-}
-.sprite-site.sprite-readms-net {
-	width: 16px;
-	height: 16px;
-
-	background-position: -145px -1px;
+	background-position: -142px -2px;
 }
 .sprite-site.sprite-mngcow-co {
 	width: 16px;
 	height: 16px;
 
-	background-position: -163px -1px;
+	background-position: -162px -2px;
+}
+.sprite-site.sprite-myanimelist-net {
+	width: 16px;
+	height: 16px;
+
+	background-position: -182px -2px;
+}
+.sprite-site.sprite-myanimelist-net-none {
+	width: 16px;
+	height: 16px;
+
+	background-position: -202px -2px;
 }
 .sprite-site.sprite-read-egscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -181px -1px;
+	background-position: -222px -2px;
 }
 .sprite-site.sprite-reader-deathtollscans-net {
 	width: 16px;
 	height: 16px;
 
-	background-position: -199px -1px;
+	background-position: -242px -2px;
 }
 .sprite-site.sprite-reader-kireicake-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -217px -1px;
+	background-position: -262px -2px;
 }
 .sprite-site.sprite-reader-seaotterscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -235px -1px;
+	background-position: -282px -2px;
 }
 .sprite-site.sprite-reader-sensescans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -253px -1px;
+	background-position: -302px -2px;
+}
+.sprite-site.sprite-readns-net {
+	width: 16px;
+	height: 16px;
+
+	background-position: -322px -2px;
 }
 .sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -271px -1px;
+	background-position: -342px -2px;
 }
 .sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
-	background-position: -289px -1px;
+	background-position: -362px -2px;
 }
 .sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -307px -1px;
+	background-position: -382px -2px;
 }
 .sprite-site.sprite-www-webtoons-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -325px -1px;
+	background-position: -402px -2px;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;

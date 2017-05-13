@@ -168,6 +168,18 @@ class History_Model extends CI_Model {
 
 		return $success;
 	}
+	public function userSetMalID(int $chapterID, ?int $malID) : bool {
+		$success = $this->db->insert('tracker_user_history', [
+			'chapter_id'  => $chapterID,
+
+			'type'        => '9',
+			'custom1'     => $malID,
+
+			'updated_at'  => date('Y-m-d H:i:s')
+		]);
+
+		return $success;
+	}
 
 	public function userGetHistory(int $page) : array {
 		$rowsPerPage = 50;
@@ -233,6 +245,14 @@ class History_Model extends CI_Model {
 					case 8:
 						$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->custom1);
 						$arrRow['status'] = "Chapter ignored: '<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>'";
+						break;
+
+					case 9:
+						if(!is_null($row->custom1)) {
+							$arrRow['status'] = "MAL ID to '{$row->custom1}'";
+						} else {
+							$arrRow['status'] = "MAL ID removed";
+						}
 						break;
 
 					default:

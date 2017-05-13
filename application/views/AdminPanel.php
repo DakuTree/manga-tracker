@@ -16,6 +16,10 @@
 
 	<br />
 
+	<a href="<?=base_url('admin_panel/convert_mal_tags')?>">Convert MAL tags to new format</a>
+
+	<br />
+
 	<div>
 		<h4>Series marked as complete</h4>
 		<pre><?=$id_sql?></pre>

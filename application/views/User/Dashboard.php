@@ -89,6 +89,8 @@
 			<td>
 				<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"></i>
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
+				<?=$row['mal_icon']?>
+
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
@@ -101,9 +103,9 @@
 					<small>
 						<a href="<?=base_url("history/{$row['title_data']['id']}")?>">History</a>
 						|
-						<a href="#" class="edit-tags">Edit</a>
+						<a href="#" class="set-mal-id" data-mal-id="<?=$row['mal_id']?>" data-mal-type="<?=$row['mal_type']?>">Set MAL ID</a> <?php if(!is_null($row['mal_id']) && $row['mal_type'] == 'chapter') { ?><span>(<small><?=($row['mal_id'] !== '0' ? $row['mal_id'] : 'none')?></small>)</span><?php } ?>
 						|
-						Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
+						Tags (<a href="#" class="edit-tags small">Edit</a>): <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
 						<div class="input-group hidden tag-edit">
 							<input type="text" class="form-control" placeholder="tag1,tag2,tag3" maxlength="255" pattern='[a-z0-9-_,]{0,255}' value="<?=$row['tag_list']?>">
 							<span class="input-group-btn">

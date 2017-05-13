@@ -164,6 +164,100 @@ $(function(){
 			.attr('style', (success ? 'color: rgb(0, 230 ,0)' : 'color: rgb(230, 0 ,0)'));
 	}
 
+	/****** SET MAL ID ******/
+	//FIXME: This entire thing is a mess.
+	$('.set-mal-id').click(function(e) {
+		e.preventDefault();
+
+		if(!confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) return;
+
+		let current_mal_id = $(this).data('mal-id'),
+		    new_mal_id     = prompt("MAL ID:", current_mal_id);
+
+		if(/^([0-9]+|none)?$/.test(new_mal_id)) {
+			let tr        = $(this).closest('tr'),
+			    td        = tr.find('td:eq(1)'),
+			    id        = tr.attr('data-id'),
+			    icon_link = $(td).find('.sprite-myanimelist-net').parent(),
+			    id_text   = $(this).find('+ span'),
+			    _this     = this;
+
+			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== '0') {
+				set_mal_id(id, new_mal_id, function (){
+					if(icon_link.length) {
+						//icon exists, just change link
+						$(icon_link).attr('href', 'https://myanimelist.net/manga/'+new_mal_id);
+					} else {
+						$($('<a/>', {href: 'https://myanimelist.net/manga/'+new_mal_id}).append(
+							$('<i/>', {class: 'sprite-site sprite-myanimelist-net', title: new_mal_id})
+						)).prepend(' ').insertAfter(td.find('.sprite-site'));
+					}
+
+					set_id_text($(_this), id_text, new_mal_id);
+				});
+			} else {
+				if(new_mal_id === 'none' || new_mal_id === '0') {
+					set_mal_id(id, '0', function (){
+						if(icon_link.length) {
+							$(icon_link).remove();
+						}
+						$($('<a/>', {}).append(
+							$('<i/>', {class: 'sprite-site sprite-myanimelist-net-none', title: new_mal_id})
+						)).prepend(' ').insertAfter(td.find('.sprite-site'));
+
+						set_id_text($(_this), id_text, 'none');
+					});
+				} else {
+					set_mal_id(id, null, function () {
+						icon_link.remove();
+						id_text.remove();
+					});
+				}
+			}
+
+			$(this).data('mal-id', new_mal_id);
+			//TODO: AJAX
+		} else if (new_mal_id === null) {
+			//input cancelled, do nothing
+		} else {
+			alert('MAL ID can only contain numbers.');
+		}
+
+		function set_id_text(_this, id_text, text) {
+			text = (text !== '0' ? text : 'none');
+			if(id_text.length) {
+				id_text.find('small').text(text);
+			} else {
+				$('<span/>').append(
+					$('<small/>', {text: text})
+				).prepend(' (').append(')').insertAfter($(_this));
+			}
+		}
+
+		function set_mal_id(id, mal_id, successCallback) {
+			successCallback = successCallback || function(){};
+
+			$.post(base_url + 'ajax/set_mal_id', {'id': id, mal_id: mal_id}, function () {
+				successCallback();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				switch(jqXHR.status) {
+					case 400:
+						alert('ERROR: ' + errorThrown);
+						break;
+					case 401:
+						alert('Session has expired, please re-log to continue.');
+						break;
+					case 429:
+						alert('ERROR: Rate limit reached.');
+						break;
+					default:
+						alert('ERROR: Something went wrong!\n'+errorThrown);
+						break;
+				}
+			});
+		}
+	});
+
 	/****** TAG EDITING *******/
 	//This isn't possible in pure CSS
 	$('.more-info').click(function(e) {

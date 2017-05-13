@@ -10,7 +10,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 		$query = $this->db
 			->select('tracker_chapters.*,
-			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
+			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.mal_id AS title_mal_id, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
 			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
@@ -45,6 +45,10 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					'tag_list'              => $row->tags,
 					'has_tags'              => !empty($row->tags),
 
+					//TODO: We should have an option so chapter mal_id can take priority.
+					'mal_id'                => $row->mal_id ?? $row->title_mal_id, //TODO: This should have an option
+					'mal_type'              => (!is_null($row->mal_id) ? 'chapter' : 'title'),
+
 					'title_data' => [
 						'id'              => $row->title_id,
 						'title'           => $row->title,
@@ -62,6 +66,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 						'status'     => $row->site_status
 					]
 				];
+				$data['mal_icon'] = (!is_null($data['mal_id']) ? ($data['mal_id'] !== '0' ? "<a href=\"https://myanimelist.net/manga/{$data['mal_id']}\"><i class=\"sprite-site sprite-myanimelist-net\" title=\"{$data['mal_id']}\"></i></a>" : "<i class=\"sprite-site sprite-myanimelist-net-none\" title=\"none\"></i>") : '');
+
 				$arr['series'][$row->category]['manga'][] = $data;
 
 				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
@@ -208,7 +214,6 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		return  $success;
 	}
 
-
 	public function ignoreByID(int $userID, int $chapterID, string $chapter) : bool {
 		$success = (bool) $this->db->set(['ignore_chapter' => $chapter, 'active' => 'Y', 'last_updated' => NULL])
 		                           ->where('user_id', $userID)
@@ -249,5 +254,69 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		}
 
 		return $status;
+	}
+
+	public function getMalID(int $userID, int $titleID) : ?array{
+		$malIDArr = NULL;
+
+		//NEW METHOD
+		//TODO: OPTION, USE BACKEND MAL ID DB WHERE POSSIBLE (DEFAULT TRUE)
+
+		$queryC = $this->db->select('mal_id')
+		                   ->where('user_id', $userID)
+		                   ->where('title_id', $titleID)
+		                   ->get('tracker_chapters');
+
+		if($queryC->num_rows() > 0 && ($rowC = $queryC->row())) {
+			$malIDArr = [
+				'id'   => ($rowC->mal_id == '0' ? 'none' : $rowC->mal_id),
+				'type' => 'chapter'
+			];
+		} else {
+			$queryT = $this->db->select('mal_id')
+			                   ->where('title_id', $titleID)
+			                   ->get('tracker_titles');
+
+			if($queryT->num_rows() > 0 && ($rowT = $queryT->row())) {
+				$malIDArr = [
+					'id'   => ($rowT->mal_id == '0' ? 'none' : $rowT->mal_id),
+					'type' => 'title'
+				];
+			}
+		}
+
+		//OLD METHOD
+		//TODO: Remove after a few weeks!
+		if(is_null($malIDArr)) {
+			$queryC2 = $this->db->select('tags')
+			                  ->where('user_id', $userID)
+			                  ->where('title_id', $titleID)
+			                  ->get('tracker_chapters');
+
+			if($queryC2->num_rows() > 0 && ($tag_string = $queryC2->row()->tags) && !is_null($tag_string)) {
+				$arr   = preg_grep('/^mal:([0-9]+|none)$/', explode(',', $tag_string));
+				if(!empty($arr)) {
+					$malIDArr = [
+						'id'   => explode(':', $arr[0])[1],
+						'type' => 'chapter'
+					];
+				}
+			}
+		}
+
+		return $malIDArr;
+	}
+	public function setMalID(int $userID, int $chapterID, ?int $malID) : bool {
+		//TODO: Handle NULL?
+		$success = (bool) $this->db->set(['mal_id' => $malID, 'active' => 'Y', 'last_updated' => NULL])
+		                           ->where('user_id', $userID)
+		                           ->where('id', $chapterID)
+		                           ->update('tracker_chapters');
+
+		if($success) {
+			//MAL id update was successful, update history
+			$this->History->userSetMalID($chapterID, $malID);
+		}
+		return $success;
 	}
 }
