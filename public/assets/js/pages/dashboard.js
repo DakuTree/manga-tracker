@@ -169,7 +169,7 @@ $(function(){
 	$('.set-mal-id').click(function(e) {
 		e.preventDefault();
 
-		if(!confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) return;
+		if($(this).data('mal-type') === 'title' && !confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) return;
 
 		let current_mal_id = $(this).data('mal-id'),
 		    new_mal_id     = prompt("MAL ID:", current_mal_id);
