@@ -7,6 +7,14 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.19] 2017-05-15
+### Added
+- Favicon now updates to show unread count.
+  - Note: This only shows unread series on the current page, not ones including in a new update. This may change later.
+
+### Fixed
+- Series header is now properly updated with new unread count when series is read/ignored.
+
 ## [1.6.18] 2017-05-13
 ### Added
 - Userscript MAL sync success notification now has a link to the synced MAL page.

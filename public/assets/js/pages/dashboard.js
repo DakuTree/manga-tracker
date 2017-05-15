@@ -26,6 +26,8 @@ $(function(){
 		$.post(base_url + 'ajax/update_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
 			$(_this).parent().find('.update-read, .ignore-latest').hide();
 			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
+
+			updateUnread();
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			switch(jqXHR.status) {
 				case 400:
@@ -55,6 +57,8 @@ $(function(){
 				$(current_chapter).parent().append(
 					$('<span/>', {class: 'hidden-chapter', title: 'This latest chapter was marked as ignored.', text: $(latest_chapter).text()})
 				);
+
+				updateUnread();
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				switch(jqXHR.status) {
 					case 400:
@@ -429,6 +433,51 @@ $(function(){
 	$('#update-notice').on('closed.bs.alert', function () {
 		$.post(base_url + 'ajax/hide_notice');
 	});
+
+	function updateUnread() {
+		let table       = $('table[data-list=reading]'),
+		    totalUnread = table.find('tr .update-read:not([style])').length;
+
+		//Update header text
+		table.find('thead > tr > th:eq(1) > div').text('Series'+(totalUnread > 0 ? ' ('+totalUnread+' unread)' : ''));
+
+		//Update data attr
+		table.data('unread', totalUnread);
+
+		//Update favicon
+		setFavicon(totalUnread);
+	}
+	function setFavicon(text) {
+		text = parseInt(text) > 50 ? '50+' : text;
+
+		let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0],
+		    favicon = $('link[rel="shortcut icon"]');
+
+		//Bug?: Unable to set this via jQuery for some reason..
+		canvas.width  = 32;
+		canvas.height = 32;
+
+		let context = canvas.getContext("2d");
+
+		let imageObj = new Image();
+		imageObj.onload = function(){
+			context.drawImage(imageObj, 0, 0, 32, 32);
+
+			context.font      = "Bold 17px Helvetica";
+			context.textAlign = 'right';
+
+			context.lineWidth   = 3;
+			context.strokeStyle = 'white';
+			context.strokeText(text, 32, 30);
+
+			context.fillStyle = 'black';
+			context.fillText(text, 32, 30);
+
+			favicon.attr('href', canvas.toDataURL());
+		};
+		imageObj.src = favicon.attr('href');
+	}
+	setFavicon($('table[data-list=reading]').data('unread'));
 
 	function handleScroll() {
 		if($window.scrollTop() >= offset) {
