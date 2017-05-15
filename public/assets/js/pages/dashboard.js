@@ -450,32 +450,35 @@ $(function(){
 	function setFavicon(text) {
 		text = parseInt(text) > 50 ? '50+' : text;
 
-		let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0],
-		    favicon = $('link[rel="shortcut icon"]');
+		let favicon = $('link[rel="shortcut icon"]');
+		if(parseInt(text) !== 0) {
+			let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0];
+			//Bug?: Unable to set this via jQuery for some reason..
+			canvas.width  = 32;
+			canvas.height = 32;
 
-		//Bug?: Unable to set this via jQuery for some reason..
-		canvas.width  = 32;
-		canvas.height = 32;
+			let context = canvas.getContext("2d");
 
-		let context = canvas.getContext("2d");
+			let imageObj = new Image();
+			imageObj.onload = function(){
+				context.drawImage(imageObj, 0, 0, 32, 32);
 
-		let imageObj = new Image();
-		imageObj.onload = function(){
-			context.drawImage(imageObj, 0, 0, 32, 32);
+				context.font      = "Bold 17px Helvetica";
+				context.textAlign = 'right';
 
-			context.font      = "Bold 17px Helvetica";
-			context.textAlign = 'right';
+				context.lineWidth   = 3;
+				context.strokeStyle = 'white';
+				context.strokeText(text, 32, 30);
 
-			context.lineWidth   = 3;
-			context.strokeStyle = 'white';
-			context.strokeText(text, 32, 30);
+				context.fillStyle = 'black';
+				context.fillText(text, 32, 30);
 
-			context.fillStyle = 'black';
-			context.fillText(text, 32, 30);
-
-			favicon.attr('href', canvas.toDataURL());
-		};
-		imageObj.src = favicon.attr('href');
+				favicon.attr('href', canvas.toDataURL());
+			};
+			imageObj.src = favicon.attr('href');
+		} else {
+			favicon.attr('href', base_url+'favicon.ico');
+		}
 	}
 	setFavicon($('table[data-list=reading]').data('unread'));
 
