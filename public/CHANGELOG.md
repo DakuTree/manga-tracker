@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.20] 2017-05-16
+### Fixed
+- MAL ID confirm shouldn't show "A MAL ID already exists for this series on our backend" if ID doesn't exist.
+
 ## [1.6.19] 2017-05-15
 ### Added
 - Favicon now updates to show unread count.
