@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.21] 2017-05-17
+### Fixed
+- `[Backend]` Caching should properly work on production again.
+  - For some reason my cache folder had been deleted, meaning cache files weren't being created.
+
 ## [1.6.20] 2017-05-16
 ### Fixed
 - MAL ID confirm shouldn't show "A MAL ID already exists for this series on our backend" if ID doesn't exist.
