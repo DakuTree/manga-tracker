@@ -11,7 +11,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 ## Sites supported
 * MangaFox
 * Bato.to (with multi-lang support) (Requires login)
-* ~~MangaHere~~ Disabled due to Chrome marking it as unsafe, and it also running harmful Javascript.
+* MangaHere
 * MangaStream
 * MangaPanda
 * WebToons.com

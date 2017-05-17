@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.21] 2017-05-17
+### Changed
+- MangaHere works again.
+  - No longer seems to be running harmful JS & is no longer marked as deceptive by Chrome.
+
 ### Fixed
 - `[Backend]` Caching should properly work on production again.
   - For some reason my cache folder had been deleted, meaning cache files weren't being created.
