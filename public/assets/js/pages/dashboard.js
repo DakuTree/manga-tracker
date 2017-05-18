@@ -359,6 +359,9 @@ $(function(){
 
 		$('.tracker-table:visible').hide();
 		$('.tracker-table[data-list="'+$(this).attr('data-list')+'"]').show();
+
+		//Scroll to top of page
+		$("html, body").animate({ scrollTop: 0 }, "slow");
 	});
 	$('#move-input').change(function() {
 		let selected = $(this).find(':selected');

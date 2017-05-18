@@ -17,6 +17,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - `[Backend]` doCustomFollow now returns $titleData instead of $success.
   - Just makes updating a bit easier.
 - `[Backend]` handleCustomFollow now also returns a successCallback to doCustomFollow. This allows us to attempt to confirm that the follow was successful.
+- List should now scroll to top when changing category.
 
 ### Fixed
 - `[Backend]` Caching should properly work on production again.
