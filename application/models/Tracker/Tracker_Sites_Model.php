@@ -200,15 +200,21 @@ abstract class Base_Site_Model extends CI_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-	final public function doCustomFollow(string $data = "", array $extra = []) {
-		$success = FALSE;
-		$this->handleCustomFollow(function($content, $id) use(&$success) {
+	final public function doCustomFollow(string $data = "", array $extra = []) : array {
+		$titleData = [];
+		$this->handleCustomFollow(function($content, $id, closure $successCallback = NULL) use(&$titleData) {
 			if(is_array($content)) {
 				if(array_key_exists('status_code', $content)) {
 					$statusCode = $content['status_code'];
 					if($statusCode === 200) {
-						$success = TRUE;
-						log_message('info', "doCustomFollow succeeded for {$id}");
+						$isCallable = is_callable($successCallback);
+						if(($isCallable && $successCallback($content['body'])) || !$isCallable) {
+							$titleData['followed'] = 'Y';
+
+							log_message('info', "doCustomFollow succeeded for {$id}");
+						} else {
+							log_message('error', "doCustomFollow failed (Invalid response?) for {$id}");
+						}
 					} else {
 						log_message('error', "doCustomFollow failed (Invalid status code ({$statusCode})) for {$id}");
 					}
@@ -219,7 +225,7 @@ abstract class Base_Site_Model extends CI_Model {
 				log_message('error', "doCustomFollow failed (Failed request) for {$id}");
 			}
 		}, $data, $extra);
-		return $success;
+		return $titleData;
 	}
 	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
 	public function doCustomUpdate() {}

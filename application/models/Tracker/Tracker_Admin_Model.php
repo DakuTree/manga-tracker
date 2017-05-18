@@ -136,6 +136,38 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
+	public function refollowCustom() {
+		$query = $this->db->select('tracker_titles.id, tracker_titles.title_url, tracker_sites.site_class')
+		                  ->from('tracker_titles')
+		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+		                  ->where('tracker_titles.followed','N')
+		                  ->where('tracker_sites.status', 'enabled')
+		                  ->where('tracker_sites.use_custom', 'Y')
+		                  ->get();
+
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$titleData = $this->Tracker->sites->{$row->site_class}->getTitleData($row->title_url, TRUE);
+
+				if($titleData) {
+					$titleData = array_intersect_key($titleData, array_flip(['followed']));
+
+					if(!empty($titleData)) {
+						$this->db->set($titleData)
+						         ->where('id', $row->id)
+						         ->update('tracker_titles');
+
+						print "> {$row->site_class}:{$row->id} FOLLOWED\n";
+					} else {
+						print "> {$row->site_class}:{$row->id} FAILED (NO FOLLOWED)\n";
+					}
+				} else {
+					log_message('error', "getTitleData failed for: {$row->site_class} | {$row->title_url}");
+					print "> {$row->site_class}:{$row->id} FAILED (NO TITLEDATA)\n";
+				}
+			}
+		}
+	}
 
 	/**
 	 * Checks every series to see if title has changed, and update if so.

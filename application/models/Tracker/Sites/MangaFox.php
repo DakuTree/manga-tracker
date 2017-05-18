@@ -38,7 +38,7 @@ class MangaFox extends Base_Site_Model {
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
 
 			if($firstGet) {
-				$this->doCustomFollow($content['body']);
+				$titleData = array_merge($titleData, $this->doCustomFollow($content['body']));
 			}
 		}
 
@@ -61,7 +61,9 @@ class MangaFox extends Base_Site_Model {
 		];
 		$content = $this->get_content('http://mangafox.me/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
-		$callback($content, $matches['id']);
+		$callback($content, $matches['id'], function($body) {
+			return $body == 'true';
+		});
 	}
 	public function doCustomUpdate() {
 		$titleDataList = [];

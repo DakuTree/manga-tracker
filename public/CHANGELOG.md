@@ -7,10 +7,16 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.21] 2017-05-17
+## [1.6.21] 2017-05-17 - 2017-05-18
 ### Changed
 - MangaHere works again.
   - No longer seems to be running harmful JS & is no longer marked as deceptive by Chrome.
+- `[Backend]` Custom updater now stores if a series has been properly followed or not.
+- `[Backend]` Admin CLI now has an option to mass-follow series that haven't been followed properly.
+  - I'll see about moving this to the admin panel at some point.
+- `[Backend]` doCustomFollow now returns $titleData instead of $success.
+  - Just makes updating a bit easier.
+- `[Backend]` handleCustomFollow now also returns a successCallback to doCustomFollow. This allows us to attempt to confirm that the follow was successful.
 
 ### Fixed
 - `[Backend]` Caching should properly work on production again.

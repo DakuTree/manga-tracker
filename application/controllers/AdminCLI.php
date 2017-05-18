@@ -55,6 +55,10 @@ class AdminCLI extends CLI_Controller {
 		$this->Tracker->admin->updateTitles();
 	}
 
+	public function refollowCustom() {
+		$this->Tracker->admin->refollowCustom();
+	}
+
 	public function test() {
 		//print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
 		$this->Tracker->sites->{'MangaFox'}->getTitleData('one_piece', TRUE);

@@ -68,7 +68,7 @@ class Batoto extends Base_Site_Model {
 
 			if($firstGet && $lang == 'English') {
 				//FIXME: English is forced due for now. See #78.
-				$this->doCustomFollow($content['body'], ['id' => $title_parts[0], 'lang' => $lang]);
+				$titleData = array_merge($titleData, $this->doCustomFollow($content['body'], ['id' => $title_parts[0], 'lang' => $lang]));
 			}
 		}
 
@@ -111,7 +111,9 @@ class Batoto extends Base_Site_Model {
 		];
 		$content = $this->get_content('http://bato.to/forums/index.php?'.http_build_query($params), implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
-		$callback($content, $extra['id']);
+		$callback($content, $extra['id'], function($body) {
+			return strpos($body, '>Unfollow<') !== FALSE;
+		});
 	}
 	public function doCustomUpdate() {
 		$titleDataList = [];
