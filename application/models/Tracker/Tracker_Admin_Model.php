@@ -141,6 +141,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		                  ->from('tracker_titles')
 		                  ->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 		                  ->where('tracker_titles.followed','N')
+		                  ->where('tracker_titles !=', '255')
 		                  ->where('tracker_sites.status', 'enabled')
 		                  ->where('tracker_sites.use_custom', 'Y')
 		                  ->get();
@@ -157,13 +158,13 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 						         ->where('id', $row->id)
 						         ->update('tracker_titles');
 
-						print "> {$row->site_class}:{$row->id} FOLLOWED\n";
+						print "> {$row->site_class}:{$row->id}:{$row->title_url} FOLLOWED\n";
 					} else {
-						print "> {$row->site_class}:{$row->id} FAILED (NO FOLLOWED)\n";
+						print "> {$row->site_class}:{$row->id}:{$row->title_url} FAILED (NO FOLLOWED)\n";
 					}
 				} else {
 					log_message('error', "getTitleData failed for: {$row->site_class} | {$row->title_url}");
-					print "> {$row->site_class}:{$row->id} FAILED (NO TITLEDATA)\n";
+					print "> {$row->site_class}:{$row->id}:{$row->title_url} FAILED (NO TITLEDATA)\n";
 				}
 			}
 		}
