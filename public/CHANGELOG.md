@@ -7,6 +7,12 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.22] 2017-05-19
+### Added
+- Initial support for Webtoons custom updater.
+  - At the moment this only auto-follows series, we don't actually update them.
+  - The main issue with using a custom updater with Webtoons is that their subscriptions page doesn't provide latest chapter info. We can tell if something has updated, but that is about it.
+
 ## [1.6.21] 2017-05-17 - 2017-05-18
 ### Changed
 - MangaHere works again.

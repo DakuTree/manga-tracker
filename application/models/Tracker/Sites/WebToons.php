@@ -53,6 +53,10 @@ class WebToons extends Base_Site_Model {
 				$chapterURLSegments = explode('/', ((string) $xml->{'channel'}->item[0]->link));
 				$titleData['latest_chapter'] = preg_replace('/^.*?([0-9]+)$/', '$1', $chapterURLSegments[7]) . ':--:' . $chapterURLSegments[6];
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
+
+				if($firstGet) {
+					$titleData = array_merge($titleData, $this->doCustomFollow($content['body'], ['id' => $title_parts[0]]));
+				}
 			}
 		} else {
 			log_message('error', "Series missing? (WebToons): {$title_url}");
@@ -61,4 +65,86 @@ class WebToons extends Base_Site_Model {
 
 		return (!empty($titleData) ? $titleData : NULL);
 	}
+
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
+		$formData = [
+			'titleNo'       => $extra['id'],
+			'currentStatus' => 'false',
+			'promotionName' => ''
+		];
+
+		$cookies = [
+			"NEO_SES={$this->config->item('webtoons_cookie')}"
+		];
+		$content = $this->get_content('http://www.webtoons.com/setFavorite?'.http_build_query($formData), implode("; ", $cookies), "", TRUE);
+
+		$callback($content, $extra['id'], function($body) {
+			return strpos($body, '"favorite":true') !== FALSE;
+		});
+	}
+	public function doCustomUpdate() {
+		/*$titleDataList = [];
+
+		$cookies = [
+			"NEO_SES={$this->config->item('webtoons_cookie')}"
+		];
+		$content = $this->get_content('http://www.webtoons.com/favorite', implode("; ", $cookies), "", TRUE);
+
+		if(!is_array($content)) {
+			log_message('error', "{$this->site} /favorite | Failed to grab URL (See above curl error)");
+		} else {
+			$headers     = $content['headers'];
+			$status_code = $content['status_code'];
+			$data        = $content['body'];
+
+			if(!($status_code >= 200 && $status_code < 300)) {
+				log_message('error', "{$this->site} /favorite | Bad Status Code ({$status_code})");
+			} else if(empty($data)) {
+				log_message('error', "{$this->site} /favorite | Data is empty? (Status code: {$status_code})");
+			} else {
+				$data = preg_replace('/^[\s\S]+<\!-- container -->/', '<!-- container -->', $data);
+				$data = preg_replace('/<\!-- \/\/container -->[\s\S]+$/', '<!-- //container -->', $data);
+
+				$dom = new DOMDocument();
+				libxml_use_internal_errors(TRUE);
+				$dom->loadHTML($data);
+				libxml_use_internal_errors(FALSE);
+
+				$xpath      = new DOMXPath($dom);
+				$nodes_rows = $xpath->query("//ul[@id='_webtoonList']/li/a");
+				if($nodes_rows->length > 0) {
+					foreach($nodes_rows as $row) {
+						$titleData = [];
+
+						$nodes_title   = $xpath->query("span[@class='update']", $row);
+						$nodes_chapter = $xpath->query("dl/dt[1]/a[@class='chapter']", $row);
+						$nodes_latest  = $xpath->query("span[@class='update']", $row);
+
+						print $nodes_latest->length;
+						if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+					//		$title = $nodes_title->item(0);
+					//
+					//		$titleData['title'] = trim($title->textContent);
+					//
+					//
+					//		$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $nodes_chapter->item(0)->getAttribute('href'));
+					//		$chapterURLSegments = explode('/', $link);
+					//		$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
+					//
+					//		$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->nodeValue));
+					//
+					//		$title_url = explode('/', $title->getAttribute('href'))[4];
+					//		$titleDataList[$title_url] = $titleData;
+						} else {
+					//		log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
+						}
+					}
+				} else {
+					log_message('error', '{$this->site} | Following list is empty?');
+				}
+			}
+		}
+		return $titleDataList;*/
+	}
+	public function doCustomCheck(string $oldChapterString, string $newChapterString) {}
 }

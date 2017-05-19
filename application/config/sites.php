@@ -5,3 +5,5 @@ $config['batoto_cookie_pass_hash'] = "";
 
 $config['mangafox_userid']   = "";
 $config['mangafox_password'] = "";
+
+$config['webtoons_cookie'] = '';
