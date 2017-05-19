@@ -358,9 +358,9 @@ class Site_Model_test extends TestCase {
 		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url})");
 		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url})");
 
-		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url}");
-		$this->assertRegExp($this->Sites_Model->{$siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url}");
-		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated'], "Title URL ({$title_url}");
+		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url})");
+		$this->assertRegExp($this->Sites_Model->{$siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url})");
+		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated'], "Title URL ({$title_url})");
 
 	}
 	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
