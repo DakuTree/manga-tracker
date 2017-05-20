@@ -7,11 +7,15 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.22] 2017-05-19
+## [1.6.22] 2017-05-19 - 2017-05-20
 ### Added
 - Initial support for Webtoons custom updater.
   - At the moment this only auto-follows series, we don't actually update them.
   - The main issue with using a custom updater with Webtoons is that their subscriptions page doesn't provide latest chapter info. We can tell if something has updated, but that is about it.
+
+### Changed
+- MAL Sync now reports error when chapter number is higher than 1000.
+  - As far as I know, no series has more than 1000 chapters, and this just avoids updating MAL with errors.
 
 ## [1.6.21] 2017-05-17 - 2017-05-18
 ### Changed

@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-13
-// @version      1.6.1
+// @updated      2017-05-20
+// @version      1.6.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -378,23 +378,30 @@ let base_site = {
 		let chapterArr = chapter.match(/^(?:(?:v(?:[0-9]+|TBD|TBA|NA|LMT))\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
 
 		if(chapterArr.length > 0) {
+			let malID = parseInt(malID),
+			    chapterN = parseInt(chapterArr[1]);
+
 			let json = {
-				"manga_id"          : parseInt(malID),
+				"manga_id"          : malID,
 				"status"            : 1, //force reading list
-				"num_read_chapters" : parseInt(chapterArr[1]),
+				"num_read_chapters" : chapterN,
 				"csrf_token"        : csrfToken
 			};
-			GM_xmlhttpRequest({
-				method: "POST",
-				url: 'https://myanimelist.net/ownlist/manga/edit.json',
-				data: JSON.stringify(json),
-				onload: function() {
-					$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+parseInt(malID)+'" class="mal-link">MAL Synced</a> (c'+parseInt(chapterArr[1])+')');
-				},
-				onerror: function() {
-					$('#TrackerStatus').text('Updated (MAL Sync failed)');
-				}
-			});
+			if(!(chapterN >= 1000)) {
+				GM_xmlhttpRequest({
+					method: "POST",
+					url: 'https://myanimelist.net/ownlist/manga/edit.json',
+					data: JSON.stringify(json),
+					onload: function() {
+						$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+malID+'" class="mal-link">MAL Synced</a> (c'+chapterN+')');
+					},
+					onerror: function() {
+						$('#TrackerStatus').text('Updated (MAL Sync failed)');
+					}
+				});
+			} else {
+				$('#TrackerStatus').text('Updated (Unable to MAL Sync due to chapter format)');
+			}
 		} else {
 			$('#TrackerStatus').text('Updated (Unable to MAL Sync due to chapter format)');
 		}
