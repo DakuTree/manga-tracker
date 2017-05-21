@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-20
-// @version      1.6.2
+// @updated      2017-05-21
+// @version      1.6.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -378,11 +378,11 @@ let base_site = {
 		let chapterArr = chapter.match(/^(?:(?:v(?:[0-9]+|TBD|TBA|NA|LMT))\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
 
 		if(chapterArr.length > 0) {
-			let malID = parseInt(malID),
+			let malIDI = parseInt(malID),
 			    chapterN = parseInt(chapterArr[1]);
 
 			let json = {
-				"manga_id"          : malID,
+				"manga_id"          : malIDI,
 				"status"            : 1, //force reading list
 				"num_read_chapters" : chapterN,
 				"csrf_token"        : csrfToken
@@ -393,7 +393,7 @@ let base_site = {
 					url: 'https://myanimelist.net/ownlist/manga/edit.json',
 					data: JSON.stringify(json),
 					onload: function() {
-						$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+malID+'" class="mal-link">MAL Synced</a> (c'+chapterN+')');
+						$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+malIDI+'" class="mal-link">MAL Synced</a> (c'+chapterN+')');
 					},
 					onerror: function() {
 						$('#TrackerStatus').text('Updated (MAL Sync failed)');
