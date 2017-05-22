@@ -12,6 +12,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - Public List now shows MAL icon & ignored chapters.
 - Public List shouldn't try to set custom favicon.
 - Public List shouldn't change favicon on timer update.
+- Public List JSON no longer returns MAL icon.
 
 ## [1.6.22] 2017-05-19 - 2017-05-20
 ### Added

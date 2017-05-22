@@ -45,6 +45,9 @@ class PublicList extends MY_Controller {
 					break;
 
 				case 'json':
+					$trackerData = $this->_walk_recursive_remove($trackerData, function($v, $k) {
+						return in_array($k, ['mal_icon']);
+					});
 					$this->_render_json($trackerData);
 					break;
 
@@ -58,5 +61,19 @@ class PublicList extends MY_Controller {
 		}
 
 		if($show_404) show_404();
+	}
+
+	private function _walk_recursive_remove (array $array, callable $callback) {
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				$array[$k] = $this->_walk_recursive_remove($v, $callback);
+			} else {
+				if ($callback($v, $k)) {
+					unset($array[$k]);
+				}
+			}
+		}
+
+		return $array;
 	}
 }
