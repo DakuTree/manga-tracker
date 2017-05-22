@@ -10,7 +10,7 @@ Out of these:
 <p>
 The most popular site being tracked is <b><?=$stats['rank1_site']?></b> with <b><?=$stats['rank1_site_count']?></b> series tracked, followed by <b><?=$stats['rank2_site']?></b> with <b><?=$stats['rank2_site_count']?></b> then <b><?=$stats['rank3_site']?></b> with <b><?=$stats['rank3_site_count']?></b>.
 <br>
-The most followed series is <b><?=$stats['top_title_name']?></b> with a total of <b><?=$stats['top_title_count']?></b> followers.</p>
+The most followed series is <b><?=$stats['top_title_name']?></b> on <b><?=$stats['top_title_site']?></b> with a total of <b><?=$stats['top_title_count']?></b> followers.</p>
 
 <p>Since 2016-09-19 there has been a total of <b><?=$stats['title_updated_count']?></b> new series/chapters, and a total of <b><?=$stats['user_updated_count']?></b> user events (This includes adding/updating/removing series, changing category/tags & adding/removing favourites).
 <br>

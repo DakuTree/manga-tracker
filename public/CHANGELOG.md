@@ -15,6 +15,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - Temp-disabled importing.
   - Importing to trackr.moe using an export FROM trackr.moe seems a bit pointless, and it hasn't been updated since release so stuff like tags and MAL id doesn't work.
   - Importing is handy to have if tech-savvy people are coming over from another platform, but outside of that not so much.
+- Stats page now returns the site for the most followed series.
 
 ### Fixed
 - Public List now shows MAL icon & ignored chapters.

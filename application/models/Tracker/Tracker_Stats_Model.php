@@ -23,16 +23,19 @@ class Tracker_Stats_Model extends Tracker_Base_Model {
 			$queryCounts = $this->db
 				->select([
 					'tracker_titles.title',
-					'COUNT(tracker_chapters.title_id) AS count'
+					'COUNT(tracker_chapters.title_id) AS count',
+					'tracker_sites.site'
 				], FALSE)
 				->from('tracker_chapters')
 				->join('tracker_titles', 'tracker_titles.id = tracker_chapters.title_id', 'left')
+				->join('tracker_sites','tracker_titles.site_id = tracker_sites.id', 'left')
 				->group_by('tracker_chapters.title_id')
 				->having('count > 1')
 				->order_by('count DESC')
 				->get();
 			$stats['titles_tracked_more'] = count($queryCounts->result_array());
 			$stats['top_title_name']  = $queryCounts->result_array()[0]['title'] ?? 'N/A';
+			$stats['top_title_site']  = $queryCounts->result_array()[0]['site'] ?? 'N/A';
 			$stats['top_title_count'] = $queryCounts->result_array()[0]['count'] ?? 'N/A';
 
 			$queryTitles = $this->db
