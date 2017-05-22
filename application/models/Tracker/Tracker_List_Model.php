@@ -36,8 +36,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
 					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
-
-					'generated_ignore_number' => ($row->ignore_chapter ? ' <span class=\'hidden-chapter\' title=\'The latest chapter was marked as ignored.\'>'.htmlentities($this->sites->{$row->site_class}->getChapterData($row->title_url, $row->ignore_chapter)['number']).'</span>' : ''),
+					'generated_ignore_data'  => ($row->ignore_chapter ? $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->ignore_chapter) : NULL),
 
 					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),
 
@@ -55,6 +54,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 						'title_url'       => $row->title_url,
 						'latest_chapter'  => $row->latest_chapter,
 						'current_chapter' => $row->current_chapter,
+						'ignore_chapter'  => $row->ignore_chapter,
 						'last_updated'    => $row->title_last_updated,
 						//NOTE: active is used to warn the user if a title hasn't updated (Maybe due to nobody active tracking it or other reasons).
 						//      This will ONLY be false when an actively updating series (site enabled & title status = 0) hasn't updated within the past week.
