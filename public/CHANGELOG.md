@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.23] 2017-05-22
+### Fixed
+- Public List now shows MAL icon & ignored chapters.
+
 ## [1.6.22] 2017-05-19 - 2017-05-20
 ### Added
 - Initial support for Webtoons custom updater.
