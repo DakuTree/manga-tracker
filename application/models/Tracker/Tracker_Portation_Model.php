@@ -42,10 +42,16 @@ class Tracker_Portation_Model extends Tracker_Base_Model {
 
 	public function export() {
 		$query = $this->db
-			->select('tracker_chapters.current_chapter,
-			          tracker_chapters.category,
-			          tracker_titles.title_url,
-			          tracker_sites.site')
+			->select('
+			    tracker_chapters.current_chapter,
+			    tracker_chapters.category,
+			    tracker_chapters.mal_id,
+			    tracker_chapters.tags,
+
+			    tracker_titles.title_url,
+
+			    tracker_sites.site
+			')
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.`id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
@@ -59,7 +65,10 @@ class Tracker_Portation_Model extends Tracker_Base_Model {
 				$arr[$row->category][] = [
 					'site'            => $row->site,
 					'title_url'       => $row->title_url,
-					'current_chapter' => $row->current_chapter
+					'current_chapter' => $row->current_chapter,
+
+					'tag_list'        => $row->tags,
+					'mal_id'          => $row->mal_id
 				];
 			}
 

@@ -8,6 +8,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.23] 2017-05-22
+### Added
+- Export now also exports MAL id and tags.
+
 ### Fixed
 - Public List now shows MAL icon & ignored chapters.
 - Public List shouldn't try to set custom favicon.
