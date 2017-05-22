@@ -41,8 +41,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 						->where('tracker_sites.use_custom', 'N')
 						->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
 					->group_end()
-					//OR it is a custom update site and hasn't updated within the past 36 hours
-					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 36 HOUR)')
+					//OR it is a custom update site and hasn't updated within the past 72 hours (3 days)
+					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 72 HOUR)')
 				->group_end()
 			->group_end()
 			->or_group_start()
