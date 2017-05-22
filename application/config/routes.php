@@ -88,7 +88,7 @@ $route['ajax/hide_notice']['post']    = 'Ajax/TrackerInline/hide_notice';
 $route['ajax/set_mal_id']['post']     = 'Ajax/TrackerInline/set_mal_id';
 
 $route['export_list']                 = 'Ajax/TrackerInline/export';
-$route['import_list']['post']         = 'Ajax/TrackerInline/import';
+//$route['import_list']['post']         = 'Ajax/TrackerInline/import';
 
 $route['import_amr']                  = 'Import_AMR';
 
