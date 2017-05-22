@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.23] 2017-05-22
 ### Fixed
 - Public List now shows MAL icon & ignored chapters.
+- Public List shouldn't try to set custom favicon.
 
 ## [1.6.22] 2017-05-19 - 2017-05-20
 ### Added

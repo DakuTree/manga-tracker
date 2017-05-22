@@ -483,7 +483,9 @@ $(function(){
 			favicon.attr('href', base_url+'favicon.ico');
 		}
 	}
-	setFavicon($('table[data-list=reading]').data('unread'));
+	if(! /^\/list\//.test(location.pathname)) {
+		setFavicon($('table[data-list=reading]').data('unread'));
+	}
 
 	function handleScroll() {
 		if($window.scrollTop() >= offset) {
