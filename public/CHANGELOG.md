@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.24] 2017-05-24
+### Changed
+- `[Backend]` Updated kenjis/ci-phpunit-test to 0.15.0.
+- Misc HTML cleanup.
+
 ## [1.6.23] 2017-05-22
 ### Added
 - Export now also exports MAL id and tags.

@@ -1,6 +1,5 @@
 <h1>Report a Bug</h1>
 <?=form_open(base_url('report_bug'))?>
-
 	<div class="form-group">
 		<?=form_label('Description (*): ', 'bug_description')?>
 		<?=form_textarea('bug_description', '', ['class' => 'form-control', 'rows' => '3'])?>

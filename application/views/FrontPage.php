@@ -27,8 +27,8 @@
 	</div>
 	<!-- /.col-md-4 -->
 	<div class="col-md-4">
-		<h2>Easy to use</h2>
-		<p>Simply signup, install the userscript and you're ready to go. No fuss!</p>
+		<h2>MAL Syncing support!</h2>
+		<p>We have support for auto-syncing with MyAnimeList!</p>
 	</div>
 	<!-- /.col-md-4 -->
 	<div class="col-md-4">

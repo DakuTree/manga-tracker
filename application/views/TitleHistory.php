@@ -33,7 +33,7 @@
 		</li>
 
 		<?php foreach(range(1, $totalPages) as $page) { ?>
-			<li class="page-item <?=($currentPage == $page ? 'active' : '')?>"><a class="page-link" href="<?=base_url("user/history/{$page}")?>"><?=$page?></a></li>
+		<li class="page-item <?=($currentPage == $page ? 'active' : '')?>"><a class="page-link" href="<?=base_url("user/history/{$page}")?>"><?=$page?></a></li>
 		<?php } ?>
 
 		<li class="page-item <?=(($currentPage == 1 || $currentPage == $totalPages) ? 'disabled' : '')?>">
