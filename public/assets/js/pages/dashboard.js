@@ -267,7 +267,7 @@ $(function(){
 	$('.more-info').click(function(e) {
 		e.preventDefault();
 
-		$(this).find('+ .tags').toggle();
+		$(this).find('+ .tags').toggleClass('has-tags');
 		if($(this).text() === 'More info') {
 			$(this).text('Hide info');
 		} else {

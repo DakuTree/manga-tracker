@@ -94,7 +94,7 @@
 
 				<?php if($row['has_tags']) { ?>
 				<small class="more-info pull-right text-muted">Less info</small>
-				<div class="tags" style="display: block">
+				<div class="tags has-tags">
 				<?php } else { ?>
 				<small class="more-info pull-right text-muted">More info</small>
 				<div class="tags">

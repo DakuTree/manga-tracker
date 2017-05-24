@@ -578,6 +578,9 @@ body {
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags input {
 	font-style: normal;
 }
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .has-tags {
+	display: block !important;
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) {
 	width: 20%;
 }
