@@ -5,12 +5,15 @@
 <?php } ?>
 
 <table class="table table-striped table-bordered">
-	<tbody>
+	<thead>
 		<tr>
 			<th class="col-md-2">Updated at</th>
 			<th class="col-md-5">New Chapter</th>
 			<th class="col-md-5">New Chapter (Without parsing)</th>
 		</tr>
+	</thead>
+
+	<tbody>
 		<?php foreach($historyData as $row) { ?>
 		<tr>
 			<td><?=$row['updated_at']?></td>
