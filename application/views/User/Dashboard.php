@@ -55,14 +55,8 @@
 			</div>
 		</div>
 		<div class="pull-right">
-			<span id="import-status"></span>
 			<!-- NOTE: We would use the download attr here, but it can cause issues if the user logs out -->
-			<a href="<?=base_url('export_list')?>">Export List</a> |
-			<div>
-				<!--<label for="file_import"><span>Import List</span></label>
-				<input type="file" name="file_import" id="file_import" class="form-control" accept=".json">-->
-				<del title="Importing has been temporarily disabled.">Import List</del>
-			</div>
+			<a href="<?=base_url('export_list')?>">Export List</a>
 		</div>
 	</div>
 </div>

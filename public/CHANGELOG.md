@@ -14,6 +14,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - `[Backend]` History pages now uses `<tbody>` for header row.
 - `[Backend]` Tablesorter is now active everywhere by default.
 - History pages now use tablesorter.
+- Removed import HTML/JS.
+  - It may come back at a later date, but only if it's needed. See 1.6.23 for more info.
+- Linting.
 
 ## [1.6.23] 2017-05-22
 ### Added

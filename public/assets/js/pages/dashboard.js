@@ -16,25 +16,20 @@ $(function(){
 		let row             = $(this).closest('tr'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
-		    latest_chapter  = $(row).find('.latest');
+		    latest_chapter  = $(row).find('.latest'),
+		    update_icons    = $(_this).parent().find('.update-read, .ignore-latest');
 
-		$.post(base_url + 'ajax/update_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
-			$(_this).parent().find('.update-read, .ignore-latest').hide();
+		let postData = {
+			id      : chapter_id,
+			chapter : latest_chapter.attr('data-chapter')
+		};
+		$.post(base_url + 'ajax/update_inline', postData, function () {
+			update_icons.hide();
 			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
 
 			updateUnread();
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-			switch(jqXHR.status) {
-				case 400:
-					alert('ERROR: ' + errorThrown);
-					break;
-				case 429:
-					alert('ERROR: Rate limit reached.');
-					break;
-				default:
-					alert('ERROR: Something went wrong!\n'+errorThrown);
-					break;
-			}
+			_handleAjaxError(jqXHR, textStatus, errorThrown);
 		});
 	});
 
@@ -44,28 +39,19 @@ $(function(){
 		let row             = $(this).closest('tr'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
-		    latest_chapter  = $(row).find('.latest');
+		    latest_chapter  = $(row).find('.latest'),
+		    update_icons    = $(_this).parent().find('.update-read, .ignore-latest');
 
 		if(confirm('Ignore latest chapter?')) {
 			$.post(base_url + 'ajax/ignore_inline', {id: chapter_id, chapter: latest_chapter.attr('data-chapter')}, function () {
-				$(_this).parent().find('.update-read, .ignore-latest').hide();
+				update_icons.hide();
 				$(current_chapter).parent().append(
 					$('<span/>', {class: 'hidden-chapter', title: 'This latest chapter was marked as ignored.', text: $(latest_chapter).text()})
 				);
 
 				updateUnread();
 			}).fail(function(jqXHR, textStatus, errorThrown) {
-				switch(jqXHR.status) {
-					case 400:
-						alert('ERROR: ' + errorThrown);
-						break;
-					case 429:
-						alert('ERROR: Rate limit reached.');
-						break;
-					default:
-						alert('ERROR: Something went wrong!\n'+errorThrown);
-						break;
-				}
+				_handleAjaxError(jqXHR, textStatus, errorThrown);
 			});
 		}
 	});
@@ -74,27 +60,18 @@ $(function(){
 	$('#delete_selected').click(function(e) {
 		e.preventDefault();
 
-		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
-		if(checked_rows.length > 0) {
+		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)'),
+		    total_rows   = checked_rows.length;
+		if(total_rows > 0) {
 			let row_ids = $(checked_rows).map(function() {
 				return parseInt($(this).attr('data-id'));
 			}).toArray();
 
-			if(confirm('Are you sure you want to delete the selected rows?')) {
+			if(confirm(`Are you sure you want to delete the ${total_rows} selected row(s)?`)) {
 				$.post(base_url + 'ajax/delete_inline', {'id[]' : row_ids}, function () {
 					location.reload();
 				}).fail(function(jqXHR, textStatus, errorThrown) {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: ' + errorThrown);
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
-					}
+					_handleAjaxError(jqXHR, textStatus, errorThrown);
 				});
 			}
 		} else {
@@ -102,73 +79,15 @@ $(function(){
 		}
 	});
 
-	//File import
-	$('#file_import').change(function() {
-		let files = this.files;
-		if(files && files[0]) {
-			let file = files[0];
-
-			if(!file.name.match(/\.json$/)) {
-				import_status('ERROR: Only .json is supported!');
-			} else if(file.size > 2097152) {
-				import_status('ERROR: File too large ( < 2MB)!');
-			} else {
-				let reader = new FileReader();
-				reader.onload = function (e) {
-					let json_string = e.target.result;
-					if(!isJsonString(json_string)) {
-						import_status('ERROR: File isn\'t valid JSON!');
-					} else {
-						let data = new FormData();
-						data.append('json', json_string);
-
-						$.ajax({
-							type: "POST",
-							url: './import_list',
-							data: data,
-							success: function () {
-								import_status('Upload was a success! Reloading page.', true);
-								setTimeout(function () {
-									location.reload();
-								}, 2500);
-							},
-							error : function(jqXHR, textStatus, errorThrown) {
-								switch(jqXHR.status) {
-									case 400:
-										alert('ERROR: ' + errorThrown);
-										break;
-									case 429:
-										alert('ERROR: Rate limit reached.');
-										break;
-									default:
-										alert('ERROR: Something went wrong!\n'+errorThrown);
-										break;
-								}
-							},
-							contentType: false,
-							processData: false
-						});
-					}
-				};
-				reader.readAsText(file);
-			}
-		}
-	});
-
-	function import_status(text, success) {
-		success = typeof success !== 'undefined' ? success : false;
-		$('#import-status')
-			.text(text)
-			.show().delay(4000).fadeOut(1000)
-			.attr('style', (success ? 'color: rgb(0, 230 ,0)' : 'color: rgb(230, 0 ,0)'));
-	}
-
 	/****** SET MAL ID ******/
 	//FIXME: This entire thing is a mess.
 	$('.set-mal-id').click(function(e) {
 		e.preventDefault();
 
-		let current_mal_id = $(this).data('mal-id');
+		let _this          = this,
+		    current_mal_id = $(this).data('mal-id');
+
+		//If trackr.moe already has it's own MAL id for the series, ask if the user wants to override it (if they haven't already).
 		if($(this).data('mal-type') === 'title' && $(this).data('mal-id') && !confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) return;
 
 		let new_mal_id     = prompt("MAL ID:", current_mal_id);
@@ -178,8 +97,7 @@ $(function(){
 			    td        = tr.find('td:eq(1)'),
 			    id        = tr.attr('data-id'),
 			    icon_link = $(td).find('.sprite-myanimelist-net').parent(),
-			    id_text   = $(this).find('+ span'),
-			    _this     = this;
+			    id_text   = $(this).find('+ span');
 
 			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== '0') {
 				set_mal_id(id, new_mal_id, function (){
@@ -239,20 +157,7 @@ $(function(){
 			$.post(base_url + 'ajax/set_mal_id', {'id': id, mal_id: mal_id}, function () {
 				successCallback();
 			}).fail(function(jqXHR, textStatus, errorThrown) {
-				switch(jqXHR.status) {
-					case 400:
-						alert('ERROR: ' + errorThrown);
-						break;
-					case 401:
-						alert('Session has expired, please re-log to continue.');
-						break;
-					case 429:
-						alert('ERROR: Rate limit reached.');
-						break;
-					default:
-						alert('ERROR: Something went wrong!\n'+errorThrown);
-						break;
-				}
+				_handleAjaxError(jqXHR, textStatus, errorThrown);
 			});
 		}
 	});
@@ -298,20 +203,7 @@ $(function(){
 						$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');
 						$(_this).closest('.tag-edit').toggleClass('hidden');
 					}).fail(function(jqXHR, textStatus, errorThrown) {
-						switch(jqXHR.status) {
-							case 400:
-								alert('ERROR: ' + errorThrown);
-								break;
-							case 401:
-								alert('Session has expired, please re-log to continue.');
-								break;
-							case 429:
-								alert('ERROR: Rate limit reached.');
-								break;
-							default:
-								alert('ERROR: Something went wrong!\n'+errorThrown);
-								break;
-						}
+						_handleAjaxError(jqXHR, textStatus, errorThrown);
 					});
 				} else {
 					alert('You can only use one MAL ID tag per series');
@@ -359,6 +251,7 @@ $(function(){
 		$("html, body").animate({ scrollTop: 0 }, "slow");
 	});
 	$('#move-input').change(function() {
+		let _this = this;
 		let selected = $(this).find(':selected');
 		if(selected.is('[value]')) {
 			let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
@@ -370,17 +263,7 @@ $(function(){
 				$.post(base_url + 'ajax/set_category', {'id[]' : row_ids, category : selected.attr('value')}, function () {
 					location.reload();
 				}).fail(function(jqXHR, textStatus, errorThrown) {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: ' + errorThrown);
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
-					}
+					_handleAjaxError(jqXHR, textStatus, errorThrown);
 				});
 			}
 		}
@@ -506,4 +389,22 @@ $(function(){
 
 	/* http://stackoverflow.com/a/9229821/1168377 */
 	function uniq(a) { return Array.from(new Set(a)); }
+
+
+	function _handleAjaxError(jqXHR, textStatus, errorThrown) {
+		switch(jqXHR.status) {
+			case 400:
+				alert('ERROR: ' + errorThrown);
+				break;
+			case 401:
+				alert('Session has expired, please re-log to continue.');
+				break;
+			case 429:
+				alert('ERROR: Rate limit reached.');
+				break;
+			default:
+				alert('ERROR: Something went wrong!\n'+errorThrown);
+				break;
+		}
+	}
 });
