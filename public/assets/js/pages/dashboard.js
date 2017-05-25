@@ -2,11 +2,6 @@ $(function(){
 	"use strict";
 	if(page !== 'dashboard') { return false; }
 
-	//We sort by unread by using prepending 1 or 0 depending if it's unread or not to an invisible td
-	$(".tablesorter").tablesorter(/*{
-		sortList: [[0,0], [1,0]]
-	}*/);
-
 	//UX: This makes it easier to press the checkbox
 	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
 		if(!$(e.target).is('input')) {

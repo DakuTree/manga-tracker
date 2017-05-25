@@ -12,7 +12,7 @@
 	<div class="clearfix"></div>
 </div>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered tablesorter">
 	<thead>
 		<tr>
 			<th class="col-md-2">Updated at</th>

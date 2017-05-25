@@ -10,8 +10,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.6.24] 2017-05-24 - 2017-05-25
 ### Changed
 - `[Backend]` Updated kenjis/ci-phpunit-test to 0.15.0.
-- Misc HTML cleanup.
-- History pages now uses `<tbody>` for header row.
+- `[Backend]` Misc HTML cleanup.
+- `[Backend]` History pages now uses `<tbody>` for header row.
+- `[Backend]` Tablesorter is now active everywhere by default.
+- History pages now use tablesorter.
 
 ## [1.6.23] 2017-05-22
 ### Added
