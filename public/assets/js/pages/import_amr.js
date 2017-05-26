@@ -28,7 +28,11 @@ $(function () {
 					if (!isJsonString(json_string)) {
 						alert('ERROR: File isn\'t valid JSON!');
 					} else {
+						/**
+						 * @param {{mangas:string, mirror:string}} base_json
+						 */
 						let base_json = JSON.parse(json_string);
+
 						if (!base_json.mangas) {
 							alert('JSON file is missing "mangas" object. Was this exported from AMR?');
 						} else {
@@ -48,35 +52,45 @@ $(function () {
 								alert('JSON has invalid keys?');
 							} else {
 								for (let site in siteList) {
-									let titleList = siteList[site];
-									let id = valid_sites.includes(site) ? '#amr_good' : '#amr_bad';
-									if (id === '#amr_bad' && $('#amr_bad').is(':empty')) {
-										$('<h3/>', {text: 'Incompatible Sites'}).appendTo('#amr_bad');
+									if (siteList.hasOwnProperty(site)) {
+										let titleList = siteList[site];
+										let id = valid_sites.includes(site) ? '#amr_good' : '#amr_bad';
+										if(id === '#amr_bad' && $('#amr_bad').is(':empty')) {
+											$('<h3/>', {text: 'Incompatible Sites'}).appendTo('#amr_bad');
+										}
+										$('<h4/>', {text: site + ' (' + titleList.length + ')'}).appendTo(id);
+
+										let tbody = $('<tbody/>', {'aria-live': 'polite', 'aria-relevant': 'all'});
+										for (let title in titleList) {
+											if (titleList.hasOwnProperty(title)) {
+												/**
+												 * @param {{url:string, name:string, lastChapterReadURL:string, lastChapterReadName:string}} title
+												 */
+												let tr = $('<tr/>', {role: 'row'}).append(
+													$('<td/>', {style: 'width: 50%'}).append(
+														$('<a/>', {
+															href: title.url,
+															text: title.name
+														})
+													)).append(
+													$('<td/>', {style: 'width: 50%'}).append(
+														$('<a/>', {
+															href: title.lastChapterReadURL,
+															text: title.lastChapterReadName
+														})
+													)
+												);
+												tbody.append(tr);
+											}
+										}
+
+										$('<table/>', {
+											class: 'tablesorter tablesorter-bootstrap table-striped',
+											role : 'grid'
+										}).append(
+											tbody
+										).appendTo(id);
 									}
-									$('<h4/>', {text: site + ' (' + titleList.length + ')'}).appendTo(id);
-
-									let tbody = $('<tbody/>', {'aria-live': 'polite', 'aria-relevant': 'all'});
-									titleList.forEach(function(title) {
-										let tr = $('<tr/>', {role: 'row'}).append(
-											$('<td/>', {style: 'width: 50%'}).append(
-												$('<a/>', {href: title.url, text: title.name})
-											)).append(
-											$('<td/>', {style: 'width: 50%'}).append(
-												$('<a/>', {
-													href: title.lastChapterReadURL,
-													text: title.lastChapterReadName
-												})
-											)
-										);
-										tr.appendTo(tbody);
-									});
-
-									$('<table/>', {
-										class: 'tablesorter tablesorter-bootstrap table-striped',
-										role : 'grid'
-									}).append(
-										tbody
-									).appendTo(id);
 								}
 							}
 						}
