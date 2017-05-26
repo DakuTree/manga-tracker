@@ -1,5 +1,6 @@
+/* globals page */
 $(function () {
-	"use strict";
+	'use strict';
 	if (page !== 'import_amr') { return false; }
 
 	const valid_sites = [
@@ -28,18 +29,18 @@ $(function () {
 						alert('ERROR: File isn\'t valid JSON!');
 					} else {
 						let base_json = JSON.parse(json_string);
-						if (!base_json['mangas']) {
+						if (!base_json.mangas) {
 							alert('JSON file is missing "mangas" object. Was this exported from AMR?');
 						} else {
-							let mangas = JSON.parse(base_json['mangas']);
+							let mangas = JSON.parse(base_json.mangas);
 
 							let siteList = {};
 							let success = mangas.every((manga) => {
-								if (!("mirror" in manga || "name" in manga || "url" in manga || "lastChapterReadURL" in manga)) {
+								if (!('mirror' in manga || 'name' in manga || 'url' in manga || 'lastChapterReadURL' in manga)) {
 									return false;
 								} else {
-									if (!siteList[manga['mirror']]) siteList[manga['mirror']] = [];
-									siteList[manga['mirror']].push(manga);
+									if (!siteList[manga.mirror]) { siteList[manga.mirror] = []; }
+									siteList[manga.mirror].push(manga);
 									return true;
 								}
 							});
@@ -55,15 +56,15 @@ $(function () {
 									$('<h4/>', {text: site + ' (' + titleList.length + ')'}).appendTo(id);
 
 									let tbody = $('<tbody/>', {'aria-live': 'polite', 'aria-relevant': 'all'});
-									titleList.forEach((title) => {
+									titleList.forEach(function(title) {
 										let tr = $('<tr/>', {role: 'row'}).append(
 											$('<td/>', {style: 'width: 50%'}).append(
-												$('<a/>', {href: title['url'], text: title['name']})
+												$('<a/>', {href: title.url, text: title.name})
 											)).append(
 											$('<td/>', {style: 'width: 50%'}).append(
 												$('<a/>', {
-													href: title['lastChapterReadURL'],
-													text: title['lastChapterReadName']
+													href: title.lastChapterReadURL,
+													text: title.lastChapterReadName
 												})
 											)
 										);

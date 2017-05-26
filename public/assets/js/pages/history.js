@@ -1,6 +1,6 @@
-/*global currentPagination:false, totalPagination:false */
+/* globals page, currentPagination, totalPagination, titleID */
 $(function(){
-	"use strict";
+	'use strict';
 	if(page !== 'history') { return false; }
 
 	$('.pagination').pagination({
@@ -9,7 +9,7 @@ $(function(){
 		pages          : totalPagination,
 		displayedPages : 10,
 
-		hrefTextPrefix : (/user\/history/.test(location.pathname) ? '/user/history/' : '/history/'+titleID+'/'),
+		hrefTextPrefix : (/user\/history/.test(location.pathname) ? '/user/history/' : `/history/${titleID}/`),
 
 		selectOnClick  : false,
 

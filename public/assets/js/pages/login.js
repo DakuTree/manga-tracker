@@ -1,13 +1,14 @@
-$(function () {
-	"use strict";
+/* globals page */
+$(function() {
+	'use strict';
 	if(page !== 'login') { return false; }
 
 	$('.button-checkbox').each(function () {
-		let $widget = $(this),
-			$button = $widget.find('button'),
+		let $widget   = $(this),
+			$button   = $widget.find('button'),
 			$checkbox = $widget.find('input:checkbox'),
-			color = $button.data('color'),
-			settings = {
+			color     = $button.data('color'),
+			settings  = {
 				on : {
 					icon: 'glyphicon glyphicon-check'
 				},
@@ -29,7 +30,7 @@ $(function () {
 		function updateDisplay() {
 			let isChecked = $checkbox.is(':checked');
 			// Set the button's state
-			$button.data('state', (isChecked) ? "on" : "off");
+			$button.data('state', (isChecked) ? 'on' : 'off');
 
 			// Set the button's icon
 			$button.find('.state-icon')

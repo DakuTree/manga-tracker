@@ -1,5 +1,6 @@
-$(function () {
-	"use strict";
+/* globals page */
+$(function() {
+	'use strict';
 	if(page !== 'options') { return false; }
 
 	//Disallow disabling category if category has series
