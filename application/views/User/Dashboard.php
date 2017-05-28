@@ -36,7 +36,7 @@
 
 	<div id="tracker-table-links">
 		<div class="pull-left">
-			<a href="#" id="delete_selected">
+			<a href="#" id="delete-selected">
 				<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
 			</a>
 
@@ -87,11 +87,11 @@
 				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
-				<small class="more-info pull-right text-muted">Less info</small>
-				<div class="tags has-tags">
+				<small class="toggle-info pull-right text-muted">Less info</small>
+				<div class="more-info has-tags">
 				<?php } else { ?>
-				<small class="more-info pull-right text-muted">More info</small>
-				<div class="tags">
+				<small class="toggle-info pull-right text-muted">More info</small>
+				<div class="more-info">
 				<?php } ?>
 					<small>
 						<a href="<?=base_url("history/{$row['title_data']['id']}")?>">History</a>

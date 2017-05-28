@@ -555,10 +555,10 @@ body {
 	width: 15px;
 	height: 15px;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2):hover .more-info {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2):hover .toggle-info {
 	display: inline;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .more-info {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info {
 	display: none;
 
 	margin-right: 15px;
@@ -569,17 +569,17 @@ body {
 
 	font-weight: normal;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .more-info:hover {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info:hover {
 	text-decoration: underline;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info {
 	display: none;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .tags input {
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info input {
 	font-style: normal;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .has-tags {
-	display: block !important;
+	display: block;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) {
 	width: 20%;

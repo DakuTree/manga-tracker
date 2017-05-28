@@ -3,13 +3,106 @@ $(function(){
 	'use strict';
 	if(page !== 'dashboard') { return false; }
 
-	//UX: This makes it easier to press the checkbox
+	/** UX Improvements **/
+
+	//This makes it easier to press the row checkbox.
 	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
 		if(!$(e.target).is('input')) {
 			let checkbox = $(this).find('> input[type=checkbox]');
 			$(checkbox).prop('checked', !checkbox.prop('checked'));
 		}
 	});
+
+	//This shows/hides the row info row.
+	$('.toggle-info').click(function(e) {
+		e.preventDefault();
+
+		$(this).find('+ .more-info').toggle();
+		if($(this).text() === 'More info') {
+			$(this).text('Hide info');
+		} else {
+			$(this).text('More info');
+		}
+	});
+
+	//Set favicon to unread ver.
+	if(! /^\/list\//.test(location.pathname)) {
+		setFavicon($('table[data-list=reading]').data('unread'));
+	}
+
+	//Click to hide notice
+	$('#update-notice').on('closed.bs.alert', function() {
+		$.post(base_url + 'ajax/hide_notice');
+	});
+
+	//Change list when clicking category tabs
+	$('#category-nav').find('> .nav > li > a').click(function(e) {
+		e.preventDefault();
+
+		//Change category active state
+		$(this).closest('ul').find('> .active').removeClass('active');
+		$(this).parent().addClass('active');
+
+		$('.tracker-table:visible').hide();
+
+		let datalist = $(this).attr('data-list');
+		$(`.tracker-table[data-list="${datalist}"]`).show();
+
+		//Scroll to top of page
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
+	});
+
+	setupStickyListHeader();
+
+	//Setup update timer
+	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer && (! /^\/list\//.test(location.pathname))) {
+		let timer_obj = $('#update-timer'),
+		    timer_arr = timer_obj.text().split(':'),
+		    time_left = parseInt(timer_arr[0] * 60 * 60, 10) + parseInt(timer_arr[1] * 60, 10) + parseInt(timer_arr[2], 10);
+		let timer = setInterval(() => {
+			let hours   = parseInt(time_left / 60 / 60, 10).toString(),
+			    minutes = parseInt(time_left / 60 % 60, 10).toString(),
+			    seconds = parseInt(time_left % 60, 10).toString();
+
+			if(hours.length === 1)   { hours   = '0' + hours;   }
+			if(minutes.length === 1) { minutes = '0' + minutes; }
+			if(seconds.length === 1) { seconds = '0' + seconds; }
+
+			timer_obj.text(hours + ':' + minutes + ':' + seconds);
+
+			if (--time_left < 0) {
+				clearInterval(timer);
+
+				//Wait one minute, then change favicon to alert user of update
+				setTimeout(function(){
+					//TODO: This "should" just be favicon.updated.ico, and we should handle any ENV stuff on the backend
+					$('link[rel*="icon"]').attr('href', `${base_url}favicon.production.updated.ico`);
+
+					//location.reload(); //TODO: We should have an option for this?
+				}, 60000);
+			}
+		}, 1000);
+	}
+
+	//Tag Search
+	$('#search').on('input', function(){
+		let tag_search_string = $(this).val(),
+		    tag_lists = $('.tag-list');
+
+		let filtered_tag_lists = tag_lists.filter(function() {
+			let safe_search_string = tag_search_string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+			let regex = new RegExp(/*"\\b"+*/safe_search_string/*+"\\b"*/, 'i');
+
+			return ! (regex.test($(this).text()) || regex.test($(this).closest('tr').find('> td:nth-of-type(2) > a').text()));
+		});
+
+		let unfiltered_tag_lists = $(tag_lists).not(filtered_tag_lists);
+
+		filtered_tag_lists.closest('tr').addClass('hidden');
+		unfiltered_tag_lists.closest('tr').removeClass('hidden');
+	});
+
+	/** Setup title handlers **/
 
 	//Update latest chapter (via "I've read the latest chapter")
 	$('.update-read').click(function() {
@@ -62,7 +155,7 @@ $(function(){
 	});
 
 	//Delete selected series
-	$('#delete_selected').click(function(e) {
+	$('#delete-selected').click(function(e) {
 		e.preventDefault();
 
 		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)'),
@@ -87,8 +180,7 @@ $(function(){
 		}
 	});
 
-	/****** SET MAL ID ******/
-	//FIXME: This entire thing is a mess.
+	//Set MAL ID
 	$('.set-mal-id').click(function(e) {
 		e.preventDefault();
 
@@ -173,101 +265,10 @@ $(function(){
 		}
 	});
 
-	/****** TAG EDITING *******/
-	//This isn't possible in pure CSS
-	$('.more-info').click(function(e) {
-		e.preventDefault();
+	//Set tags
+	setupTagEditor();
 
-		$(this).find('+ .tags').toggleClass('has-tags');
-		if($(this).text() === 'More info') {
-			$(this).text('Hide info');
-		} else {
-			$(this).text('More info');
-		}
-	});
-
-	$('.edit-tags').click(function(e) {
-		e.preventDefault();
-		$(this).parent().find('.tag-edit').toggleClass('hidden');
-	});
-
-	$('.tag-edit input').on('keypress', () => {
-		if(event.which === /* enter */ 13) {
-			$(this).closest('.tag-edit').find('[type=button]').click();
-		}
-	});
-	$('.tag-edit [type=button]').click(function() {
-		let _this = this;
-		//CHECK: We would use jQuery.validate here but I don't think it works without an actual form.
-		let input    = $(this).closest('.tag-edit').find('input'),
-		    tag_list = input.val().toString().trim().replace(/,,/g, ','),
-		    id       = $(this).closest('tr').attr('data-id');
-
-
-		//Validation
-		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
-			let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
-			    tag_list_new = tag_array.join(',');
-			if($.inArray('none', tag_array) === -1) {
-				if((tag_list.match(/\bmal:(?:[0-9]+|none)\b/g) || []).length <= 1) {
-					let postData = {
-						'id'         : id,
-						'tag_string' : tag_list_new
-					};
-					$.post(base_url + 'ajax/tag_update', postData, () => {
-						$(input).val(tag_list_new);
-						$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');
-						$(_this).closest('.tag-edit').toggleClass('hidden');
-					}).fail((jqXHR, textStatus, errorThrown) => {
-						_handleAjaxError(jqXHR, textStatus, errorThrown);
-					});
-				} else {
-					alert('You can only use one MAL ID tag per series');
-				}
-			} else {
-				alert('"none" is a restricted tag.');
-			}
-		} else {
-			//Tag list is invalid.
-			alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
-		}
-	});
-
-	/***** TAG SEARCH *****/
-	//TODO: Improve this.
-	$('#search').on('input', function(){
-		let tag_search_string = $(this).val(),
-		    tag_lists = $('.tag-list');
-
-		let filtered_tag_lists = tag_lists.filter(function() {
-			let safe_search_string = tag_search_string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-			let regex = new RegExp(/*"\\b"+*/safe_search_string/*+"\\b"*/, 'i');
-
-			return ! (regex.test($(this).text()) || regex.test($(this).closest('tr').find('> td:nth-of-type(2) > a').text()));
-		});
-
-		let unfiltered_tag_lists = $(tag_lists).not(filtered_tag_lists);
-
-		filtered_tag_lists.closest('tr').addClass('hidden');
-		unfiltered_tag_lists.closest('tr').removeClass('hidden');
-	});
-
-	/***** CATEGORIES *****/
-	$('#category-nav').find('> .nav > li > a').click(function(e) {
-		e.preventDefault();
-
-		//Change category active state
-		$(this).closest('ul').find('> .active').removeClass('active');
-		$(this).parent().addClass('active');
-
-		$('.tracker-table:visible').hide();
-
-		let datalist = $(this).attr('data-list');
-		$(`.tracker-table[data-list="${datalist}"]`).show();
-
-		//Scroll to top of page
-		$('html, body').animate({ scrollTop: 0 }, 'slow');
-	});
+	//Set category
 	$('#move-input').change(function() {
 		let selected = $(this).find(':selected');
 		if(selected.is('[value]')) {
@@ -286,51 +287,85 @@ $(function(){
 		}
 	});
 
-	//Initialize header update timer
-	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer && (! /^\/list\//.test(location.pathname))) {
-		let timer_obj = $('#update-timer'),
-		    timer_arr = timer_obj.text().split(':'),
-		    time_left = parseInt(timer_arr[0] * 60 * 60, 10) + parseInt(timer_arr[1] * 60, 10) + parseInt(timer_arr[2], 10);
-		let timer = setInterval(() => {
-			let hours   = parseInt(time_left / 60 / 60, 10).toString(),
-			    minutes = parseInt(time_left / 60 % 60, 10).toString(),
-			    seconds = parseInt(time_left % 60, 10).toString();
+	/** FUNCTIONS **/
 
-			if(hours.length === 1)   { hours   = '0' + hours;   }
-			if(minutes.length === 1) { minutes = '0' + minutes; }
-			if(seconds.length === 1) { seconds = '0' + seconds; }
+	function setupStickyListHeader() {
+		let $window    = $(window),
+		    nav        = $('#list-nav'),
+		    offset     = nav.offset().top - nav.find('> ul').height() - 21,
+		    list_table = $('table[data-list]');
+		$window.scroll(function() {
+			//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
+			//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
+			handleScroll();
+		});
+		handleScroll(); //Make sure we also trigger on page load.
 
-			timer_obj.text(hours + ':' + minutes + ':' + seconds);
-
-			if (--time_left < 0) {
-				clearInterval(timer);
-
-				//Wait one minute, then change favicon to alert user of update
-				setTimeout(function(){
-					//TODO: This "should" just be favicon.updated.ico, and we should handle any ENV stuff on the backend
-					$('link[rel*="icon"]').attr('href', `${base_url}favicon.production.updated.ico`);
-
-					//location.reload(); //TODO: We should have an option for this?
-				}, 60000);
+		function handleScroll() {
+			if($window.scrollTop() >= offset) {
+				list_table.css('margin-top', '97px');
+				nav.addClass('fixed-header');
+				nav.css('width', $('#list-nav').parent().width() + 'px');
+			} else {
+				list_table.css('margin-top', '5px');
+				nav.removeClass('fixed-header');
+				nav.css('width', 'initial');
 			}
-		}, 1000);
+		}
 	}
 
-	//Sticky List Header
-	let $window = $(window),
-	    offset  = $('#category-nav').offset().top - $('#category-nav').find('> ul').height() - 21,
-	    nav     = $('#list-nav'),
-	    list_table = $('table[data-list]');
-	$window.scroll(function() {
-		//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
-		//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
-		handleScroll();
-	});
-	handleScroll(); //Make sure we also trigger on page load.
+	function setupTagEditor() {
+		//Toggle input on clicking "Edit"
+		$('.edit-tags').click(function(e) {
+			e.preventDefault();
+			$(this).parent().find('.tag-edit').toggleClass('hidden');
+		});
 
-	$('#update-notice').on('closed.bs.alert', () => {
-		$.post(base_url + 'ajax/hide_notice');
-	});
+
+		//Simulate "Save" click on enter press.
+		$('.tag-edit input').on('keypress', function(e) {
+			if(e.which === /* enter */ 13) {
+				$(this).closest('.tag-edit').find('[type=button]').click();
+			}
+		});
+
+		//Submit tags
+		$('.tag-edit [type=button]').click(function() {
+			let _this = this;
+			//CHECK: We would use jQuery.validate here but I don't think it works without an actual form.
+			let input    = $(this).closest('.tag-edit').find('input'),
+			    tag_list = input.val().toString().trim().replace(/,,/g, ','),
+			    id       = $(this).closest('tr').attr('data-id');
+
+			//Validation
+			if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
+				let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
+				    tag_list_new = tag_array.join(',');
+				if($.inArray('none', tag_array) === -1) {
+					if((tag_list.match(/\bmal:(?:[0-9]+|none)\b/g) || []).length <= 1) {
+						let postData = {
+							'id'         : id,
+							'tag_string' : tag_list_new
+						};
+						$.post(base_url + 'ajax/tag_update', postData, () => {
+							$(input).val(tag_list_new);
+							$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');
+							$(_this).closest('.tag-edit').toggleClass('hidden');
+						}).fail((jqXHR, textStatus, errorThrown) => {
+							_handleAjaxError(jqXHR, textStatus, errorThrown);
+						});
+					} else {
+						alert('You can only use one MAL ID tag per series');
+					}
+				} else {
+					alert('"none" is a restricted tag.');
+				}
+			} else {
+				//Tag list is invalid.
+				alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
+			}
+		});
+	}
 
 	function updateUnread() {
 		let table       = $('table[data-list=reading]'),
@@ -346,6 +381,7 @@ $(function(){
 		//Update favicon
 		setFavicon(totalUnread);
 	}
+
 	function setFavicon(text) {
 		text = parseInt(text) > 50 ? '50+' : text;
 
@@ -379,25 +415,9 @@ $(function(){
 			favicon.attr('href', `${base_url}favicon.ico`);
 		}
 	}
-	if(! /^\/list\//.test(location.pathname)) {
-		setFavicon($('table[data-list=reading]').data('unread'));
-	}
-
-	function handleScroll() {
-		if($window.scrollTop() >= offset) {
-			list_table.css('margin-top', '97px');
-			nav.addClass('fixed-header');
-			nav.css('width', $('#list-nav').parent().width() + 'px');
-		} else {
-			list_table.css('margin-top', '5px');
-			nav.removeClass('fixed-header');
-			nav.css('width', 'initial');
-		}
-	}
 
 	/* http://stackoverflow.com/a/9229821/1168377 */
 	function uniq(a) { return Array.from(new Set(a)); }
-
 
 	function _handleAjaxError(jqXHR, textStatus, errorThrown) {
 		switch(jqXHR.status) {
