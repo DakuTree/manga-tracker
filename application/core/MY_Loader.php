@@ -10,9 +10,9 @@ class MY_Loader extends CI_Loader {
 	 *
 	 * @access   public
 	 *
-	 * @param    string  the DB credentials
-	 * @param    bool    whether to return the DB object
-	 * @param    bool    whether to enable active record (this allows us to override the config setting)
+	 * @param    string  $params         the DB credentials
+	 * @param    bool    $return         whether to return the DB object
+	 * @param    bool    $active_record  whether to enable active record (this allows us to override the config setting)
 	 *
 	 * @return   object
 	 */

@@ -8,7 +8,7 @@ class Help extends MY_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Help";
 		$this->header_data['page']  = "help";
 

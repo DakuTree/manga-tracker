@@ -7,7 +7,7 @@ class ReportBug extends MY_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Report Bug";
 		$this->header_data['page']  = "report-bug";
 

@@ -8,7 +8,7 @@ class Options extends Auth_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Options";
 		$this->header_data['page']  = "options";
 

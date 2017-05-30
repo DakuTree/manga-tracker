@@ -114,14 +114,11 @@ abstract class Base_Site_Model extends CI_Model {
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
 		string $failure_string = "") {
-		//list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content; //TODO: PHP 7.1
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
 		} else {
-			$headers     = $content['headers'];
-			$status_code = $content['status_code'];
-			$data        = $content['body'];
+			list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content;
 
 			if(!($status_code >= 200 && $status_code < 300)) {
 				log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");

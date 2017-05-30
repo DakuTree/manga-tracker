@@ -5,7 +5,7 @@ class History extends Auth_Controller {
 		parent::__construct();
 	}
 
-	public function index(int $page = 1) {
+	public function index(int $page = 1) : void {
 		if($page === 0) redirect('user/history/1');
 
 		$this->header_data['title'] = "History";
@@ -44,8 +44,16 @@ class History extends Auth_Controller {
 	 * Formats a line (passed as a fields  array) as CSV and returns the CSV as a string.
 	 * Adapted from http://us3.php.net/manual/en/function.fputcsv.php#87120
 	 * SEE: http://stackoverflow.com/a/3933816/1168377
+	 *
+	 * @param array  $fields
+	 * @param string $delimiter
+	 * @param string $enclosure
+	 * @param bool   $encloseAll
+	 * @param bool   $nullToMysqlNull
+	 *
+	 * @return string
 	 */
-	private function arrayToCSV(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) {
+	private function arrayToCSV(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) : string {
 		$delimiter_esc = preg_quote($delimiter, '/');
 		$enclosure_esc = preg_quote($enclosure, '/');
 
@@ -66,7 +74,7 @@ class History extends Auth_Controller {
 
 		return implode($delimiter, $output);
 	}
-	private function arrayToCSVRecursive(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) {
+	private function arrayToCSVRecursive(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) : string {
 		$csvArr = [
 			'Date/Time,Title,URL,Site,Status'
 		];

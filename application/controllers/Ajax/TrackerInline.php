@@ -25,7 +25,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/update_inline
 	 */
-	public function update() {
+	public function update() : void {
 		$this->form_validation->set_rules('id',      'Chapter ID', 'required|ctype_digit');
 		$this->form_validation->set_rules('chapter', 'Chapter',    'required');
 
@@ -48,7 +48,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/delete_inline
 	 */
-	public function delete() {
+	public function delete() : void {
 		$this->form_validation->set_rules('id[]', 'List of IDs', 'required|ctype_digit');
 
 		if($this->form_validation->run() === TRUE) {
@@ -76,7 +76,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /import_list
 	 */
-	public function import() {
+	public function import() : void {
 		$this->form_validation->set_rules('json', 'JSON String', 'required|is_valid_json');
 
 		if($this->form_validation->run() === TRUE) {
@@ -109,7 +109,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     GET/POST
 	 * URL:        /export_list
 	 */
-	public function export() {
+	public function export() : void {
 		$trackerData = $this->Tracker->portation->export();
 		$this->_render_json($trackerData, TRUE);
 	}
@@ -121,7 +121,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /tag_update
 	 */
-	public function tag_update() {
+	public function tag_update() : void {
 		$this->form_validation->set_rules('id',         'Chapter ID', 'required|ctype_digit');
 		$this->form_validation->set_rules('tag_string', 'Tag String', 'max_length[255]|is_valid_tag_string|not_equals[none]');
 
@@ -147,7 +147,13 @@ class TrackerInline extends Auth_Controller {
 			}
 		}
 	}
-	private function _clean_tag_string(string $tag_string) {
+
+	/**
+	 * @param string $tag_string
+	 *
+	 * @return string
+	 */
+	private function _clean_tag_string(string $tag_string) : string {
 		$tag_array = explode(',', $tag_string);
 		$tag_array = array_unique($tag_array);
 		$tag_array = array_filter($tag_array);
@@ -162,7 +168,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /set_category
 	 */
-	public function set_category() {
+	public function set_category() : void {
 		$this->form_validation->set_rules('id[]',     'List of IDs',   'required|ctype_digit');
 		$this->form_validation->set_rules('category', 'Category Name', 'required|is_valid_category');
 
@@ -191,7 +197,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/hide_notice
 	 */
-	public function hide_notice() {
+	public function hide_notice() : void {
 		$status = $this->User->hideLatestNotice();
 		if($this->User->hideLatestNotice()) {
 			$this->output->set_status_header('200'); //Success!
@@ -208,7 +214,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/ignore_inline
 	 */
-	public function ignore() {
+	public function ignore() : void {
 		$this->form_validation->set_rules('id',      'Chapter ID', 'required|ctype_digit');
 		$this->form_validation->set_rules('chapter', 'Chapter',    'required');
 
@@ -231,7 +237,7 @@ class TrackerInline extends Auth_Controller {
 	 * METHOD:     POST
 	 * URL:        /set_mal_id
 	 */
-	public function set_mal_id() {
+	public function set_mal_id() : void {
 		$this->form_validation->set_rules('id',     'Chapter ID', 'required|ctype_digit');
 		$this->form_validation->set_rules('mal_id', 'MAL ID',     'regex_match[/^[0-9]*$/]');
 

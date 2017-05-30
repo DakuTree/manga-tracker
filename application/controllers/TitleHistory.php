@@ -5,7 +5,11 @@ class TitleHistory extends Auth_Controller {
 		parent::__construct();
 	}
 
-	public function index(int $titleID, int $page = 1) {
+	/**
+	 * @param int $titleID
+	 * @param int $page
+	 */
+	public function index(int $titleID, int $page = 1) : void {
 		$this->header_data['title'] = "Title History";
 		$this->header_data['page']  = "history";
 

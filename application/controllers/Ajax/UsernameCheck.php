@@ -15,7 +15,7 @@ class UsernameCheck extends AJAX_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/username_check
 	 */
-	public function index() {
+	public function index() : void {
 		$this->form_validation->set_rules('username', 'Username', 'required|max_length[100]');
 
 		if($this->form_validation->run() === TRUE) {

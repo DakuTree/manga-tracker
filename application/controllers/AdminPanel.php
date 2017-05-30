@@ -10,7 +10,7 @@ class AdminPanel extends Admin_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Admin Panel";
 		$this->header_data['page']  = "admin-panel";
 

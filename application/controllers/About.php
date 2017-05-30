@@ -6,12 +6,13 @@ class About extends MY_Controller
 		parent::__construct();
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "About";
 		$this->header_data['page']  = "about";
 		$this->_render_page("About/About");
 	}
-	public function terms() {
+
+	public function terms() : void {
 		$this->header_data['title'] = "Terms of Service";
 		$this->header_data['page']  = "terms";
 		$this->_render_page("About/Terms");

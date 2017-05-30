@@ -33,7 +33,7 @@ class Userscript extends AJAX_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/userscript/update
 	 */
-	public function update() {
+	public function update() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 		if($this->limiter->limit('tracker_userscript_bug', 250)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
@@ -75,7 +75,7 @@ class Userscript extends AJAX_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/userscript/report_bug
 	 */
-	public function report_bug() {
+	public function report_bug() : void {
 		$this->load->library('user_agent');
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 		$this->form_validation->set_rules('bug[url]',  'Bug [URL]',  'required');
@@ -103,7 +103,7 @@ class Userscript extends AJAX_Controller {
 	 * METHOD:     POST
 	 * URL:        /ajax/userscript/favourite
 	 */
-	public function favourite() {
+	public function favourite() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 		if($this->limiter->limit('tracker_userscript_favourite', 250)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached

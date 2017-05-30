@@ -8,7 +8,7 @@ class PublicList extends MY_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index(?string $username = NULL, string $type = 'html') {
+	public function index(?string $username = NULL, string $type = 'html') : void {
 		$show_404 = FALSE;
 
 		$type = mb_strtolower($type);
@@ -63,7 +63,7 @@ class PublicList extends MY_Controller {
 		if($show_404) show_404();
 	}
 
-	private function _walk_recursive_remove (array $array, callable $callback) {
+	private function _walk_recursive_remove (array $array, callable $callback) : array {
 		foreach ($array as $k => $v) {
 			if (is_array($v)) {
 				$array[$k] = $this->_walk_recursive_remove($v, $callback);

@@ -5,7 +5,7 @@ class Import_AMR extends User_Controller {
 		parent::__construct();
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "AMR Importer";
 		$this->header_data['page']  = "import_amr";
 

@@ -5,7 +5,7 @@ class Favourites extends Auth_Controller {
 		parent::__construct();
 	}
 
-	public function index(int $page = 1) {
+	public function index(int $page = 1) : void {
 		if($page === 0) redirect('user/favourites/1');
 
 		$this->header_data['title'] = "Favourites";

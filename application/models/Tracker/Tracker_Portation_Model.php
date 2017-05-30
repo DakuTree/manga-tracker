@@ -75,5 +75,4 @@ class Tracker_Portation_Model extends Tracker_Base_Model {
 			return $arr;
 		}
 	}
-
 }

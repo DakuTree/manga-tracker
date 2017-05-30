@@ -7,7 +7,7 @@ class UpdateStatus extends MY_Controller {
 		$this->load->library('table');
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Update Status";
 		$this->header_data['page']  = "update_status";
 

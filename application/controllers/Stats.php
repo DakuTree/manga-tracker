@@ -5,7 +5,7 @@ class Stats extends MY_Controller {
 		parent::__construct();
 	}
 
-	public function index() {
+	public function index() : void {
 		$this->header_data['title'] = "Site Stats";
 		$this->header_data['page']  = "stats";
 
