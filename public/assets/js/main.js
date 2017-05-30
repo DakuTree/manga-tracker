@@ -10,15 +10,4 @@ $(function(){
 	$('.tablesorter').tablesorter(/*{
 		sortList: [[0,0], [1,0]]
 	}*/);
-
-	$.fn.bootstrapShow = function() {
-		this.addClass('show');
-		this.removeClass('hidden');
-		return this;
-	};
-	$.fn.bootstrapHide = function() {
-		this.addClass('hidden');
-		this.removeClass('show');
-		return this;
-	};
 });
