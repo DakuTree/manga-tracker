@@ -26,7 +26,7 @@ class MY_Controller extends CI_Controller {
 		$this->global_data['complied_js_path']  = asset_url()."{$js_path}.".filemtime(APPPATH . "../public/assets/{$js_path}.js").".js";
 	}
 
-	public function _render_page(/*(array) $paths*/) {
+	public function _render_page(/*(array) $paths*/) : void {
 		//We could just use global, but this is the only var we need in both header+footer
 		$this->footer_data['page'] = $this->header_data['page'];
 
@@ -43,7 +43,7 @@ class MY_Controller extends CI_Controller {
 		//SEE: http://stackoverflow.com/a/2140094/1168377
 		$this->load->view('common/footer', ($this->global_data + $this->footer_data));
 	}
-	public function _render_json($json_input, bool $download = FALSE, string $filenamePrefix = 'tracker') {
+	public function _render_json($json_input, bool $download = FALSE, string $filenamePrefix = 'tracker') : void {
 		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
 
 		$this->output->set_content_type('application/json', 'utf-8');
@@ -95,7 +95,6 @@ class Auth_Controller extends User_Controller {
 }
 
 class No_Auth_Controller extends User_Controller {
-	//TODO: Change this name. Doesn't feel right.
 	public function __construct() {
 		parent::__construct();
 
@@ -121,6 +120,6 @@ class AJAX_Controller extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		//todo: general security stuff
+		//TODO: general security stuff
 	}
 }

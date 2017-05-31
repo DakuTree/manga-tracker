@@ -22,7 +22,7 @@ class UsernameCheck extends AJAX_Controller {
 			if(!$this->limiter->limit('username_check', 25)) {
 				$is_unique_username = $this->form_validation->is_unique_username($this->input->post('username'));
 
-				//TODO: WE <should> probably output something different here.
+				//FIXME: WE <should> probably output something different here.
 				$this->output->set_output($is_unique_username ? "true" : "false");
 			} else {
 				$this->output->set_status_header('429', 'Rate limit reached.'); //rate limited reached

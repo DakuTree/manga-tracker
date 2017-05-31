@@ -20,7 +20,7 @@ $db['default'] = array(
 	'swap_pre'     => '',
 	'encrypt'      => FALSE,
 	'compress'     => FALSE,
-	'stricton'     => FALSE, //TODO: Should this be TRUE?
+	'stricton'     => TRUE, //FIXME: Currently testing this as TRUE, but only on development.
 	'failover'     => array(),
 	'save_queries' => TRUE
 );

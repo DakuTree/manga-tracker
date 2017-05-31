@@ -40,7 +40,7 @@ class UpdateStatus extends MY_Controller {
 			->where('tracker_sites.status', 'enabled')
 			->group_start()
 				//Check if title is marked as on-going...
-				->where('tracker_titles.status', 0) //TODO: Each title should have specific interval time?
+				->where('tracker_titles.status', 0)
 				//AND matches one of where queries below
 				->group_start()
 					//Then check if it's NULL (only occurs for new series)
@@ -50,8 +50,8 @@ class UpdateStatus extends MY_Controller {
 						->where('tracker_sites.use_custom', 'N')
 						->where("last_checked < DATE_SUB(DATE_ADD(NOW(), INTERVAL '{$update_time}' HOUR_MINUTE), INTERVAL 12 HOUR)")
 					->group_end()
-					//OR it is a custom update site and hasn't updated within the past 36 hours
-					->or_where("last_checked < DATE_SUB(DATE_ADD(NOW(), INTERVAL '{$update_time}' HOUR_MINUTE), INTERVAL 36 HOUR)")
+					//OR it is a custom update site and hasn't updated within the past 72 hours
+					->or_where("last_checked < DATE_SUB(DATE_ADD(NOW(), INTERVAL '{$update_time}' HOUR_MINUTE), INTERVAL 72 HOUR)")
 				->group_end()
 			->group_end()
 			->or_group_start()

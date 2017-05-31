@@ -31,7 +31,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->where('tracker_sites.status', 'enabled')
 			->group_start()
 				//Check if title is marked as on-going...
-				->where('tracker_titles.status', 0) //TODO: Each title should have specific interval time?
+				->where('tracker_titles.status', 0)
 				//AND matches one of where queries below
 				->group_start()
 					//Then check if it's NULL (only occurs for new series)
@@ -52,7 +52,6 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				->where('last_checked < DATE_SUB(NOW(), INTERVAL 1 WEEK)')
 			->group_end()
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
-
 			->group_by('tracker_titles.id, tracker_chapters.active')
 			//Check if the series is actually being tracked by someone
 			->having('timestamp IS NOT NULL')

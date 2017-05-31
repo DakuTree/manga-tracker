@@ -42,12 +42,12 @@ abstract class Base_Site_Model extends CI_Model {
 	//TODO: When ci-phpunit-test supports PHP Parser 3.x, add " : ?array"
 	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE);
 
-	public function isValidTitleURL(string $title_url) : bool {
+	final public function isValidTitleURL(string $title_url) : bool {
 		$success = (bool) preg_match($this->titleFormat, $title_url);
 		if(!$success) log_message('error', "Invalid Title URL ({$this->site}): {$title_url}");
 		return $success;
 	}
-	public function isValidChapter(string $chapter) : bool {
+	final public function isValidChapter(string $chapter) : bool {
 		$success = (bool) preg_match($this->chapterFormat, $chapter);
 		if(!$success) log_message('error', "Invalid Chapter ({$this->site}): {$chapter}");
 		return $success;

@@ -80,7 +80,7 @@ class Forgot_Password extends No_Auth_Controller {
 
 			if ($this->form_validation->run() === TRUE) {
 				//form is valid, process the password reset request
-				//TODO (Reaearch): The original ion_auth auth.php sent the userid to the form, then matched it on return, is there any point to this?
+				//TODO (Research): The original ion_auth auth.php sent the userid to the form, then matched it on return, is there any point to this?
 
 				$identity = $user->{'email'};
 				$change   = $this->ion_auth->reset_password($identity, $this->input->post('new_password'));

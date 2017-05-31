@@ -17,9 +17,6 @@ class IndexC extends User_Controller {
 		$this->header_data['title'] = "Index";
 		$this->header_data['page']  = "index";
 
-		//FIXME: I'm not a designer, and I have no idea how to go about making a front page for the site.
-		//       We're just going to redirect the user until we can get one done.
-
 		//redirect('user/login');
 		$this->_render_page('FrontPage');
 	}
