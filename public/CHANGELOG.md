@@ -7,11 +7,14 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.6.24] 2017-05-24 - 2017-05-25
+## [1.6.24] 2017-05-24 - 2017-05-31
+### Added
+- Time error icons.
+
 ### Changed
 - `[Backend]` Updated kenjis/ci-phpunit-test to 0.15.0.
 - `[Backend]` Misc HTML cleanup.
-- `[Backend]` History pages now uses `<tbody>` for header row.
+- `[Backend]` History pages now use `<tbody>` for header row.
 - `[Backend]` Tablesorter is now active everywhere by default.
 - History pages now use tablesorter.
 - Removed import HTML/JS.

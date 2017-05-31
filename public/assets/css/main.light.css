@@ -272,31 +272,37 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/time.2.png") no-repeat;
+	background: url("../../img/time.3.png") no-repeat;
 }
 .sprite-time.sprite-day {
 	width: 16px;
 	height: 16px;
 
-	background-position: -19px -1px;
+	background-position: -22px -2px;
 }
 .sprite-time.sprite-3day {
 	width: 16px;
 	height: 16px;
 
-	background-position: -1px -1px;
-}
-.sprite-time.sprite-month {
-	width: 16px;
-	height: 16px;
-
-	background-position: -37px -1px;
+	background-position: -2px -2px;
 }
 .sprite-time.sprite-week {
 	width: 16px;
 	height: 16px;
 
-	background-position: -55px -1px;
+	background-position: -82px -2px;
+}
+.sprite-time.sprite-month {
+	width: 16px;
+	height: 16px;
+
+	background-position: -62px -2px;
+}
+.sprite-time.sprite-error {
+	width: 16px;
+	height: 16px;
+
+	background-position: -42px -2px;
 }
 .sprite-site {
 	display: inline-block;

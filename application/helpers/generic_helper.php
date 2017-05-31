@@ -27,7 +27,7 @@ function get_time_class(string $time_string) : string {
 			$time_string = "sprite-day";
 		}
 	} else {
-		$time_string = "sprite-error"; //TODO: Create the sprite for this
+		$time_string = "sprite-error";
 	}
 	return $time_string;
 }

@@ -11,14 +11,16 @@
 .sprite-time {
 	.sprite();
 
-	@cache-version: 2;
+	@cache-version: 3;
 	background: url('../../img/time.@{cache-version}.png') no-repeat;
 
 
-	&.sprite-day   { .stitches-sprite(-19px, -1px, 16px, 16px); }
-	&.sprite-3day  { .stitches-sprite(-1px, -1px, 16px, 16px); }
-	&.sprite-month { .stitches-sprite(-37px, -1px, 16px, 16px); }
-	&.sprite-week  { .stitches-sprite(-55px, -1px, 16px, 16px); }
+	&.sprite-day   { .stitches-sprite(-22px, -2px, 16px, 16px); }
+	&.sprite-3day  { .stitches-sprite(-2px, -2px, 16px, 16px); }
+	&.sprite-week  { .stitches-sprite(-82px, -2px, 16px, 16px); }
+	&.sprite-month { .stitches-sprite(-62px, -2px, 16px, 16px); }
+	&.sprite-error { .stitches-sprite(-42px, -2px, 16px, 16px); }
+
 }
 
 .sprite-site {
