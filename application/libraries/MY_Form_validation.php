@@ -73,7 +73,7 @@ class MY_Form_validation extends CI_Form_validation {
 		return in_array($category, array_keys($this->CI->Tracker->enabledCategories));
 	}
 
-	public function not_contains(string $haystack, string $needle) {
+	public function not_contains(string $haystack, string $needle) : bool {
 		return strpos($haystack, $needle) === FALSE;
 	}
 

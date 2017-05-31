@@ -33,7 +33,7 @@ function get_time_class(string $time_string) : string {
 }
 
 if (!function_exists('http_parse_headers')) { #http://www.php.net/manual/en/function.http-parse-headers.php#112917
-	function http_parse_headers ($raw_headers){
+	function http_parse_headers (string $raw_headers) : array {
 		$headers = array(); // $headers = [];
 		foreach (explode("\n", $raw_headers) as $i => $h) {
 			$h = explode(':', $h, 2);

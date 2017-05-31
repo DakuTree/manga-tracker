@@ -13,7 +13,8 @@ class Batoto extends Base_Site_Model {
 
 	public function getFullTitleURL(string $title_string) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?
-		//FIXME: This points to a generic URL which will redirect according to the ID. Preferably we'd try and get the exact URL from the title, but we can't pass it here.
+		//NOTE: This points to a generic URL which will redirect according to the ID.
+		//      It's possible the title of a series can change, essentially making it possible for us to have multiple versions of the same title. This stops that.
 		$title_parts = explode(':--:', $title_string);
 		return "http://bato.to/comic/_/comics/-r".$title_parts[0];
 	}
@@ -56,7 +57,6 @@ class Batoto extends Base_Site_Model {
 		if($data) {
 			$titleData['title'] = html_entity_decode(trim($data['nodes_title']->textContent));
 
-			///^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/
 			preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', trim($data['nodes_chapter']->nodeValue), $text);
 			$titleData['latest_chapter'] = substr($data['nodes_chapter']->getAttribute('href'), 22) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
 
@@ -64,7 +64,7 @@ class Batoto extends Base_Site_Model {
 			if($dateString == 'An hour ago') {
 				$dateString = '1 hour ago';
 			}
-			$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
+			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
 
 			if($firstGet && $lang == 'English') {
 				//FIXME: English is forced due for now. See #78.
@@ -184,7 +184,7 @@ class Batoto extends Base_Site_Model {
 						}
 					}
 				} else {
-					log_message('error', '{$this->site} | Following list is empty?');
+					log_message('error', "{$this->site} | Following list is empty?");
 				}
 			}
 		}
