@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.6.25] 2017-06-01
+### Fixed
+- Tags are now properly changed under more info after editing.
+
 ## [1.6.24] 2017-05-24 - 2017-05-31
 ### Added
 - Time error icons.

@@ -349,7 +349,7 @@ $(function(){
 						};
 						$.post(base_url + 'ajax/tag_update', postData, () => {
 							$(input).val(tag_list_new);
-							$(_this).closest('.tags').find('.tag-list').text(tag_list_new || 'none');
+							$(_this).closest('.more-info').find('.tag-list').text(tag_list_new || 'none');
 							$(_this).closest('.tag-edit').toggleClass('hidden');
 						}).fail((jqXHR, textStatus, errorThrown) => {
 							_handleAjaxError(jqXHR, textStatus, errorThrown);
