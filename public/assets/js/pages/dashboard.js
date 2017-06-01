@@ -28,6 +28,11 @@ $(function(){
 	//Set favicon to unread ver.
 	if(! /^\/list\//.test(location.pathname)) {
 		setFavicon($('table[data-list=reading]').data('unread'));
+
+		//This is mostly a hack for the userscript, but I guess it could be handy.
+		$('.footer-debug').click(function() {
+			updateUnread();
+		});
 	}
 
 	//Click to hide notice

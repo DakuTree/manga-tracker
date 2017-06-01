@@ -8,6 +8,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.6.25] 2017-06-01
+### Added
+- When updating a series through the userscript, it will also try and mark the chapter as read on your list if (if open) and if it's the latest chapter.
+  - This basically just hides the update icons, and updates the favicon, as if you were marking it as read on the list itself. Small UX improvement.
+
 ### Fixed
 - Tags are now properly changed under more info after editing.
 

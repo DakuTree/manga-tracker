@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-05-21
-// @version      1.6.3
+// @updated      2017-06-01
+// @version      1.7.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -38,13 +38,13 @@
 // @grant        GM_getResourceURL
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_addValueChangeListener
 // @grant        GM_xmlhttpRequest
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
 // @run-at       document-start
 // ==/UserScript==
-/* jshint -W097, browser:true, devel:true, multistr:true, esnext:true */
-/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync */
+/* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener */
 'use strict';
 
 /* CORE TODO
@@ -301,8 +301,9 @@ let base_site = {
 					};
 
 					$.post(main_site + '/ajax/userscript/update', params, function (json) {
-						//TODO: We should really output this somewhere other than the topbar..
+						GM_setValue('lastUpdatedSeries', JSON.stringify(params));
 
+						//TODO: We should really output this somewhere other than the topbar..
 						let status = $('#TrackerStatus');
 						status.text('Attempting update...');
 
@@ -1622,6 +1623,29 @@ let sites = {
 
 								default:
 									break;
+							}
+						});
+
+						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value, remote) {
+							let data    = JSON.parse(new_value)['manga'],
+							    site    = data['site'],
+							    title   = data['title'],
+							    chapter = data['chapter'];
+
+							let row = $(`i[title="${site}"]`) //Find everything using site
+										.closest('tr')
+										.find(`[data-title="${title}"]`) //Find title
+										.closest('tr');
+							if(row.length) {
+								let latestChapter = row.find('.latest').data('chapter'),
+								    updateIcons   = row.find('.update-read, .ignore-latest');
+								if(chapter == latestChapter) {
+									updateIcons.hide();
+
+									$('.footer-debug').click(); //This is a hack to force icon reload without using unsafeWindow
+								} else {
+									//Chapter isn't latest.
+								}
 							}
 						});
 					}

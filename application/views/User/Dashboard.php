@@ -84,7 +84,7 @@
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 				<?=$row['mal_icon']?>
 
-				<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
+				<a href="<?=$row['full_title_url']?>" rel="nofollow" data-title="<?=htmlentities($row['title_data']['title_url'])?>"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
 				<small class="toggle-info pull-right text-muted">Less info</small>
