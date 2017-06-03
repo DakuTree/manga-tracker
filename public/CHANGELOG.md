@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.0] 2017-06-03
+### Changed
+- `[Backend]` Lots and lots of Userscript linting. Some jsdocs too.
+
 ## [1.6.25] 2017-06-01
 ### Added
 - When updating a series through the userscript, it will also try and mark the chapter as read on your list if (if open) and if it's the latest chapter.

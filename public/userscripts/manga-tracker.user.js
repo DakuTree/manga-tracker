@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-06-01
-// @version      1.7.0
+// @updated      2017-06-03
+// @version      1.7.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -52,18 +52,26 @@ Setup events for topbar favourites, stop tracking. Unsure how exactly we should 
 Move all CSS to external site. Should allow faster loading.
 */
 
-$.fn.reverseObj = function() {
+jQuery.fn.reverseObj = function() {
 	return $(this.get().reverse());
 };
+
 function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
 
 /***********************************************************************************************************/
 
 let base_site = {
+	/**
+	 * This is the first thing that runs, and also calls also all relevant functions.
+	 * This should never be overridden (with the exception of trackr.moe). Use other methods instead!
+	 *
+	 * @name base_site.init
+	 * @alias sites.*.init
+	 */
 	init : function() {
 		let _this = this;
 
-		GM_addStyle(GM_getResourceText("fontAwesome").replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
+		GM_addStyle(GM_getResourceText('fontAwesome').replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
 
 		this.preInit(function() {
 			_this.setObjVars();
@@ -74,21 +82,97 @@ let base_site = {
 			_this.setupTopBar();
 
 			/** @namespace config.options.disable_viewer */
-			if(config.options.disable_viewer) return;
+			if(config.options.disable_viewer) { return; }
 			_this.setupViewer();
 		});
 	},
+	/**
+	 * This is called AFTER init, but before we do everything else.
+	 * It is often used to redirect to new domain URLs, or do additional waiting/checks.
+	 *
+	 * @name base_site.preInit
+	 * @alias sites.*.preInit
+	 *
+	 * @param {function} callback
+	 */
 	preInit : function(callback) { callback(); }, //callback must always be called
 
-	//Functions
+	/**
+	 * Used to set variables used by various other functions.
+	 *
+	 * @name  base_site.setObjVars
+	 * @alias sites.*.setObjVars
+	 * @abstract
+	 */
 	setObjVars      : function() {},
+	/**
+	 * Used to do add/remove additional styles on the page.
+	 * This is usually just removing ads and other various banners.
+	 * preSetupTopBar/preSetupViewer handle removing the default site viewer.
+	 *
+	 * @name  base_site.stylize
+	 * @alias sites.*.stylize
+	 */
 	stylize         : function() {},
+
+	/**
+	 * Used to do things prior to adding our own topbar.
+	 * This is usually getting data for our topbar (either via current, or via AJAX).
+	 *
+	 * @name  base_site.preSetupTopBar
+	 * @alias sites.*.preSetupTopBar
+	 *
+	 * @param {function} callback
+	 */
 	preSetupTopBar  : function(callback) { callback(); }, //callback must always be called
-	postSetupTopBar : function(topbar) {},
+	/**
+	 * Used to remove old topbar (if exists) after adding our own.
+	 *
+	 * @name  base_site.postSetupTopBar
+	 * @alias sites.*.postSetupTopBar
+	 *
+	 * @param {jQuery=} topbar
+	 */
+	postSetupTopBar : function(topbar) {}, // jshint ignore:line
+
+	/**
+	 * @callback preSetupViewerCallback
+	 * @param {bool} [useCustomHeader]
+	 * @param {bool} [useCustomImageList]
+	 */
+	/**
+	 * Used to remove the old viewer, get pages (if we haven't already), and get ready to setup our own viewer.
+	 *
+	 * @name  base_site.preSetupViewer
+	 * @alias sites.*.preSetupViewer
+	 *
+	 * @param {preSetupViewerCallback} callback
+	 */
 	preSetupViewer  : function(callback) { callback(); }, //callback must always be called
-	postSetupViewer : function(topbar) {},
+	/**
+	 * This is currently just a stub and isn't used yet!
+	 *
+	 * @alias sites.*.postSetupViewer
+	 * @name  base_site.postSetupViewer
+	 *
+	 * @param {jQuery=} topbar
+	 */
+	postSetupViewer : function(topbar) {}, // jshint ignore:line
 
 	//Fixed Functions
+	/**
+	 * Used to setup the topbar. This calls preSetupTopbar > this > postSetupBoar.
+	 * This uses these variables: chapterList, chapterListCurrent, viewerTitle, searchURLFormat, page_count, pagesLoaded (this is changed by calling updatePagesLoaded)
+	 * * chapterList is a key/value array (URL:CHAPTERNAME) & chapterListCurrent is a URL for the current chapter (which is formatted to work with chapterList). Both of these are used to generate
+	 * * viewerTitle contains the title of the series. This shows on hover of the chapter list.
+	 * * page_count contains the total number of pages. When using the default AJAX method this is used to make sure we check all the pages correctly.
+	 * * (optional) searchURLFormat is a URL used for searching (Using {%SEARCH%} for search input). Will only show search icon if set.
+	 *
+	 * @alias sites.*.setupTopBar
+	 * @name base_site.setupTopBar
+	 *
+	 * @final
+	 */
 	setupTopBar : function() {
 		let _this = this;
 
@@ -190,8 +274,8 @@ let base_site = {
 				#TrackerBarIn select { margin: 0 !important; }
 				#TrackerBarIn .mal-link { color: initial !important; font-weight: normal !important; font-size: inherit !important; text-decoration: underline; }
 			/* </gm> */`);
-			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : "");
-			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : "");
+			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
+			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
 			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
 
 			let topbar = $('<div/>', {id: 'TrackerBar'}).append(
@@ -279,13 +363,25 @@ let base_site = {
 			_this.postSetupTopBar(topbar);
 		});
 	},
+
+	/**
+	 * Used to track the current chapter.
+	 * This uses these variables: site, title, chapter.
+	 *
+	 * @name base_site.trackChapter
+	 * @alias sites.*.trackChapter
+	 *
+	 * @param {bool} askForConfirmation This is only false if "Auto track series on page load" is enabled on page load.
+	 *
+	 * @final
+	 */
 	trackChapter : function(askForConfirmation) {
 		let _this = this;
 		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
 
 		if(config['api-key']) {
 			if(this.attemptingTrack === false) {
-				if(!askForConfirmation || askForConfirmation && confirm("This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?")) {
+				if(!askForConfirmation || askForConfirmation && confirm('This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?')) {
 					this.attemptingTrack = true;
 
 					//TODO: Check if everything is set, and not null.
@@ -307,16 +403,17 @@ let base_site = {
 						let status = $('#TrackerStatus');
 						status.text('Attempting update...');
 
-						switch(json['mal_sync']) {
+						/** @param {{mal_sync:string, mal_id:string, chapter:string}} json **/
+						switch(json.mal_sync) {
 							case 'disabled':
 								status.text('Updated');
 								break;
 
 							case 'csrf':
-								if(json['mal_id']) {
-									if(json['mal_id'] !== 'none') {
+								if(json.mal_id) {
+									if(json.mal_id !== 'none') {
 										status.text('Updated (Found MAL ID, attempting update...)');
-										_this.syncMALCSRF(json['mal_id'], json['chapter']);
+										_this.syncMALCSRF(json.mal_id, json.chapter);
 									} else {
 										status.text('Updated (Not on MAL)');
 									}
@@ -329,11 +426,11 @@ let base_site = {
 							case 'api':
 								//TODO: Not implemented yet.
 								break;
-							
+
 							default:
 								break;
 						}
-					}).fail(function(jqXHR, textStatus, errorThrown) {
+					}).fail((jqXHR, textStatus, errorThrown) => {
 						status.text('Update failed?');
 						switch(jqXHR.status) {
 							case 400:
@@ -346,7 +443,7 @@ let base_site = {
 								alert('ERROR: Something went wrong!\n'+errorThrown);
 								break;
 						}
-					}).always(function() {
+					}).always(() => {
 						_this.attemptingTrack = false;
 					});
 				}
@@ -357,11 +454,24 @@ let base_site = {
 			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 		}
 	},
+
+	/**
+	 * Used to update MAL via CSRF. Only runs if the MAL CSRF option is selected.
+	 * This grabs the CSRF token required to update MAL. If successful it calls syncMALCSRF_continued
+	 *
+	 * @alias sites.*.syncMALCSRF
+	 * @name base_site.syncMALCSRF
+	 *
+	 * @param {int}    malID
+	 * @param {string} chapter
+	 *
+	 * @final
+	 */
 	syncMALCSRF : function(malID, chapter) {
 		let _this = this;
 		GM_xmlhttpRequest({
-			method: "GET",
-			url: "https://myanimelist.net/panel.php?go=export",
+			method: 'GET',
+			url: 'https://myanimelist.net/panel.php?go=export',
 			onload: function(response) {
 				if(/https:\/\/myanimelist.net\/logout.php/.exec(response.responseText)) {
 					//user is logged in, export manga then sync
@@ -375,6 +485,18 @@ let base_site = {
 			}
 		});
 	},
+	/**
+	 * Used to update MAL. Is called from syncMALCSRF after successfully grabbing CSRF token.
+	 *
+	 * @alias sites.*.syncMALCSRF_continued
+	 * @name base_site.syncMALCSRF_continued
+	 *
+	 * @param {int}    malID
+	 * @param {string} chapter
+	 * @param {string} csrfToken
+	 *
+	 * @final
+	 */
 	syncMALCSRF_continued : function(malID, chapter, csrfToken) {
 		let chapterArr = chapter.match(/^(?:(?:v(?:[0-9]+|TBD|TBA|NA|LMT))\/)?c([0-9]+)(?:\.[0-9]+)?$/) || [];
 
@@ -383,18 +505,18 @@ let base_site = {
 			    chapterN = parseInt(chapterArr[1]);
 
 			let json = {
-				"manga_id"          : malIDI,
-				"status"            : 1, //force reading list
-				"num_read_chapters" : chapterN,
-				"csrf_token"        : csrfToken
+				'manga_id'          : malIDI,
+				'status'            : 1, //force reading list
+				'num_read_chapters' : chapterN,
+				'csrf_token'        : csrfToken
 			};
-			if(!(chapterN >= 1000)) {
+			if(chapterN < 1000) {
 				GM_xmlhttpRequest({
-					method: "POST",
+					method: 'POST',
 					url: 'https://myanimelist.net/ownlist/manga/edit.json',
 					data: JSON.stringify(json),
 					onload: function() {
-						$('#TrackerStatus').html('Updated & <a href="https://myanimelist.net/manga/'+malIDI+'" class="mal-link">MAL Synced</a> (c'+chapterN+')');
+						$('#TrackerStatus').html(`Updated & <a href="https://myanimelist.net/manga/'+malIDI+'" class="mal-link">MAL Synced</a> (c${chapterN})`);
 					},
 					onerror: function() {
 						$('#TrackerStatus').text('Updated (MAL Sync failed)');
@@ -408,6 +530,16 @@ let base_site = {
 		}
 	},
 
+	/**
+	 * Used to setup the viewer.
+	 * Calls preSetupViewer > setupViewer > postSetupViewer.
+	 *
+	 * @alias sites.*.setupViewer
+	 * @name base_site.setupViewer
+	 *
+	 * @return void
+	 * @final
+	 */
 	setupViewer : function() {
 		let _this = this;
 
@@ -419,18 +551,20 @@ let base_site = {
 			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
 
-			GM_addStyle(`
+			GM_addStyle(`/* <gm> */
 				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
 				#viewer > .read_img     { background: none; }
 				#viewer > .read_img img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; min-height: 300px;}
 				.pageNumber             { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}
 				.pageNumber .number     { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important; }
 				#viewer_header          { font-weight: bolder; text-align: center; }
-			`);
+			/* </gm> */`);
+
+			let viewer = $('#viewer');
 
 			//Setup viewer header if enabled
 			if(!useCustomHeader) {
-				$('#viewer').append(
+				viewer.append(
 					$('<div/>', {id: 'viewer_header'}).append(
 						$('<a/>', {href: _this.chapter_url, text: _this.viewerChapterName})).append(
 						'  ----  ').append(
@@ -440,47 +574,45 @@ let base_site = {
 			}
 
 			//Generate the viewer using a loop & AJAX.
+			$('<div/>', {class: 'read_img', style: 'display: none'}).appendTo(viewer.get()); //Add a dummy element
+			$('#TrackerBarPages').hide('slow', () => {
+				//This saves the display css.
+				$('#TrackerBarPages').show('slow');
+			});
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
-				if(pageN === 1) {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).appendTo($('#viewer'));
-
-					$('#TrackerBarPages')
-						.hide('slow', function() {
-							//This saves the display css.
-							$('#TrackerBarPages').show('slow');
-						});
-				} else {
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter($('#viewer').find('> .read_img:last'));
-				}
+				$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
 
 				if(!useCustomImageList) {
-					setTimeout(function() {
-						let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
-						$.ajax({
-							url    : url,
-							type   : 'GET',
-							page   : pageN,
-							// async: useASync,
-							success: function (data) {
-								let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-
-								_this.setupViewerContainer($(original_image).attr('src'), this.page);
-							},
-							error: function () {
-								_this.setupViewerContainerError(this.page, url);
-							}
-						});
-					}, _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0));
+					setTimeout(addToContainer(pageN), _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0));
 				} else {
 					//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
-					setTimeout(function() {
-						_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
-					}, 100 + (pageN * 100));
+					setTimeout(addToContainerCustom(pageN), 100 + (pageN * 100));
 				}
 			}
 
+			function addToContainer(pageN) {
+				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
+				$.ajax({
+					url    : url,
+					type   : 'GET',
+					page   : pageN,
+					// async: useASync,
+					success: function (data) {
+						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+
+						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+					},
+					error: function () {
+						_this.setupViewerContainerError(url, this.page);
+					}
+				});
+			}
+			function addToContainerCustom(pageN) {
+				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
+			}
+
 			//Auto-track chapter if enabled.
-			$(window).on("load", function() {
+			$(window).on('load', function() {
 				/** @namespace config.auto_track */
 				if(config.options.auto_track) {
 					_this.trackChapter();
@@ -490,6 +622,18 @@ let base_site = {
 			_this.postSetupViewer();
 		});
 	},
+	/**
+	 * Used to setup the page container used by the viewer.
+	 *
+	 * @alias sites.*.setupViewerContainer
+	 * @name base_site.setupViewerContainer
+	 *
+	 * @param {string} imgURL
+	 * @param {int}    pageN
+	 *
+	 * @return void
+	 * @final
+	 */
 	setupViewerContainer : function(imgURL, pageN) {
 		let _this = this;
 
@@ -508,14 +652,26 @@ let base_site = {
 		//Replace the placeholder image_container with the real one
 		$('#page-'+pageN).replaceWith(image_container);
 	},
-	setupViewerContainerError : function(pageN, url) {
+	/**
+	 * Used to setup the page container for errored pages.
+	 *
+	 * @alias sites.*.setupViewerContainerError
+	 * @name base_site.setupViewerContainerError
+	 *
+	 * @param {string} pageURL
+	 * @param {int}    pageN
+	 *
+	 * @return void
+	 * @final
+	 */
+	setupViewerContainerError : function(pageURL, pageN) {
 		let _this = this;
 		_this.updatePagesLoaded(false);
 
 		let image_container = $('<div/>', {class: 'read_img', id: 'page-'+pageN}).append(
 			$('<img/>', {style: 'cursor: pointer', src: GM_getResourceURL('reload')}).click(function() {
 				$.ajax({
-					url    : url,
+					url    : pageURL,
 					type   : 'GET',
 					page   : pageN,
 					// async: useASync,
@@ -525,7 +681,7 @@ let base_site = {
 					},
 					error: function () {
 						alert('Failed to load image again. Something may be wrong with the site.');
-						_this.setupViewerContainerError(this.page, url);
+						_this.setupViewerContainerError(pageURL, this.page);
 					}
 				});
 			})
@@ -538,17 +694,17 @@ let base_site = {
 		//Replace the placeholder image_container with the real one
 		$('#page-'+pageN).replaceWith(image_container);
 	},
-	reloadPages : function() {
-		let _this = this;
-
-		$('#TrackerBarPages').html('Attempting to load pages...');
-		//FIXME: This is a really lazy way of doing this...
-		$('.read_img[id] img').each(function(i, v) {
-			setTimeout(function() {
-				$(v).click();
-			}, _this.delay + (_this.delay !== 0 ? (i * _this.delay) : 0));
-		})
-	},
+	/**
+	 * Used to update the page load counter.
+	 *
+	 * @alias sites.*.updatePagesLoaded
+	 * @name base_site.updatePagesLoaded
+	 *
+	 * @param {bool} loaded
+	 *
+	 * @return void
+	 * @final
+	 */
 	updatePagesLoaded : function(loaded) {
 		this.pagesLoadedAttempts += 1;
 		if(loaded) {
@@ -561,7 +717,7 @@ let base_site = {
 			if(this.pagesLoaded >= this.page_count) {
 				//Everything was loaded correctly, hide the page count div.
 				setTimeout(function() {
-					$('#TrackerBarPages').html('&nbsp;').hide("slow");
+					$('#TrackerBarPages').html('&nbsp;').hide('slow');
 				}, 1500);
 			} else {
 				$('#TrackerBarPages')
@@ -576,9 +732,38 @@ let base_site = {
 			console.log('lower than pc: '+this.pagesLoadedAttempts);
 		}
 	},
+	/**
+	 * Used to reload all errored pages.
+	 *
+	 * @alias sites.*.reloadPages
+	 * @name base_site.reloadPages
+	 *
+	 * @return void
+	 * @final
+	 */
+	reloadPages : function() {
+		let _this = this;
 
+		$('#TrackerBarPages').html('Attempting to load pages...');
+		//FIXME: This is a really lazy way of doing this...
+		$('.read_img[id] img').each(function(i, v) {
+			setTimeout(function() {
+				$(v).click();
+			}, _this.delay + (_this.delay !== 0 ? (i * _this.delay) : 0));
+		});
+	},
+
+	/**
+	 * Used to report bugs. Shows a prompt.
+	 *
+	 * @alias sites.*.reportBug
+	 * @name base_site.reportBug
+	 *
+	 * @return void
+	 * @final
+	 */
 	reportBug : function() {
-		let bugText = prompt("Describe the bug.");
+		let bugText = prompt('Describe the bug.');
 		if(bugText) {
 			if(bugText !== '') {
 				let params = {
@@ -591,7 +776,7 @@ let base_site = {
 
 				$.post(main_site + '/ajax/userscript/report_bug', params, function () {
 					alert('Bug successfully submitted');
-				}).fail(function(jqXHR, textStatus, errorThrown) {
+				}).fail((jqXHR, textStatus, errorThrown) => {
 					switch(jqXHR.status) {
 						case 400:
 							alert('ERROR: ' + errorThrown);
@@ -610,6 +795,15 @@ let base_site = {
 		}
 	},
 
+	/**
+	 * Used to search the current site. Requires searchURLFormat to be set to show.
+	 *
+	 * @alias sites.*.search
+	 * @name base_site.search
+	 *
+	 * @return void
+	 * @final
+	 */
 	search : function() {
 		let original_search_string = prompt('Search: '),
 		    encoded_search_string  = encodeURIComponent(original_search_string);
@@ -617,6 +811,15 @@ let base_site = {
 		location.href = this.searchURLFormat.replace('{%SEARCH%}', encoded_search_string);
 	},
 
+	/**
+	 * Used to favourite the current chapter.
+	 *
+	 * @alias sites.*.favouriteChapter
+	 * @name base_site.favouriteChapter
+	 *
+	 * @return void
+	 * @final
+	 */
 	favouriteChapter : function() {
 		if(config['api-key']) {
 			let params = {
@@ -633,7 +836,7 @@ let base_site = {
 			$.post(main_site + '/ajax/userscript/favourite', params, function (data, textStatus, jqXHR) {
 				//TODO: We should really output this somewhere other than the topbar..
 				$('#TrackerStatus').text(jqXHR.statusText);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
+			}).fail((jqXHR, textStatus, errorThrown) => {
 				switch(jqXHR.status) {
 					case 400:
 						alert('ERROR: ' + errorThrown);
@@ -749,15 +952,15 @@ let sites = {
 			$.ajax({
 				url: _this.title_url,
 				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
-					xhr.setRequestHeader("Pragma", "no-cache");
+					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+					xhr.setRequestHeader('Pragma', 'no-cache');
 				},
 				cache: false,
 				success: function(response) {
 					response = response.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
 					let div = $('<div/>').append($(response));
 
-					$("#chapters > .chlist > li > div > a + * > a", div).reverseObj().each(function() {
+					$('#chapters > .chlist > li > div > a + * > a', div).reverseObj().each(function() {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
@@ -782,7 +985,7 @@ let sites = {
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
 				url     : _this.chapter_url.replace('mangafox.me/manga', 'm.mangafox.me/roll_manga'),
-				method  : "GET",
+				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText,
 					    imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.reader-page');
@@ -811,7 +1014,6 @@ let sites = {
 		}
 	}),
 
-	//Disabled
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
@@ -866,8 +1068,8 @@ let sites = {
 			$.ajax({
 				url: _this.title_url,
 				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
-					xhr.setRequestHeader("Pragma", "no-cache");
+					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+					xhr.setRequestHeader('Pragma', 'no-cache');
 				},
 				cache: false,
 				success: function(response) {
@@ -906,10 +1108,10 @@ let sites = {
 					dfd.resolve();
 					clearInterval(checkSelector);
 				} else {
-					console.log("forever loading");
+					console.log('forever loading');
 				}
 			}, 1000);
-			dfd.done(function () {
+			dfd.done(() => {
 				callback();
 			});
 		},
@@ -935,7 +1137,8 @@ let sites = {
 			this.chapterListCurrent = this.chapter_url;
 			if(this.https === 'https') {
 				chapterListOptions.each(function(i, e) {
-					$(e).val($(e).val().replace(/^http/, 'https'));
+					let value = $(e).val();
+					$(e).val(value.replace(/^http/, 'https'));
 				});
 			}
 			this.chapterList            = generateChapterList(chapterListOptions.reverseObj(), 'value');
@@ -1018,15 +1221,15 @@ let sites = {
 				$.ajax({
 					url: 'https://dynasty-scans.com/series/'+_this.title_url,
 					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
-						xhr.setRequestHeader("Pragma", "no-cache");
+						xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+						xhr.setRequestHeader('Pragma', 'no-cache');
 					},
 					cache: false,
 					success: function(response) {
 						response = response.replace(/^[\S\s]*(<dl class="chapter-list">[\S\s]*<\/dl>)[\S\s]*$/, '$1');
 						let div = $('<div/>').append($(response));
 
-						_this.chapterList = generateChapterList($(".chapter-list > dd > a.name", div), 'href');
+						_this.chapterList = generateChapterList($('.chapter-list > dd > a.name', div), 'href');
 
 						callback();
 					}
@@ -1143,8 +1346,8 @@ let sites = {
 			$.ajax({
 				url: _this.title_url,
 				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Cache-Control", "no-cache, no-store");
-					xhr.setRequestHeader("Pragma", "no-cache");
+					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+					xhr.setRequestHeader('Pragma', 'no-cache');
 				},
 				cache: false,
 				success: function(response) {
@@ -1213,7 +1416,7 @@ let sites = {
 
 
 			this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('title').text().trim().split("\n")[1];
+			this.viewerTitle           = $('title').text().trim().split('\n')[1];
 			this.viewerCustomImageList = $('#headnav').find('+ div + script').html().match(/"(http:\/\/[^"]+)"/g).map(function(e) {
 				return e.replace(/^"|"$/g, '');
 			});
@@ -1235,7 +1438,7 @@ let sites = {
 
 		//FIXME: KissManga banned us. SEE: https://github.com/DakuTree/manga-tracker/issues/64
 		trackChapter : function() {
-			alert("KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.");
+			alert('KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.');
 		}
 	}),
 
@@ -1303,7 +1506,9 @@ let sites = {
 			this.title_url   = 'http://mngcow.co/'+this.title+'/';
 			this.chapter_url = this.title_url+this.chapter+'/';
 
+			/** @type {(jQuery)} */
 			let pageNav = $('#pageNav');
+
 			pageNav.find('select:first > option').each(function(i, e) {
 				$(e).val(_this.title_url + $(e).val() + '/');
 			});
@@ -1347,7 +1552,8 @@ let sites = {
 
 			$('script:contains("img_url.push(")').html().match(/url\.push\('(.*?')/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
-			}).map(function(v) { return v.substr(10, v.length-11)
+			}).map(function(v) {
+				return v.substr(10, v.length-11);
 			});
 
 			this.page_count = this.viewerCustomImageList.length;
@@ -1389,7 +1595,7 @@ let sites = {
 		preInit : function(callback) {
 			if(location.pathname.substr(0, 7) === 'reader') {
 				//If old URL, redirect to new one.
-				location.pathname = location.pathname.replace(/^\/reader/, '/r')
+				location.pathname = location.pathname.replace(/^\/reader/, '/r');
 			} else {
 				callback();
 			}
@@ -1596,8 +1802,6 @@ let sites = {
 						//TODO: Is there a better way to do this?
 						$('.update-read').click(function() {
 							let row             = $(this).closest('tr'),
-							    chapter_id      = $(row).attr('data-id'),
-							    current_chapter = $(row).find('.current'),
 							    latest_chapter  = $(row).find('.latest');
 
 							//get mal_sync option
@@ -1626,11 +1830,11 @@ let sites = {
 							}
 						});
 
-						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value, remote) {
-							let data    = JSON.parse(new_value)['manga'],
-							    site    = data['site'],
-							    title   = data['title'],
-							    chapter = data['chapter'];
+						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
+							let data    = JSON.parse(new_value).manga,
+							    site    = data.site,
+							    title   = data.title,
+							    chapter = data.chapter;
 
 							let row = $(`i[title="${site}"]`) //Find everything using site
 										.closest('tr')
@@ -1639,7 +1843,7 @@ let sites = {
 							if(row.length) {
 								let latestChapter = row.find('.latest').data('chapter'),
 								    updateIcons   = row.find('.update-read, .ignore-latest');
-								if(chapter == latestChapter) {
+								if(chapter.toString() === latestChapter.toString()) {
 									updateIcons.hide();
 
 									$('.footer-debug').click(); //This is a hack to force icon reload without using unsafeWindow
@@ -1655,7 +1859,7 @@ let sites = {
 					/* TODO:
 					 Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
 					 If userscript IS loaded, then insert data.
-					 Seperate API key from general options. Always set API config when generate is clicked.
+					 Separate API key from general options. Always set API config when generate is clicked.
 					 */
 
 					let form = $('#userscript-form');
@@ -1686,7 +1890,7 @@ let sites = {
 						e.preventDefault();
 					});
 
-					$('#api-key').text(config['api-key'] || "not set");
+					$('#api-key').text(config['api-key'] || 'not set');
 					$('#api-key-div').on('click', '#generate-api-key', function() {
 						$.getJSON(main_site + '/ajax/get_apikey', function(json) {
 							if(json['api-key']) {
@@ -1701,7 +1905,7 @@ let sites = {
 							} else {
 								alert('ERROR: Something went wrong!\nJSON missing API key?');
 							}
-						}).fail(function(jqXHR, textStatus, errorThrown) {
+						}).fail((jqXHR, textStatus, errorThrown) => {
 							switch(jqXHR.status) {
 								case 400:
 									alert('ERROR: Not logged in?');
@@ -1735,8 +1939,8 @@ console.log(config); //This is useful for debugging.
 const hostname = location.hostname.replace(/^(?:dev)\./, '');
 if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
 	//Config exists OR site is trackr.moe.
-	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') config['api-key'] = config['api-key-dev']; //Use dev API-key if using dev site
-	if(!config.options) config.options = {}; //We can't use the 'in' operator on this if options doesn't exist.
+	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') { config['api-key'] = config['api-key-dev']; } //Use dev API-key if using dev site
+	if(!config.options) { config.options = {}; } //We can't use the 'in' operator on this if options doesn't exist.
 
 	//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
 	if(sites[hostname]) {
