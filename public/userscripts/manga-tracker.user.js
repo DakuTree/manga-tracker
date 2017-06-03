@@ -27,7 +27,7 @@
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @updated      2017-06-03
-// @version      1.7.1
+// @version      1.7.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -516,7 +516,7 @@ let base_site = {
 					url: 'https://myanimelist.net/ownlist/manga/edit.json',
 					data: JSON.stringify(json),
 					onload: function() {
-						$('#TrackerStatus').html(`Updated & <a href="https://myanimelist.net/manga/'+malIDI+'" class="mal-link">MAL Synced</a> (c${chapterN})`);
+						$('#TrackerStatus').html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
 					},
 					onerror: function() {
 						$('#TrackerStatus').text('Updated (MAL Sync failed)');
@@ -1841,10 +1841,12 @@ let sites = {
 										.find(`[data-title="${title}"]`) //Find title
 										.closest('tr');
 							if(row.length) {
-								let latestChapter = row.find('.latest').data('chapter'),
-								    updateIcons   = row.find('.update-read, .ignore-latest');
-								if(chapter.toString() === latestChapter.toString()) {
+								let current_chapter = $(row).find('.current'),
+								    latest_chapter  = $(row).find('.latest'),
+								    updateIcons     = $(row).find('.update-read, .ignore-latest');
+								if(chapter.toString() === latest_chapter.data('chapter').toString()) {
 									updateIcons.hide();
+									$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
 
 									$('.footer-debug').click(); //This is a hack to force icon reload without using unsafeWindow
 								} else {

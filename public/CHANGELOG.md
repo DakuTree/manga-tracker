@@ -11,6 +11,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - `[Backend]` Lots and lots of Userscript linting. Some jsdocs too.
 
+### Fixed
+- Current chapter text is properly updated on list when updating via the userscript.
+
 ## [1.6.25] 2017-06-01
 ### Added
 - When updating a series through the userscript, it will also try and mark the chapter as read on your list if (if open) and if it's the latest chapter.
