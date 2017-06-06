@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-06-03
-// @version      1.7.2
+// @updated      2017-06-06
+// @version      1.7.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -48,16 +48,17 @@
 /* global $:false, jQuery:false, GM_addStyle:false, GM_getResourceText:false, GM_getResourceURL:false, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener */
 'use strict';
 
-/* CORE TODO
-Setup events for topbar favourites, stop tracking. Unsure how exactly we should go about "stop tracking" though?
-Move all CSS to external site. Should allow faster loading.
-*/
-
 jQuery.fn.reverseObj = function() {
 	return $(this.get().reverse());
 };
 
 function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
+
+function hasEmptyValues(o) {
+	return Object.keys(o).some(function(x) {
+		return o[x]===''||o[x]===null;  // or just "return o[x];" for falsy values
+	});
+}
 
 /***********************************************************************************************************/
 
@@ -385,7 +386,6 @@ let base_site = {
 				if(!askForConfirmation || askForConfirmation && confirm('This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?')) {
 					this.attemptingTrack = true;
 
-					//TODO: Check if everything is set, and not null.
 					let params = {
 						'api-key' : config['api-key'],
 						'manga'   : {
@@ -397,56 +397,63 @@ let base_site = {
 						}
 					};
 
-					$.post(main_site + '/ajax/userscript/update', params, function (json) {
-						GM_setValue('lastUpdatedSeries', JSON.stringify(params));
+					if(!hasEmptyValues(params.manga)) {
+						$.post(main_site + '/ajax/userscript/update', params, function (json) {
+							GM_setValue('lastUpdatedSeries', JSON.stringify(params));
 
-						//TODO: We should really output this somewhere other than the topbar..
-						let status = $('#TrackerStatus');
-						status.text('Attempting update...');
+							//TODO: We should really output this somewhere other than the topbar..
+							let status = $('#TrackerStatus');
+							status.text('Attempting update...');
 
-						/** @param {{mal_sync:string, mal_id:string, chapter:string}} json **/
-						switch(json.mal_sync) {
-							case 'disabled':
-								status.text('Updated');
-								break;
+							/** @param {{mal_sync:string, mal_id:string, chapter:string}} json **/
+							switch(json.mal_sync) {
+								case 'disabled':
+									status.text('Updated');
+									break;
 
-							case 'csrf':
-								if(json.mal_id) {
-									if(json.mal_id !== 'none') {
-										status.text('Updated (Found MAL ID, attempting update...)');
-										_this.syncMALCSRF(json.mal_id, json.chapter);
+								case 'csrf':
+									if(json.mal_id) {
+										if(json.mal_id !== 'none') {
+											status.text('Updated (Found MAL ID, attempting update...)');
+											_this.syncMALCSRF(json.mal_id, json.chapter);
+										} else {
+											status.text('Updated (Not on MAL)');
+										}
 									} else {
-										status.text('Updated (Not on MAL)');
+										status.text('Updated (No MAL ID set)');
 									}
-								} else {
-									status.text('Updated (No MAL ID set)');
+
+									break;
+
+								case 'api':
+									//TODO: Not implemented yet.
+									break;
+
+								default:
+									break;
+							}
+						})
+							.fail((jqXHR, textStatus, errorThrown) => {
+								status.text('Update failed?');
+								switch(jqXHR.status) {
+									case 400:
+										alert('ERROR: ' + errorThrown);
+										break;
+									case 429:
+										alert('ERROR: Rate limit reached.');
+										break;
+									default:
+										alert('ERROR: Something went wrong!\n'+errorThrown);
+										break;
 								}
-
-								break;
-
-							case 'api':
-								//TODO: Not implemented yet.
-								break;
-
-							default:
-								break;
-						}
-					}).fail((jqXHR, textStatus, errorThrown) => {
-						status.text('Update failed?');
-						switch(jqXHR.status) {
-							case 400:
-								alert('ERROR: ' + errorThrown);
-								break;
-							case 429:
-								alert('ERROR: Rate limit reached.');
-								break;
-							default:
-								alert('ERROR: Something went wrong!\n'+errorThrown);
-								break;
-						}
-					}).always(() => {
-						_this.attemptingTrack = false;
-					});
+							})
+							.always(() => {
+								_this.attemptingTrack = false;
+							});
+					} else {
+						alert('Something went wrong when attempting to track');
+						//TODO: Throw bug report
+					}
 				}
 			} else {
 				alert('Tracker is already attempting to track..');
@@ -708,20 +715,24 @@ let base_site = {
 	 */
 	updatePagesLoaded : function(loaded) {
 		this.pagesLoadedAttempts += 1;
+
+		let ele = $('#TrackerBarPages');
+
 		if(loaded) {
 			this.pagesLoaded += 1;
-			$('#TrackerBarPages').text('Pages loaded: '+this.pagesLoaded+'/'+this.page_count);
+			ele.text('Pages loaded: '+this.pagesLoaded+'/'+this.page_count);
 		}
 
 		if(this.pagesLoadedAttempts >= this.page_count) {
 			//This is last page to load, check if everything loaded correctly.
 			if(this.pagesLoaded >= this.page_count) {
 				//Everything was loaded correctly, hide the page count div.
+				//FIXME: This doesn't always hide correctly?
 				setTimeout(function() {
-					$('#TrackerBarPages').html('&nbsp;').hide('slow');
+					ele.html('&nbsp;').hide('slow');
 				}, 1500);
 			} else {
-				$('#TrackerBarPages')
+				ele
 					.html('') //remove everything from existing container
 					.append($('<span/>', {text: 'ERROR: '+(this.page_count - this.pagesLoaded)+' pages failed to load | '}))
 					.append($('<a/>', {href: '#', id: 'reloadPages'}).append(

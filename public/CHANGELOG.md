@@ -11,6 +11,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - Tag editor should now autofocus on input.
 - `[Backend]` Scrutinizer-CI no longer checks migrations.
+- `[Backend]` Userscript now throws error if tracking params are null/empty.
 
 ## [1.7.0] 2017-06-03
 ### Changed
