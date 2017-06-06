@@ -9,6 +9,7 @@ filter:
         - 'application/libraries/vendor/*'
         - 'application/models/vendor/*'
         - 'application/language/*'
+        - 'application/migrations/*'
         - 'application/tests/*'
         - 'public/assets/vendor/*'
         - 'public/assets/js/compiled.min.js'
