@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.1] 2017-06-06
+### Changed
+- Tag editor should now autofocus on input.
+
 ## [1.7.0] 2017-06-03
 ### Changed
 - `[Backend]` Lots and lots of Userscript linting. Some jsdocs too.

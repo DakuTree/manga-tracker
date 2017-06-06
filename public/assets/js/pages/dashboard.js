@@ -323,7 +323,14 @@ $(function(){
 		//Toggle input on clicking "Edit"
 		$('.edit-tags').click(function(e) {
 			e.preventDefault();
-			$(this).parent().find('.tag-edit').toggleClass('hidden');
+			let editorEle = $(this).parent().find('.tag-edit');
+			editorEle.toggleClass('hidden');
+			if(!editorEle.hasClass('hidden')) {
+				//NOTE: setTimeout is required here due to a chrome bug.
+				setTimeout(function(){
+					editorEle.find('> input').focus();
+				}, 1);
+			}
 		});
 
 
