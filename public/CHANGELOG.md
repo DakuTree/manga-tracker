@@ -10,6 +10,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.7.2] 2017-06-08
 ### Fixed
 - Userscript now works on mngcow series containing dashes.
+- DOMDocument is now forced to parsing HTML as UTF8.
+  - Surprisingly this isn't done by default.
 
 ## [1.7.1] 2017-06-06
 ### Changed

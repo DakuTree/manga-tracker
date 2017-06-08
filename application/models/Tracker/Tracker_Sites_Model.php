@@ -131,7 +131,7 @@ abstract class Base_Site_Model extends CI_Model {
 
 				$dom = new DOMDocument();
 				libxml_use_internal_errors(TRUE);
-				$dom->loadHTML($data);
+				$dom->loadHTML('<?xml encoding="utf-8" ?>' . $data);
 				libxml_use_internal_errors(FALSE);
 
 				$xpath = new DOMXPath($dom);
