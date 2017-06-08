@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.2] 2017-06-08
+### Fixed
+- Userscript now works on mngcow series containing dashes.
+
 ## [1.7.1] 2017-06-06
 ### Changed
 - Tag editor should now autofocus on input.
