@@ -422,7 +422,7 @@ $(function(){
 
 				favicon.attr('href', canvas.toDataURL());
 			};
-			imageObj.src = favicon.attr('href');
+			imageObj.src = `${base_url}favicon.ico`;
 		} else {
 			favicon.attr('href', `${base_url}favicon.ico`);
 		}
