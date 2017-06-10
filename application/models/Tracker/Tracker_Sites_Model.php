@@ -227,4 +227,47 @@ abstract class Base_Site_Model extends CI_Model {
 	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
 	public function doCustomUpdate() {}
 	public function doCustomCheck(string $oldChapter, string $newChapter) {}
+	final public function doCustomCheckCompare(array $oldChapterSegments, array $newChapterSegments) : bool {
+		//FIXME: Make this more generic when we have more site support for it. MangaFox and Batoto have similar chapter formats.
+
+		$status = FALSE;
+
+		$newCount = count($newChapterSegments);
+		$oldCount = count($oldChapterSegments);
+		if($newCount === $oldCount) {
+			//Make sure chapter format looks correct.
+			//NOTE: We only need to check newCount as we know oldCount is the same count.
+			if($newCount === 2) {
+				//FIXME: Can we loop this?
+				$oldVolume = substr(array_shift($oldChapterSegments), 1);
+				$newVolume = substr(array_shift($newChapterSegments), 1);
+
+				//Forcing volume to 999 makes sure it's always considered the latest volume.
+				//This obviously can cause issues (I.E: Bato.to sometimes adds odd chapters with TBD which forces them to the top, even if they are older chapters)
+				if(in_array($oldVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $oldVolume = 999;
+				if(in_array($newVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $newVolume = 999;
+
+				$oldVolume = floatval($oldVolume);
+				$newVolume = floatval($newVolume);
+			} else {
+				$oldVolume = 0;
+				$newVolume = 0;
+			}
+			$oldChapter = floatval(substr(array_shift($oldChapterSegments), 1));
+			$newChapter = floatval(substr(array_shift($newChapterSegments), 1));
+
+			if($newVolume > $oldVolume) {
+				//$newVolume is higher, no need to check chapter.
+				//This also hits cases where:
+				// > The old chapter had a weird chapter format, so the volume was set as 0.
+				// > The new chapter had
+				$status = TRUE;
+			} elseif($newChapter > $oldChapter) {
+				//$newVolume isn't higher, but chapter is.
+				$status = TRUE;
+			}
+		}
+
+		return $status;
+	}
 }

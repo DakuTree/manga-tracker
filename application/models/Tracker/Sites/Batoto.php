@@ -191,40 +191,10 @@ class Batoto extends Base_Site_Model {
 		return $titleDataList;
 	}
 	public function doCustomCheck(string $oldChapterString, string $newChapterString) {
-		$status = FALSE;
-
 		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
 		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
 
-		//Although it's rare, it's possible for new chapters to have a different amount of segments to the oldChapter (or vice versa).
-		//Since this can cause errors, we just throw a fail.
-		$count = count($newChapterSegments);
-		if($count === count($oldChapterSegments)) {
-			if($count === 2) {
-				//FIXME: This feels like a mess.
-				$oldVolume = substr(array_shift($oldChapterSegments), 1);
-				$newVolume = substr(array_shift($newChapterSegments), 1);
-
-				if(in_array($oldVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $oldVolume = 999;
-				if(in_array($newVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $newVolume = 999;
-
-				$oldVolume = floatval($oldVolume);
-				$newVolume = floatval($newVolume);
-			} else {
-				$oldVolume = 0;
-				$newVolume = 0;
-			}
-			$oldChapter = floatval(substr(array_shift($oldChapterSegments), 1));
-			$newChapter = floatval(substr(array_shift($newChapterSegments), 1));
-
-			if($newVolume > $oldVolume) {
-				//$newVolume is higher, no need to check chapter.
-				$status = TRUE;
-			} elseif($newChapter > $oldChapter) {
-				//$newVolume isn't higher, but chapter is.
-				$status = TRUE;
-			}
-		}
+		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
 
 		return $status;
 	}

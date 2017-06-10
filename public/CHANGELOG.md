@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.4] 2017-06-10
+### Changed
+- `[Backend]` Removed a bunch of duplication within doCustomCheck.
+
 ## [1.7.3] 2017-06-09
 ### Fixed
 - Favicon properly changes when going from double to single digit unread.
