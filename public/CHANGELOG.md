@@ -7,9 +7,15 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.7.4] 2017-06-10
+## [1.7.4] 2017-06-10 - 2017-06-11
+### Added
+- `[Backend]` Added a bunch of tests for doCustomCheck.
+
 ### Changed
 - `[Backend]` Removed a bunch of duplication within doCustomCheck.
+- doCustomCheck now does additional checks to see if the latest chapter is actually the latest chapter.
+  - I would like to start using this with our normal updates as well, but I'm not sure if that is the best idea.
+  - The normal updater ALWAYS uses what the latest update, regardless of the actual info. This avoids possible errors and such, but this would be handy...
 
 ## [1.7.3] 2017-06-09
 ### Fixed

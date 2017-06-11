@@ -230,10 +230,15 @@ abstract class Base_Site_Model extends CI_Model {
 	final public function doCustomCheckCompare(array $oldChapterSegments, array $newChapterSegments) : bool {
 		//FIXME: Make this more generic when we have more site support for it. MangaFox and Batoto have similar chapter formats.
 
+		//NOTE: We only need to check against the new chapter here, as that is what is used for confirming update.
 		$status = FALSE;
 
-		$newCount = count($newChapterSegments);
+		//Make sure we have a volume element
+		if(count($oldChapterSegments) === 1) array_unshift($oldChapterSegments, 'v0');
+		if(count($newChapterSegments) === 1) array_unshift($newChapterSegments, 'v0');
+
 		$oldCount = count($oldChapterSegments);
+		$newCount = count($newChapterSegments);
 		if($newCount === $oldCount) {
 			//Make sure chapter format looks correct.
 			//NOTE: We only need to check newCount as we know oldCount is the same count.
@@ -242,10 +247,9 @@ abstract class Base_Site_Model extends CI_Model {
 				$oldVolume = substr(array_shift($oldChapterSegments), 1);
 				$newVolume = substr(array_shift($newChapterSegments), 1);
 
-				//Forcing volume to 999 makes sure it's always considered the latest volume.
-				//This obviously can cause issues (I.E: Bato.to sometimes adds odd chapters with TBD which forces them to the top, even if they are older chapters)
-				if(in_array($oldVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $oldVolume = 999;
-				if(in_array($newVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $newVolume = 999;
+				//Forcing volume to 0 as TBD might not be the latest (although it can be, but that is covered by other checks)
+				if(in_array($oldVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $oldVolume = 0;
+				if(in_array($newVolume, ['TBD', 'TBA', 'NA', 'LMT'])) $newVolume = 0;
 
 				$oldVolume = floatval($oldVolume);
 				$newVolume = floatval($newVolume);
@@ -256,11 +260,16 @@ abstract class Base_Site_Model extends CI_Model {
 			$oldChapter = floatval(substr(array_shift($oldChapterSegments), 1));
 			$newChapter = floatval(substr(array_shift($newChapterSegments), 1));
 
-			if($newVolume > $oldVolume) {
-				//$newVolume is higher, no need to check chapter.
-				//This also hits cases where:
-				// > The old chapter had a weird chapter format, so the volume was set as 0.
-				// > The new chapter had
+			if($newChapter > $oldChapter && ($oldChapter >= 10 && $newChapter >= 10)) {
+				//$newChapter is higher than $oldChapter AND $oldChapter and $newChapter are both more than 10
+				//This is intended to cover the /majority/ of valid updates, as we technically shouldn't have to check volumes.
+
+				$status = TRUE;
+			} elseif($newVolume > $oldVolume && ($oldChapter < 10 && $newChapter < 10)) {
+				//This is pretty much just to match a one-off case where the site doesn't properly increment chapter numbers across volumes, and instead does something like: v1/c1..v1/c5, v2/c1..v1/c5 (and so on).
+				$status = TRUE;
+			} elseif($newVolume > $oldVolume && $newChapter >= $oldChapter) {
+				//$newVolume is higher, and chapter is higher so no need to check chapter.
 				$status = TRUE;
 			} elseif($newChapter > $oldChapter) {
 				//$newVolume isn't higher, but chapter is.
