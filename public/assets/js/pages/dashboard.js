@@ -328,7 +328,14 @@ $(function(){
 			if(!editorEle.hasClass('hidden')) {
 				//NOTE: setTimeout is required here due to a chrome bug.
 				setTimeout(function(){
-					editorEle.find('> input').focus();
+					let input = editorEle.find('> input');
+					input.focus();
+
+					//Resetting value to force pointer to end of line
+					//SEE: https://stackoverflow.com/a/8631903
+					let tmp_val = input.val();
+					input.val('');
+					input.val(tmp_val);
 				}, 1);
 			}
 		});
