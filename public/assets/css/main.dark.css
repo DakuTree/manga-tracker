@@ -80,11 +80,8 @@ h1 {
 .table-striped > tbody > tr:nth-of-type(odd) {
 	background-color: #161616;
 }
-.table-striped > tbody > tr:nth-of-type(odd):hover {
-	background-color: #000000;
-}
-.table-striped > tbody > tr:nth-of-type(even):hover {
-	background-color: #060606;
+.table-striped > tbody > tr:hover {
+	background-color: #090909;
 }
 .tooltip {
 	white-space: nowrap;
