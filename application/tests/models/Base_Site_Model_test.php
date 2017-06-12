@@ -2,9 +2,9 @@
 
 class Mock_Base_Site_Model extends Base_Site_Model {
 
-	public function getFullTitleURL(string $title_url): string {}
+	public function getFullTitleURL(string $title_url) : string {}
 
-	public function getChapterData(string $title_url, string $chapter): array {}
+	public function getChapterData(string $title_url, string $chapter) : array {}
 
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) {}
 }
@@ -12,6 +12,7 @@ class Mock_Base_Site_Model extends Base_Site_Model {
 class Base_Site_Model_test extends TestCase {
 	/** @var Base_Site_Model **/
 	private $Base_Site_Model;
+	private $titleFormat;
 
 	public function setUp() {
 		$this->resetInstance();
@@ -19,6 +20,24 @@ class Base_Site_Model_test extends TestCase {
 		$this->Base_Site_Model = new Mock_Base_Site_Model();
 	}
 
+	public function test_isValidTitleURL_pass() {
+		$this->Base_Site_Model->titleFormat = '/^(This[0-9]+is\.a\-test)$/';
+		$this->assertTrue($this->Base_Site_Model->isValidTitleURL('This123is.a-test'));
+	}
+	public function test_isValidTitleURL_fail() {
+		//Bad title URL
+		$this->Base_Site_Model->titleFormat = '/^(This[0-9]+is\.a\-test)$/';
+		$this->assertFalse($this->Base_Site_Model->isValidTitleURL('This123isNOT.a-test'));
+	}
+	public function test_isValidChapter_pass() {
+		$this->Base_Site_Model->chapterFormat = '/^(This[0-9]+is\.a\-test)$/';
+		$this->assertTrue($this->Base_Site_Model->isValidChapter('This123is.a-test'));
+	}
+	public function test_isValidChapter_fail() {
+		//Bad title URL
+		$this->Base_Site_Model->chapterFormat = '/^(This[0-9]+is\.a\-test)$/';
+		$this->assertFalse($this->Base_Site_Model->isValidChapter('This123isNOT.a-test'));
+	}
 	public function test_doCustomCheckCompare_pass_1() {
 		//Chapter has updated
 		$this->assertTrue($this->Base_Site_Model->doCustomCheckCompare(['v10', 'c100'], ['v10', 'c101']));

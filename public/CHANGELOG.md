@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.7.4] 2017-06-10 - 2017-06-12
 ### Added
 - `[Backend]` Added a bunch of tests for doCustomCheck.
+- `[Backend]` Added isValidTitleURL/isValidChapter tests.
 
 ### Changed
 - `[Backend]` Removed a bunch of duplication within doCustomCheck.
