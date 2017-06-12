@@ -83,7 +83,15 @@ h1 {
 
 .table-striped {
 	& > thead th { background-color: @backgroundSecondary; }
-	& > tbody > tr:nth-of-type(odd) { background-color: @backgroundQuaternary; }
+	& > tbody > tr:nth-of-type(odd) {
+		background-color: @backgroundQuaternary;
+		&:hover {
+			background-color: darken(@backgroundQuaternary, 10%);
+		}
+	}
+	& > tbody > tr:nth-of-type(even):hover {
+		background-color: darken(@backgroundPrimary, 10%);
+	}
 }
 
 .tooltip {

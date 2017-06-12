@@ -16,6 +16,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - doCustomCheck now does additional checks to see if the latest chapter is actually the latest chapter.
   - I would like to start using this with our normal updates as well, but I'm not sure if that is the best idea.
   - The normal updater ALWAYS uses what the latest update, regardless of the actual info. This avoids possible errors and such, but this would be handy...
+- Rows are now highlighted on hover.
 
 ### Fixed
 - Pointer should now properly be focused to end of input when clicking edit.
