@@ -139,7 +139,6 @@ class User_Options_Model extends CI_Model {
 	 * @return bool
 	 */
 	public function set(string $option, $value) : bool {
-		//TODO: Check if user is logged in, get ID
 		//Check if user is logged in & set ID if so
 		if($userID = $this->User->id) {
 			//Check if option is valid

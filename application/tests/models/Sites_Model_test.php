@@ -3,7 +3,7 @@
 /**
  * @group SiteTests
  */
-class Site_Model_test extends TestCase {
+class Sites_Model_test extends TestCase {
 	private $Sites_Model;
 
 	public function setUp() {
