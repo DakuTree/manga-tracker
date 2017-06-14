@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.5] 2017-06-14
+### Fixed
+- Userscript should now properly delay page loading for sites that have it set to delay.
+
 ## [1.7.4] 2017-06-10 - 2017-06-12
 ### Added
 - `[Backend]` Added a bunch of tests for doCustomCheck.

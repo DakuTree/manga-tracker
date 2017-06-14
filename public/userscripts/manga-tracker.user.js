@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-06-08
-// @version      1.7.4
+// @updated      2017-06-14
+// @version      1.7.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -591,10 +591,10 @@ let base_site = {
 				$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
 
 				if(!useCustomImageList) {
-					setTimeout(addToContainer(pageN), _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0));
+					setTimeout(addToContainer, _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0), pageN);
 				} else {
 					//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
-					setTimeout(addToContainerCustom(pageN), 100 + (pageN * 100));
+					setTimeout(addToContainerCustom, 100 + (pageN * 100), pageN);
 				}
 			}
 
