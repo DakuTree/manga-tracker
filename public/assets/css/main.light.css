@@ -80,7 +80,7 @@ h1 {
 .table-striped > tbody > tr:nth-of-type(odd) {
 	background-color: #F9F9F9;
 }
-.table-striped > tbody > tr:nth-of-typ:hover {
+.table-striped > tbody > tr:hover {
 	background-color: #ECECEC;
 }
 .tooltip {
