@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.8.0] 2017-06-25
 ### Changed
 - Tweaked info on stats page.
+- Manga Tracker header now notes if running development.
 
 ## [1.7.5] 2017-06-14
 ### Fixed
