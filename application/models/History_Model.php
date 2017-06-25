@@ -8,6 +8,7 @@ class History_Model extends CI_Model {
 	}
 
 	/*** TITLE HISTORY ***/
+
 	public function updateTitleHistory(int $titleID, $oldChapter, string $newChapter, string $newChapterTimestamp) {
 		$success = TRUE;
 		if($oldChapter !== $newChapter) {
