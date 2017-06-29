@@ -614,12 +614,13 @@ body {
 	text-align: right;
 	white-space: nowrap;
 }
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .list-icon:not(:nth-last-child(1)) {
+	margin-right: 2px;
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .update-read {
 	cursor: pointer;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .ignore-latest {
-	margin-right: 5px;
-
 	cursor: pointer;
 }
 #page[data-page="dashboard"] #list-nav.fixed-header {
