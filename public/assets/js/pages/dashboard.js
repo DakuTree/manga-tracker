@@ -292,6 +292,13 @@ $(function(){
 		}
 	});
 
+	$(document).on('click', 'a.goto-selected-link', function(e) {
+		e.preventDefault();
+
+		let selected_option = $(this).closest('div').find('select option:selected');
+		window.open(selected_option.val(), '_blank');
+	});
+
 	/** FUNCTIONS **/
 
 	function setupStickyListHeader() {

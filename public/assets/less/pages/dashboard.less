@@ -120,12 +120,22 @@
 						}
 					}
 				}
-				& > td:nth-of-type(4) { width: 20%; }
+				& > td:nth-of-type(4) {
+					width: 20%;
+					select {
+						width: 80%; //FIXME: This is probably a bad way to do this..
+						margin-right: 3px;
+					}
+				}
 				& > td:nth-of-type(5) {
 					width: 5%;
 					text-align: right;
 					padding: 0 5px;
 					white-space: nowrap;
+
+					.list-icon:not(:nth-last-child(1)) {
+						margin-right: 2px;
+					}
 
 					.update-read {
 						cursor: pointer;
@@ -133,8 +143,6 @@
 
 					.ignore-latest {
 						cursor: pointer;
-						//color: rgb(126, 126, 126);
-						margin-right: 5px;
 					}
 				}
 			}

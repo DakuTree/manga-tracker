@@ -26,8 +26,8 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-06-14
-// @version      1.7.5
+// @updated      2017-06-27
+// @version      1.8.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -42,6 +42,9 @@
 // @grant        GM_xmlhttpRequest
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
+// @connect      mangafox.me
+// @connect      mangahere.co
+// @connect      bato.to
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
@@ -866,6 +869,10 @@ let base_site = {
 		}
 	},
 
+	/** Used to get chapters for inline dashboard dropdown.
+	    Not to be used to get chapter lists for topbar! */
+	getChapterList : function(title_url, latest_chapter, callback) {}, // jshint ignore:line
+
 	/** Variables **/
 	segments : window.location.pathname.split('/'),
 	https    : location.protocol.slice(0, -1),
@@ -961,23 +968,26 @@ let sites = {
 
 			//The inline chapter list is cached. This causes new chapters to not properly show on the list. (Why the cache isn't reset when a new chapter is added is beyond me)
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
-			$.ajax({
-				url: _this.title_url,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
-					xhr.setRequestHeader('Pragma', 'no-cache');
+			GM_xmlhttpRequest({
+				url     : _this.title_url,
+				method  : 'GET',
+				headers : {
+					'Cache-Control' : 'no-cache, no-store',
+					'Pragma'        : 'no-cache'
 				},
-				cache: false,
-				success: function(response) {
-					response = response.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
-					let div = $('<div/>').append($(response));
+				onload  : function(response) {
+					let data = response.responseText;
+					data = data.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
+					data = data.replace(/ (href|src|action)=/g, ' data-$1='); //Try and avoid loading images and such.
+
+					let div = $('<div/>').append($(data));
 
 					$('#chapters > .chlist > li > div > a + * > a', div).reverseObj().each(function() {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
-						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
+						    url              = $(this).attr('data-href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
 						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
-						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
 					callback();
@@ -1022,6 +1032,16 @@ let sites = {
 					console.log('Unable to load mobile site, fallback to old page loading method');
 					callback(false, false);
 				}
+			});
+		},
+
+		getChapterList : function(title_url, latest_chapter, callback) {
+			this.title_url = title_url;
+			this.chapterListCurrent = latest_chapter.replace('1.html', '');
+
+			//hack
+			this.preSetupTopBar(function() {
+				callback();
 			});
 		}
 	}),
@@ -1077,23 +1097,26 @@ let sites = {
 			let _this = this;
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
-			$.ajax({
-				url: _this.title_url,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
-					xhr.setRequestHeader('Pragma', 'no-cache');
-				},
-				cache: false,
-				success: function(response) {
-					response = response.replace(/^[\S\s]*(<section id="main" class="main clearfix">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
-					let div = $('<div/>').append($(response).find('.detail_list > ul:first'));
 
+			GM_xmlhttpRequest({
+				url     : _this.title_url,
+				method  : 'GET',
+				headers : {
+					'Cache-Control' : 'no-cache, no-store',
+					'Pragma'        : 'no-cache'
+				},
+				onload  : function(response) {
+					let data = response.responseText;
+					data = data.replace(/^[\S\s]*(<section id="main" class="main clearfix">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
+					data = data.replace(/ (href|src|action)=/g, ' data-$1='); //Try and avoid loading images and such.
+
+					let div = $('<div/>').append($(data).find('.detail_list > ul:first'));
 					$('li > span.left > a', div).reverseObj().each(function() {
 						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
-						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
+						    url              = $(this).attr('data-href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
 						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
-						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
 					callback();
@@ -1107,6 +1130,16 @@ let sites = {
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(true);
+		},
+
+		getChapterList : function(title_url, latest_chapter, callback) {
+			this.title_url = title_url;
+			this.chapterListCurrent = latest_chapter;
+
+			//hack
+			this.preSetupTopBar(function() {
+				callback();
+			});
 		}
 	}),
 
@@ -1184,6 +1217,39 @@ let sites = {
 				this.page_count = this.viewerCustomImageList.length;
 				callback(false, true);
 			}
+		},
+
+		getChapterList : function(title_url, latest_chapter, callback) {
+			this.title_url          = title_url;
+			this.chapterListCurrent = latest_chapter;
+
+			//bato.to normally gets chapter list from chapter page, so we need to get it normally here.
+			let _this = this;
+			GM_xmlhttpRequest({
+				url     : _this.title_url,
+				method  : 'GET',
+				headers : {
+					'Cache-Control' : 'no-cache, no-store',
+					'Pragma'        : 'no-cache'
+				},
+				onload  : function(response) {
+					let data = response.responseText;
+					data = data.replace(/^[\S\s]*(<table width="100%" class="ipb_table chapters_list" style="font-size:13px;">[\S\s]*<\/table>)[\S\s]*$/, '$1'); //Only grab the chapter list
+					data = data.replace(/ (href|src|action)=/g, ' data-$1='); //Try and avoid loading images and such.
+
+					let div = $('<div/>').append($(data).find('.chapter_row'));
+					console.log(div);
+					$('td:nth-of-type(1) a[data-href*="bato.to/reader"]', div).reverseObj().each(function() {
+						console.log($(this).text());
+						let chapterTitle     = $(this).text().trim(),
+						    url              = $(this).attr('data-href');
+
+						_this.chapterList[url] = chapterTitle;
+					});
+
+					callback();
+				}
+			});
 		}
 	}),
 
@@ -1256,6 +1322,16 @@ let sites = {
 			$('#reader').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(true, true);
+		},
+
+		getChapterList : function(title_url, latest_chapter, callback) {
+			this.title_url = title_url;
+			this.chapterListCurrent = latest_chapter;
+
+			//hack
+			this.preSetupTopBar(function() {
+				callback();
+			});
 		}
 	}),
 
@@ -1842,6 +1918,7 @@ let sites = {
 							}
 						});
 
+						//Sync chapters updated with chapters on trackr.moe
 						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
 							let data    = JSON.parse(new_value).manga,
 							    site    = data.site,
@@ -1866,6 +1943,35 @@ let sites = {
 								}
 							}
 						});
+
+						//
+						$('.show-chapterlist')
+							.css('cursor', 'pointer')
+							.click(function() {
+								let row       = $(this).closest('tr'),
+								    site      = row.find('.sprite-site').attr('title'),
+								    title_url = row.find('.title').attr('href'),
+								    latest    = row.find('.latest');
+
+								let currentSite = $.extend(true, {}, sites[site]); //NOTE: We need to clone the object to avoid issues
+								currentSite.getChapterList(title_url, latest.attr('href'), function() {
+									let currentExists = false,
+									    options  = $.map(currentSite.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(currentSite.chapterListCurrent === v) {o.attr('selected', '1'); currentExists = true;} return o.get();});
+									if(currentExists === false) { options[currentSite.chapterList.length - 1].setAttribute('selected', true); }
+
+									latest.replaceWith(
+										$('<div/>', {class: 'latest'}).append(
+											$('<select/>').append(
+												options
+											)
+										).append(
+											$('<a/>', {class: 'goto-selected-link', href: '#'}).append(
+												$('<i/>', {class: 'fa fa-external-link', 'aria-hidden': 'true'})
+											)
+										)
+									);
+								});
+							});
 					}
 					break;
 

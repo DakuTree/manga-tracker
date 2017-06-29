@@ -84,7 +84,7 @@
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 				<?=$row['mal_icon']?>
 
-				<a href="<?=$row['full_title_url']?>" rel="nofollow" data-title="<?=htmlentities($row['title_data']['title_url'])?>"><?=htmlentities($row['title_data']['title'])?></a>
+				<a href="<?=$row['full_title_url']?>" rel="nofollow" class="title" data-title="<?=htmlentities($row['title_data']['title_url'])?>"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
 				<small class="toggle-info pull-right text-muted">Less info</small>
@@ -116,13 +116,16 @@
 				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=htmlentities($row['generated_latest_data']['number'])?></a>
 			</td>
 			<td>
-				<!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>-->
 				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>
+				<span class="list-icon show-chapterlist" title="Show full chapter list.">
+					<i class="fa fa-bars" aria-hidden="true"></i>
+				</span>
+
 				<?php if($row['new_chapter_exists'] == '0') { ?>
-				<span class="ignore-latest" title="Ignore latest chapter. Useful when latest chapter isn't actually the latest chapter.">
+				<span class="list-icon ignore-latest" title="Ignore latest chapter. Useful when latest chapter isn't actually the latest chapter.">
 					<i class="fa fa-bell-slash" aria-hidden="true"></i>
 				</span>
-				<span class="update-read" title="I've read the latest chapter!">
+				<span class="list-icon update-read" title="I've read the latest chapter!">
 					<i class="fa fa-refresh" aria-hidden="true"></i>
 				</span>
 				<!-- TODO: Chapter List? -->
