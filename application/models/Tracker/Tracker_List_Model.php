@@ -46,7 +46,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 					//TODO: We should have an option so chapter mal_id can take priority.
 					'mal_id'                => $row->mal_id ?? $row->title_mal_id, //TODO: This should have an option
-					'mal_type'              => (!is_null($row->mal_id) ? 'chapter' : 'title'),
+					'mal_type'              => (!is_null($row->mal_id) ? 'chapter' : (!is_null($row->title_mal_id) ? 'title' : 'none')),
 
 					'title_data' => [
 						'id'              => $row->title_id,
