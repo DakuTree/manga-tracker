@@ -22,6 +22,9 @@ $(function(){
 			$(this).text('Hide info');
 		} else {
 			$(this).text('More info');
+
+			//Hide input when hiding info
+			$(this).closest('tr').find('.tag-edit').addClass('hidden');
 		}
 	});
 

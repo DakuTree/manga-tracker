@@ -14,6 +14,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Changed
 - Tweaked info on stats page.
 - Manga Tracker header now notes if running development.
+- Tag input is now hidden when hiding info dropdown.
 
 ### Fixed
 - Alert should no longer pop up when trying to change the MAL ID a second time (and more) when the title did not have an ID prior.
