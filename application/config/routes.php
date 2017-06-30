@@ -79,13 +79,14 @@ $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
 $route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
-$route['ajax/update_inline']['post']  = 'Ajax/TrackerInline/update';
-$route['ajax/ignore_inline']['post']  = 'Ajax/TrackerInline/ignore';
-$route['ajax/delete_inline']['post']  = 'Ajax/TrackerInline/delete';
-$route['ajax/tag_update']['post']     = 'Ajax/TrackerInline/tag_update';
-$route['ajax/set_category']['post']   = 'Ajax/TrackerInline/set_category';
-$route['ajax/hide_notice']['post']    = 'Ajax/TrackerInline/hide_notice';
-$route['ajax/set_mal_id']['post']     = 'Ajax/TrackerInline/set_mal_id';
+$route['ajax/update_inline']['post']   = 'Ajax/TrackerInline/update';
+$route['ajax/ignore_inline']['post']   = 'Ajax/TrackerInline/ignore';
+$route['ajax/delete_inline']['post']   = 'Ajax/TrackerInline/delete';
+$route['ajax/tag_update']['post']      = 'Ajax/TrackerInline/tag_update';
+$route['ajax/mass_tag_update']['post'] = 'Ajax/TrackerInline/mass_tag_update';
+$route['ajax/set_category']['post']    = 'Ajax/TrackerInline/set_category';
+$route['ajax/hide_notice']['post']     = 'Ajax/TrackerInline/hide_notice';
+$route['ajax/set_mal_id']['post']      = 'Ajax/TrackerInline/set_mal_id';
 
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 //$route['import_list']['post']         = 'Ajax/TrackerInline/import';

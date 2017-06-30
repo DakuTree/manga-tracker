@@ -159,9 +159,8 @@ $(function(){
 		}
 	});
 
-	//Delete selected series
-	$('#delete-selected').click(function(e) {
-		e.preventDefault();
+	$('#mass-action').find('> select').change(function() {
+		let redirect = false;
 
 		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)'),
 		    total_rows   = checked_rows.length;
@@ -170,19 +169,47 @@ $(function(){
 				return parseInt($(this).attr('data-id'));
 			}).toArray();
 
-			if(confirm(`Are you sure you want to delete the ${total_rows} selected row(s)?`)) {
-				let postData = {
-					'id[]' : row_ids
-				};
-				$.post(base_url + 'ajax/delete_inline', postData, () => {
-					location.reload();
-				}).fail((jqXHR, textStatus, errorThrown) => {
-					_handleAjaxError(jqXHR, textStatus, errorThrown);
-				});
+			let postData = {
+				'id[]' : row_ids
+			};
+			switch($(this).val()) {
+				case 'delete':
+					if(confirm(`Are you sure you want to delete the ${total_rows} selected row(s)?`)) {
+						$.post(base_url + 'ajax/delete_inline', postData, () => {
+							redirect = true;
+							location.reload();
+						}).fail((jqXHR, textStatus, errorThrown) => {
+							_handleAjaxError(jqXHR, textStatus, errorThrown);
+						});
+					}
+
+					break;
+
+				case 'tag':
+					if(confirm(`Are you sure you want to edit the tags of ${total_rows} selected row(s)?`)) {
+						let tags = prompt('Tags: ');
+						validate_tag_list(tags, (tag_list_new) => {
+							postData.tag_string = tag_list_new;
+
+							$.post(base_url + 'ajax/mass_tag_update', postData, () => {
+								redirect = true;
+								location.reload(); //unlike a normal tag update, it's probably better to just force a reload here.
+							}).fail((jqXHR, textStatus, errorThrown) => {
+								_handleAjaxError(jqXHR, textStatus, errorThrown);
+							});
+						});
+					}
+					break;
+
+				default:
+					//do nothing
+					break;
 			}
 		} else {
 			alert('No selected series found.');
 		}
+
+		if($(this).val() !== 'n/a' && !redirect) { console.log('resetting value'); $(this).val('n/a'); } //Reset change if user hasn't followed through with mass action
 	});
 
 	//Set MAL ID
@@ -357,33 +384,40 @@ $(function(){
 			    id       = $(this).closest('tr').attr('data-id');
 
 			//Validation
-			if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
-				let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
-				    tag_list_new = tag_array.join(',');
-				if($.inArray('none', tag_array) === -1) {
-					if((tag_list.match(/\bmal:(?:[0-9]+|none)\b/g) || []).length <= 1) {
-						let postData = {
-							'id'         : id,
-							'tag_string' : tag_list_new
-						};
-						$.post(base_url + 'ajax/tag_update', postData, () => {
-							$(input).val(tag_list_new);
-							$(_this).closest('.more-info').find('.tag-list').text(tag_list_new || 'none');
-							$(_this).closest('.tag-edit').toggleClass('hidden');
-						}).fail((jqXHR, textStatus, errorThrown) => {
-							_handleAjaxError(jqXHR, textStatus, errorThrown);
-						});
-					} else {
-						alert('You can only use one MAL ID tag per series');
-					}
+			validate_tag_list(tag_list, (tag_list_new) => {
+				let postData = {
+					'id'         : id,
+					'tag_string' : tag_list_new
+				};
+				$.post(base_url + 'ajax/tag_update', postData, () => {
+					$(input).val(tag_list_new);
+					$(_this).closest('.more-info').find('.tag-list').text(tag_list_new || 'none');
+					$(_this).closest('.tag-edit').toggleClass('hidden');
+				}).fail((jqXHR, textStatus, errorThrown) => {
+					_handleAjaxError(jqXHR, textStatus, errorThrown);
+				});
+			});
+		});
+	}
+	function validate_tag_list(tag_list, callback) {
+		if(!$.isArray(tag_list)) { tag_list = tag_list.trim().replace(/,,/g, ','); }
+
+		if(/^[a-z0-9\-_,:]{0,255}$/.test(tag_list)) {
+			let tag_array    = uniq(tag_list.split(',')).filter(function(n){ return n !== ''; }),
+			    tag_list_new = tag_array.join(',');
+			if($.inArray('none', tag_array) === -1) {
+				if((tag_list.match(/\bmal:(?:[0-9]+|none)\b/g) || []).length <= 1) {
+					callback(tag_list_new);
 				} else {
-					alert('"none" is a restricted tag.');
+					alert('You can only use one MAL ID tag per series');
 				}
 			} else {
-				//Tag list is invalid.
-				alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
+				alert('"none" is a restricted tag.');
 			}
-		});
+		} else {
+			//Tag list is invalid.
+			alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
+		}
 	}
 
 	function updateUnread() {

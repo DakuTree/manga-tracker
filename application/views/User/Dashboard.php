@@ -36,9 +36,14 @@
 
 	<div id="tracker-table-links">
 		<div class="pull-left">
-			<a href="#" id="delete-selected">
-				<i class="fa fa-trash-o" aria-hidden="true"></i> Delete Selected
-			</a>
+			<div id="mass-action">
+				<b>Modify selected: </b>
+				<select>
+					<option value="n/a">---</option>
+					<option value="delete">Delete</option>
+					<option value="tag">Tag</option>
+				</select>
+			</div>
 
 			<div id="move-container">
 				<label for="move-input" class="control-label">Move to:</label>

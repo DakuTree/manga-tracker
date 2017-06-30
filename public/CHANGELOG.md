@@ -7,10 +7,16 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.8.0] 2017-06-25
+## [1.7.6] 2017-06-30
+### Added
+- Ability to set tags of multiple selected series.
+
 ### Changed
 - Tweaked info on stats page.
 - Manga Tracker header now notes if running development.
+
+### Fixed
+- Alert should no longer pop up when trying to change the MAL ID a second time (and more) when the title did not have an ID prior.
 
 ## [1.7.5] 2017-06-14
 ### Fixed
