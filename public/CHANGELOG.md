@@ -7,7 +7,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.7.6] 2017-06-30
+
+## [1.7.6] 2017-06-30 - 2017-07-01
 ### Added
 - Ability to set tags of multiple selected series.
 
@@ -18,6 +19,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Fixed
 - Alert should no longer pop up when trying to change the MAL ID a second time (and more) when the title did not have an ID prior.
+- AMR Importing should work again.
 
 ## [1.7.5] 2017-06-14
 ### Fixed

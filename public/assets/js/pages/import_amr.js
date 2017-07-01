@@ -10,7 +10,9 @@ $(function () {
 		'MangaStream',
 		'Manga Panda',
 		'Kirei Cake',
-		'Dynasty Scans'
+		'Dynasty Scans',
+		'Manga Reader',
+		'Easy Going'
 	];
 
 	$('#amr_import').change(function () {
@@ -27,7 +29,8 @@ $(function () {
 					let json_string = e.target.result;
 					if (!isJsonString(json_string)) {
 						alert('ERROR: File isn\'t valid JSON!');
-					} else {
+					}
+					else {
 						/**
 						 * @param {{mangas:string, mirror:string}} base_json
 						 */
@@ -61,8 +64,9 @@ $(function () {
 										$('<h4/>', {text: site + ' (' + titleList.length + ')'}).appendTo(id);
 
 										let tbody = $('<tbody/>', {'aria-live': 'polite', 'aria-relevant': 'all'});
-										for (let title in titleList) {
-											if (titleList.hasOwnProperty(title)) {
+										for (let titleN in titleList) {
+											if (titleList.hasOwnProperty(titleN)) {
+												let title = titleList[titleN];
 												/**
 												 * @param {{url:string, name:string, lastChapterReadURL:string, lastChapterReadName:string}} title
 												 */
@@ -88,6 +92,14 @@ $(function () {
 											class: 'tablesorter tablesorter-bootstrap table-striped',
 											role : 'grid'
 										}).append(
+											$('<thead/>').append(
+												$('<tr/>').append(
+													$('<th/>', {text: 'Title'})
+												).append(
+													$('<th/>', {text: 'Current Chapter'})
+												)
+											)
+										).append(
 											tbody
 										).appendTo(id);
 									}
