@@ -15,6 +15,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Fixed
 - Userscript updates were incorrectly limited to a 250 rate limit. (Now uses the same 1000 as the rest of the userscript.)
+- Userscript should properly show alert when update request fails for any reason.
+
 ## [1.7.6] 2017-06-30 - 2017-07-01
 ### Added
 - Ability to set tags of multiple selected series.
