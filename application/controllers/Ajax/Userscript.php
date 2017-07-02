@@ -105,25 +105,22 @@ class Userscript extends AJAX_Controller {
 	 */
 	public function favourite() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		if($this->limiter->limit('tracker_userscript_favourite', 250)) {
-			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
-		} else {
-			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
-			$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
-			$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
 
-			if($this->form_validation->run() === TRUE) {
-				$manga = $this->input->post('manga');
+		$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
+		$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
+		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
 
-				$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter'], $this->userID);
-				if($success['bool']) {
-					$this->output->set_status_header('200', $success['status']); //Success!
-				} else {
-					$this->output->set_status_header('400', $success['status']);
-				}
+		if($this->form_validation->run() === TRUE) {
+			$manga = $this->input->post('manga');
+
+			$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter'], $this->userID);
+			if($success['bool']) {
+				$this->output->set_status_header('200', $success['status']); //Success!
 			} else {
-				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+				$this->output->set_status_header('400', $success['status']);
 			}
+		} else {
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
 }
