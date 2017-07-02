@@ -13,6 +13,8 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - Favouriting now uses the same rate limit of everything else.
 - Doubled the userscript rate limit from 500 > 1000.
 
+### Fixed
+- Userscript updates were incorrectly limited to a 250 rate limit. (Now uses the same 1000 as the rest of the userscript.)
 ## [1.7.6] 2017-06-30 - 2017-07-01
 ### Added
 - Ability to set tags of multiple selected series.

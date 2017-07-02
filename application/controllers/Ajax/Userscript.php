@@ -35,36 +35,33 @@ class Userscript extends AJAX_Controller {
 	 */
 	public function update() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		if($this->limiter->limit('tracker_userscript_bug', 250)) {
-			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
-		} else {
-			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
-			$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
-			$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
 
-			if($this->form_validation->run() === TRUE) {
-				$manga = $this->input->post('manga');
+		$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
+		$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
+		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
 
-				$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], TRUE, TRUE);
-				if($titleData) {
-					$malID = $this->Tracker->list->getMalID($this->userID, $titleData['id']);
-					$json = [
-						'mal_sync' => $this->User_Options->get('mal_sync', $this->userID),
-						'mal_id'   => $malID['id'] ?? NULL,
-						'chapter'  => $titleData['chapter']
-					];
+		if($this->form_validation->run() === TRUE) {
+			$manga = $this->input->post('manga');
 
-					$this->output
-					     ->set_status_header('200')
-					     ->set_content_type('application/json', 'utf-8')
-					     ->set_output(json_encode($json));
-				} else {
-					//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
-					$this->output->set_status_header('400', 'Unable to update?');
-				}
+			$titleData = $this->Tracker->list->update($this->userID, $manga['site'], $manga['title'], $manga['chapter'], TRUE, TRUE);
+			if($titleData) {
+				$malID = $this->Tracker->list->getMalID($this->userID, $titleData['id']);
+				$json = [
+					'mal_sync' => $this->User_Options->get('mal_sync', $this->userID),
+					'mal_id'   => $malID['id'] ?? NULL,
+					'chapter'  => $titleData['chapter']
+				];
+
+				$this->output
+				     ->set_status_header('200')
+				     ->set_content_type('application/json', 'utf-8')
+				     ->set_output(json_encode($json));
 			} else {
-				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+				//TODO: We should probably try and have more verbose errors here. Return via JSON or something.
+				$this->output->set_status_header('400', 'Unable to update?');
 			}
+		} else {
+			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
 	}
 
@@ -106,21 +103,25 @@ class Userscript extends AJAX_Controller {
 	public function favourite() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 
-		$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
-		$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
-		$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
-
-		if($this->form_validation->run() === TRUE) {
-			$manga = $this->input->post('manga');
-
-			$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter'], $this->userID);
-			if($success['bool']) {
-				$this->output->set_status_header('200', $success['status']); //Success!
-			} else {
-				$this->output->set_status_header('400', $success['status']);
-			}
+		if($this->limiter->limit('tracker_userscript_bug', 250)) {
+			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 		} else {
-			$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');
+			$this->form_validation->set_rules('manga[title]', 'Manga [Title]', 'required');
+			$this->form_validation->set_rules('manga[chapter]', 'Manga [Chapter]', 'required');
+
+			if($this->form_validation->run() === TRUE) {
+				$manga = $this->input->post('manga');
+
+				$success = $this->Tracker->favourites->set($manga['site'], $manga['title'], $manga['chapter'], $this->userID);
+				if($success['bool']) {
+					$this->output->set_status_header('200', $success['status']); //Success!
+				} else {
+					$this->output->set_status_header('400', $success['status']);
+				}
+			} else {
+				$this->output->set_status_header('400', 'Missing/invalid parameters.');
+			}
 		}
 	}
 }
