@@ -8,6 +8,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 
+## [1.7.7] 2017-07-02
+### Changed
+- Favouriting now uses the same rate limit of everything else.
+- Doubled the userscript rate limit from 500 > 1000.
+
 ## [1.7.6] 2017-06-30 - 2017-07-01
 ### Added
 - Ability to set tags of multiple selected series.

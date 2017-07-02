@@ -10,7 +10,7 @@ class Userscript extends AJAX_Controller {
 		$this->load->library('form_validation');
 
 		//500 requests per hour to either AJAX request.
-		if($this->limiter->limit('tracker_userscript', 500)) {
+		if($this->limiter->limit('tracker_userscript', 1000)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 		}
 
