@@ -7,6 +7,9 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.8] 2017-07-03
+### Fixed
+- Bato.to works again after switching to HTTPS.
 
 ## [1.7.7] 2017-07-02
 ### Changed
