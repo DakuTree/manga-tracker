@@ -352,7 +352,7 @@ class Sites_Model_test extends TestCase {
 	public function test_WhiteoutScans() {
 		//WhiteoutScans only appears to translate ReLife?
 		$testSeries = [
-			'relife' => 'ReLife'
+			'relife' => 'ReLIFE'
 		];
 		$randSeries = array_rand($testSeries);
 
