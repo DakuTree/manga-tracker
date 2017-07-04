@@ -410,35 +410,41 @@ body {
 
 	background-position: -302px -2px;
 }
-.sprite-site.sprite-readms-net {
+.sprite-site.sprite-reader-whiteoutscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -322px -2px;
 }
-.sprite-site.sprite-www-demonicscans-com {
+.sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -342px -2px;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -362px -2px;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -382px -2px;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -402px -2px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -422px -2px;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;
