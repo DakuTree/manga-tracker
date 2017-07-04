@@ -1,4 +1,5 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
+
 class WhiteoutScans extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';

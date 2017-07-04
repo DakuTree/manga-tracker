@@ -349,6 +349,18 @@ class Sites_Model_test extends TestCase {
 	public function test_DeathTollScans_fail() {
 		$this->_testSiteFailure('DeathTollScans', 'Bad Status Code (404)');
 	}
+	public function test_WhiteoutScans() {
+		//WhiteoutScans only appears to translate ReLife?
+		$testSeries = [
+			'relife' => 'ReLife'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('WhiteoutScans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_WhiteoutScans_fail() {
+		$this->_testSiteFailure('WhiteoutScans', 'Bad Status Code (404)');
+	}
 
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
