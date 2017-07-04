@@ -16,6 +16,7 @@
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/reader\.whiteoutscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.seaotterscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.sensescans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/helveticascans\.com\/r(?:eader)?\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -1484,6 +1485,36 @@ let sites = {
 		}
 	}),
 
+	'reader.whiteoutscans.com' : extendSite({
+		setObjVars : function() {
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
+
+			this.title_url   = 'https://reader.whiteoutscans.com/series/'+this.title;
+			this.chapter_url = 'https://reader.whiteoutscans.com/read/'+this.title+'/'+this.chapter;
+
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		postSetupTopBar : function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		}
+	}),
+	
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
