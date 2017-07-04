@@ -12,7 +12,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - Support for WhiteoutScans.
   - Thanks to @Vesnyx (#98).
 - `[Backend]` getTitleData now has a `?array` return type.
-
+- `[Backend]` exit_ci() function for tests.
 ### Fixed
 - Bato.to works again after switching to HTTPS.
 - MangaCow now works on decimal chapters.

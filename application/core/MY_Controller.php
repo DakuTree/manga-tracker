@@ -88,7 +88,7 @@ class Auth_Controller extends User_Controller {
 				redirect('user/login');
 			} else {
 				$this->output->set_status_header(401, 'Session has expired, please re-log to continue.');
-				exit();
+				exit_ci();
 			}
 		}
 	}

@@ -52,3 +52,11 @@ if (!function_exists('http_parse_headers')) { #http://www.php.net/manual/en/func
 		return $headers;
 	}
 }
+
+function exit_ci($status = NULL) : void {
+	if(ENVIRONMENT !== "testing") {
+		exit($status);
+	} else {
+		throw new CIPHPUnitTestExitException("exit() called");
+	}
+}

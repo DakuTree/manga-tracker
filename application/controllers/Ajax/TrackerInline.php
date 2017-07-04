@@ -12,7 +12,8 @@ class TrackerInline extends Auth_Controller {
 		//1000 requests per hour to either AJAX request.
 		if($this->limiter->limit('tracker_general', 1000)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
-			exit();
+
+			exit_ci();
 		}
 
 		$this->userID = (int) $this->User->id;
