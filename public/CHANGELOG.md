@@ -14,6 +14,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ### Fixed
 - Bato.to works again after switching to HTTPS.
+- MangaCow now works on decimal chapters.
 
 ## [1.7.7] 2017-07-02
 ### Changed
