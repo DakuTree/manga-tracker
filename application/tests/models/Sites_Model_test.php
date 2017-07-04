@@ -365,6 +365,7 @@ class Sites_Model_test extends TestCase {
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
+		//FIXME: We should _try_ and test response code here, specificially against error 537 which is cloudflare "site is down" error
 		$this->assertInternalType('array', $result, "Title URL ({$title_url})");
 		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url})");
 		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url})");

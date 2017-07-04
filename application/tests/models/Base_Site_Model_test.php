@@ -1,7 +1,6 @@
 <?php
 
 class Mock_Base_Site_Model extends Base_Site_Model {
-
 	public function getFullTitleURL(string $title_url) : string {}
 
 	public function getChapterData(string $title_url, string $chapter) : array {}
