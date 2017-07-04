@@ -6,7 +6,7 @@ class Mock_Base_Site_Model extends Base_Site_Model {
 
 	public function getChapterData(string $title_url, string $chapter) : array {}
 
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {}
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {}
 }
 
 class Base_Site_Model_test extends TestCase {
