@@ -34,7 +34,7 @@ class WebToons extends Base_Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
 		//FIXME: We don't use parseTitleDOM here due to using rss. Should probably have an alternate method for XML parsing.

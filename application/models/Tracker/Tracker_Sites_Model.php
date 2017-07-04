@@ -39,8 +39,7 @@ abstract class Base_Site_Model extends CI_Model {
 
 	abstract public function getChapterData(string $title_url, string $chapter) : array;
 
-	//TODO: When ci-phpunit-test supports PHP Parser 3.x, add " : ?array"
-	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE);
+	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array;
 
 	final public function isValidTitleURL(string $title_url) : bool {
 		$success = (bool) preg_match($this->titleFormat, $title_url);

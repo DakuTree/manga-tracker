@@ -15,7 +15,7 @@ class MangaStream extends Base_Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);

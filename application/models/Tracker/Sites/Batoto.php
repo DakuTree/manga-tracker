@@ -29,7 +29,7 @@ class Batoto extends Base_Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
 		$title_parts = explode(':--:', $title_url);

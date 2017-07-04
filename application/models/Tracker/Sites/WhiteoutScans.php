@@ -13,7 +13,7 @@ class WhiteoutScans extends Base_Site_Model {
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$fullURL = $this->getFullTitleURL($title_url);
 		return $this->parseFoolSlide($fullURL, $title_url);
 	}

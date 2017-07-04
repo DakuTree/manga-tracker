@@ -11,6 +11,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ### Added
 - Support for WhiteoutScans.
   - Thanks to @Vesnyx (#98).
+- `[Backend]` getTitleData now has a `?array` return type.
 
 ### Fixed
 - Bato.to works again after switching to HTTPS.

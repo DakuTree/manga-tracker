@@ -30,7 +30,7 @@ class KissManga extends Base_Site_Model {
 		];
 	}
 
-	public function getTitleData(string $title_url, bool $firstGet = FALSE) {
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
 		//Check if cookiejar is a day old (so we can know if something went wrong)
