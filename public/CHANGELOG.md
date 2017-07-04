@@ -7,7 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.7.8] 2017-07-03
+## [1.7.8] 2017-07-03 - 2017-07-04
+### Added
+- Support for WhiteoutScans.
+  - Thanks to @Vesnyx (#98).
+
 ### Fixed
 - Bato.to works again after switching to HTTPS.
 

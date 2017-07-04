@@ -46,5 +46,6 @@
 		<li><del>Demonic Scanlations</del> - Domain has been disabled.</li>
 		<li>Death Toll Scans</li>
 		<li>Easy Going Scans</li>
+		<li>Whiteout Scans</li>
 	</ul>
 </div>

@@ -28,3 +28,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ~~Demonic Scanlations~~ Domain has been disabled.
 * Death Toll Scans
 * Easy Going Scans
+* Whiteout Scans
