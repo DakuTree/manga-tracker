@@ -83,9 +83,9 @@
 			if($row['site_data']['status'] == 'disabled') {
 				$trInfo = 'class="bg-danger"';
 			} else if($row['title_data']['status'] === 255) {
-				$trInfo = 'class="bg-alert" title="This title is no longer being updated as it has been marked as deleted."';
+				$trInfo = 'class="bg-danger" title="This title is no longer being updated as it has been marked as deleted/ignored."';
 			} else if($row['title_data']['failed_checks'] >= 5) {
-				$trInfo = 'class="bg-alert" title="The last 5+ updates for this title have failed, as such it may not be completely up to date."';
+				$trInfo = 'class="bg-danger" title="The last 5+ updates for this title have failed, as such it may not be completely up to date."';
 			} else if($row['title_data']['failed_checks'] > 0) {
 				$trInfo = 'class="bg-warning" title="The last update for this title failed, as such it may not be completely up to date."';
 			}
