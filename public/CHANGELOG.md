@@ -7,12 +7,17 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.9] 2017-07-05
+### Fixed
+- MangaCow works with dashes now.
+
 ## [1.7.8] 2017-07-03 - 2017-07-04
 ### Added
 - Support for WhiteoutScans.
   - Thanks to @Vesnyx (#98).
 - `[Backend]` getTitleData now has a `?array` return type.
 - `[Backend]` exit_ci() function for tests.
+
 ### Fixed
 - Bato.to works again after switching to HTTPS.
 - MangaCow now works on decimal chapters.

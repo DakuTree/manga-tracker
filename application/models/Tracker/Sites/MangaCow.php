@@ -1,7 +1,7 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MangaCow extends Base_Site_Model {
-	public $titleFormat   = '/^[a-zA-Z0-9_]+$/';
+	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^[0-9]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
