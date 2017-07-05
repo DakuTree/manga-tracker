@@ -83,6 +83,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 					}
 				} else {
 					log_message('error', "{$row->title} failed to update successfully");
+					$this->Tracker->title->updateFailedChecksByID($row->id);
+
 					print " - FAILED TO PARSE\n";
 				}
 			}

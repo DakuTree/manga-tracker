@@ -106,7 +106,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		                  ->get();
 		$row = $query->row();
 
-		$success = $this->db->set(['latest_chapter' => $latestChapter]) //last_updated gets updated via a trigger if something changes
+		$success = $this->db->set(['latest_chapter' => $latestChapter, 'failed_checks' => 0]) //last_updated gets updated via a trigger if something changes
 		                    ->where('id', $titleID)
 		                    ->update('tracker_titles');
 
@@ -125,6 +125,13 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		return (bool) $success;
 	}
 
+	public function updateFailedChecksByID(int $titleID) : bool {
+		$success = $this->db->set('failed_checks', 'failed_checks + 1', FALSE)
+		                    ->where('id', $titleID)
+		                    ->update('tracker_titles');
+
+		return $success;
+	}
 
 	/**
 	 * @param string $site_url
