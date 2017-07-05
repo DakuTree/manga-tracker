@@ -78,8 +78,19 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($trackerDataType['manga'] as $row) { ?>
-		<tr data-id="<?=$row['id']?>" <?=($row['site_data']['status'] == 'disabled' ? 'class="bg-danger"' : '')?>>
+		<?php foreach($trackerDataType['manga'] as $row) {
+			$trInfo = '';
+			if($row['site_data']['status'] == 'disabled') {
+				$trInfo = 'class="bg-danger"';
+			} else if($row['title_data']['status'] === 255) {
+				$trInfo = 'class="bg-alert" title="This title is no longer being updated as it has been marked as deleted."';
+			} else if($row['title_data']['failed_checks'] >= 5) {
+				$trInfo = 'class="bg-alert" title="The last 5+ updates for this title have failed, as such it may not be completely up to date."';
+			} else if($row['title_data']['failed_checks'] > 0) {
+				$trInfo = 'class="bg-warning" title="The last update for this title failed, as such it may not be completely up to date."';
+			}
+		?>
+		<tr data-id="<?=$row['id']?>" <?=$trInfo?>>
 			<td>
 				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
 				<input type="checkbox" name="check">

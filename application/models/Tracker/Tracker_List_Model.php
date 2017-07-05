@@ -10,7 +10,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 		$query = $this->db
 			->select('tracker_chapters.*,
-			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.mal_id AS title_mal_id, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active,
+			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.mal_id AS title_mal_id, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active, tracker_titles.failed_checks AS title_failed_checks,
 			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
@@ -56,6 +56,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 						'current_chapter' => $row->current_chapter,
 						'ignore_chapter'  => $row->ignore_chapter,
 						'last_updated'    => $row->title_last_updated,
+						'status'          => (int) $row->title_status,
+						'failed_checks'   => (int) $row->title_failed_checks,
 						//NOTE: active is used to warn the user if a title hasn't updated (Maybe due to nobody active tracking it or other reasons).
 						//      This will ONLY be false when an actively updating series (site enabled & title status = 0) hasn't updated within the past week.
 						'active'          => ($row->site_status == 'disabled' || in_array($row->title_status, [/*complete*/ 1, /* one-shot */ 2, /* ignored */ 255]) || $row->title_active == 1)

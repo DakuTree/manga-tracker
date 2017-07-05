@@ -8,6 +8,13 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.7.9] 2017-07-05
+### Added
+- Failed attempts at trying to update a title is now logged in DB. Successful updates reset this to zero. Dashboard rows should also be highlighted in these cases.
+  - SEE: #99
+
+### Changed
+- Death Toll Scans support has been re-enabled.
+
 ### Fixed
 - MangaCow works with dashes now.
 - URI tests should work properly again.
