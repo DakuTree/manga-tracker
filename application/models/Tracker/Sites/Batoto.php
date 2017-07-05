@@ -49,7 +49,7 @@ class Batoto extends Base_Site_Model {
 			$content,
 			$title_url,
 			"//h1[@class='ipsType_pagetitle']",
-			"//table[contains(@class, 'chapters_list')]/tbody/tr[2]",
+			"//table[contains(@class, 'chapters_list')]/tbody/tr[contains(@class, 'chapter_row')]",
 			"td[last()]",
 			"td/a[contains(@href,'reader')]",
 			">Register now<"

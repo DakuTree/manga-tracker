@@ -25,17 +25,24 @@ class MangaFox extends Base_Site_Model {
 			$content,
 			$title_url,
 			"//title",
-			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
+			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul/li",
 			"div/span[@class='date']",
-			"div/h3/a"
+			"div/*[starts-with(name(), 'h')]/a"
 		);
 		if($data) {
 			$titleData['title'] = html_entity_decode(explode(' Manga - Read ', $data['nodes_title']->textContent)[0]);
-
-			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
-			$chapterURLSegments = explode('/', $link);
-			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
+
+			$titleData['chapters'] = [];
+			foreach ($data['chapters'] as $chapter) {
+				$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $chapter['chapter']->getAttribute('href'));
+				$chapterURLSegments = explode('/', $link);
+				$chapter = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
+
+				$latest =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
+
+				$chapters[$chapter] = $latest;
+			}
 
 			if($firstGet) {
 				$titleData = array_merge($titleData, $this->doCustomFollow($content['body']));

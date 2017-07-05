@@ -61,7 +61,7 @@ class AdminCLI extends CLI_Controller {
 
 	public function test() {
 		//print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
-		$this->Tracker->sites->{'MangaFox'}->getTitleData('one_piece', TRUE);
+		$this->Tracker->sites->{'MangaFox'}->getTitleData('tomo_chan_wa_onnanoko');
 		//$this->Tracker->sites->{'Batoto'}->doCustomUpdate();
 	}
 }

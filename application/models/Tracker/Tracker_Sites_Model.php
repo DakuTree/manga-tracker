@@ -41,6 +41,10 @@ abstract class Base_Site_Model extends CI_Model {
 
 	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array;
 
+	final public function getLatestChapterData(array $titleData) : ?array {
+		return array_pop($titleData['chapters']);
+	}
+
 	final public function isValidTitleURL(string $title_url) : bool {
 		$success = (bool) preg_match($this->titleFormat, $title_url);
 		if(!$success) log_message('error', "Invalid Title URL ({$this->site}): {$title_url}");
@@ -136,24 +140,34 @@ abstract class Base_Site_Model extends CI_Model {
 				$xpath = new DOMXPath($dom);
 				$nodes_title = $xpath->query($node_title_string);
 				$nodes_row   = $xpath->query($node_row_string);
-				if($nodes_title->length === 1 && $nodes_row->length === 1) {
+				if($nodes_title->length === 1 && $nodes_row->length > 0 ) {
 					$firstRow      = $nodes_row->item(0);
-					$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
+					$overall_latest = $xpath->query($node_latest_string, $firstRow);
 
-					if($node_chapter_string !== '') {
-						$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
-					} else {
-						$nodes_chapter = $nodes_row;
+					$chapters = [];
+					foreach($nodes_row as $row) {
+						if($node_chapter_string !== '') {
+							$chapter = $xpath->query($node_chapter_string, $row);
+						} else {
+							$chapter = $row;
+						}
+						$latest = $xpath->query($node_latest_string, $row);
+
+						$chapters[] = [
+							'chapter' => $chapter->item(0),
+							'latest'  => $latest->item(0)
+						];
 					}
 
-					if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
+					$chapter_count = count($chapters);
+					if($overall_latest->length === 1 && $chapter_count > 0) {
 						return [
-							'nodes_title'   => $nodes_title->item(0),
-							'nodes_latest'  => $nodes_latest->item(0),
-							'nodes_chapter' => $nodes_chapter->item(0)
+							'nodes_title'    => $nodes_title->item(0),
+							'nodes_latest'   => $overall_latest->item(0),
+							'nodes_chapters' => $chapters
 						];
 					} else {
-						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$overall_latest->length} | CHAPTER: {$chapter_count})");
 					}
 				} else {
 					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
