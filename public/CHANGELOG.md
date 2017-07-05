@@ -10,6 +10,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [1.7.9] 2017-07-05
 ### Fixed
 - MangaCow works with dashes now.
+- URI tests should work properly again.
 
 ## [1.7.8] 2017-07-03 - 2017-07-04
 ### Added

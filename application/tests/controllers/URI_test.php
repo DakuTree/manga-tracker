@@ -64,7 +64,7 @@ class URI_test extends TestCase {
 	}
 	public function test_update_inline_post() {
 		$this->request('POST', '/ajax/update_inline');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 
 	public function test_delete_inline_get() {
@@ -73,7 +73,7 @@ class URI_test extends TestCase {
 	}
 	public function test_delete_inline_post() {
 		$this->request('POST', '/ajax/delete_inline');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 
 	public function test_tag_update_get() {
@@ -82,7 +82,7 @@ class URI_test extends TestCase {
 	}
 	public function test_tag_update_post() {
 		$this->request('POST', '/ajax/tag_update');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 
 	public function test_set_category_get() {
@@ -91,7 +91,7 @@ class URI_test extends TestCase {
 	}
 	public function test_set_category_post() {
 		$this->request('POST', '/ajax/set_category');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 
 	public function test_export_list_get() {
@@ -100,7 +100,7 @@ class URI_test extends TestCase {
 	}
 	public function test_export_list_post() {
 		$this->request('POST', '/export_list');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 	public function test_import_list_get() {
 		$this->request('GET', '/import_list');
@@ -108,7 +108,7 @@ class URI_test extends TestCase {
 	}
 	public function test_import_list_post() {
 		$this->request('POST', '/ajax/set_category');
-		$this->assertRedirect(base_url('/user/login'));
+		$this->assertResponseCode(401);
 	}
 
 	public function test_userscript_update_get() {
