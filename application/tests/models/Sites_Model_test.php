@@ -353,11 +353,7 @@ class Sites_Model_test extends TestCase {
 	public function test_WhiteoutScans() {
 		//WhiteoutScans only appears to translate ReLife?
 		$testSeries = [
-			'eromanga_sensei'                                                 => 'Eromanga Sensei',
-			'accel_world__dural__magisa_garden'                               => 'Accel World / Dural - Magisa Garden',
-			'mushoku_tensei__isekai_ittara_honki_dasu'                        => 'Mushoku Tensei - Isekai Ittara Honki Dasu',
-			'rezero_kara_hajimeru_isekai_seikatsu__daisanshou__truth_of_zero' => 'Re:Zero kara Hajimeru Isekai Seikatsu - Daisanshou - Truth of Zero',
-			'tate_no_yuusha_no_nariagari'                                     => 'Tate no Yuusha no Nariagari'
+			'relife' => 'ReLIFE'
 		];
 		$randSeries = array_rand($testSeries);
 
@@ -369,7 +365,11 @@ class Sites_Model_test extends TestCase {
 
 	public function test_OneTimeScans() {
 		$testSeries = [
-			'relife' => 'ReLIFE'
+			'eromanga_sensei'                                                 => 'Eromanga Sensei',
+			'accel_world__dural__magisa_garden'                               => 'Accel World / Dural - Magisa Garden',
+			'mushoku_tensei__isekai_ittara_honki_dasu'                        => 'Mushoku Tensei - Isekai Ittara Honki Dasu',
+			'rezero_kara_hajimeru_isekai_seikatsu__daisanshou__truth_of_zero' => 'Re:Zero kara Hajimeru Isekai Seikatsu - Daisanshou - Truth of Zero',
+			'tate_no_yuusha_no_nariagari'                                     => 'Tate no Yuusha no Nariagari'
 		];
 		$randSeries = array_rand($testSeries);
 
