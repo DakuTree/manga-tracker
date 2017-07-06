@@ -27,8 +27,9 @@
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
-// @updated      2017-07-04
-// @version      1.7.8
+// @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @updated      2017-07-05
+// @version      1.7.9
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1514,7 +1515,7 @@ let sites = {
 			callback(true, true);
 		}
 	}),
-	
+
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
@@ -1831,6 +1832,38 @@ let sites = {
 			callback(true, true);
 		}
 	}),
+
+
+	'otscans.com' : extendSite({
+		setObjVars : function() {
+			this.title       = this.segments[3];
+			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
+
+			this.title_url   = this.https+'://otscans.com/foolslide/series/'+this.title;
+			this.chapter_url = this.https+'://otscans.com/foolslide/read/'+this.title+'/'+this.chapter;
+
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+			},
+		postSetupTopBar : function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		}
+	}),
+
 
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
