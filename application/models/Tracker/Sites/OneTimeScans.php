@@ -5,14 +5,14 @@ class OneTimeScans extends Base_Site_Model {
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://onetimescans.com/foolslide/series/{$title_url}";
+		return "https://otscans.com/foolslide/series/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		//LANG/VOLUME/CHAPTER/CHAPTER_EXTRA(/page/)
 		$chapter_parts = explode('/', $chapter);
 		return [
-			'url'    => "https://onetimescans.com/foolslide/read/{$title_url}/{$chapter}/",
+			'url'    => "https://otscans.com/foolslide/read/{$title_url}/{$chapter}/",
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
 	}

@@ -312,7 +312,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.7.png") no-repeat;
+	background: url("../../img/sites.8.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
@@ -380,71 +380,77 @@ body {
 
 	background-position: -202px -2px;
 }
-.sprite-site.sprite-read-egscans-com {
+.sprite-site.sprite-otscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -222px -2px;
 }
-.sprite-site.sprite-reader-deathtollscans-net {
+.sprite-site.sprite-read-egscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -242px -2px;
 }
-.sprite-site.sprite-reader-kireicake-com {
+.sprite-site.sprite-reader-deathtollscans-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -262px -2px;
 }
-.sprite-site.sprite-reader-seaotterscans-com {
+.sprite-site.sprite-reader-kireicake-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -282px -2px;
 }
-.sprite-site.sprite-reader-sensescans-com {
+.sprite-site.sprite-reader-seaotterscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -302px -2px;
 }
-.sprite-site.sprite-reader-whiteoutscans-com {
+.sprite-site.sprite-reader-sensescans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -322px -2px;
 }
-.sprite-site.sprite-readms-net {
+.sprite-site.sprite-reader-whiteoutscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -342px -2px;
 }
-.sprite-site.sprite-www-demonicscans-com {
+.sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -362px -2px;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -382px -2px;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -402px -2px;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -422px -2px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -442px -2px;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;

@@ -9,7 +9,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 
 ## [1.7.10] 2017-07-05
 ### Added
-- Support for OneTimeScans
+- Support for One Time Scans!
 
 ## [1.7.9] 2017-07-05
 ### Added
