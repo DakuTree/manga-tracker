@@ -8,7 +8,7 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 - N/A
 
 ## [1.7.10] 2017-07-06
-- Support for S2Scans!
+- Support for S2Scans
 
 ## [1.7.9] 2017-07-05
 ### Added
