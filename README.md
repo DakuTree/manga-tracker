@@ -30,3 +30,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Easy Going Scans
 * Whiteout Scans
 * One Time Scans!
+* S2Scans

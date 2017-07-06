@@ -379,6 +379,22 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('OneTimeScans', 'Bad Status Code (404)');
 	}
 
+	public function test_S2Scans() {
+		//WhiteoutScans only appears to translate ReLife?
+		$testSeries = [
+			'black-torch' => 'Black Torch',
+			'denpa-kyoushi' => 'Denpa Kyoushi',
+			'dimension-w' => 'Dimension W',
+			'kurosagi' => 'Kurosagi'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('S2Scans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_S2Scans_fail() {
+		$this->_testSiteFailure('S2Scans', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 

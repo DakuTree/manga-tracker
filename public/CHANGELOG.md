@@ -7,14 +7,14 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
-## [1.7.10] 2017-07-05
-### Added
-- Support for One Time Scans!
+## [1.7.10] 2017-07-06
+- Support for S2Scans!
 
 ## [1.7.9] 2017-07-05
 ### Added
 - Failed attempts at trying to update a title is now logged in DB. Successful updates reset this to zero. Dashboard rows should also be highlighted in these cases.
   - SEE: #99
+- Support for One Time Scans!
 
 ### Changed
 - Death Toll Scans support has been re-enabled.

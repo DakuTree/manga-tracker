@@ -48,5 +48,6 @@
 		<li>Easy Going Scans</li>
 		<li>Whiteout Scans</li>
 		<li>One Time Scans!</li>
+		<li>S2Scans</li>
 	</ul>
 </div>
