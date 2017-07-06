@@ -47,5 +47,6 @@
 		<li>Death Toll Scans</li>
 		<li>Easy Going Scans</li>
 		<li>Whiteout Scans</li>
+		<li>OneTime Scans</li>
 	</ul>
 </div>

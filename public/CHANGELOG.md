@@ -7,6 +7,10 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.10] 2017-07-05
+### Added
+- Support for OneTimeScans
+
 ## [1.7.9] 2017-07-05
 ### Added
 - Failed attempts at trying to update a title is now logged in DB. Successful updates reset this to zero. Dashboard rows should also be highlighted in these cases.
@@ -410,7 +414,7 @@ Starting to use "series" rather than "titles". Using "titles" to refer to follow
 ## [1.5.18] 2017-02-23
 ### Added
 - bato.to now uses the following page for updates like MangaFox, which pushes the update time for bato.to up to hourly!
--- Like MangaFox, if we can't guarantee that the new chapter is <actually> the new chapter, we won't update it, and it will be updated within 36~ hours instead. 
+-- Like MangaFox, if we can't guarantee that the new chapter is <actually> the new chapter, we won't update it, and it will be updated within 36~ hours instead.
 
 ### Changed
 - `[Backend]` Reverted Favourites rework & replaced with a better method which works with history.
@@ -753,7 +757,7 @@ Starting to use "series" rather than "titles". Using "titles" to refer to follow
 - `[Backend]` PHP config is now backed up properly.
 
 ## [1.3.24] - 2016-11-25
-### Fixed 
+### Fixed
 - `[Backend]` Fixed auto-complete/inspection errors when accessing DOMDocument elements with [0] instead of ->item(0)
 - Sites using FoOlSlide no longer auto-redirects to series page. Apparently a missing end slash caused this :|
 
@@ -762,7 +766,7 @@ Starting to use "series" rather than "titles". Using "titles" to refer to follow
 - `[Backend]` Userscript now uses === instead of == in some cases.
 - `[Backend]` Added more files to .gitignore
 
-### Fixed 
+### Fixed
 - bato.to chapter numbers containing dashes no longer get trimmed (previous: "13-2"/"13 - 2" > "13" | now: > "13-2")
 
 ## [1.3.22] - 2016-11-24
@@ -947,7 +951,7 @@ Starting to use "series" rather than "titles". Using "titles" to refer to follow
 - Sticky list header. No more needing to scroll to top to see update time!.
 
 ## [1.1.3] - 2016-09-21
-### Added 
+### Added
 - Test for Game of Scanlation.
 
 ## [1.1.2] - 2016-09-20
@@ -985,7 +989,7 @@ Starting to use "series" rather than "titles". Using "titles" to refer to follow
 - Perl scripts now output start time (so we can actually know if they are working).
 - Titles with a disabled site now have a warning icon to try and better notify the user of the issue.
 - Titles can now be updated if they haven't updated in the past 12 hours, instead of 14.
-  - After a bit of testing, 14 hours seemed a bit slow. We'll see if 12 hours any more noticable. 
+  - After a bit of testing, 14 hours seemed a bit slow. We'll see if 12 hours any more noticable.
 - Titles with no active users (not logged in 5 days) are now slowed to 120 hour updates.
   - This is pretty much a partial-fix. I'd like to be able to mark titles which are slowed if a user tracking them ever comes back at some point.
 - Titles with no users at all (Tracked at some point then removed) are now completely stopped tracking.

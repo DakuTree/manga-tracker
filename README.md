@@ -29,3 +29,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Death Toll Scans
 * Easy Going Scans
 * Whiteout Scans
+* OneTime Scans
