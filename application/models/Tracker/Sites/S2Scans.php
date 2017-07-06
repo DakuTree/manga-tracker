@@ -1,6 +1,6 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
-class DeathTollScans extends Base_Site_Model {
+class S2Scans extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 
