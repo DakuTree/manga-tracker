@@ -2,7 +2,7 @@
 
 class MangaCow extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^[0-9]+$/';
+	public $chapterFormat = '/^[0-9\.]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://mngcow.co/{$title_url}/";
@@ -34,7 +34,7 @@ class MangaCow extends Base_Site_Model {
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9]+)\/$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
+			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)\/$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) substr($data['nodes_latest']->getAttribute('title'), 13)));
 		}
