@@ -380,7 +380,6 @@ class Sites_Model_test extends TestCase {
 	}
 
 	public function test_S2Scans() {
-		//WhiteoutScans only appears to translate ReLife?
 		$testSeries = [
 			'black-torch' => 'Black Torch',
 			'denpa-kyoushi' => 'Denpa Kyoushi',
