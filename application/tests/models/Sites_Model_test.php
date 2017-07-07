@@ -381,10 +381,10 @@ class Sites_Model_test extends TestCase {
 
 	public function test_S2Scans() {
 		$testSeries = [
-			'black-torch' => 'Black Torch',
+			'black-torch'   => 'Black Torch',
 			'denpa-kyoushi' => 'Denpa Kyoushi',
-			'dimension-w' => 'Dimension W',
-			'kurosagi' => 'Kurosagi'
+			'dimension-w'   => 'Dimension W',
+			'kurosagi'      => 'Kurosagi'
 		];
 		$randSeries = array_rand($testSeries);
 
