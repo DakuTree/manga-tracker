@@ -29,8 +29,8 @@
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-07-06
-// @version      1.7.10
+// @updated      2017-07-08
+// @version      1.7.11
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1162,9 +1162,6 @@ let sites = {
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
 			this.viewerChapterURLFormat = this.https+'://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
-			this.viewerCustomImageList  = reader.find('#read_settings + div + div img').map(function(i, e) {
-				return $(e).attr('src');
-			});
 
 			this.searchURLFormat = this.https+'://bato.to/search?name={%SEARCH%}';
 		},
@@ -1174,16 +1171,15 @@ let sites = {
 		preSetupViewer : function(callback) {
 			let reader = $('#reader');
 
-			this.viewerCustomImageList = reader.find('#read_settings + div + div img').map(function(i, e) {
-				return $(e).attr('src');
-			});
-
 			reader.replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			if(this.is_web_toon !== 1) {
 				callback();
 			} else {
 				//Bato.to has an option for webtoons to show all chapters on a single page (with a single ajax), we need to do stuff differently if this happens.
+				this.viewerCustomImageList = reader.find('#read_settings + div + div img').map(function(i, e) {
+					return $(e).attr('src');
+				});
 				this.page_count = this.viewerCustomImageList.length;
 				callback(false, true);
 			}

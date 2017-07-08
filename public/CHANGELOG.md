@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.11] 2017-07-08
+### Fixed
+- Removed redundant codeblock.
+  - Thanks to @Vesnyx (#106).
+
 ## [1.7.10] 2017-07-06
 ### Added
 - Support for S2Scans.
