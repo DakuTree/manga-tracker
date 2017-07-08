@@ -79,6 +79,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 						print " - ({$titleData['latest_chapter']})\n";
 					} else {
+						log_message('error', "{$row->title} failed to update successfully");
+
 						print " - Something went wrong?\n";
 					}
 				} else {
