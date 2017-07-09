@@ -1897,7 +1897,7 @@ let sites = {
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
-			this.page_count    = $('.list-switcher-2 > li > select[name=category_type').get(0).length;
+			this.page_count    = $('.list-switcher-2 > li > select[name=category_type]').get(0).length;
 			this.title         = this.segments[1];
 			this.chapter       = this.segments[2];
 
@@ -1906,7 +1906,7 @@ let sites = {
 
 			//Might be easier to keep chapter_url different.
 			this.chapterListCurrent = this.chapter_url.slice(0,-1);
-			this.chapterList        = generateChapterList($('.jump-menu[name=chapter_list] > option:gt(0)'), 'value');
+			this.chapterList        = generateChapterList($('.jump-menu[name=chapter_list] > option:gt(0)').reverseObj(), 'value');
 
 			//this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';

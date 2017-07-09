@@ -11,7 +11,7 @@ class ReadMangaToday extends Base_Site_Model {
 	public function getChapterData(string $title_url, string $chapter) : array {
 		//http://www.readmanga.today/saiki-kusuo-no-psi-nan/128
 		return [
-			'url'    => $this->getFullTitleURL($title_url).$chapter.'/',
+			'url'    => $this->getFullTitleURL($title_url).'/'.$chapter,
 			'number' => "c{$chapter}"
 		];
 	}
@@ -26,7 +26,7 @@ class ReadMangaToday extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//body/div[@class, 'content']/div/div/div/div/div/div/div/div/h1",
+			"//body/div[@class='content']/div/div/div/div/div/div/div/div/h1",
 			"//ul[contains(@class, 'chp_lst')]/li[1]/a[1]",
 			"span[@class='dte']",
 			"",
@@ -35,7 +35,7 @@ class ReadMangaToday extends Base_Site_Model {
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)\/$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
+			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
 			$dateString = $data['nodes_latest']->nodeValue;
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
