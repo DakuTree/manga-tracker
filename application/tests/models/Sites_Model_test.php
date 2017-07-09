@@ -394,6 +394,22 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('S2Scans', 'Bad Status Code (404)');
 	}
 
+	public function test_ReadMangaToday() {
+		$testSeries = [
+			'fairy-tail'              => 'Fairy Tail',
+			'chio-chan-no-tsuugakuro' => 'Chio-chan no Tsuugakuro',
+			'tokyo_ghoul_re'          => 'Tokyo Ghoul:re',
+			'nanatsu-no-taizai'       => 'Nanatsu no Taizai',
+			'boku-no-hero-academia'   => 'Boku no Hero Academia'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('ReadMangaToday', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_ReadMangaToday_fail() {
+		$this->_testSiteFailure('ReadMangaToday', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 

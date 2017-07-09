@@ -312,7 +312,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.9.png") no-repeat;
+	background: url("../../img/sites.10.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
@@ -428,35 +428,41 @@ body {
 
 	background-position: -362px -2px;
 }
-.sprite-site.sprite-readms-net {
+.sprite-site.sprite-readmanga-today {
 	width: 16px;
 	height: 16px;
 
 	background-position: -382px -2px;
 }
-.sprite-site.sprite-www-demonicscans-com {
+.sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -402px -2px;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -422px -2px;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -442px -2px;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -462px -2px;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -482px -2px;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;

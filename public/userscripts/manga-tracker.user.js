@@ -30,7 +30,7 @@
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
-// @updated      2017-07-08
+// @updated      2017-07-09
 // @version      1.7.12
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
@@ -1911,9 +1911,6 @@ let sites = {
 			//this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]*<div class="content-list col-md-12 page_chapter">\s+(<img[\s\S][^>]+>)/;
-		},
-		stylize : function() {
-            //Nothing needed yet.
 		},
 		preSetupViewer : function(callback) {
 			$('.content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div

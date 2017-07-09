@@ -7,6 +7,11 @@ Although this tries to adhere to "Semantic Versioning", this is a website, not a
 ## [Unreleased]
 - N/A
 
+## [1.7.12] 2017-07-09
+### Added
+- Support for ReadMangaToday.
+  - Thanks to @Vesnyx (#108).
+
 ## [1.7.11] 2017-07-08
 ### Fixed
 - Removed redundant codeblock.
