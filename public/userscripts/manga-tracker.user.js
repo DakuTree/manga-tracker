@@ -922,6 +922,7 @@ function generateChapterList(target, attrURL) {
 }
 
 let sites = {
+	//MangaFox
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
 			this.segments    = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
@@ -1030,6 +1031,7 @@ let sites = {
 		}
 	}),
 
+	//MangaHere
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
@@ -1114,6 +1116,7 @@ let sites = {
 		}
 	}),
 
+	//Batoto
 	'bato.to' : extendSite({
 		preInit : function(callback) {
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
@@ -1187,6 +1190,7 @@ let sites = {
 		}
 	}),
 
+	//Dynasty Scans
 	'dynasty-scans.com' : extendSite({
 		setObjVars : function() {
 			let title_ele = $('#chapter-title').find('> b > a');
@@ -1259,6 +1263,7 @@ let sites = {
 		}
 	}),
 
+	//MangaPanda
 	'www.mangapanda.com' : extendSite({
 		preInit : function(callback) {
 			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually seperates its manga URLs from every other page on the site.
@@ -1327,7 +1332,8 @@ let sites = {
 		}
 	}),
 
-	'readms.net' : extendSite({ //MangaStream
+	//MangaStream
+	'readms.net' : extendSite({
 		setObjVars : function() {
 			this.page_count  = parseInt($('.controls ul:last > li:last').text().replace(/[^0-9]/g, ''));
 			this.title       = this.segments[2];
@@ -1381,6 +1387,7 @@ let sites = {
 		}
 	}),
 
+	//Webtoons
 	'www.webtoons.com' : extendSite({
 		setObjVars : function() {
 			let title_id     = window.location.search.match(/title_no=([0-9]+)/)[1],
@@ -1400,7 +1407,7 @@ let sites = {
 		}
 	}),
 
-	//Disabled
+	//KissManga - Suspended
 	'kissmanga.com' : extendSite({
 		preInit : function(callback) {
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
@@ -1454,6 +1461,7 @@ let sites = {
 		}
 	}),
 
+	//KireiCake Scans
 	'reader.kireicake.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1484,6 +1492,7 @@ let sites = {
 		}
 	}),
 
+	//Whiteout Scans
 	'reader.whiteoutscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1514,6 +1523,7 @@ let sites = {
 		}
 	}),
 
+	//Game of Scanlation
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
@@ -1538,6 +1548,7 @@ let sites = {
 		}
 	}),
 
+	//MangaCow
 	'mngcow.co' : extendSite({
 		setObjVars : function() {
 			let _this = this;
@@ -1575,6 +1586,7 @@ let sites = {
 		}
 	}),
 
+	//EG Scans
 	'read.egscans.com' : extendSite({
 		setObjVars : function() {
 			let _this = this;
@@ -1602,6 +1614,7 @@ let sites = {
 		},
 	}),
 
+	//SeaOtter Scans
 	'reader.seaotterscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1633,6 +1646,7 @@ let sites = {
 		}
 	}),
 
+	//Helvetica Scans
 	'helveticascans.com' : extendSite({
 		preInit : function(callback) {
 			if(location.pathname.substr(0, 7) === 'reader') {
@@ -1673,6 +1687,7 @@ let sites = {
 		}
 	}),
 
+	//Sense Scans
 	'reader.sensescans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1704,6 +1719,7 @@ let sites = {
 		}
 	}),
 
+	//Jamini's Box
 	'jaiminisbox.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1768,7 +1784,7 @@ let sites = {
 		}
 	}),
 
-	//Disabled
+	//Demonic Scans - Disabled
 	'www.demonicscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1800,6 +1816,7 @@ let sites = {
 		}
 	}),
 
+	//Death Toll Scans
 	'reader.deathtollscans.net' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1831,6 +1848,7 @@ let sites = {
 		}
 	}),
 
+	//One Time Scans
 	'otscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1861,6 +1879,7 @@ let sites = {
 		}
 	}),
 
+	//S2 Scans
 	'reader.s2smanga.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1891,7 +1910,7 @@ let sites = {
 		}
 	}),
 
-
+	//ReadMangaToday
   'www.readmanga.today' : extendSite({
 		setObjVars : function() {
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
@@ -1917,7 +1936,6 @@ let sites = {
 			callback(true);
 		}
 	}),
-
 
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
