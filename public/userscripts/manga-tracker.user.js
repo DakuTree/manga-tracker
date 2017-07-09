@@ -92,6 +92,7 @@ let base_site = {
 			_this.setupViewer();
 		});
 	},
+
 	/**
 	 * This is called AFTER init, but before we do everything else.
 	 * It is often used to redirect to new domain URLs, or do additional waiting/checks.
@@ -111,6 +112,7 @@ let base_site = {
 	 * @abstract
 	 */
 	setObjVars      : function() {},
+
 	/**
 	 * Used to do add/remove additional styles on the page.
 	 * This is usually just removing ads and other various banners.
@@ -131,6 +133,7 @@ let base_site = {
 	 * @param {function} callback
 	 */
 	preSetupTopBar  : function(callback) { callback(); }, //callback must always be called
+
 	/**
 	 * Used to remove old topbar (if exists) after adding our own.
 	 *
@@ -155,6 +158,7 @@ let base_site = {
 	 * @param {preSetupViewerCallback} callback
 	 */
 	preSetupViewer  : function(callback) { callback(); }, //callback must always be called
+
 	/**
 	 * This is currently just a stub and isn't used yet!
 	 *
@@ -497,6 +501,7 @@ let base_site = {
 			}
 		});
 	},
+
 	/**
 	 * Used to update MAL. Is called from syncMALCSRF after successfully grabbing CSRF token.
 	 *
@@ -634,6 +639,7 @@ let base_site = {
 			_this.postSetupViewer();
 		});
 	},
+
 	/**
 	 * Used to setup the page container used by the viewer.
 	 *
@@ -664,6 +670,7 @@ let base_site = {
 		//Replace the placeholder image_container with the real one
 		$('#page-'+pageN).replaceWith(image_container);
 	},
+
 	/**
 	 * Used to setup the page container for errored pages.
 	 *
@@ -706,6 +713,7 @@ let base_site = {
 		//Replace the placeholder image_container with the real one
 		$('#page-'+pageN).replaceWith(image_container);
 	},
+
 	/**
 	 * Used to update the page load counter.
 	 *
@@ -748,6 +756,7 @@ let base_site = {
 			console.log('lower than pc: '+this.pagesLoadedAttempts);
 		}
 	},
+
 	/**
 	 * Used to reload all errored pages.
 	 *
@@ -879,8 +888,6 @@ let base_site = {
 	title   : '',
 	chapter : '',
 
-	page_count : 0,
-
 	//Used by everything for easy access
 	chapter_url : '',
 	title_url   : '',
@@ -888,6 +895,7 @@ let base_site = {
 	//Used for topbar.
 	chapterListCurrent : '',
 	chapterList        : {},
+	page_count : 0,
 
 	//Used for custom viewer header (if requested)
 	viewerChapterName      : '',
