@@ -26,7 +26,7 @@ class ReadMangaToday extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//body/div[@class, 'content']/div/div/div/div/div/div/div/div/h1"
+			"//body/div[@class, 'content']/div/div/div/div/div/div/div/div/h1",
 			"//ul[contains(@class, 'chp_lst')]/li[1]/a[1]",
 			"span[@class='dte']",
 			"",
