@@ -31,3 +31,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Whiteout Scans
 * One Time Scans!
 * S2Scans
+* ReadMangaToday

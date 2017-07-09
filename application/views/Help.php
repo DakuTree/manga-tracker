@@ -49,5 +49,6 @@
 		<li>Whiteout Scans</li>
 		<li>One Time Scans!</li>
 		<li>S2Scans</li>
+		<li>ReadMangaToday</li>
 	</ul>
 </div>
