@@ -1,11 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
 
-Although this tries to adhere to "Semantic Versioning", this is a website, not an app, meaning version numbers are pretty much meaningless.
+## [2017-07-10]
+Moving away from using versions for updates going forward. Always felt a bit meaningless considering this is a website and not an app.  
+Any notable milestones will still be labeled, if and when we have them.
 
-## [Unreleased]
-- N/A
+### Changed
+- More userscript documentation
+  - Thanks to @Vesnyx (#110).
+
+---------------------------------
 
 ## [1.7.12] 2017-07-09
 ### Added
