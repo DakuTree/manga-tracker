@@ -434,7 +434,7 @@ let base_site = {
 							//TODO: We should really output this somewhere other than the topbar..
 							status.text('Attempting update...');
 
-							/** @param {{mal_sync:string, mal_id:string, chapter:string}} json **/
+							/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 							switch(json.mal_sync) {
 								case 'disabled':
 									status.text('Updated');
@@ -906,7 +906,7 @@ let base_site = {
 
 	/**
 	 * Array of strings based on URL, separated by '/' limiter.
-	 * @type {array}
+	 * @type {Array}
 	 */
 	segments : window.location.pathname.split('/'),
 
@@ -960,7 +960,7 @@ let base_site = {
 
 	/**
 	 * Container for list of chapters
-	 * @type {Array[]}
+	 * @type {Object}
 	 */
 	chapterList        : {},
 
@@ -1045,6 +1045,10 @@ let base_site = {
 };
 
 /**
+ * @typedef {Object} SiteObject Object containing all necessary variables for site.
+ */
+
+/**
  * [extendSite description]
  * @param  {SiteObject} o Object containing all necessary variables for site.
  * @return {Object}   Returns base_site extension of intended site.
@@ -1053,9 +1057,9 @@ function extendSite(o) { return Object.assign({}, base_site, o); }
 
 /**
  * Generates list of chapters
- * @param  {jQueryObj} target  Target jQuery object containing list of chapters.
- * @param  {Selector} attrURL The inner tag containing each chapter URL.
- * @return {Array[]}         Contains URL and names.
+ * @param  {jQuery} target  Target jQuery object containing list of chapters.
+ * @param  {string} attrURL The inner tag containing each chapter URL.
+ * @return {Object}         Contains URL and names.
  */
 function generateChapterList(target, attrURL) {
 	let chapterList = {};
@@ -2133,7 +2137,7 @@ let sites = {
 	 * ReadMangaToday
 	 * @type {SiteObject}
 	 */
-  'www.readmanga.today' : extendSite({
+	'www.readmanga.today' : extendSite({
 		setObjVars : function() {
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
