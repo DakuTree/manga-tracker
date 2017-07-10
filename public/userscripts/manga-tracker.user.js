@@ -66,11 +66,16 @@ function hasEmptyValues(o) {
 
 /***********************************************************************************************************/
 
+/**
+ * Base container model for relevant functions and variables.
+ * @namespace
+ */
 let base_site = {
 	/**
 	 * This is the first thing that runs, and also calls also all relevant functions.
 	 * This should never be overridden (with the exception of trackr.moe). Use other methods instead!
 	 *
+	 * @function
 	 * @name base_site.init
 	 * @alias sites.*.init
 	 */
@@ -97,6 +102,7 @@ let base_site = {
 	 * This is called AFTER init, but before we do everything else.
 	 * It is often used to redirect to new domain URLs, or do additional waiting/checks.
 	 *
+	 * @function
 	 * @name base_site.preInit
 	 * @alias sites.*.preInit
 	 *
@@ -107,26 +113,32 @@ let base_site = {
 	/**
 	 * Used to set variables used by various other functions.
 	 *
+	 * @function
 	 * @name  base_site.setObjVars
 	 * @alias sites.*.setObjVars
+	 *
 	 * @abstract
 	 */
-	setObjVars      : function() {},
+	setObjVars : function() {},
 
 	/**
 	 * Used to do add/remove additional styles on the page.
 	 * This is usually just removing ads and other various banners.
 	 * preSetupTopBar/preSetupViewer handle removing the default site viewer.
 	 *
+	 * @function
 	 * @name  base_site.stylize
 	 * @alias sites.*.stylize
+	 *
+	 * @abstract
 	 */
-	stylize         : function() {},
+	stylize : function() {},
 
 	/**
 	 * Used to do things prior to adding our own topbar.
 	 * This is usually getting data for our topbar (either via current, or via AJAX).
 	 *
+	 * @function
 	 * @name  base_site.preSetupTopBar
 	 * @alias sites.*.preSetupTopBar
 	 *
@@ -137,6 +149,7 @@ let base_site = {
 	/**
 	 * Used to remove old topbar (if exists) after adding our own.
 	 *
+	 * @function
 	 * @name  base_site.postSetupTopBar
 	 * @alias sites.*.postSetupTopBar
 	 *
@@ -149,9 +162,11 @@ let base_site = {
 	 * @param {bool} [useCustomHeader]
 	 * @param {bool} [useCustomImageList]
 	 */
+
 	/**
 	 * Used to remove the old viewer, get pages (if we haven't already), and get ready to setup our own viewer.
 	 *
+	 * @function
 	 * @name  base_site.preSetupViewer
 	 * @alias sites.*.preSetupViewer
 	 *
@@ -162,6 +177,8 @@ let base_site = {
 	/**
 	 * This is currently just a stub and isn't used yet!
 	 *
+	 * @function
+	 * @todo Add definition for postSetupViewer
 	 * @alias sites.*.postSetupViewer
 	 * @name  base_site.postSetupViewer
 	 *
@@ -170,6 +187,7 @@ let base_site = {
 	postSetupViewer : function(topbar) {}, // jshint ignore:line
 
 	//Fixed Functions
+
 	/**
 	 * Used to setup the topbar. This calls preSetupTopbar > this > postSetupBoar.
 	 * This uses these variables: chapterList, chapterListCurrent, viewerTitle, searchURLFormat, page_count, pagesLoaded (this is changed by calling updatePagesLoaded)
@@ -178,9 +196,11 @@ let base_site = {
 	 * * page_count contains the total number of pages. When using the default AJAX method this is used to make sure we check all the pages correctly.
 	 * * (optional) searchURLFormat is a URL used for searching (Using {%SEARCH%} for search input). Will only show search icon if set.
 	 *
+	 * @function
 	 * @alias sites.*.setupTopBar
 	 * @name base_site.setupTopBar
 	 *
+	 * @abstract
 	 * @final
 	 */
 	setupTopBar : function() {
@@ -378,6 +398,7 @@ let base_site = {
 	 * Used to track the current chapter.
 	 * This uses these variables: site, title, chapter.
 	 *
+	 * @function
 	 * @name base_site.trackChapter
 	 * @alias sites.*.trackChapter
 	 *
@@ -475,6 +496,7 @@ let base_site = {
 	 * Used to update MAL via CSRF. Only runs if the MAL CSRF option is selected.
 	 * This grabs the CSRF token required to update MAL. If successful it calls syncMALCSRF_continued
 	 *
+	 * @function
 	 * @alias sites.*.syncMALCSRF
 	 * @name base_site.syncMALCSRF
 	 *
@@ -505,6 +527,7 @@ let base_site = {
 	/**
 	 * Used to update MAL. Is called from syncMALCSRF after successfully grabbing CSRF token.
 	 *
+	 * @function
 	 * @alias sites.*.syncMALCSRF_continued
 	 * @name base_site.syncMALCSRF_continued
 	 *
@@ -551,10 +574,10 @@ let base_site = {
 	 * Used to setup the viewer.
 	 * Calls preSetupViewer > setupViewer > postSetupViewer.
 	 *
+	 * @function
 	 * @alias sites.*.setupViewer
 	 * @name base_site.setupViewer
 	 *
-	 * @return void
 	 * @final
 	 */
 	setupViewer : function() {
@@ -643,13 +666,13 @@ let base_site = {
 	/**
 	 * Used to setup the page container used by the viewer.
 	 *
+	 * @function
 	 * @alias sites.*.setupViewerContainer
 	 * @name base_site.setupViewerContainer
 	 *
 	 * @param {string} imgURL
 	 * @param {int}    pageN
 	 *
-	 * @return void
 	 * @final
 	 */
 	setupViewerContainer : function(imgURL, pageN) {
@@ -674,13 +697,13 @@ let base_site = {
 	/**
 	 * Used to setup the page container for errored pages.
 	 *
+	 * @function
 	 * @alias sites.*.setupViewerContainerError
 	 * @name base_site.setupViewerContainerError
 	 *
 	 * @param {string} pageURL
 	 * @param {int}    pageN
 	 *
-	 * @return void
 	 * @final
 	 */
 	setupViewerContainerError : function(pageURL, pageN) {
@@ -717,12 +740,12 @@ let base_site = {
 	/**
 	 * Used to update the page load counter.
 	 *
+	 * @function
 	 * @alias sites.*.updatePagesLoaded
 	 * @name base_site.updatePagesLoaded
 	 *
 	 * @param {boolean} loaded
 	 *
-	 * @return void
 	 * @final
 	 */
 	updatePagesLoaded : function(loaded) {
@@ -760,10 +783,10 @@ let base_site = {
 	/**
 	 * Used to reload all errored pages.
 	 *
+	 * @function
 	 * @alias sites.*.reloadPages
 	 * @name base_site.reloadPages
 	 *
-	 * @return void
 	 * @final
 	 */
 	reloadPages : function() {
@@ -781,10 +804,10 @@ let base_site = {
 	/**
 	 * Used to report bugs. Shows a prompt.
 	 *
+	 * @function
 	 * @alias sites.*.reportBug
 	 * @name base_site.reportBug
 	 *
-	 * @return void
 	 * @final
 	 */
 	reportBug : function() {
@@ -823,10 +846,10 @@ let base_site = {
 	/**
 	 * Used to search the current site. Requires searchURLFormat to be set to show.
 	 *
+	 * @function
 	 * @alias sites.*.search
 	 * @name base_site.search
 	 *
-	 * @return void
 	 * @final
 	 */
 	search : function() {
@@ -839,10 +862,10 @@ let base_site = {
 	/**
 	 * Used to favourite the current chapter.
 	 *
+	 * @function
 	 * @alias sites.*.favouriteChapter
 	 * @name base_site.favouriteChapter
 	 *
-	 * @return void
 	 * @final
 	 */
 	favouriteChapter : function() {
@@ -879,44 +902,161 @@ let base_site = {
 		}
 	},
 
-	/** Variables **/
+	//Variables
+
+	/**
+	 * Array of strings based on URL, separated by '/' limiter.
+	 * @type {array}
+	 */
 	segments : window.location.pathname.split('/'),
+
+	/**
+	 * String containing protocol
+	 * @type {string}
+	 */
 	https    : location.protocol.slice(0, -1),
 
 	//Used for tracking.
+
+	/**
+	 * Name of site.
+	 * @type {string}
+	 */
 	site    : location.hostname.replace(/^(?:dev|test)\./, ''),
+
+	/**
+	 * Title of chapter
+	 * @type {String}
+	 */
 	title   : '',
+
+	/**
+	 * Chapter name
+	 * @type {String}
+	 */
 	chapter : '',
 
 	//Used by everything for easy access
+
+	/**
+	 * URL of chapter
+	 * @type {String}
+	 */
 	chapter_url : '',
+
+	/**
+	 * URL of title
+	 * @type {String}
+	 */
 	title_url   : '',
 
 	//Used for topbar.
+
+	/**
+	 * Current chapter in chapterList
+	 * @type {String}
+	 */
 	chapterListCurrent : '',
+
+	/**
+	 * Container for list of chapters
+	 * @type {Array[]}
+	 */
 	chapterList        : {},
+
+	/**
+	 * Initialization of number of pages
+	 * @type {Number}
+	 */
 	page_count : 0,
 
 	//Used for custom viewer header (if requested)
-	viewerChapterName      : '',
-	viewerTitle            : '',
-	viewerChapterURLFormat : '%pageN%', //%pageN% is replaced by the page number on load.
-	//Used for viewer AJAX (if used)
-	viewerRegex            : /^$/, // First img tag MUST be the chapter page
-	viewerCustomImageList  : [], //This is is only used if useCustomImageList is true
 
-	//Delay each page load by x ms when not using custom image list
+	/**
+	 * Name of chapter for viewer.
+	 * @type {String}
+	 */
+	viewerChapterName      : '',
+
+	/**
+	 * Title for viewer
+	 * @type {String}
+	 */
+	viewerTitle            : '',
+
+	/**
+	 * Stores URL format for chapters.
+	 * %pageN% is replaced by the page number on load.
+	 * @type {String}
+	 */
+	viewerChapterURLFormat : '%pageN%',
+
+	//Used for viewer AJAX (if used)
+
+	/**
+	 * Regex used to find tag
+	 * First img tag MUST be the chapter page.
+	 * @type {RegExp}
+	 */
+	viewerRegex            : /^$/,
+
+	/**
+	 * Image list that contains the list of images.
+	 * This is is only used if useCustomImageList is true.
+	 * @type {Array}
+	 */
+	viewerCustomImageList  : [],
+
+	/**
+	 * Delay each page load by x ms when not using custom image list
+	 * @type {Number}
+	 */
 	delay: 0,
 
 	//Used for search.
-	searchURLFormat : '', //{%SEARCH%} is replaced with search string.
+
+	/**
+	 * URL string that allows for searches
+	 * {%SEARCH%} is replaced with search string.
+	 * @type {String}
+	 */
+	searchURLFormat : '',
 
 	//Misc
-	attemptingTrack     : false, //This is only changed by trackChapter
+
+	/**
+	 * Checks if tracking is being attempted.
+	 * This is only changed by trackChapter
+	 * @type {Boolean}
+	 */
+	attemptingTrack     : false,
+
+	/**
+	 * Number of pages loaded.
+	 * @type {Number}
+	 */
 	pagesLoaded         : 0,
+
+	/**
+	 * Number of times attempted to load the page.
+	 * @type {Number}
+	 */
 	pagesLoadedAttempts : 0
 };
+
+/**
+ * [extendSite description]
+ * @param  {SiteObject} o Object containing all necessary variables for site.
+ * @return {Object}   Returns base_site extension of intended site.
+ */
 function extendSite(o) { return Object.assign({}, base_site, o); }
+
+/**
+ * Generates list of chapters
+ * @param  {jQueryObj} target  Target jQuery object containing list of chapters.
+ * @param  {Selector} attrURL The inner tag containing each chapter URL.
+ * @return {Array[]}         Contains URL and names.
+ */
 function generateChapterList(target, attrURL) {
 	let chapterList = {};
 	if(target instanceof jQuery) {
@@ -929,8 +1069,16 @@ function generateChapterList(target, attrURL) {
 	return chapterList;
 }
 
+/**
+ * List of Sites
+ * @namespace
+ */
 let sites = {
-	//MangaFox
+
+	/**
+	 * MangaFox
+	 * @type {SiteObject}
+	 */
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
 			this.segments    = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
@@ -1039,7 +1187,10 @@ let sites = {
 		}
 	}),
 
-	//MangaHere
+	/**
+	 * MangaHere
+	 * @type {SiteObject}
+	 */
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
@@ -1124,7 +1275,10 @@ let sites = {
 		}
 	}),
 
-	//Batoto
+	/**
+	 * Batoto
+	 * @type {SiteObject}
+	 */
 	'bato.to' : extendSite({
 		preInit : function(callback) {
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
@@ -1198,7 +1352,10 @@ let sites = {
 		}
 	}),
 
-	//Dynasty Scans
+	/**
+	 * Dynasty Scans
+	 * @type {SiteObject}
+	 */
 	'dynasty-scans.com' : extendSite({
 		setObjVars : function() {
 			let title_ele = $('#chapter-title').find('> b > a');
@@ -1271,7 +1428,10 @@ let sites = {
 		}
 	}),
 
-	//MangaPanda
+	/**
+	 * MangaPanda
+	 * @type {SiteObject}
+	 */
 	'www.mangapanda.com' : extendSite({
 		preInit : function(callback) {
 			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually seperates its manga URLs from every other page on the site.
@@ -1340,7 +1500,10 @@ let sites = {
 		}
 	}),
 
-	//MangaStream
+	/**
+	 * MangaStream
+	 * @type {SiteObject}
+	 */
 	'readms.net' : extendSite({
 		setObjVars : function() {
 			this.page_count  = parseInt($('.controls ul:last > li:last').text().replace(/[^0-9]/g, ''));
@@ -1395,7 +1558,10 @@ let sites = {
 		}
 	}),
 
-	//Webtoons
+	/**
+	 * Webtoons
+	 * @type {SiteObject}
+	 */
 	'www.webtoons.com' : extendSite({
 		setObjVars : function() {
 			let title_id     = window.location.search.match(/title_no=([0-9]+)/)[1],
@@ -1415,7 +1581,10 @@ let sites = {
 		}
 	}),
 
-	//KissManga - Suspended
+	/**
+	 * KissManga - Disabled
+	 * @type {SiteObject}
+	 */
 	'kissmanga.com' : extendSite({
 		preInit : function(callback) {
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
@@ -1469,7 +1638,10 @@ let sites = {
 		}
 	}),
 
-	//KireiCake Scans
+	/**
+	 * KireiCake Scans
+	 * @type {SiteObject}
+	 */
 	'reader.kireicake.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1500,7 +1672,10 @@ let sites = {
 		}
 	}),
 
-	//Whiteout Scans
+	/**
+	 * Whiteout Scans
+	 * @type {SiteObject}
+	 */
 	'reader.whiteoutscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1531,7 +1706,10 @@ let sites = {
 		}
 	}),
 
-	//Game of Scanlation
+	/**
+	 * Game of Scanlation
+	 * @type {SiteObject}
+	 */
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
@@ -1556,7 +1734,10 @@ let sites = {
 		}
 	}),
 
-	//MangaCow
+	/**
+	 * MangaCow
+	 * @type {SiteObject}
+	 */
 	'mngcow.co' : extendSite({
 		setObjVars : function() {
 			let _this = this;
@@ -1594,7 +1775,10 @@ let sites = {
 		}
 	}),
 
-	//EG Scans
+	/**
+	 * EG Scans
+	 * @type {SiteObject}
+	 */
 	'read.egscans.com' : extendSite({
 		setObjVars : function() {
 			let _this = this;
@@ -1622,7 +1806,10 @@ let sites = {
 		},
 	}),
 
-	//SeaOtter Scans
+	/**
+	 * SeaOtter Scans
+	 * @type {SiteObject}
+	 */
 	'reader.seaotterscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1654,7 +1841,10 @@ let sites = {
 		}
 	}),
 
-	//Helvetica Scans
+	/**
+	 * Helvetica Scans
+	 * @type {SiteObject}
+	 */
 	'helveticascans.com' : extendSite({
 		preInit : function(callback) {
 			if(location.pathname.substr(0, 7) === 'reader') {
@@ -1695,7 +1885,10 @@ let sites = {
 		}
 	}),
 
-	//Sense Scans
+	/**
+	 * Sense Scans
+	 * @type {SiteObject}
+	 */
 	'reader.sensescans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1727,7 +1920,10 @@ let sites = {
 		}
 	}),
 
-	//Jamini's Box
+	/**
+	 * Jamini's Box
+	 * @type {SiteObject}
+	 */
 	'jaiminisbox.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1760,7 +1956,10 @@ let sites = {
 		}
 	}),
 
-	//Doki Fansubs
+	/**
+	 * Doki Fansubs
+	 * @type {SiteObject}
+	 */
 	'kobato.hologfx.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1792,7 +1991,10 @@ let sites = {
 		}
 	}),
 
-	//Demonic Scans - Disabled
+	/**
+	 * Demonic Scans - Disabled
+	 * @type {SiteObject}
+	 */
 	'www.demonicscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1824,7 +2026,10 @@ let sites = {
 		}
 	}),
 
-	//Death Toll Scans
+	/**
+	 * Death Toll Scans
+	 * @type {SiteObject}
+	 */
 	'reader.deathtollscans.net' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1856,7 +2061,10 @@ let sites = {
 		}
 	}),
 
-	//One Time Scans
+	/**
+	 * One Time Scans!
+	 * @type {SiteObject}
+	 */
 	'otscans.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[3];
@@ -1887,7 +2095,10 @@ let sites = {
 		}
 	}),
 
-	//S2 Scans
+	/**
+	 * S2 Scans
+	 * @type {SiteObject}
+	 */
 	'reader.s2smanga.com' : extendSite({
 		setObjVars : function() {
 			this.title       = this.segments[2];
@@ -1918,7 +2129,10 @@ let sites = {
 		}
 	}),
 
-	//ReadMangaToday
+	/**
+	 * ReadMangaToday
+	 * @type {SiteObject}
+	 */
   'www.readmanga.today' : extendSite({
 		setObjVars : function() {
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
