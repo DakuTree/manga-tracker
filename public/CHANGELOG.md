@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-11]
+### Added
+- Title History now has a header containing the title.
+
 ## [2017-07-10]
 Moving away from using versions for updates going forward. Always felt a bit meaningless considering this is a website and not an app.  
 Any notable milestones will still be labeled, if and when we have them.

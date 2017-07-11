@@ -4,6 +4,7 @@
 </div>
 <?php } ?>
 
+<header><h4><?=$title?></h4></header>
 <table class="table table-striped table-bordered tablesorter">
 	<thead>
 		<tr>

@@ -30,7 +30,7 @@ class History_Model extends CI_Model {
 		$this->db->cache_on();
 		$query = $this->db
 			->select('SQL_CALC_FOUND_ROWS
-			          tt.title_url,
+			          tt.title, tt.title_url,
 			          ts.site_class,
 			          tth.updated_at, tth.new_chapter', FALSE)
 			->from('tracker_titles_history AS tth')
@@ -42,9 +42,11 @@ class History_Model extends CI_Model {
 			->get();
 		$this->db->cache_off();
 
-		$arr = ['rows' => [], 'totalPages' => 1];
+		$arr = ['title' => '', 'rows' => [], 'totalPages' => 1];
 		if($query->num_rows() > 0) {
-			foreach($query->result() as $row) {
+			$result = $query->result();
+			$arr['title'] = $result[0]->title;
+			foreach($result as $row) {
 				$arrRow = [];
 
 				$arrRow['updated_at']  = $row->updated_at;
