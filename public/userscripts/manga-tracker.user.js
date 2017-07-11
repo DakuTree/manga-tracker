@@ -1593,7 +1593,7 @@ let sites = {
 		preInit : function(callback) {
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
 			if($('.cf-browser-verification').length === 0) {
-			//Kissmanga has a built-in method to show all pages on the same page. Check if the cookie is correct, otherwise change and refresh.
+				//Kissmanga has a built-in method to show all pages on the same page. Check if the cookie is correct, otherwise change and refresh.
 				if(getCookie('vns_readType1') !== '0') {
 					callback();
 				} else {
@@ -1639,7 +1639,6 @@ let sites = {
 			alert('KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.');
 		}
 	}),
-
 
 	/**
 	 * KireiCake Scans
