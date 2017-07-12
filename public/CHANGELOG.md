@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## [2017-07-12]
+### Fixed
+- Sensescans should now auto-redirect when using the non-subdomain url (sensescans.com/reader/ rather than reader.sensescans.com).
+
 ## [2017-07-11]
 ### Added
 - Title History now has a header containing the title.
