@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## [2017-07-12]
 ### Fixed
 - Sensescans should now auto-redirect when using the non-subdomain url (sensescans.com/reader/ rather than reader.sensescans.com).
+- EGScans should now generate viewer correctly.
+  - Thanks to @Vesnyx (#115).
+- EGScans now auto-redirects if the URL contains any parameters.
 
 ## [2017-07-11]
 ### Added

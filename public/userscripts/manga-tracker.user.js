@@ -26,7 +26,7 @@
 // @include      /^https:\/\/kobato\.hologfx\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?\/?)?$/
+// @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+(?:\/Chapter_[0-9]+(?:_extra)?(?:&display=(default|webtoon))?\/?)?$/
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
@@ -1782,6 +1782,14 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'read.egscans.com' : extendSite({
+		preInit : function(callback) {
+			if(location.pathname.indexOf('&') !== -1) {
+				//EGScans seems to generate different HTML when it has parameters, let's just redirect to normal version to make things easier.
+				location.pathname.replace(/&.*$/, '');
+			} else {
+				callback();
+			}
+		},
 		setObjVars : function() {
 			let _this = this;
 
