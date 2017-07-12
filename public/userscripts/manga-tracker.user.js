@@ -1785,7 +1785,7 @@ let sites = {
 		preInit : function(callback) {
 			if(location.pathname.indexOf('&') !== -1) {
 				//EGScans seems to generate different HTML when it has parameters, let's just redirect to normal version to make things easier.
-				location.pathname.replace(/&.*$/, '');
+				location.pathname = location.pathname.replace(/&.*$/, '');
 			} else {
 				callback();
 			}
