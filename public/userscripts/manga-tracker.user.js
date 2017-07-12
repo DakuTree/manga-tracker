@@ -31,7 +31,7 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @updated      2017-07-12
-// @version      1.7.14
+// @version      1.7.15
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1798,7 +1798,7 @@ let sites = {
 			this.chapterList        = generateChapterList(option, 'value');
 			this.chapterListCurrent = this.chapter_url;
 
-			$('script:contains("img_url.push(")').html().match(/url\.push\('(.*?')/g).filter(function(value, index, self) {
+			this.viewerCustomImageList = $('script:contains("img_url.push(")').html().match(/url\.push\('(.*?')/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(v) {
 				return v.substr(10, v.length-11);
@@ -1806,6 +1806,12 @@ let sites = {
 
 			this.page_count = this.viewerCustomImageList.length;
 		},
+		preSetupViewer : function(callback) {
+			$('.pager').remove();
+
+			$('#image_frame').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		}
 	}),
 
 	/**
