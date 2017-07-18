@@ -51,7 +51,7 @@ class Batoto extends Base_Site_Model {
 			"//h1[@class='ipsType_pagetitle']",
 			"//table[contains(@class, 'chapters_list')]/tbody/tr[2]",
 			"td[last()]",
-			"td/a[contains(@href,'reader')]",
+			"td/a[contains(@href,'reader#')]",
 			">Register now<"
 		);
 		if($data) {

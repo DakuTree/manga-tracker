@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-18]
+### Fixed
+- Bato.to series with a contributor/group containing the word "reader" should parse properly now.
 
 ## [2017-07-12]
 ### Fixed
