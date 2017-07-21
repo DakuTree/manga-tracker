@@ -256,9 +256,9 @@ $(function(){
 			} else {
 				if(new_mal_id === 'none' || new_mal_id === 0) {
 					set_mal_id(id, '0', () => {
-						if(icon_link.length) {
-							$(icon_link).remove();
-						}
+						icon_link.remove();
+						iconN_link.remove();
+
 						$($('<a/>', {class: 'mal-link'}).append(
 							$('<i/>', {class: 'sprite-site sprite-myanimelist-net-none', title: new_mal_id})
 						)).prepend(' ').insertAfter(td.find('.sprite-site'));
@@ -268,6 +268,7 @@ $(function(){
 				} else {
 					set_mal_id(id, null, () => {
 						icon_link.remove();
+						iconN_link.remove();
 						id_text.remove();
 					});
 				}
