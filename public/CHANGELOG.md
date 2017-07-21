@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
   - These files were throwing libpng warnings. Simply fixed by running them under pngcrush.
 - Rows should now be properly striped when searching. (Fixes #118)
 - MAL none icon should be properly removed when changing to a new ID. (fixes #122)
+- MAL icons no longer have underline.
+- Can no longer submit multiple 0s as a MAL id.
 
 ## [2017-07-18]
 ### Fixed

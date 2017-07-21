@@ -230,6 +230,8 @@ $(function(){
 
 		let new_mal_id     = prompt('MAL ID:', current_mal_id);
 		if(/^([0-9]+|none)?$/.test(new_mal_id)) {
+			if(/^[0-9]+$/.test(new_mal_id)) { new_mal_id = parseInt(new_mal_id); } //Stops people submitting multiple 0s
+
 			let tr         = $(this).closest('tr'),
 			    td         = tr.find('td:eq(1)'),
 			    id         = tr.attr('data-id'),
@@ -237,7 +239,7 @@ $(function(){
 			    iconN_link = $(td).find('.sprite-myanimelist-net-none').parent(),
 			    id_text    = $(this).find('+ span');
 
-			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== '0') {
+			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== 0) {
 				set_mal_id(id, new_mal_id, () => {
 					$(iconN_link).remove(); //Make sure to remove MAL none icon when changing ID
 					if(icon_link.length) {
@@ -252,7 +254,7 @@ $(function(){
 					set_id_text($(_this), id_text, new_mal_id);
 				});
 			} else {
-				if(new_mal_id === 'none' || new_mal_id === '0') {
+				if(new_mal_id === 'none' || new_mal_id === 0) {
 					set_mal_id(id, '0', () => {
 						if(icon_link.length) {
 							$(icon_link).remove();
