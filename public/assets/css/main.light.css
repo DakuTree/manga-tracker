@@ -78,10 +78,10 @@ h1 {
 	background-color: #EEEEEE;
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
-	background-color: #F9F9F9;
+	background-color: #F7F7F7;
 }
 .table-striped > tbody > tr:hover {
-	background-color: #ECECEC;
+	background-color: #EAEAEA;
 }
 .tooltip {
 	white-space: nowrap;
@@ -95,7 +95,7 @@ h1 {
 #site-header > nav {
 	border-color: #CCCCCC;
 	border-bottom: 1px solid #BBBBBB;
-	background: #F9F9F9;
+	background: #F7F7F7;
 }
 #site-header > nav .navbar-brand {
 	color: #4F5155;
@@ -149,7 +149,7 @@ h1 {
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu {
 	display: block;
 
-	background: #F9F9F9;
+	background: #F7F7F7;
 }
 #site-header ul.nav li.dropdown:hover ul.dropdown-menu > li > a {
 	color: #003399;
@@ -577,10 +577,10 @@ body {
 	background-color: #EEEEEE;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] > .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
-	background-color: #F9F9F9;
+	background-color: #F7F7F7;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr:hover {
-	background-color: #ECECEC;
+	background-color: #EAEAEA;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
