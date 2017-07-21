@@ -75,7 +75,16 @@
 		text-align: left;
 
 		& > tbody {
+			& > thead th { background-color: @backgroundSecondary; }
+
+			& > tr.striped, &.js-striped > tr:nth-of-type(even) {
+				background-color: @backgroundQuaternary;
+			}
 			& > tr {
+				&:hover {
+					background-color: darken(@backgroundQuaternary, 5%);
+				}
+
 				& > td:nth-of-type(1) {
 					width: 5%;
 					text-align: center;

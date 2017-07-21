@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - All site PNGs should now be valid PNG.
   - These files were throwing libpng warnings. Simply fixed by running them under pngcrush.
+- Rows should now be properly striped when searching. (Fixes #118)
 
 ## [2017-07-18]
 ### Fixed

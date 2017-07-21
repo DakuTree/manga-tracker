@@ -106,9 +106,12 @@ $(function(){
 
 		let unfiltered_tag_lists = $(tag_lists).not(filtered_tag_lists);
 
-		filtered_tag_lists.closest('tr').addClass('hidden');
-		unfiltered_tag_lists.closest('tr').removeClass('hidden');
+		$('.tracker-table tbody > tr').removeClass('striped').removeClass('hidden'); //Remove extra classes from everything
+		filtered_tag_lists.closest('tr').addClass('hidden'); //Hide filtered tags
+		unfiltered_tag_lists.closest('tr:visible:even').addClass('striped'); //Stripe odd visible rows
 	});
+	$('.tracker-table tbody > tr:visible:odd').addClass('striped'); //Set all visible rows as striped.
+	$('.tracker-table tbody').removeClass('js-striped'); //Remove class used to save bandwidth
 
 	/** Setup title handlers **/
 

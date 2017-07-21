@@ -573,6 +573,15 @@ body {
 
 	text-align: left;
 }
+#page[data-page="dashboard"] > .tracker-table > tbody > thead th {
+	background-color: #060606;
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] > .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
+	background-color: #161616;
+}
+#page[data-page="dashboard"] > .tracker-table > tbody > tr:hover {
+	background-color: #090909;
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
 

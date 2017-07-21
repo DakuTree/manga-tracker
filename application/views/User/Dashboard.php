@@ -67,7 +67,7 @@
 </div>
 
 <?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
-<table class="tablesorter tablesorter-bootstrap table-striped tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>" data-unread="<?=$trackerDataType['unread_count']?>">
+<table class="tablesorter tablesorter-bootstrap tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>" data-unread="<?=$trackerDataType['unread_count']?>">
 	<thead>
 		<tr>
 			<th class="header read headerSortDown"></th>
@@ -77,7 +77,7 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody class="js-striped">
 		<?php foreach($trackerDataType['manga'] as $row) {
 			$trInfo = '';
 			if($row['site_data']['status'] == 'disabled') {
