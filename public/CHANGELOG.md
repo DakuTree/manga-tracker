@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-07-21]
+### Added
+- PHP Script to generate updated spritesheet and LESS.
+  - This saves a bit of time when adding support for a new site.
+
+### Changed
+- `[Backend]` Updated Composer Dependencies.
+  - Minimum PHP version is now 7.1.0.
+  - Codeigniter was updated to 3.1.5.
+
 ### Fixed
 - All site PNGs should now be valid PNG.
   - These files were throwing libpng warnings. Simply fixed by running them under pngcrush.
