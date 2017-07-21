@@ -10,11 +10,13 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Updated Composer Dependencies.
   - Minimum PHP version is now 7.1.0.
   - Codeigniter was updated to 3.1.5.
+- Tweaked light theme colors.
 
 ### Fixed
 - All site PNGs should now be valid PNG.
   - These files were throwing libpng warnings. Simply fixed by running them under pngcrush.
 - Rows should now be properly striped when searching. (Fixes #118)
+- MAL none icon should be properly removed when changing to a new ID. (fixes #122)
 
 ## [2017-07-18]
 ### Fixed

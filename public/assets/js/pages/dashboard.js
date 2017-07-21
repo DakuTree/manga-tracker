@@ -231,14 +231,16 @@ $(function(){
 		let new_mal_id     = prompt('MAL ID:', current_mal_id);
 
 		if(/^([0-9]+|none)?$/.test(new_mal_id)) {
-			let tr        = $(this).closest('tr'),
-			    td        = tr.find('td:eq(1)'),
-			    id        = tr.attr('data-id'),
-			    icon_link = $(td).find('.sprite-myanimelist-net').parent(),
-			    id_text   = $(this).find('+ span');
+			let tr         = $(this).closest('tr'),
+			    td         = tr.find('td:eq(1)'),
+			    id         = tr.attr('data-id'),
+			    icon_link  = $(td).find('.sprite-myanimelist-net').parent(),
+			    iconN_link = $(td).find('.sprite-myanimelist-net-none').parent(),
+			    id_text    = $(this).find('+ span');
 
 			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== '0') {
 				set_mal_id(id, new_mal_id, () => {
+					$(iconN_link).remove(); //Make sure to remove MAL none icon when changing ID
 					if(icon_link.length) {
 						//icon exists, just change link
 						$(icon_link).attr('href', 'https://myanimelist.net/manga/'+new_mal_id);
