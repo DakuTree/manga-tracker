@@ -1907,7 +1907,7 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'sensescans.com' : extendSite({
-		preInit : function(callback) {
+		preInit : function() {
 			//Auto-redirect to subdomain if using non-subdomain url.
 			location.href = location.href.replace('sensescans.com/reader', 'reader.sensescans.com');
 		},
