@@ -597,6 +597,9 @@ body {
 	width: 15px;
 	height: 15px;
 }
+#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .mal-link {
+	text-decoration: none;
+}
 #page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2):hover .toggle-info {
 	display: inline;
 }

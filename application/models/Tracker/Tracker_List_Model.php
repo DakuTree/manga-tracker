@@ -68,7 +68,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 						'status'     => $row->site_status
 					]
 				];
-				$data['mal_icon'] = (!is_null($data['mal_id']) ? ($data['mal_id'] !== '0' ? "<a href=\"https://myanimelist.net/manga/{$data['mal_id']}\"><i class=\"sprite-site sprite-myanimelist-net\" title=\"{$data['mal_id']}\"></i></a>" : "<i class=\"sprite-site sprite-myanimelist-net-none\" title=\"none\"></i>") : '');
+				$data['mal_icon'] = (!is_null($data['mal_id']) ? ($data['mal_id'] !== '0' ? "<a href=\"https://myanimelist.net/manga/{$data['mal_id']}\" class=\"mal-link\"><i class=\"sprite-site sprite-myanimelist-net\" title=\"{$data['mal_id']}\"></i></a>" : "<i class=\"sprite-site sprite-myanimelist-net-none\" title=\"none\"></i>") : '');
 
 				$arr['series'][$row->category]['manga'][] = $data;
 

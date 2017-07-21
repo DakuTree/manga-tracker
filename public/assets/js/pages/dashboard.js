@@ -229,7 +229,6 @@ $(function(){
 		if($(this).data('mal-type') === 'title' && $(this).data('mal-id') && !confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) { return; }
 
 		let new_mal_id     = prompt('MAL ID:', current_mal_id);
-
 		if(/^([0-9]+|none)?$/.test(new_mal_id)) {
 			let tr         = $(this).closest('tr'),
 			    td         = tr.find('td:eq(1)'),
@@ -245,7 +244,7 @@ $(function(){
 						//icon exists, just change link
 						$(icon_link).attr('href', 'https://myanimelist.net/manga/'+new_mal_id);
 					} else {
-						$($('<a/>', {href: 'https://myanimelist.net/manga/'+new_mal_id}).append(
+						$($('<a/>', {href: 'https://myanimelist.net/manga/'+new_mal_id, class: 'mal-link'}).append(
 							$('<i/>', {class: 'sprite-site sprite-myanimelist-net', title: new_mal_id})
 						)).prepend(' ').insertAfter(td.find('.sprite-site'));
 					}
@@ -258,7 +257,7 @@ $(function(){
 						if(icon_link.length) {
 							$(icon_link).remove();
 						}
-						$($('<a/>', {}).append(
+						$($('<a/>', {class: 'mal-link'}).append(
 							$('<i/>', {class: 'sprite-site sprite-myanimelist-net-none', title: new_mal_id})
 						)).prepend(' ').insertAfter(td.find('.sprite-site'));
 
