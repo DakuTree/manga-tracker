@@ -573,7 +573,7 @@ body {
 
 	text-align: left;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > thead th {
+#page[data-page="dashboard"] > .tracker-table > thead th {
 	background-color: #EEEEEE;
 }
 #page[data-page="dashboard"] > .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] > .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
