@@ -2,7 +2,7 @@
 	display: inline-block;
 	vertical-align: text-bottom; //ALT: middle
 }
-.stitches-sprite(@x: 0, @y: 0, @width: 0, @height: 0) {
+.stitches-sprite(@x: 0, @y: 0, @width: 16px, @height: 16px) {
 	background-position: @x @y;
 	width:  @width;
 	height: @height;
@@ -14,7 +14,6 @@
 	@cache-version: 3;
 	background: url('../../img/time.@{cache-version}.png') no-repeat;
 
-
 	&.sprite-day   { .stitches-sprite(-22px, -2px, 16px, 16px); }
 	&.sprite-3day  { .stitches-sprite(-2px, -2px, 16px, 16px); }
 	&.sprite-week  { .stitches-sprite(-82px, -2px, 16px, 16px); }
@@ -25,106 +24,106 @@
 
 .sprite-site {
 	.sprite();
-	@cache-version: 10;
+	@cache-version: 11;
 	background: url('../../img/sites.@{cache-version}.png') no-repeat;
 
 	&.sprite-bato-to {
-		.stitches-sprite(-2px, -2px, 16px, 16px);
+		.stitches-sprite(-0px);
 	}
 
 	&.sprite-dynasty-scans-com {
-		.stitches-sprite(-22px, -2px, 16px, 16px);
+		.stitches-sprite(-18px);
 	}
 
-	&.sprite-gameofscanlation-moe {
-		.stitches-sprite(-42px, -2px, 16px, 16px);
+	&.sprite-gameofscanlation.moe {
+		.stitches-sprite(-36px);
 	}
 
 	&.sprite-helveticascans-com {
-		.stitches-sprite(-62px, -2px, 16px, 16px);
+		.stitches-sprite(-54px);
 	}
 
 	&.sprite-jaiminisbox-com {
-		.stitches-sprite(-82px, -2px, 16px, 16px);
+		.stitches-sprite(-72px);
 	}
 
 	&.sprite-kissmanga-com {
-		.stitches-sprite(-102px, -2px, 16px, 16px);
+		.stitches-sprite(-90px);
 	}
 
 	&.sprite-kobato-hologfx-com {
-		.stitches-sprite(-122px, -2px, 16px, 16px);
+		.stitches-sprite(-108px);
 	}
 
 	&.sprite-mangafox-me {
-		.stitches-sprite(-142px, -2px, 16px, 16px);
+		.stitches-sprite(-126px);
 	}
 
 	&.sprite-mngcow-co {
-		.stitches-sprite(-162px, -2px, 16px, 16px);
-	}
-
-	&.sprite-myanimelist-net {
-		.stitches-sprite(-182px, -2px, 16px, 16px);
+		.stitches-sprite(-144px);
 	}
 
 	&.sprite-myanimelist-net-none {
-		.stitches-sprite(-202px, -2px, 16px, 16px);
+		.stitches-sprite(-162px);
+	}
+
+	&.sprite-myanimelist-net {
+		.stitches-sprite(-180px);
 	}
 
 	&.sprite-otscans-com {
-		.stitches-sprite(-222px, -2px, 16px, 16px);
+		.stitches-sprite(-198px);
 	}
 
 	&.sprite-read-egscans-com {
-		.stitches-sprite(-242px, -2px, 16px, 16px);
+		.stitches-sprite(-216px);
 	}
 
 	&.sprite-reader-deathtollscans-net {
-		.stitches-sprite(-262px, -2px, 16px, 16px);
+		.stitches-sprite(-234px);
 	}
 
 	&.sprite-reader-kireicake-com {
-		.stitches-sprite(-282px, -2px, 16px, 16px);
+		.stitches-sprite(-252px);
 	}
 
 	&.sprite-reader-s2smanga-com {
-		.stitches-sprite(-302px, -2px, 16px, 16px);
+		.stitches-sprite(-270px);
 	}
 
 	&.sprite-reader-seaotterscans-com {
-		.stitches-sprite(-322px, -2px, 16px, 16px);
+		.stitches-sprite(-288px);
 	}
 
 	&.sprite-reader-sensescans-com {
-		.stitches-sprite(-342px, -2px, 16px, 16px);
+		.stitches-sprite(-306px);
 	}
 
-	&.sprite-reader-whiteoutscans-com {
-		.stitches-sprite(-362px, -2px, 16px, 16px);
-	}
-
-	&.sprite-www-readmanga-today {
-		.stitches-sprite(-382px, -2px, 16px, 16px);
+	&.sprite-reader-whiteoutscans.com {
+		.stitches-sprite(-324px);
 	}
 
 	&.sprite-readms-net {
-		.stitches-sprite(-402px, -2px, 16px, 16px);
+		.stitches-sprite(-342px);
 	}
 
 	&.sprite-www-demonicscans-com {
-		.stitches-sprite(-422px, -2px, 16px, 16px);
+		.stitches-sprite(-360px);
 	}
 
 	&.sprite-www-mangahere-co {
-		.stitches-sprite(-442px, -2px, 16px, 16px);
+		.stitches-sprite(-378px);
 	}
 
 	&.sprite-www-mangapanda-com {
-		.stitches-sprite(-462px, -2px, 16px, 16px);
+		.stitches-sprite(-396px);
+	}
+
+	&.sprite-www-readmanga-today {
+		.stitches-sprite(-414px);
 	}
 
 	&.sprite-www-webtoons-com {
-		.stitches-sprite(-482px, -2px, 16px, 16px);
+		.stitches-sprite(-432px);
 	}
 }

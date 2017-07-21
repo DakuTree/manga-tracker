@@ -312,157 +312,157 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.10.png") no-repeat;
+	background: url("../../img/sites.11.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
 	height: 16px;
 
-	background-position: -2px -2px;
+	background-position: 0px 0;
 }
 .sprite-site.sprite-dynasty-scans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -22px -2px;
+	background-position: -18px 0;
 }
-.sprite-site.sprite-gameofscanlation-moe {
+.sprite-site.sprite-gameofscanlation.moe {
 	width: 16px;
 	height: 16px;
 
-	background-position: -42px -2px;
+	background-position: -36px 0;
 }
 .sprite-site.sprite-helveticascans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -62px -2px;
+	background-position: -54px 0;
 }
 .sprite-site.sprite-jaiminisbox-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -82px -2px;
+	background-position: -72px 0;
 }
 .sprite-site.sprite-kissmanga-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -102px -2px;
+	background-position: -90px 0;
 }
 .sprite-site.sprite-kobato-hologfx-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -122px -2px;
+	background-position: -108px 0;
 }
 .sprite-site.sprite-mangafox-me {
 	width: 16px;
 	height: 16px;
 
-	background-position: -142px -2px;
+	background-position: -126px 0;
 }
 .sprite-site.sprite-mngcow-co {
 	width: 16px;
 	height: 16px;
 
-	background-position: -162px -2px;
-}
-.sprite-site.sprite-myanimelist-net {
-	width: 16px;
-	height: 16px;
-
-	background-position: -182px -2px;
+	background-position: -144px 0;
 }
 .sprite-site.sprite-myanimelist-net-none {
 	width: 16px;
 	height: 16px;
 
-	background-position: -202px -2px;
+	background-position: -162px 0;
+}
+.sprite-site.sprite-myanimelist-net {
+	width: 16px;
+	height: 16px;
+
+	background-position: -180px 0;
 }
 .sprite-site.sprite-otscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -222px -2px;
+	background-position: -198px 0;
 }
 .sprite-site.sprite-read-egscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -242px -2px;
+	background-position: -216px 0;
 }
 .sprite-site.sprite-reader-deathtollscans-net {
 	width: 16px;
 	height: 16px;
 
-	background-position: -262px -2px;
+	background-position: -234px 0;
 }
 .sprite-site.sprite-reader-kireicake-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -282px -2px;
+	background-position: -252px 0;
 }
 .sprite-site.sprite-reader-s2smanga-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -302px -2px;
+	background-position: -270px 0;
 }
 .sprite-site.sprite-reader-seaotterscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -322px -2px;
+	background-position: -288px 0;
 }
 .sprite-site.sprite-reader-sensescans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -342px -2px;
+	background-position: -306px 0;
 }
-.sprite-site.sprite-reader-whiteoutscans-com {
+.sprite-site.sprite-reader-whiteoutscans.com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -362px -2px;
-}
-.sprite-site.sprite-www-readmanga-today {
-	width: 16px;
-	height: 16px;
-
-	background-position: -382px -2px;
+	background-position: -324px 0;
 }
 .sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
-	background-position: -402px -2px;
+	background-position: -342px 0;
 }
 .sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -422px -2px;
+	background-position: -360px 0;
 }
 .sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
-	background-position: -442px -2px;
+	background-position: -378px 0;
 }
 .sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -462px -2px;
+	background-position: -396px 0;
+}
+.sprite-site.sprite-www-readmanga-today {
+	width: 16px;
+	height: 16px;
+
+	background-position: -414px 0;
 }
 .sprite-site.sprite-www-webtoons-com {
 	width: 16px;
 	height: 16px;
 
-	background-position: -482px -2px;
+	background-position: -432px 0;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;
