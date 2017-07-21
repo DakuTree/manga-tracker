@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-21]
+### Fixed
+- All site PNGs should now be valid PNG.
+  - These files were throwing libpng warnings. Simply fixed by running them under pngcrush.
+
 ## [2017-07-18]
 ### Fixed
 - Bato.to series with a contributor/group containing the word "reader" should parse properly now.
