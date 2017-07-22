@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-22]
+### Fixed
+- Auto-tracking works on bato.to now.
+
 ## [2017-07-21]
 ### Added
 - PHP Script to generate updated spritesheet and LESS.

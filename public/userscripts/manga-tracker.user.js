@@ -30,8 +30,8 @@
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
-// @updated      2017-07-12
-// @version      1.7.16
+// @updated      2017-07-22
+// @version      1.7.17
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -654,7 +654,7 @@ let base_site = {
 			//Auto-track chapter if enabled.
 			$(window).on('load', function() {
 				/** @namespace config.auto_track */
-				if(config.options.auto_track) {
+				if(config.options.auto_track && !_this.delayAutoTrack) {
 					_this.trackChapter();
 				}
 			});
@@ -1041,7 +1041,13 @@ let base_site = {
 	 * Number of times attempted to load the page.
 	 * @type {Number}
 	 */
-	pagesLoadedAttempts : 0
+	pagesLoadedAttempts : 0,
+
+	/**
+	 * Delay auto-tracking until later. Useful when window.load triggers before we can actually setup the event.
+	 * @type {Boolean}
+	 */
+	delayAutoTrack : false
 };
 
 /**
@@ -1334,6 +1340,8 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
 
 			this.searchURLFormat = this.https+'://bato.to/search?name={%SEARCH%}';
+
+			this.delayAutoTrack = true;
 		},
 		stylize : function() {
 			//Nothing?
@@ -1352,6 +1360,11 @@ let sites = {
 				});
 				this.page_count = this.viewerCustomImageList.length;
 				callback(false, true);
+			}
+		},
+		postSetupViewer : function(/*topbar*/) {
+			if(config.options.auto_track && this.delayAutoTrack) {
+				this.trackChapter();
 			}
 		}
 	}),
