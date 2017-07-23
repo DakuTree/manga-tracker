@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-07-22]
 ### Fixed
 - Auto-tracking works on bato.to now.
+- Striped rows should work on alternative tabs now.
 
 ## [2017-07-21]
 ### Added
