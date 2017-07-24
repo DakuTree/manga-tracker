@@ -659,6 +659,22 @@ let base_site = {
 				}
 			});
 
+			var changeZoom = function(action) {
+				var images = $('#viewer').find('img');
+				var newZoom = images.get(0).clientWidth;
+				if(action === '+'){
+					images.css({"width": newZoom + 50});
+				}
+				else if(action === '-'){
+					images.css({"width": newZoom - 50});
+				}
+				else if(action === '='){
+					images.css({"width": "auto"});
+				}
+			}
+			$(document).keydown(function(event){
+				changeZoom(event.key);
+			});
 			_this.postSetupViewer();
 		});
 	},
