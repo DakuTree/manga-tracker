@@ -113,6 +113,11 @@ $(function(){
 	$('.tracker-table tbody > tr:not(.hidden):odd').addClass('striped'); //Set all visible rows as striped.
 	$('.tracker-table tbody').removeClass('js-striped'); //Remove class used to save bandwidth
 
+	$('.tracker-table').bind('sortEnd' ,function(e){
+		$(this).find('tbody > tr').removeClass('striped');
+		$(this).find('tbody > tr:not(.hidden):odd').addClass('striped');
+	});
+
 	/** Setup title handlers **/
 
 	//Update latest chapter (via "I've read the latest chapter")
