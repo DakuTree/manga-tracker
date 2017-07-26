@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
   - Use '+' to zoom in, '-' to zoom out and '=' to reset zoom.
   - Thanks to @Vesnyx (#127).
 - Support for MerakiScans.
+- Added basic support for auto-scrolling to linked pages.
+  - Currently only works for MangaFox, MangaHere & Bato.to.
+  - See #128 for more info.
 
 ### Fixed
 - Userscript search can now cancel without redirecting to search page.

@@ -32,7 +32,7 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @updated      2017-07-26
-// @version      1.7.20
+// @version      1.7.21
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -710,7 +710,7 @@ let base_site = {
 	setupViewerContainer : function(imgURL, pageN) {
 		let _this = this;
 
-		let image_container = $('<div/>', {class: 'read_img'}).append(
+		let image_container = $('<div/>', {id: `trackr-page-${pageN}`, class: 'read_img'}).append(
 			//We want to completely recreate the image element to remove all additional attributes
 			$('<img/>', {src: imgURL})
 				.on('load', function() {
@@ -806,6 +806,10 @@ let base_site = {
 						$('<i/>', {class: 'fa fa-refresh', 'aria-hidden': 'true'})
 					));
 			}
+
+			//TODO: We shouldn't be handling this here, we should instead have some kind of pagesLoaded event.
+			this.gotoPage(this.currentPage);
+
 			console.log('higher than pc: '+this.pagesLoadedAttempts);
 		} else {
 			console.log('lower than pc: '+this.pagesLoadedAttempts);
@@ -934,6 +938,24 @@ let base_site = {
 			});
 		} else {
 			alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
+		}
+	},
+
+	/**
+	 * Used to scroll to selected page.
+	 *
+	 * @function
+	 * @alias sites.*.gotoPage
+	 * @name base_site.gotoPage
+	 *
+	 * @final
+	 */
+	gotoPage : function(pageN) {
+		let page_ele = $(`#trackr-page-${pageN}`);
+		if(page_ele.length) {
+			$('html, body').animate({
+				scrollTop: page_ele.offset().top
+			}, 2000);
 		}
 	},
 
@@ -1082,7 +1104,13 @@ let base_site = {
 	 * Delay auto-tracking until later. Useful when window.load triggers before we can actually setup the event.
 	 * @type {Boolean}
 	 */
-	delayAutoTrack : false
+	delayAutoTrack : false,
+
+	/**
+	 * Current page. Used to allow auto-scrolling to pages when directly linked to them.
+	 * @type {Number}
+	 */
+	currentPage: 0
 };
 
 /**
@@ -1126,7 +1154,7 @@ let sites = {
 	 */
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
-			this.segments    = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+			this.segments    = window.location.pathname.split( '/' );
 
 			this.title       = this.segments[2];
 			this.chapter     = (!!this.segments[4] ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
@@ -1145,6 +1173,8 @@ let sites = {
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
 			this.searchURLFormat = 'http://mangafox.me/search.php?advopts=1&name={%SEARCH%}';
+
+			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
 
 			this.delay = 1000;
 		},
@@ -1239,7 +1269,7 @@ let sites = {
 	'www.mangahere.co' : extendSite({
 		//MangaHere uses pretty much the same site format as MangaFox, with a few odd changes.
 		setObjVars : function() {
-			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+			this.segments      = window.location.pathname.split( '/' );
 
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
 			this.page_count    = $('.go_page:first > .right > select > option').length;
@@ -1255,6 +1285,8 @@ let sites = {
 			this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
 			this.viewerRegex            = /^[\s\S]*<section class="read_img" id="viewer">[\s\S]*(<img src[\s\S]*\/>)[\s\S]*<\/section>[\s\S]*<section class="readpage_footer[\s\S]*$/;
+
+			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
 		},
 		stylize : function() {
 			GM_addStyle(`
@@ -1375,6 +1407,8 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
 
 			this.searchURLFormat = this.https+'://bato.to/search?name={%SEARCH%}';
+
+			this.currentPage = parseInt(location.hash.split('_')[1]);
 
 			this.delayAutoTrack = true;
 		},
