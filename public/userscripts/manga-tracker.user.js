@@ -30,8 +30,8 @@
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
-// @updated      2017-07-22
-// @version      1.7.17
+// @updated      2017-07-26
+// @version      1.7.18
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -659,22 +659,37 @@ let base_site = {
 				}
 			});
 
-			var changeZoom = function(action) {
-				var images = $('#viewer').find('img');
-				var newZoom = images.get(0).clientWidth;
-				if(action === '+'){
-					images.css({"width": newZoom + 50});
+			//Setup zoom event
+			let changeZoom = function(action) {
+				let images = $('#viewer').find('img'),
+				    newZoom = images.get(0).clientWidth;
+
+				switch(action) {
+					case '+':
+						//increase zoom
+						images.css({'width': newZoom + 50});
+
+						break;
+
+					case '-':
+						//decrease zoom
+						images.css({'width': newZoom - 50});
+						break;
+
+					case '=':
+						//reset
+						images.css({'width': 'auto'});
+						break;
+
+					default:
+						//do nothing
+						break;
 				}
-				else if(action === '-'){
-					images.css({"width": newZoom - 50});
-				}
-				else if(action === '='){
-					images.css({"width": "auto"});
-				}
-			}
+			};
 			$(document).keydown(function(event){
 				changeZoom(event.key);
 			});
+
 			_this.postSetupViewer();
 		});
 	},
