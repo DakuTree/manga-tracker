@@ -312,7 +312,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.12.png") no-repeat;
+	background: url("../../img/sites.13.png") no-repeat;
 }
 .sprite-site.sprite-bato-to {
 	width: 16px;
@@ -452,17 +452,23 @@ body {
 
 	background-position: -396px 0;
 }
-.sprite-site.sprite-www-readmanga-today {
+.sprite-site.sprite-www-merakiscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -414px 0;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-readmanga-today {
 	width: 16px;
 	height: 16px;
 
 	background-position: -432px 0;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -450px 0;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;

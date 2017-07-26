@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Userscript now has zoom support!
   - Use '+' to zoom in, '-' to zoom out and '=' to reset zoom.
   - Thanks to @Vesnyx (#127).
+- Support for MerakiScans.
 
 ### Fixed
 - Userscript search can now cancel without redirecting to search page.

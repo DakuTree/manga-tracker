@@ -16,7 +16,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * MangaPanda
 * WebToons.com
 * ~~KissManga.com~~ Server got IP banned, meaning tracking is no longer possible.
-* KireiCake.com
+* KireiCake
 * DynastyScans (beta)
 * Game of Scanlation
 * MangaCow
@@ -32,3 +32,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * One Time Scans!
 * S2Scans
 * ReadMangaToday
+* MerakiScans

@@ -50,5 +50,6 @@
 		<li>One Time Scans!</li>
 		<li>S2Scans</li>
 		<li>ReadMangaToday</li>
+		<li>MerakiScans</li>
 	</ul>
 </div>

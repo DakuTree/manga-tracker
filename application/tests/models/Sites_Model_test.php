@@ -410,6 +410,22 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('ReadMangaToday', 'Bad Status Code (404)');
 	}
 
+	public function test_MerakiScans() {
+		$testSeries = [
+			'ninja-shinobu-chan-no-junjou' => 'Ninja Shinobu-chan no Junjou',
+			'red-storm'                    => 'Red Storm',
+			'clover'                       => 'Clover',
+			'the-mythical-realm'           => 'The Mythical Realm',
+			'the-great-wife'               => 'The Great Wife'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('MerakiScans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_MerakiScans_fail() {
+		$this->_testSiteFailure('MerakiScans', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
@@ -425,7 +441,7 @@ class Sites_Model_test extends TestCase {
 
 	}
 	private function _testSiteFailure(string $siteName, string $errorMessage, string $title_url = 'i_am_a_bad_url') {
-		$this->markTestSkipped('MonkeyPatching slows down our tests a ton so we\'ve disabled it for now (which has also disables tests which use it).');
+		$this->markTestSkipped('MonkeyPatching slows down our tests a ton so we\'ve disabled it for now (which also disables tests which use it).');
 
 		MonkeyPatch::patchFunction('log_message', NULL, $siteName); //Stop logging stuff...
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
