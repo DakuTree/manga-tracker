@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 - Userscript now has zoom support!
   - Use '+' to zoom in, '-' to zoom out and '=' to reset zoom.
   - Thanks to @Vesnyx (#127).
+
+### Fixed
+- Userscript search can now cancel without redirecting to search page.
+
 ## [2017-07-24]
 ### Fixed
 - Whiteout Scans & GameOfScanlation have icons again.
