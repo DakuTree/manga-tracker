@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Userscript search can now cancel without redirecting to search page.
 - Striped rows work again when sorting.
+- MangaCow element hiding fixed.
 
 ## [2017-07-24]
 ### Fixed

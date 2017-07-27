@@ -32,7 +32,7 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @updated      2017-07-26
-// @version      1.7.21
+// @version      1.7.22
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1851,8 +1851,8 @@ let sites = {
 			this.searchURLFormat = 'http://mngcow.co/manga-list/search/{%SEARCH%}';
 		},
 		preSetupViewer : function(callback) {
-			$('#longWrap').remove();
-			$('.nav_typ, .nav_pag').remove();
+			$('.wpm_nav, .wpm_ifo_box').remove();
+			$('#toHome, #toTop').remove();
 
 			$('#singleWrap').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 			callback(true, true);
@@ -1983,7 +1983,6 @@ let sites = {
 		}
 	}),
 
-
 	/**
 	 * Sense Scans (No subdomain)
 	 * @type {SiteObject}
@@ -1994,6 +1993,7 @@ let sites = {
 			location.href = location.href.replace('sensescans.com/reader', 'reader.sensescans.com');
 		},
 	}),
+
 	/**
 	 * Sense Scans
 	 * @type {SiteObject}
@@ -2267,7 +2267,6 @@ let sites = {
 			callback(true);
 		}
 	}),
-
 
 	/**
 	 * Meraki Scans
