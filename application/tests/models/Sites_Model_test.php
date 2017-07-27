@@ -426,6 +426,22 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('MerakiScans', 'Bad Status Code (404)');
 	}
 
+	public function test_FallenAngelsScans() {
+		$testSeries = [
+			'my-hero-academia' 						 => 'My Hero Academia',
+			'chronos-ruler'                => 'Chronos Ruler',
+			'plunderer'                    => 'Plunderer',
+			'to-loveru-darkness'           => 'To Love-Ru Darkness',
+			'platinum-end'                 => 'Platinum End'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('FallenAngelsScans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_FallenAngelsScans_fail() {
+		$this->_testSiteFailure('FallenAngelsScans', 'Bad Status Code (500)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
