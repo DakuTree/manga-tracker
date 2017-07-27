@@ -31,8 +31,8 @@
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
-// @updated      2017-07-26
-// @version      1.7.22
+// @updated      2017-07-27
+// @version      1.7.23
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1157,7 +1157,7 @@ let sites = {
 			this.segments    = window.location.pathname.split( '/' );
 
 			this.title       = this.segments[2];
-			this.chapter     = (!!this.segments[4] ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
+			this.chapter     = ((!!this.segments[4] && ! /\.html$/.test(this.segments[4])) ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
@@ -1274,7 +1274,7 @@ let sites = {
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
 			this.page_count    = $('.go_page:first > .right > select > option').length;
 			this.title         = this.segments[2];
-			this.chapter       = (!!this.segments[4] ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
+			this.chapter       = ((!!this.segments[4] && ! /\.html$/.test(this.segments[4])) ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
 			this.title_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
 			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
