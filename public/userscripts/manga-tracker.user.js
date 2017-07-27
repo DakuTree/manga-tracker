@@ -33,7 +33,7 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @updated      2017-07-27
-// @version      1.7.24
+// @version      1.7.25
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2303,6 +2303,41 @@ let sites = {
 		preSetupViewer : function(callback) {
 			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 			callback(true, true);
+		}
+	}),
+
+	/**
+ * Fallen Angel Scans
+ * @type {SiteObject}
+ */
+	'manga.fascans.com' : extendSite({
+		setObjVars : function() {
+			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
+
+			this.page_count    = $('.selectpicker > option').length;
+			this.title         = this.segments[2];
+			this.chapter       = this.segments[3];
+
+			this.title_url   = this.https + '://manga.fascans.com/manga/'+this.title+'/';
+			this.chapter_url = this.title_url + this.chapter;
+
+			this.chapterListCurrent = this.chapter_url;
+			this.chapterList        = generateChapterList($('#chapter-list > ul > li > a').reverseObj(), 'href');
+
+			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6)
+			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
+			this.viewerRegex            = /^[\s\S]*<div id="ppp" style="">[\s\S]*(<img class="img)/;
+		},
+		preSetupViewer : function(callback) {
+			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true);
+		},
+		postSetupTopBar : function() {
+			let viewer = $('.viewer-cnt');
+
+			//Remove extra unneeded elements.
+			viewer.prevAll().remove();
+			viewer.nextAll().remove();
 		}
 	}),
 
