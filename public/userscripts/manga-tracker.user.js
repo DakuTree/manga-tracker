@@ -2307,7 +2307,7 @@ let sites = {
 	}),
 
 	/**
- * Fallen Angel Scans
+ * Fallen Angels Scans
  * @type {SiteObject}
  */
 	'manga.fascans.com' : extendSite({

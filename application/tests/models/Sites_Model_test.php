@@ -428,7 +428,7 @@ class Sites_Model_test extends TestCase {
 
 	public function test_FallenAngelsScans() {
 		$testSeries = [
-			'my-hero-academia' 						 => 'My Hero Academia',
+			'my-hero-academia'             => 'My Hero Academia',
 			'chronos-ruler'                => 'Chronos Ruler',
 			'plunderer'                    => 'Plunderer',
 			'to-loveru-darkness'           => 'To Love-Ru Darkness',
