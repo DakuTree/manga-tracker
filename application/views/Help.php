@@ -51,5 +51,6 @@
 		<li>S2Scans</li>
 		<li>ReadMangaToday</li>
 		<li>MerakiScans</li>
+		<li>FallenAngelsScans</li>
 	</ul>
 </div>

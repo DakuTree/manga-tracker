@@ -33,3 +33,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * S2Scans
 * ReadMangaToday
 * MerakiScans
+* FallenAngelsScans

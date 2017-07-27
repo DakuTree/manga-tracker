@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-07-27]
+### Added
+- Support for Fallen Angels Scans
+
 ### Fixed
 - MangaFox/MangaHere should show the proper chapter in the topbar again.
 - Page auto-scroll now only scrolls if page is higher than 1.
