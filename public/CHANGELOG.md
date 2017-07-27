@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-27]
+### Fixed
+- MangaFox/MangaHere should show the proper chapter in the topbar again.
+- Page auto-scroll now only scrolls if page is higher than 1.
+
 ## [2017-07-26]
 ### Added
 - Userscript now has zoom support!

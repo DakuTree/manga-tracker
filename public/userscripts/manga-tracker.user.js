@@ -32,7 +32,7 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @updated      2017-07-27
-// @version      1.7.23
+// @version      1.7.24
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -951,11 +951,13 @@ let base_site = {
 	 * @final
 	 */
 	gotoPage : function(pageN) {
-		let page_ele = $(`#trackr-page-${pageN}`);
-		if(page_ele.length) {
-			$('html, body').animate({
-				scrollTop: page_ele.offset().top
-			}, 2000);
+		if(pageN > 1) {
+			let page_ele = $(`#trackr-page-${pageN}`);
+			if(page_ele.length) {
+				$('html, body').animate({
+					scrollTop: page_ele.offset().top
+				}, 2000);
+			}
 		}
 	},
 
