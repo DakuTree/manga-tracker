@@ -2343,7 +2343,7 @@ let sites = {
 	}),
 
 	/**
-	 * Whiteout Scans
+	 * Mangaichi Scanlation Division
 	 * @type {SiteObject}
 	 */
 	'mangaichiscans.mokkori.fr' : extendSite({
