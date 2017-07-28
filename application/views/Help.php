@@ -52,5 +52,6 @@
 		<li>ReadMangaToday</li>
 		<li>MerakiScans</li>
 		<li>FallenAngelsScans</li>
+		<li>Mangaichi Scanlation Division</li>
 	</ul>
 </div>
