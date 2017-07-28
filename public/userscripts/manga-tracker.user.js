@@ -32,6 +32,7 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
+// @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-27
 // @version      1.7.25
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
@@ -2338,6 +2339,40 @@ let sites = {
 			//Remove extra unneeded elements.
 			viewer.prevAll().remove();
 			viewer.nextAll().remove();
+		}
+	}),
+
+	/**
+	 * Mangaichi Scanlation Division
+	 * @type {SiteObject}
+	 */
+	'mangaichiscans.mokkori.fr' : extendSite({
+		setObjVars : function() {
+			this.title       = this.segments[3];
+			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
+
+			this.title_url   = 'http://mangaichiscans.mokkori.fr/fs/series/'+this.title;
+			this.chapter_url = 'http://mangaichiscans.mokkori.fr/fs/read/'+this.title+'/'+this.chapter;
+
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		postSetupTopBar : function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
 		}
 	}),
 

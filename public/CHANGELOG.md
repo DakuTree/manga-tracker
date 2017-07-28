@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-07-27]
 ### Added
 - Support for Fallen Angels Scans
+- Support for Mangaichi Scanlation Division
 
 ### Fixed
 - MangaFox/MangaHere should show the proper chapter in the topbar again.

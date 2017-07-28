@@ -34,3 +34,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ReadMangaToday
 * MerakiScans
 * FallenAngelsScans
+* Mangaichi Scanlation Division

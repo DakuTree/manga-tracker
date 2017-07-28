@@ -165,7 +165,6 @@ class Sites_Model_test extends TestCase {
 		$this->markTestNotImplemented();
 	}
 
-
 	public function test_GameOfScanlation() {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
@@ -440,6 +439,21 @@ class Sites_Model_test extends TestCase {
 	}
 	public function test_FallenAngelsScans_fail() {
 		$this->_testSiteFailure('FallenAngelsScans', 'Bad Status Code (500)');
+	}
+
+	public function test_MangaichiScans() {
+		$testSeries = [
+			'himouto_umaruchan'            => 'Himouto! Umaru-chan',
+			'isekai_mahou_wa_okureteru'    => 'Isekai Mahou wa Okureteru!',
+			'nanamaru_sanbatsu'            => 'Nanamaru Sanbatsu',
+			'usotsuki_paradox'             => 'Usotsuki Paradox'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('MangaichiScans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_MangaichiScans_fail() {
+		$this->_testSiteFailure('MangaichiScans', 'Bad Status Code (404)');
 	}
 
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
