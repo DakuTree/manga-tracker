@@ -9,7 +9,6 @@ class FallenAngelsScans extends Base_Site_Model {
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
-		$chapter_parts = explode('/', $chapter);
 		return [
 			'url'    => $this->getFullTitleURL($title_url).'/'.$chapter,
 			'number' => "c{$chapter}"
@@ -26,10 +25,10 @@ class FallenAngelsScans extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//h2[@class='widget-title']",
-			"//ul[contains(@class, 'chapters')]/li[1]/h5/a[1]",
-			"div[@class='date-chapter-title-rtl']",
-			"",
+			"(//h2[@class='widget-title'])[1]",
+			"//ul[contains(@class, 'chapters')]/li[not(contains(@class, 'btn'))][1]",
+			"div[contains(@class, 'action')]/div[@class='date-chapter-title-rtl']",
+			"h5/a[1]",
 			"Whoops, looks like something went wrong."
 		);
 		if($data) {
@@ -38,7 +37,7 @@ class FallenAngelsScans extends Base_Site_Model {
 			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
 			$dateString = $data['nodes_latest']->nodeValue;
-			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
+			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);

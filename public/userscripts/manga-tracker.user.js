@@ -2308,9 +2308,9 @@ let sites = {
 	}),
 
 	/**
- * Fallen Angels Scans
- * @type {SiteObject}
- */
+	 * Fallen Angels Scans
+	 * @type {SiteObject}
+	 */
 	'manga.fascans.com' : extendSite({
 		setObjVars : function() {
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
@@ -2323,7 +2323,7 @@ let sites = {
 			this.chapter_url = this.title_url + this.chapter;
 
 			this.chapterListCurrent = this.chapter_url;
-			this.chapterList        = generateChapterList($('#chapter-list > ul > li > a').reverseObj(), 'href');
+			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
 
 			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6)
 			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
@@ -2351,14 +2351,14 @@ let sites = {
 			this.title       = this.segments[3];
 			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
 
-			this.title_url   = 'http://mangaichiscans.mokkori.fr/fs/series/'+this.title;
-			this.chapter_url = 'http://mangaichiscans.mokkori.fr/fs/read/'+this.title+'/'+this.chapter;
+			this.title_url   = this.https + '://mangaichiscans.mokkori.fr/fs/series/'+this.title;
+			this.chapter_url = this.https + '://mangaichiscans.mokkori.fr/fs/read/'+this.title+'/'+this.chapter;
 
 			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
 			this.chapterListCurrent = this.chapter_url+'/';
 
 			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
+			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a:first').text();
 			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(e) {
