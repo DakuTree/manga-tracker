@@ -34,12 +34,13 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-29
-// @version      1.7.26
+// @version      1.7.27
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
-// @resource     fontAwesome https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
-// @resource     reload https://trackr.moe/userscripts/reload.png
+// @resource     fontAwesome   https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
+// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.css
+// @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_getResourceURL
@@ -210,103 +211,7 @@ let base_site = {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
-			GM_addStyle(`/* <gm> */
-				#TrackerBar {
-					position: fixed    !important;
-					top:      0        !important;
-					z-index:  10000000 !important;
-
-					height: 0; /*Allows everything outside the topbar to be clicked properly*/
-					width:  100% !important;
-
-					opacity: .9 !important;
-					padding:  0 !important;
-					margin:   0 !important;
-
-					font:       14px 'Open Sans', Arial, Helvetica, sans-serif !important;
-					color:      black  !important;
-					text-align: center !important;
-				}
-				#TrackerBar > * {
-					display: inline-block;
-
-					opacity: 1               !important;
-					padding: 0 15px 2px 15px !important;
-					margin:  0               !important;
-
-					background-color: #FFF !important;
-
-					border:        1px solid #CCC !important;
-					border-top:    0              !important;
-					border-radius: 0 0 6px 6px    !important;
-				}
-
-				#TrackerBarLayout {
-					padding: 0 !important;
-					margin:  0 !important;
-				}
-				a.buttonTracker {
-					display: inline-block;
-					cursor: pointer;
-
-					margin:    5px;
-					padding:   2px;
-					min-width: 100px;
-
-					background: linear-gradient(0, #EEE, #FFF);
-
-					border:        1px solid rgb(221, 221, 221);
-					border-radius: 5px;
-
-					font-size:       13px;
-					font-weight:     initial;
-					color:           black;
-					text-align:      center;
-					text-decoration: none;
-
-					transition: all 0.4s ease-in-out;
-				}
-				a.buttonTracker:hover {
-					background: linear-gradient(0, rgb(255, 255, 255), rgb(238, 238, 238));
-
-					border-color: #3278BE;
-
-					color:           #003C82 !important;
-					text-decoration: none    !important;
-				}
-				a.buttonTracker:active {
-					background: #4195DD; /* For browsers that do not support gradients */
-					background: linear-gradient(90deg, #003C82, #4195DD);
-				}
-
-				#TrackerBar *         { vertical-align: middle  !important; }
-				#TrackerBar a         {
-					vertical-align: initial !important;
-					color:          black   !important;
-				}
-				#TrackerBar a:visited { color:black !important; }
-
-				#TrackerBarIn .fa {
-					margin: auto 5px !important;
-
-					font-size: 16px;
-
-					cursor: pointer !important;
-				}
-				#TrackerBarIn select {
-					/* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
-					margin: 0 !important;
-
-					background-color: initial;
-
-					border: 1px solid rgb(221, 221, 221);
-
-					font:  inherit;
-					color: initial;
-				}
-				#TrackerBarIn select { margin: 0 !important; }
-				#TrackerBarIn .mal-link { color: initial !important; font-weight: normal !important; font-size: inherit !important; text-decoration: underline; }
-			/* </gm> */`);
+			GM_addStyle(GM_getResourceText('userscriptCSS'));
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
 			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});

@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - `[Backend]` Userscript now has a generic function for setting up FoolSlide sites.
 
+### Changed
+- `[Backend]` Moved the userscript CSS to a standalone file which is loaded via `@resource`.
+
 ## [2017-07-27]
 ### Added
 - Support for Fallen Angels Scans.
