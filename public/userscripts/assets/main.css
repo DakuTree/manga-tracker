@@ -1,95 +1,103 @@
 #TrackerBar {
 	position: fixed    !important;
-	top:      0        !important;
-	z-index:  10000000 !important;
+	z-index: 10000000 !important;
+	top: 0        !important;
 
-	height: 0; /*Allows everything outside the topbar to be clicked properly*/
-	width:  100% !important;
+	width: 100% !important;
+	height: 0;
+	margin: 0   !important;
+	padding: 0   !important;
 
-	opacity: .9 !important;
-	padding:  0 !important;
-	margin:   0 !important;
-
-	font:       14px 'Open Sans', Arial, Helvetica, sans-serif !important;
-	color:      black  !important;
 	text-align: center !important;
+
+	opacity: 0.9 !important;
+	color: black  !important;
+
+	font: 14px "Open Sans", Arial, Helvetica, sans-serif !important;
 }
 #TrackerBar > * {
 	display: inline-block;
 
-	opacity: 1               !important;
+	margin: 0               !important;
 	padding: 0 15px 2px 15px !important;
-	margin:  0               !important;
 
-	background-color: #FFF !important;
-
-	border:        1px solid #CCC !important;
-	border-top:    0              !important;
+	opacity: 1               !important;
+	border: 1px solid #CCCCCC !important;
+	border-top: 0              !important;
 	border-radius: 0 0 6px 6px    !important;
+	background-color: #FFFFFF !important;
 }
-
-#TrackerBarLayout {
-	padding: 0 !important;
-	margin:  0 !important;
+#TrackerBar * {
+	vertical-align: middle  !important;
 }
-a.buttonTracker {
-	display: inline-block;
-	cursor: pointer;
-
-	margin:    5px;
-	padding:   2px;
-	min-width: 100px;
-
-	background: linear-gradient(0, #EEE, #FFF);
-
-	border:        1px solid rgb(221, 221, 221);
-	border-radius: 5px;
-
-	font-size:       13px;
-	font-weight:     initial;
-	color:           black;
-	text-align:      center;
-	text-decoration: none;
-
-	transition: all 0.4s ease-in-out;
-}
-a.buttonTracker:hover {
-	background: linear-gradient(0, rgb(255, 255, 255), rgb(238, 238, 238));
-
-	border-color: #3278BE;
-
-	color:           #003C82 !important;
-	text-decoration: none    !important;
-}
-a.buttonTracker:active {
-	background: #4195DD; /* For browsers that do not support gradients */
-	background: linear-gradient(90deg, #003C82, #4195DD);
-}
-
-#TrackerBar *         { vertical-align: middle  !important; }
-#TrackerBar a         {
+#TrackerBar a {
 	vertical-align: initial !important;
-	color:          black   !important;
-}
-#TrackerBar a:visited { color:black !important; }
 
+	color: black   !important;
+}
+#TrackerBar a:visited {
+	color: black !important;
+}
+/* #TrackerBar > */
 #TrackerBarIn .fa {
 	margin: auto 5px !important;
 
-	font-size: 16px;
-
 	cursor: pointer !important;
+
+	font-size: 16px;
 }
 #TrackerBarIn select {
 	/* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
 	margin: 0 !important;
 
+	color: initial;
+	border: 1px solid #DDDDDD;
 	background-color: initial;
 
-	border: 1px solid rgb(221, 221, 221);
-
-	font:  inherit;
-	color: initial;
+	font: inherit;
 }
-#TrackerBarIn select { margin: 0 !important; }
-#TrackerBarIn .mal-link { color: initial !important; font-weight: normal !important; font-size: inherit !important; text-decoration: underline; }
+#TrackerBarIn .mal-link {
+	text-decoration: underline;
+
+	color: initial !important;
+
+	font-size: inherit !important;
+	font-weight: normal !important;
+}
+/* #TrackerBar >  #TrackerBarIn > */
+#TrackerBarLayout {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+#TrackerBarLayout a.buttonTracker {
+	display: inline-block;
+
+	min-width: 100px;
+	margin: 5px;
+	padding: 2px;
+
+	cursor: pointer;
+	transition: all 0.4s ease-in-out;
+	text-align: center;
+	text-decoration: none;
+
+	color: black;
+	border: 1px solid #DDDDDD;
+	border-radius: 5px;
+	background: linear-gradient(0, #EEEEEE, #FFFFFF);
+
+	font-size: 13px;
+	font-weight: initial;
+}
+#TrackerBarLayout a.buttonTracker:hover {
+	text-decoration: none    !important;
+
+	color: #003C82 !important;
+	border-color: #3278BE;
+	background: linear-gradient(0, #FFFFFF, #EEEEEE);
+}
+#TrackerBarLayout a.buttonTracker:active {
+	background: #4195DD;
+	/* For browsers that do not support gradients */
+	background: linear-gradient(90deg, #003C82, #4195DD);
+}
