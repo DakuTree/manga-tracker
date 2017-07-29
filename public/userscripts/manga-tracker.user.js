@@ -33,8 +33,8 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-07-27
-// @version      1.7.25
+// @updated      2017-07-29
+// @version      1.7.26
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -963,6 +963,54 @@ let base_site = {
 		}
 	},
 
+	/**
+	 * User to setup (most) sites that use FoolSlide.
+	 * Will most likely not work on sites that use very old versions of FoolSlide.
+	 *
+	 * @function
+	 * @alias sites.*.setupFoolSlide
+	 * @name base_site.setupFoolSlide
+	 *
+	 * @final
+	 */
+	setupFoolSlide : function(segmentsStart) {
+		this.segments = this.segments.slice(segmentsStart);
+
+		this.setObjVars = function() {
+			this.title   = this.segments[0];
+			this.chapter = this.segments[1] + '/' + this.segments[2] + '/' + this.segments[3] + (this.segments[4] && this.segments[4] !== 'page' ? '/' + this.segments[4] : '');
+
+			this.title_url   = this.foolSlideBaseURL+'/'+this.title;
+			this.chapter_url = this.foolSlideBaseURL+'/read/'+this.title+'/'+this.chapter;
+
+			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes.
+			//       SEE: - https://reader.seaotterscans.com/series/sss/
+			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url+'/';
+
+			this.viewerTitle = $('.topbar_left > .dropdown_parent > .text a').text();
+
+			//FoolSlide has the list of images stored in an html tag we can use instead of having to AJAX each page.
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				return e.replace(/\\/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		};
+
+		this.postSetupTopBar = function() {
+			$('.topbar_left > .tbtitle:eq(2)').remove();
+			$('.topbar_right').remove();
+			$('#bottombar').remove();
+		};
+
+		this.preSetupViewer = function(callback) {
+			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		};
+	},
+
 	//Variables
 
 	/**
@@ -1114,7 +1162,14 @@ let base_site = {
 	 * Current page. Used to allow auto-scrolling to pages when directly linked to them.
 	 * @type {Number}
 	 */
-	currentPage: 0
+	currentPage: 0,
+
+	/**
+	 * URL pointing to base FoolSlide location. Used by setupFoolSlide.
+	 * Most of the time this is just location.origin, but sometimes it's also location.origin/foolslide and so on.
+	 * @type {String}
+	 */
+	foolSlideBaseURL : location.origin
 };
 
 /**
@@ -1151,7 +1206,6 @@ function generateChapterList(target, attrURL) {
  * @namespace
  */
 let sites = {
-
 	/**
 	 * MangaFox
 	 * @type {SiteObject}
@@ -1727,70 +1781,24 @@ let sites = {
 	}),
 
 	/**
-	 * KireiCake Scans
+	 * KireiCake Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.kireicake.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = 'https://reader.kireicake.com/series/'+this.title;
-			this.chapter_url = 'https://reader.kireicake.com/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
 	/**
-	 * Whiteout Scans
+	 * Whiteout Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.whiteoutscans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = 'https://reader.whiteoutscans.com/series/'+this.title;
-			this.chapter_url = 'https://reader.whiteoutscans.com/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
@@ -1845,8 +1853,6 @@ let sites = {
 			this.chapterList        = generateChapterList(pageNav.find('select:first > option').reverseObj(), 'value');
 			this.chapterListCurrent = this.chapter_url;
 
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			// this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
 			this.viewerCustomImageList = $('script:contains("/wp-content/manga/")').html().match(/(http:\/\/mngcow\.co\/wp-content\/manga\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			});
@@ -1909,42 +1915,18 @@ let sites = {
 	}),
 
 	/**
-	 * SeaOtter Scans
+	 * SeaOtter Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.seaotterscans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = this.https+'://reader.seaotterscans.com/series/'+this.title;
-			this.chapter_url = this.https+'://reader.seaotterscans.com/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
 	/**
-	 * Helvetica Scans
+	 * Helvetica Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'helveticascans.com' : extendSite({
@@ -1953,37 +1935,10 @@ let sites = {
 				//If old URL, redirect to new one.
 				location.pathname = location.pathname.replace(/^\/reader/, '/r');
 			} else {
+				this.foolSlideBaseURL = this.https+'://helveticascans.com/r';
+				this.setupFoolSlide(3);
 				callback();
 			}
-		},
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://helveticascans.com/r/series/'+this.title;
-			this.chapter_url = this.https+'://helveticascans.com/r/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-			$('.reader_top_panel').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
 		}
 	}),
 
@@ -1995,250 +1950,87 @@ let sites = {
 		preInit : function() {
 			//Auto-redirect to subdomain if using non-subdomain url.
 			location.href = location.href.replace('sensescans.com/reader', 'reader.sensescans.com');
-		},
+		}
 	}),
 
 	/**
-	 * Sense Scans
+	 * Sense Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.sensescans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = this.https+'://reader.sensescans.com/series/'+this.title;
-			this.chapter_url = this.https+'://reader.sensescans.com/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
 	/**
-	 * Jamini's Box
+	 * Jaimini's Box (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'jaiminisbox.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://jaiminisbox.com/reader/series/'+this.title;
-			this.chapter_url = this.https+'://jaiminisbox.com/reader/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			console.log(this.chapter_url+'/');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		   },
-		   postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://jaiminisbox.com/reader';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 
 	/**
-	 * Doki Fansubs
+	 * Doki Fansubs (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'kobato.hologfx.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://kobato.hologfx.com/reader/series/'+this.title;
-			this.chapter_url = this.https+'://kobato.hologfx.com/reader/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://kobato.hologfx.com/reader';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 
 	/**
-	 * Demonic Scans - Disabled
+	 * Demonic Scans (FoolSlide) - Disabled
 	 * @type {SiteObject}
 	 */
 	'www.demonicscans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://www.demonicscans.com/FoOlSlide/series/'+this.title;
-			this.chapter_url = this.https+'://www.demonicscans.com/FoOlSlide/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://www.demonicscans.com/FoOlSlide';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 
 	/**
-	 * Death Toll Scans
+	 * Death Toll Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.deathtollscans.net' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = this.https+'://reader.deathtollscans.net/series/'+this.title;
-			this.chapter_url = this.https+'://reader.deathtollscans.net/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
 	/**
-	 * One Time Scans!
+	 * One Time Scans! (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'otscans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://otscans.com/foolslide/series/'+this.title;
-			this.chapter_url = this.https+'://otscans.com/foolslide/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-			},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://otscans.com/foolslide';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 
 	/**
-	 * S2 Scans
+	 * S2 Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'reader.s2smanga.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3] + '/' + this.segments[4] + '/' + this.segments[5] + (this.segments[6] && this.segments[6] !== 'page' ? '/' + this.segments[6] : '');
-
-			this.title_url   = this.https+'://reader.s2smanga.com/series/'+this.title;
-			this.chapter_url = this.https+'://reader.s2smanga.com/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
@@ -2273,37 +2065,14 @@ let sites = {
 	}),
 
 	/**
-	 * Meraki Scans
+	 * Meraki Scans (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'www.merakiscans.com' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https+'://www.merakiscans.com/reader/series/'+this.title;
-			this.chapter_url = this.https+'://www.merakiscans.com/reader/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes. - https://reader.seaotterscans.com/series/sss/
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://www.merakiscans.com/reader';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 
@@ -2325,7 +2094,7 @@ let sites = {
 			this.chapterListCurrent = this.chapter_url;
 			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
 
-			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6)
+			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
 			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]*<div id="ppp" style="">[\s\S]*(<img class="img)/;
 		},
@@ -2343,36 +2112,14 @@ let sites = {
 	}),
 
 	/**
-	 * Mangaichi Scanlation Division
+	 * Mangaichi Scanlation Division (FoolSlide)
 	 * @type {SiteObject}
 	 */
 	'mangaichiscans.mokkori.fr' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[3];
-			this.chapter     = this.segments[4] + '/' + this.segments[5] + '/' + this.segments[6] + (this.segments[7] && this.segments[7] !== 'page' ? '/' + this.segments[7] : '');
-
-			this.title_url   = this.https + '://mangaichiscans.mokkori.fr/fs/series/'+this.title;
-			this.chapter_url = this.https + '://mangaichiscans.mokkori.fr/fs/read/'+this.title+'/'+this.chapter;
-
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
-			this.chapterListCurrent = this.chapter_url+'/';
-
-			// this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();
-			this.viewerTitle           = $('.topbar_left > .dropdown_parent > .text a:first').text();
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(http:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				return e.replace(/\\/g, '');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		postSetupTopBar : function() {
-			$('.topbar_left > .tbtitle:eq(2)').remove();
-			$('.topbar_right').remove();
-		},
-		preSetupViewer : function(callback) {
-			$('#page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://mangaichiscans.mokkori.fr/fs';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 

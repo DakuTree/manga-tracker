@@ -1,10 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-29]
+### Added
+- `[Backend]` Userscript now has a generic function for setting up FoolSlide sites.
+
 ## [2017-07-27]
 ### Added
-- Support for Fallen Angels Scans
+- Support for Fallen Angels Scans.
+  - Thanks to @Vexnyx (#132).
 - Support for Mangaichi Scanlation Division
+  - Thanks to @Vexnyx (#132).
 
 ### Fixed
 - MangaFox/MangaHere should show the proper chapter in the topbar again.
