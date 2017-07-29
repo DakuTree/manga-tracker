@@ -964,7 +964,7 @@ let base_site = {
 	},
 
 	/**
-	 * User to setup (most) sites that use FoolSlide.
+	 * Used to setup (most) sites that use FoolSlide.
 	 * Will most likely not work on sites that use very old versions of FoolSlide.
 	 *
 	 * @function
