@@ -899,7 +899,7 @@ let base_site = {
 			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(e) {
-				return JSON.parse('"' + e.replace(/\"/g, '\\"') + '"');
+				return JSON.parse('"' + e.replace(/"/g, '\\"') + '"');
 			});
 			this.page_count = this.viewerCustomImageList.length;
 		};
