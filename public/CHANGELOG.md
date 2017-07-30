@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - `[Backend]` Moved the userscript CSS to a standalone file which is loaded via `@resource`.
 
+### Fixed
+- Unicode escape characters in URL now properly work.
+
 ## [2017-07-27]
 ### Added
 - Support for Fallen Angels Scans.
