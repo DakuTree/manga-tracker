@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.29
+// @version      1.7.30
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -617,7 +617,7 @@ let base_site = {
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
-				$('<div/>', {class: 'number', text: pageN}))
+				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
 		);
 
 		//Replace the placeholder image_container with the real one
@@ -660,7 +660,7 @@ let base_site = {
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
-				$('<div/>', {class: 'number', text: pageN}))
+				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
 		);
 
 		//Replace the placeholder image_container with the real one

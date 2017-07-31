@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-07-31]
 ### Changed
 - `[Backend]` Moved missed userscript viewer CSS to userscript LESS file.
+- Page number now shows as "page / total_pagecount".
 
 ## [2017-07-29]
 ### Added
