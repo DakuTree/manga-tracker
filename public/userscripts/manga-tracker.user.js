@@ -1581,7 +1581,7 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/;
 
 			if(this.segments[5]) {
-				this.currentPage = parseInt(this.segments.replace(/^([0-9]+).*$/, '$1'));
+				this.currentPage = parseInt(this.segments[5].replace(/^([0-9]+).*$/, '$1'));
 			}
 		},
 		stylize : function() {
