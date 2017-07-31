@@ -1980,6 +1980,10 @@ let sites = {
 			//this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]*<div class="content-list col-md-12 page_chapter">\s+(<img[\s\S][^>]+>)/;
+
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
 		},
 		preSetupViewer : function(callback) {
 			$('.content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
