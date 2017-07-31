@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.33
+// @version      1.7.34
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -535,6 +535,7 @@ let base_site = {
 				}));
 			}
 			Promise.all(pagePromises).then(() => {
+				console.log('all pages loaded');
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
 				if(config.options.auto_track && !_this.delayAutoTrack) {
