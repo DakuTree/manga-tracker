@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Added cache busting for userscript CSS.
   - Tampermonkey doesn't seem to force a resource update when the userscript updates sadly..
 - All sites should now auto-scroll to linked page where possible.
+- `[Backend]` Moved to using Promises for handling when page loading ends.
 
 ## [2017-07-29]
 ### Added

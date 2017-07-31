@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.32
+// @version      1.7.33
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -518,18 +518,67 @@ let base_site = {
 				//This saves the display css.
 				$('#TrackerBarPages').show('slow');
 			});
+
+			let pagePromises = [];
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
-				$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
+				pagePromises.push(new Promise((resolve, reject) => { // jshint ignore:line
+					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
 
-				if(!useCustomImageList) {
-					setTimeout(addToContainer, _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0), pageN);
-				} else {
-					//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
-					setTimeout(addToContainerCustom, 100 + (pageN * 100), pageN);
-				}
+					if(!useCustomImageList) {
+						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
+						setTimeout(addToContainer, pageDelay, pageN, () => { resolve(); });
+					} else {
+						//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
+						let pageDelay = 100 + (pageN * 100);
+						setTimeout(addToContainerCustom, pageDelay, pageN, () => { resolve(); });
+					}
+				}));
 			}
+			Promise.all(pagePromises).then(() => {
+				//Auto-track chapter if enabled.
+				/** @namespace config.auto_track */
+				if(config.options.auto_track && !_this.delayAutoTrack) {
+					_this.trackChapter();
+				}
 
-			function addToContainer(pageN) {
+				//Auto-scroll to page if URL is a specific page URL
+				_this.gotoPage(_this.currentPage);
+
+				//Setup zoom event
+				let changeZoom = function(action) {
+					let images = $('#viewer').find('img'),
+					    newZoom = images.get(0).clientWidth;
+
+					switch(action) {
+						case '+':
+							//increase zoom
+							images.css({'width': newZoom + 50});
+
+							break;
+
+						case '-':
+							//decrease zoom
+							images.css({'width': newZoom - 50});
+							break;
+
+						case '=':
+							//reset
+							images.css({'width': 'auto'});
+							break;
+
+						default:
+							//do nothing
+							break;
+					}
+				};
+				$(document).keydown(function(event){
+					changeZoom(event.key);
+				});
+
+				_this.postSetupViewer();
+			});
+
+			function addToContainer(pageN, callback) {
 				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
 				$.ajax({
 					url    : url,
@@ -543,53 +592,16 @@ let base_site = {
 					},
 					error: function () {
 						_this.setupViewerContainerError(url, this.page);
+					},
+					always: function() {
+						callback();
 					}
 				});
 			}
-			function addToContainerCustom(pageN) {
+			function addToContainerCustom(pageN, callback) {
 				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
+				callback();
 			}
-
-			//Auto-track chapter if enabled.
-			$(window).on('load', function() {
-				/** @namespace config.auto_track */
-				if(config.options.auto_track && !_this.delayAutoTrack) {
-					_this.trackChapter();
-				}
-			});
-
-			//Setup zoom event
-			let changeZoom = function(action) {
-				let images = $('#viewer').find('img'),
-				    newZoom = images.get(0).clientWidth;
-
-				switch(action) {
-					case '+':
-						//increase zoom
-						images.css({'width': newZoom + 50});
-
-						break;
-
-					case '-':
-						//decrease zoom
-						images.css({'width': newZoom - 50});
-						break;
-
-					case '=':
-						//reset
-						images.css({'width': 'auto'});
-						break;
-
-					default:
-						//do nothing
-						break;
-				}
-			};
-			$(document).keydown(function(event){
-				changeZoom(event.key);
-			});
-
-			_this.postSetupViewer();
 		});
 	},
 
@@ -704,9 +716,6 @@ let base_site = {
 						$('<i/>', {class: 'fa fa-refresh', 'aria-hidden': 'true'})
 					));
 			}
-
-			//TODO: We shouldn't be handling this here, we should instead have some kind of pagesLoaded event.
-			this.gotoPage(this.currentPage);
 
 			console.log('higher than pc: '+this.pagesLoadedAttempts);
 		} else {
@@ -849,6 +858,7 @@ let base_site = {
 	 * @final
 	 */
 	gotoPage : function(pageN) {
+		console.log(`trackr - Scrolling to page "${pageN}"`);
 		if(pageN > 1) {
 			let page_ele = $(`#trackr-page-${pageN}`);
 			if(page_ele.length) {
@@ -1389,11 +1399,6 @@ let sites = {
 				});
 				this.page_count = this.viewerCustomImageList.length;
 				callback(false, true);
-			}
-		},
-		postSetupViewer : function(/*topbar*/) {
-			if(config.options.auto_track && this.delayAutoTrack) {
-				this.trackChapter();
 			}
 		}
 	}),
