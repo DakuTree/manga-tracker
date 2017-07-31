@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.31
+// @version      1.7.32
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -893,6 +893,10 @@ let base_site = {
 				return JSON.parse('"' + e.replace(/"/g, '\\"') + '"');
 			});
 			this.page_count = this.viewerCustomImageList.length;
+
+			if((this.segments[4] && this.segments[4] === 'page') && this.segments[5]) {
+				this.currentPage = parseInt(this.segments[5]);
+			}
 		};
 
 		this.postSetupTopBar = function() {
@@ -1362,7 +1366,9 @@ let sites = {
 
 			this.searchURLFormat = this.https+'://bato.to/search?name={%SEARCH%}';
 
-			this.currentPage = parseInt(location.hash.split('_')[1]);
+			if(location.hash.split('_').length > 1) {
+				this.currentPage = parseInt(location.hash.split('_')[1]);
+			}
 
 			this.delayAutoTrack = true;
 		},
@@ -1423,6 +1429,10 @@ let sites = {
 			this.page_count = this.viewerCustomImageList.length;
 
 			this.searchURLFormat = 'https://dynasty-scans.com/search?q={%SEARCH%}';
+
+			if(location.hash) {
+				this.currentPage = parseInt(location.hash.substring(1));
+			}
 		},
 		stylize : function() {
 			//These buttons aren't needed since we have our own viewer.
@@ -1474,7 +1484,7 @@ let sites = {
 	 */
 	'www.mangapanda.com' : extendSite({
 		preInit : function(callback) {
-			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually seperates its manga URLs from every other page on the site.
+			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually separates its manga URLs from every other page on the site.
 			//I've went and already filtered a bunch of URLs out in the include regex, but since it may not match everything, we have to do an additional check here.
 			if($('#topchapter, #chapterMenu, #bottomchapter').length === 3) {
 				//MangaPanda is another site which uses the MangaFox layout. Is this just another thing like FoolSlide?
@@ -1499,6 +1509,10 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
 
 			this.searchURLFormat = 'http://www.mangapanda.com/search/?w={%SEARCH%}';
+
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
 		},
 		stylize : function() {
 			let mangaInfo = $('#mangainfo').find('> div');
@@ -1560,6 +1574,10 @@ let sites = {
 			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();
 			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/;
+
+			if(this.segments[5]) {
+				this.currentPage = parseInt(this.segments.replace(/^([0-9]+).*$/, '$1'));
+			}
 		},
 		stylize : function() {
 			GM_addStyle(`
@@ -1755,6 +1773,10 @@ let sites = {
 			this.page_count = this.viewerCustomImageList.length;
 
 			this.searchURLFormat = 'http://mngcow.co/manga-list/search/{%SEARCH%}';
+
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
 		},
 		preSetupViewer : function(callback) {
 			$('.wpm_nav, .wpm_ifo_box').remove();
