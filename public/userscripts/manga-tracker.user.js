@@ -34,12 +34,12 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.30
+// @version      1.7.31
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // @resource     fontAwesome   https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
-// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.css
+// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.2.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceText

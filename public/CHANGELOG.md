@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - `[Backend]` Moved missed userscript viewer CSS to userscript LESS file.
 - Page number now shows as "page / total_pagecount".
+- `[Backend]` Added cache busting for userscript CSS.
+  - Tampermonkey doesn't seem to force a resource update when the userscript updates sadly..
 
 ## [2017-07-29]
 ### Added
