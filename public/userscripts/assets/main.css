@@ -101,3 +101,67 @@
 	/* For browsers that do not support gradients */
 	background: linear-gradient(90deg, #003C82, #4195DD);
 }
+#viewer {
+	width: auto;
+	max-width: 95%;
+	margin: 0 auto !important;
+
+	text-align: center;
+
+	border: inherit;
+	background: inherit;
+}
+#viewer #viewer_header {
+	text-align: center;
+
+	font-weight: bolder;
+}
+#viewer > .read_img {
+	background: none;
+}
+#viewer > .read_img img {
+	width: auto;
+	max-width: 95%;
+	min-height: 300px;
+
+	border: 5px solid #A9A9A9;
+}
+#viewer > .read_img .pageNumber {
+	position: relative;
+	bottom: 11px;
+	/*height: 18px; */
+
+	width: 50px;
+	margin: 0 auto !important;
+	padding: 0 !important;
+
+	border-spacing: 0 !important;
+
+	text-align: center;
+
+	opacity: 0.75;
+	color: white;
+	border: 2px solid white;
+	border-collapse: collapse;
+	border-radius: 16px !important;
+	background-color: black;
+
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 12px;
+	font-weight: bold;
+}
+#viewer > .read_img .pageNumber .number {
+	display: table-cell;
+
+	width: 50px;
+	height: 18px;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	border-spacing: 0 !important;
+
+	text-align: center;
+	vertical-align: middle;
+
+	border-collapse: collapse;
+}

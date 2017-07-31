@@ -106,3 +106,72 @@
 		}
 	}
 }
+
+#viewer {
+	width: auto;
+	max-width: 95%;
+	margin: 0 auto !important;
+
+	text-align: center;
+
+	border: inherit;
+	background: inherit;
+
+	#viewer_header {
+		font-weight: bolder;
+		text-align: center;
+	}
+
+	& > .read_img {
+		background: none;
+
+		img {
+			width:      auto;
+			max-width:  95%;
+			min-height: 300px;
+
+			border: 5px solid #a9a9a9;
+		}
+
+		.pageNumber {
+			font-family: Arial, Helvetica, sans-serif !important;
+			font-size: 12px;
+			font-weight: bold;
+
+			position: relative;
+			bottom: 11px;
+
+			/*height: 18px; */
+			width: 50px;
+			margin: 0 auto !important;
+			padding: 0 !important;
+
+			border-spacing: 0 !important;
+			border-collapse: collapse;
+
+			text-align: center;
+
+			opacity: .75;
+			color: white;
+			border: 2px solid white;
+			border-radius: 16px !important;
+			background-color: black;
+
+			.number {
+				display: table-cell;
+
+				width:  50px;
+				height: 18px;
+				margin:  0 !important;
+				padding: 0 !important;
+
+				border-spacing: 0 !important;
+				border-collapse: collapse;
+
+				text-align: center;
+				vertical-align: middle;
+			}
+		}
+
+	}
+}

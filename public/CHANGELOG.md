@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-31]
+### Changed
+- `[Backend]` Moved missed userscript viewer CSS to userscript LESS file.
+
 ## [2017-07-29]
 ### Added
 - `[Backend]` Userscript now has a generic function for setting up FoolSlide sites.

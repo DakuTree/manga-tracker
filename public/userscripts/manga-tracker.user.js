@@ -33,8 +33,8 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-07-29
-// @version      1.7.28
+// @updated      2017-07-31
+// @version      1.7.29
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -498,15 +498,6 @@ let base_site = {
 		this.preSetupViewer(function(useCustomHeader, useCustomImageList) {
 			useCustomHeader    = (typeof useCustomHeader !== 'undefined' ? useCustomHeader : false);
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
-
-			GM_addStyle(`/* <gm> */
-				#viewer                 { width: auto; max-width: 95%; margin: 0 auto !important; text-align: center; background: inherit; border: inherit; }
-				#viewer > .read_img     { background: none; }
-				#viewer > .read_img img { width: auto; max-width: 95%; border: 5px solid #a9a9a9; min-height: 300px;}
-				.pageNumber             { border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-collapse: collapse; background-color: black; color: white; /*height: 18px; */font-size: 12px; font-family: Verdana; font-weight: bold; position: relative; bottom: 11px; width: 50px; text-align: center; opacity: 0.75; border-width: 2px; border-style: solid; border-color: white; border-radius: 16px !important; margin: 0px auto !important; padding: 0px !important; border-spacing: 0px !important;}
-				.pageNumber .number     { border-collapse: collapse; text-align: center; display: table-cell; width: 50px; height: 18px; vertical-align: middle; border-spacing: 0px !important; padding: 0px !important; margin: 0px !important; }
-				#viewer_header          { font-weight: bolder; text-align: center; }
-			/* </gm> */`);
 
 			let viewer = $('#viewer');
 
