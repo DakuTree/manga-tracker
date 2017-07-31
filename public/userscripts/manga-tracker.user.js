@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-07-31
-// @version      1.7.35
+// @version      1.7.36
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -526,19 +526,20 @@ let base_site = {
 
 					if(!useCustomImageList) {
 						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
-						setTimeout(addToContainer, pageDelay, pageN, () => { resolve(); });
+						setTimeout(addToContainer, pageDelay, pageN, resolve);
 					} else {
 						//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
 						let pageDelay = 100 + (pageN * 100);
-						setTimeout(addToContainerCustom, pageDelay, pageN, () => { resolve(); });
+						setTimeout(addToContainerCustom, pageDelay, pageN, resolve);
 					}
 				}));
 			}
 			Promise.all(pagePromises).then(() => {
 				console.log('all pages loaded');
+
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
-				if(config.options.auto_track && !_this.delayAutoTrack) {
+				if(config.options.auto_track) {
 					_this.trackChapter();
 				}
 
@@ -1064,12 +1065,6 @@ let base_site = {
 	pagesLoadedAttempts : 0,
 
 	/**
-	 * Delay auto-tracking until later. Useful when window.load triggers before we can actually setup the event.
-	 * @type {Boolean}
-	 */
-	delayAutoTrack : false,
-
-	/**
 	 * Current page. Used to allow auto-scrolling to pages when directly linked to them.
 	 * @type {Number}
 	 */
@@ -1380,8 +1375,6 @@ let sites = {
 			if(location.hash.split('_').length > 1) {
 				this.currentPage = parseInt(location.hash.split('_')[1]);
 			}
-
-			this.delayAutoTrack = true;
 		},
 		stylize : function() {
 			//Nothing?

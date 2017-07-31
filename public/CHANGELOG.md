@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
   - Tampermonkey doesn't seem to force a resource update when the userscript updates sadly..
 - All sites should now auto-scroll to linked page where possible.
 - `[Backend]` Moved to using Promises for handling when page loading ends.
+- Auto tracking now happens after all pages have loaded by default, rather than as soon as possible.
 
 ## [2017-07-29]
 ### Added
