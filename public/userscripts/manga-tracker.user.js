@@ -33,8 +33,8 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-07-31
-// @version      1.7.36
+// @updated      2017-08-02
+// @version      1.7.37
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -250,7 +250,6 @@ let base_site = {
 
 			//Setup select chapter change event
 			$(topbar).on('change', 'select', function() {
-				console.log(this.value);
 				location.href = this.value;
 				if(this.value.indexOf('#') !== -1) {
 					window.location.reload();
@@ -535,7 +534,7 @@ let base_site = {
 				}));
 			}
 			Promise.all(pagePromises).then(() => {
-				console.log('all pages loaded');
+				console.log('trackr - all pages loaded');
 
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
@@ -719,9 +718,9 @@ let base_site = {
 					));
 			}
 
-			console.log('higher than pc: '+this.pagesLoadedAttempts);
+			console.log('trackr - higher than pc: '+this.pagesLoadedAttempts);
 		} else {
-			console.log('lower than pc: '+this.pagesLoadedAttempts);
+			console.log('trackr - lower than pc: '+this.pagesLoadedAttempts);
 		}
 	},
 
@@ -1213,13 +1212,13 @@ let sites = {
 
 						callback(false, true);
 					} else {
-						console.log('Mobile site returned no images? Falling back to old loading method');
+						console.log('trackr - Mobile site returned no images? Falling back to old loading method');
 						callback(false, false);
 					}
 
 				},
 				onerror : function() {
-					console.log('Unable to load mobile site, fallback to old page loading method');
+					console.log('trackr - Unable to load mobile site, fallback to old page loading method');
 					callback(false, false);
 				}
 			});
@@ -1330,7 +1329,7 @@ let sites = {
 					dfd.resolve();
 					clearInterval(checkSelector);
 				} else {
-					console.log('forever loading');
+					console.log('trackr - Waiting for initial page load...');
 				}
 			}, 1000);
 			dfd.done(() => {

@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-02]
+### Changed
+- `[Backend]` Prepended 'trackr - ' to all userscript console calls for easier filtering.
+
 ## [2017-07-31]
 ### Changed
 - `[Backend]` Moved missed userscript viewer CSS to userscript LESS file.
