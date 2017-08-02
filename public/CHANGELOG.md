@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - `[Backend]` Prepended 'trackr - ' to all userscript console calls for easier filtering.
 
+### Fixed
+- Page load counter should now appear on bato.to webtoons.
+  - The page load counter was only added if page_count was set when we tried to setup the topbar, which wasn't the case with bato.to webtoons as it's set later.
+  - Fixes #139.
+
 ## [2017-07-31]
 ### Changed
 - `[Backend]` Moved missed userscript viewer CSS to userscript LESS file.

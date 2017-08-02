@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-08-02
-// @version      1.7.37
+// @version      1.7.38
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -695,8 +695,17 @@ let base_site = {
 
 		let ele = $('#TrackerBarPages');
 
+
 		if(loaded) {
 			this.pagesLoaded += 1;
+
+			let pageLoadedText = `Pages loaded: ${this.pagesLoaded}/${this.page_count}`;
+			if(ele.length) {
+				ele.text(pageLoadedText);
+			} else {
+				//Page element does not exist due to page count being set later than setObjVars, make sure we create it.
+				$('<div/>', {id: 'TrackerBarPages', pageLoadedText}).appendTo('#TrackerBar');
+			}
 			ele.text('Pages loaded: '+this.pagesLoaded+'/'+this.page_count);
 		}
 
@@ -1390,6 +1399,7 @@ let sites = {
 					return $(e).attr('src');
 				});
 				this.page_count = this.viewerCustomImageList.length;
+
 				callback(false, true);
 			}
 		}
