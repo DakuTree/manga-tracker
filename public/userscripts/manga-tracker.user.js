@@ -633,7 +633,7 @@ let base_site = {
 		);
 
 		//Replace the placeholder image_container with the real one
-		$('#page-'+pageN).replaceWith(image_container);
+		$(`#page-${pageN}`).replaceWith(image_container);
 	},
 
 	/**
@@ -1374,17 +1374,17 @@ let sites = {
 				this.currentPage = parseInt(location.hash.split('_')[1]);
 			}
 		},
-		stylize : function() {
-			//Nothing?
-		},
 		preSetupViewer : function(callback) {
 			let reader = $('#reader');
 
 			reader.replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			if(this.is_web_toon !== 1) {
+				console.log('trackr - bato.to chapter is not webtoon');
 				callback();
 			} else {
+				console.log('trackr - bato.to chapter is webtoon');
+
 				//Bato.to has an option for webtoons to show all chapters on a single page (with a single ajax), we need to do stuff differently if this happens.
 				this.viewerCustomImageList = reader.find('#read_settings + div + div img').map(function(i, e) {
 					return $(e).attr('src');
