@@ -525,11 +525,11 @@ let base_site = {
 
 					if(!useCustomImageList) {
 						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
-						setTimeout(addToContainer, pageDelay, pageN, resolve);
+						setTimeout(addToContainer, pageDelay, pageN, resolve, reject);
 					} else {
 						//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
 						let pageDelay = 100 + (pageN * 100);
-						setTimeout(addToContainerCustom, pageDelay, pageN, resolve);
+						setTimeout(addToContainerCustom, pageDelay, pageN, resolve, reject);
 					}
 				}));
 			}
@@ -579,7 +579,7 @@ let base_site = {
 				_this.postSetupViewer();
 			});
 
-			function addToContainer(pageN, callback) {
+			function addToContainer(pageN, promiseResolve, promiseReject) {
 				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
 				$.ajax({
 					url    : url,
@@ -590,18 +590,17 @@ let base_site = {
 						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
 
 						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+						promiseResolve();
 					},
 					error: function () {
 						_this.setupViewerContainerError(url, this.page);
-					},
-					complete: function() {
-						callback();
+						promiseResolve(); // we probably should use promiseReject() here
 					}
 				});
 			}
-			function addToContainerCustom(pageN, callback) {
+			function addToContainerCustom(pageN, promiseResolve, promiseReject) {
 				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
-				callback();
+				promiseResolve();
 			}
 		});
 	},
