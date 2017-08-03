@@ -531,47 +531,52 @@ let base_site = {
 				}));
 			}
 			Promise.all(pagePromises).then(() => {
-				console.log('trackr - all pages loaded');
+				console.log('trackr - All promises resolved.');
 
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
 				if(config.options.auto_track) {
+					console.log('trackr - Auto-tracking chapter');
 					_this.trackChapter();
 				}
 
 				//Auto-scroll to page if URL is a specific page URL
-				if(_this.currentPage > 0) _this.gotoPage(_this.currentPage);
+				if(_this.currentPage > 0) {
+					_this.gotoPage(_this.currentPage);
+				}
 
 				//Setup zoom event
-				let changeZoom = function(action) {
-					let images = $('#viewer').find('img'),
-					    newZoom = images.get(0).clientWidth;
+				if(viewer.length) {
+					let changeZoom = function(action) {
+						let images = $('#viewer').find('img'),
+						    newZoom = images.get(0).clientWidth;
 
-					switch(action) {
-						case '+':
-							//increase zoom
-							images.css({'width': newZoom + 50});
+						switch(action) {
+							case '+':
+								//increase zoom
+								images.css({'width': newZoom + 50});
 
-							break;
+								break;
 
-						case '-':
-							//decrease zoom
-							images.css({'width': newZoom - 50});
-							break;
+							case '-':
+								//decrease zoom
+								images.css({'width': newZoom - 50});
+								break;
 
-						case '=':
-							//reset
-							images.css({'width': 'auto'});
-							break;
+							case '=':
+								//reset
+								images.css({'width': 'auto'});
+								break;
 
-						default:
-							//do nothing
-							break;
-					}
-				};
-				$(document).keydown(function(event){
-					changeZoom(event.key);
-				});
+							default:
+								//do nothing
+								break;
+						}
+						$(document).keydown(function(event){
+							changeZoom(event.key);
+						});
+					};
+				}
 
 				_this.postSetupViewer();
 			});
