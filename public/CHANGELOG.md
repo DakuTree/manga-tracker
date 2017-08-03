@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-08-03]
 ### Fixed
 - Userscript page load counter no longer pops out then in before displaying.
+- Userscript page load counter should now appear before attempting to load pages, rather than only after the first page load.
 
 ## [2017-08-02]
 ### Changed

@@ -33,8 +33,8 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-03
-// @version      1.7.39
+// @updated      2017-08-04
+// @version      1.7.40
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -243,7 +243,7 @@ let base_site = {
 			).append(
 				$('<br/>')
 			).append(
-				(_this.page_count ? $('<div/>', {id: 'TrackerBarPages', text: 'Pages loaded: '+_this.pagesLoaded+'/'+_this.page_count}) : '')
+				(_this.page_count ? $('<div/>', {id: 'TrackerBarPages', text: `Pages loaded: ${_this.pagesLoaded}/${_this.page_count}`, style: 'display: none'}) : '')
 			);
 
 			$(topbar).appendTo('body');
@@ -511,9 +511,15 @@ let base_site = {
 				);
 			}
 
+			let TrackerBarPages = $('#TrackerBarPages');
+			//Add page load counter IF it hasn't already been added (due to page_count being set lately) and if using our viewer
+			if(!TrackerBarPages.length && _this.page_count) {
+				TrackerBarPages = $('<div/>', {id: 'TrackerBarPages', text: `Pages loaded: ${_this.pagesLoaded}/${_this.page_count}`, style: 'display: none'}).appendTo('#TrackerBar');
+			}
+			TrackerBarPages.show('slow');
+
 			//Generate the viewer using a loop & AJAX.
 			$('<div/>', {class: 'read_img', style: 'display: none'}).appendTo(viewer.get()); //Add a dummy element
-			$('#TrackerBarPages').show('slow');
 
 			let pagePromises = [];
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
@@ -697,18 +703,9 @@ let base_site = {
 
 		let ele = $('#TrackerBarPages');
 
-
 		if(loaded) {
 			this.pagesLoaded += 1;
-
-			let pageLoadedText = `Pages loaded: ${this.pagesLoaded}/${this.page_count}`;
-			if(ele.length) {
-				ele.text(pageLoadedText);
-			} else {
-				//Page element does not exist due to page count being set later than setObjVars, make sure we create it.
-				$('<div/>', {id: 'TrackerBarPages', pageLoadedText}).appendTo('#TrackerBar');
-			}
-			ele.text('Pages loaded: '+this.pagesLoaded+'/'+this.page_count);
+			ele.text(`Pages loaded: ${this.pagesLoaded}/${this.page_count}`);
 		}
 
 		if(this.pagesLoadedAttempts >= this.page_count) {
