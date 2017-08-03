@@ -33,8 +33,8 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-02
-// @version      1.7.38
+// @updated      2017-08-03
+// @version      1.7.39
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -513,10 +513,7 @@ let base_site = {
 
 			//Generate the viewer using a loop & AJAX.
 			$('<div/>', {class: 'read_img', style: 'display: none'}).appendTo(viewer.get()); //Add a dummy element
-			$('#TrackerBarPages').hide('slow', () => {
-				//This saves the display css.
-				$('#TrackerBarPages').show('slow');
-			});
+			$('#TrackerBarPages').show('slow');
 
 			let pagePromises = [];
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {

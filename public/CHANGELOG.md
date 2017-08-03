@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-03]
+### Fixed
+- Userscript page load counter no longer pops out then in before displaying.
+
 ## [2017-08-02]
 ### Changed
 - `[Backend]` Prepended 'trackr - ' to all userscript console calls for easier filtering.
