@@ -540,7 +540,7 @@ let base_site = {
 				}
 
 				//Auto-scroll to page if URL is a specific page URL
-				_this.gotoPage(_this.currentPage);
+				if(_this.currentPage > 0) _this.gotoPage(_this.currentPage);
 
 				//Setup zoom event
 				let changeZoom = function(action) {
