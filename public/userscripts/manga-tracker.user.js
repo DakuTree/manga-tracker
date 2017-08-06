@@ -2240,6 +2240,8 @@ if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
 		$(function () {
 			sites[hostname].init();
 		});
+	} else {
+		console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
 	}
 } else {
 	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
