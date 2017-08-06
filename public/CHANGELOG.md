@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-06]
+### Added
+- Support for LHtranslation.
+
 ## [2017-08-03]
 ### Fixed
 - Userscript page load counter no longer pops out then in before displaying.

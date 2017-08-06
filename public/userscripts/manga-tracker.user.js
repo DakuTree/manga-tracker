@@ -33,8 +33,9 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-04
-// @version      1.7.40
+// @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
+// @updated      2017-08-06
+// @version      1.7.41
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1834,7 +1835,7 @@ let sites = {
 			$('.pager').remove();
 
 			$('#image_frame').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
+			callback(false, true);
 		}
 	}),
 
@@ -2048,6 +2049,34 @@ let sites = {
 			this.foolSlideBaseURL = this.https+'://mangaichiscans.mokkori.fr/fs';
 			this.setupFoolSlide(3);
 			callback();
+		}
+	}),
+
+	/**
+	 * LHtranslation
+	 * @type {SiteObject}
+	 */
+	'lhtranslation.com' : extendSite({
+		setObjVars : function() {
+			this.segments = this.segments[1].match(/^read-(.*?)-chapter-([0-9\.]+)\.html$/);
+			this.title         = this.segments[1];
+			this.chapter       = this.segments[2];
+
+			this.title_url   = this.https + `://lhtranslation.com/manga-${this.title}.html`;
+			this.chapter_url = this.https + `://lhtranslation.com/read-${this.title}-chapter-${this.chapter}.html`;
+
+			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
+			this.chapterList        = generateChapterList($('.chapter-before:eq(1) .select-chapter > select > option').reverseObj(), 'value');
+
+			this.viewerCustomImageList = $('img.chapter-img').map(function(i, e) {
+				return $(e).attr('src');
+			});
+
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		preSetupViewer : function(callback) {
+			$('.chapter-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(false, true);
 		}
 	}),
 

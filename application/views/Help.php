@@ -53,5 +53,6 @@
 		<li>MerakiScans</li>
 		<li>FallenAngelsScans</li>
 		<li>Mangaichi Scanlation Division</li>
+		<li>LHtranslation</li>
 	</ul>
 </div>

@@ -35,3 +35,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * MerakiScans
 * FallenAngelsScans
 * Mangaichi Scanlation Division
+* LHtranslation
