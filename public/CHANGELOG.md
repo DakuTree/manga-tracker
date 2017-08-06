@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Support for LHtranslation.
 
+### Fixed
+- Userscript image error container should properly appear again, and it should now work on sites that use `viewerCustomImageList`.
+
 ## [2017-08-03]
 ### Fixed
 - Userscript page load counter no longer pops out then in before displaying.

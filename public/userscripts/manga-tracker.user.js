@@ -35,7 +35,7 @@
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
 // @updated      2017-08-06
-// @version      1.7.41
+// @version      1.7.42
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -525,7 +525,7 @@ let base_site = {
 			let pagePromises = [];
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
 				pagePromises.push(new Promise((resolve, reject) => { // jshint ignore:line
-					$('<div/>', {id: 'page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
+					$('<div/>', {id: 'trackr-page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
 
 					if(!useCustomImageList) {
 						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
@@ -602,7 +602,7 @@ let base_site = {
 						promiseResolve();
 					},
 					error: function () {
-						_this.setupViewerContainerError(url, this.page);
+						_this.setupViewerContainerError(url, this.page, false);
 						promiseResolve(); // we probably should use promiseReject() here
 					}
 				});
@@ -635,6 +635,9 @@ let base_site = {
 				.on('load', function() {
 					_this.updatePagesLoaded(true);
 				})
+				.on('error', function() {
+					_this.setupViewerContainerError(imgURL, pageN, true);
+				})
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
@@ -642,7 +645,7 @@ let base_site = {
 		);
 
 		//Replace the placeholder image_container with the real one
-		$(`#page-${pageN}`).replaceWith(image_container);
+		$(`#trackr-page-${pageN}`).replaceWith(image_container);
 	},
 
 	/**
@@ -652,31 +655,39 @@ let base_site = {
 	 * @alias sites.*.setupViewerContainerError
 	 * @name base_site.setupViewerContainerError
 	 *
-	 * @param {string} pageURL
-	 * @param {int}    pageN
+	 * @param {string}  pageURL
+	 * @param {int}     pageN
+	 * @param {boolean} imgLoadFailed
 	 *
 	 * @final
 	 */
-	setupViewerContainerError : function(pageURL, pageN) {
+	setupViewerContainerError : function(pageURL, pageN, imgLoadFailed) {
 		let _this = this;
 		_this.updatePagesLoaded(false);
 
-		let image_container = $('<div/>', {class: 'read_img', id: 'page-'+pageN}).append(
+		console.error('setupViewerContainerError called');
+		let image_container = $('<div/>', {class: 'read_img', id: 'trackr-page-'+pageN}).append(
 			$('<img/>', {style: 'cursor: pointer', src: GM_getResourceURL('reload')}).click(function() {
-				$.ajax({
-					url    : pageURL,
-					type   : 'GET',
-					page   : pageN,
-					// async: useASync,
-					success: function (data) {
-						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-						_this.setupViewerContainer($(original_image).attr('src'), this.page);
-					},
-					error: function () {
-						alert('Failed to load image again. Something may be wrong with the site.');
-						_this.setupViewerContainerError(pageURL, this.page);
-					}
-				});
+				if(!imgLoadFailed) {
+					//Page load failed
+					$.ajax({
+						url    : pageURL,
+						type   : 'GET',
+						page   : pageN,
+						// async: useASync,
+						success: function (data) {
+							let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+							_this.setupViewerContainer($(original_image).attr('src'), this.page);
+						},
+						error: function () {
+							alert('Failed to load image again. Something may be wrong with the site.');
+							_this.setupViewerContainerError(pageURL, this.page, false);
+						}
+					});
+				} else {
+					//Image load failed
+					_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
+				}
 			})
 		).append(
 			//Add page number
@@ -685,7 +696,7 @@ let base_site = {
 		);
 
 		//Replace the placeholder image_container with the real one
-		$('#page-'+pageN).replaceWith(image_container);
+		$('#trackr-page-'+pageN).replaceWith(image_container);
 	},
 
 	/**
