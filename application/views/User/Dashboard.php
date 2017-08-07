@@ -6,7 +6,7 @@
 <?php } ?>
 
 <?php if($has_inactive) { ?>
-<div class="alert alert-warning" role="alert">
+<div id="inactive-series" class="alert alert-warning" role="alert">
 	Some of the series in your list have been marked as inactive and not updated due to having no active users tracking it.<br>
 	These will be updated during the next update.
 

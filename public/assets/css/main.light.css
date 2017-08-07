@@ -524,6 +524,11 @@ body {
 
 	text-align: center;
 }
+#page[data-page="dashboard"] #inactive-series {
+	overflow-y: scroll;
+
+	max-height: 400px;
+}
 #page[data-page="dashboard"] > .alert .close {
 	line-height: inherit;
 }
