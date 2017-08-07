@@ -129,8 +129,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				case 'latest':
 					foreach (array_keys($arr['series']) as $category) {
 						usort($arr['series'][$category]['manga'], function($a, $b) use($sortOrder) {
-							$a_text = strtolower("{$a['generated_latest_data']['number']}");
-							$b_text = strtolower("{$b['generated_latest_data']['number']}");
+							$a_text = new DateTime("{$a['title_data']['last_updated']}");
+							$b_text = new DateTime("{$b['title_data']['last_updated']}");
 
 							if($sortOrder == 'asc') {
 								return $a_text <=> $b_text;
