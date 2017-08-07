@@ -96,6 +96,28 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					}
 					break;
 
+				case 'unread_latest':
+					foreach (array_keys($arr['series']) as $category) {
+						usort($arr['series'][$category]['manga'], function ($a, $b) use($sortOrder) {
+							$a_text = $a['new_chapter_exists'];
+							$b_text = $b['new_chapter_exists'];
+
+							$a_text2 = new DateTime("{$a['title_data']['last_updated']}");
+							$b_text2 = new DateTime("{$b['title_data']['last_updated']}");
+
+							if($sortOrder == 'asc') {
+								$unreadSort = ($a_text <=> $b_text);
+								if($unreadSort) return $unreadSort;
+								return $a_text2 <=> $b_text2;
+							} else {
+								$unreadSort = ($a_text <=> $b_text);
+								if($unreadSort) return $unreadSort;
+								return $b_text2 <=> $a_text2;
+							}
+						});
+					}
+					break;
+
 				case 'alphabetical':
 					foreach (array_keys($arr['series']) as $category) {
 						usort($arr['series'][$category]['manga'], function($a, $b) use($sortOrder) {

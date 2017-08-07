@@ -81,10 +81,11 @@ class Options extends Auth_Controller {
 
 		$this->body_data['list_sort_type'] = array_intersect_key(
 			array(
-				'unread'       => 'Unread',
-				'alphabetical' => 'Alphabetical',
-				'my_status'    => 'My Status',
-				'latest'       => 'Latest Release'
+				'unread'        => 'Unread (Alphabetical)',
+				'unread_latest' => 'Unread (Latest Release)',
+				'alphabetical'  => 'Alphabetical',
+				'my_status'     => 'My Status',
+				'latest'        => 'Latest Release'
 			),
 			array_flip(array_values($this->User_Options->options['list_sort_type']['valid_options']))
 		);

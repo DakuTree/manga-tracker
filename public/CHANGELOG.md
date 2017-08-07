@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-07]
+### Added
+- Added "_Unread (Latest Release)_" sort method.
+
 ### Changed
 - Show a list of inactive series in the inactive alert.
 - Sorting by latest release now sorts by the date of last update, rather than alphanumerically by chapter number.
+- Old "_Unread_" sort method has been renamed to "_Unread (Alphabetical)_".
 
 ## [2017-08-06]
 ### Added

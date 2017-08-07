@@ -72,7 +72,8 @@ class User_Options_Model extends CI_Model {
 				0 => 'unread',
 				1 => 'alphabetical',
 				2 => 'my_status',
-				3 => 'latest'
+				3 => 'latest',
+				4 => 'unread_latest'
 			)
 		),
 
