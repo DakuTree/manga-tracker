@@ -527,7 +527,7 @@ body {
 #page[data-page="dashboard"] #inactive-series {
 	overflow-y: scroll;
 
-	max-height: 400px;
+	max-height: 250px;
 }
 #page[data-page="dashboard"] > .alert .close {
 	line-height: inherit;
