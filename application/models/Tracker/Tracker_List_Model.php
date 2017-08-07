@@ -19,7 +19,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			->where('tracker_chapters.active', 'Y')
 			->get();
 
-		$arr = ['series' => [], 'has_inactive' => FALSE];
+		$arr = ['series' => [], 'has_inactive' => FALSE, 'inactive_titles' => []];
 		$enabledCategories = $this->getEnabledCategories($userID);
 		foreach($enabledCategories as $category => $name) {
 			$arr['series'][$category] = [
@@ -73,6 +73,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				$arr['series'][$row->category]['manga'][] = $data;
 
 				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
+				if($arr['has_inactive'])  $arr['inactive_titles'][$data['full_title_url']] = $data['title_data']['title'];
 			}
 
 			//FIXME: This is not good for speed, but we're kind of required to do this for UX purposes.

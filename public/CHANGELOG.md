@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-07]
+### Changed
+- Show a list of inactive series in the inactive alert.
+
 ## [2017-08-06]
 ### Added
 - Support for LHtranslation.

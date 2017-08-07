@@ -9,6 +9,12 @@
 <div class="alert alert-warning" role="alert">
 	Some of the series in your list have been marked as inactive and not updated due to having no active users tracking it.<br>
 	These will be updated during the next update.
+
+	<ul>
+	<?php foreach($inactive_titles as $url => $title) { ?>
+		<li><a href="<?=$url?>"><?=$title?></a></li>
+	<?php } ?>
+	</ul>
 </div>
 <?php } ?>
 
