@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Updated Composer dependencies.
 - Added fallback for Tablesorter JS.
 
+### Fixed
+- Fix for Fallen Angels Scans
+
 ## [2017-08-07]
 ### Added
 - Added "_Unread (Latest Release)_" sort method.
