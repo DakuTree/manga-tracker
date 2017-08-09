@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - `[Backend]` Updated Composer dependencies.
 - Added fallback for Tablesorter JS.
+- Table headers now show sort direction.
 
 ### Fixed
 - Fix for Fallen Angels Scans not showing images.
