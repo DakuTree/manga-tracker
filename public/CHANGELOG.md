@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file.
 - Lots of Dashboard HTML & LESS cleanup.
 - Unread column now has fixed width.
 - Moved to using Tablesorter for filtering, rather than using our own method.
-  - This may still need further tweaking before it works as well.
+  - This should work more or less the same as the previous search.
+  - You can now search for titles with a specific MAL ID by using "mal:#ID#" (Replace #ID# with the ID).
 
 ### Fixed
 - Fix for Fallen Angels Scans not showing images.

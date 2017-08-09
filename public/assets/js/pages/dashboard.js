@@ -31,6 +31,18 @@ $(function(){
 		type: 'numeric'
 	});
 
+	$.tablesorter.filter.types.FindMalId = function( config, data ) {
+		if(/^mal:[0-9]+$/.test(data.iFilter)) {
+			let searchID  = data.iFilter.match(/^mal:([0-9]+)$/)[1],
+			    currentID = data.$row.find('> td:eq(1) .sprite-myanimelist-net').attr('title');
+
+			console.log(searchID + ' ||| ' + currentID);
+			return searchID === currentID;
+		}
+		// ALWAYS return null if your custom filter type doesn't match
+		return null;
+	};
+
 	$('.tracker-table').tablesorter({
 		//FIXME: This is kinda unneeded, and it does add a longer delay to the tablesorter load, but we need it for setting the header sort direction icons..
 		sortList: getListSort(list_sort_type, list_sort_order),
