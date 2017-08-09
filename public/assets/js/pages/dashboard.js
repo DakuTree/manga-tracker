@@ -38,6 +38,17 @@ $(function(){
 		headers : {
 			2 : { sortInitialOrder : 'desc' },
 			3 : { sortInitialOrder : 'desc' }
+		},
+
+		widgets: ['zebra', 'filter'],
+		widgetOptions : {
+			// filter_anyMatch replaced! Instead use the filter_external option
+			// Set to use a jQuery selector (or jQuery object) pointing to the
+			// external filter (column specific or any match)
+			filter_external : '#search',
+			filter_columnFilters: false,
+			filter_saveFilters : true,
+			filter_reset: '.reset'
 		}
 	});
 	$.tablesorter.addParser({
@@ -152,32 +163,6 @@ $(function(){
 			}
 		}, 1000);
 	}
-
-	//Tag Search
-	$('#search').on('input', function(){
-		let tag_search_string = $(this).val(),
-		    tag_lists = $('.tag-list');
-
-		let filtered_tag_lists = tag_lists.filter(function() {
-			let safe_search_string = tag_search_string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-			let regex = new RegExp(/*"\\b"+*/safe_search_string/*+"\\b"*/, 'i');
-
-			return ! (regex.test($(this).text()) || regex.test($(this).closest('tr').find('> td:nth-of-type(2) > a').text()));
-		});
-
-		let unfiltered_tag_lists = $(tag_lists).not(filtered_tag_lists);
-
-		$('.tracker-table tbody > tr').removeClass('striped').removeClass('hidden'); //Remove extra classes from everything
-		filtered_tag_lists.closest('tr').addClass('hidden'); //Hide filtered tags
-		unfiltered_tag_lists.closest('tr:not(.hidden):even').addClass('striped'); //Stripe odd visible rows
-	});
-	$('.tracker-table tbody > tr:not(.hidden):odd').addClass('striped'); //Set all visible rows as striped.
-	$('.tracker-table tbody').removeClass('js-striped'); //Remove class used to save bandwidth
-
-	$('.tracker-table').bind('sortEnd' ,function(e){
-		$(this).find('tbody > tr').removeClass('striped');
-		$(this).find('tbody > tr:not(.hidden):odd').addClass('striped');
-	});
 
 	/** Setup title handlers **/
 

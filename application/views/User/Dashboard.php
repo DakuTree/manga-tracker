@@ -65,7 +65,7 @@
 
 			<div id="search-container">
 				<div class="btn-group" style="vertical-align: baseline">
-					<input type="text" class="form-control" aria-label="Search" title="Search. This checks both titles and tags." placeholder="Search" id="search" name="search" required>
+					<input type="text" class="form-control" aria-label="Search" title="Search. This checks both titles and tags." placeholder="Search" id="search" name="search" data-column="all" required>
 					<span class="clear-text-input glyphicon glyphicon-remove-circle" data-clear-id="search"></span>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 			<th data-sorter="false"></th>
 		</tr>
 	</thead>
-	<tbody class="js-striped">
+	<tbody>
 		<?php foreach($trackerDataType['manga'] as $row) {
 			$trInfo = '';
 			if($row['site_data']['status'] == 'disabled') {

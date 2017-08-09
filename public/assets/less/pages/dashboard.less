@@ -137,10 +137,14 @@
 			}
 		}
 		& > tbody {
-			& > tr.striped, &.js-striped > tr:nth-of-type(even) {
-				background-color: @backgroundQuaternary;
-			}
 			& > tr {
+				&:nth-of-type(even), &:nth-of-type(even) > td {
+					background-color: @backgroundQuaternary;
+				}
+				&:nth-of-type(odd), &:nth-of-type(odd) > td {
+					background-color: transparent;
+				}
+
 				&:hover {
 					background-color: darken(@backgroundQuaternary, 5%);
 				}

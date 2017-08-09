@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 - Both "My Status" & "Latest Release" table columns should now sort by date rather than Alphanumerically now.
 - Lots of Dashboard HTML & LESS cleanup.
 - Unread column now has fixed width.
+- Moved to using Tablesorter for filtering, rather than using our own method.
+  - This may still need further tweaking before it works as well.
 
 ### Fixed
 - Fix for Fallen Angels Scans not showing images.
