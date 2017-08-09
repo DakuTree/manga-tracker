@@ -1,13 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2017-08-08]
+## [2017-08-09]
 ### Changed
 - `[Backend]` Updated Composer dependencies.
 - Added fallback for Tablesorter JS.
 
 ### Fixed
-- Fix for Fallen Angels Scans
+- Fix for Fallen Angels Scans not showing images.
+- Jaimini's Box no longer shows duplicate images.
 
 ## [2017-08-07]
 ### Added

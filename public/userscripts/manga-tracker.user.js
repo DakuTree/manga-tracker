@@ -34,8 +34,8 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
-// @updated      2017-08-08
-// @version      1.7.43
+// @updated      2017-08-09
+// @version      1.7.44
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -917,7 +917,7 @@ let base_site = {
 			this.viewerTitle = $('.topbar_left > .dropdown_parent > .text a').text();
 
 			//FoolSlide has the list of images stored in an html tag we can use instead of having to AJAX each page.
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/(https?:\\\/\\\/[^"]+)/g).filter(function(value, index, self) {
+			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(e) {
 				return JSON.parse('"' + e.replace(/"/g, '\\"') + '"');
