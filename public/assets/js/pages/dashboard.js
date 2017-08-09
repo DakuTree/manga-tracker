@@ -1,7 +1,66 @@
-/* globals page, base_url, use_live_countdown_timer */
+/* globals page, base_url, use_live_countdown_timer, list_sort_type, list_sort_order */
 $(function(){
 	'use strict';
 	if(page !== 'dashboard') { return false; }
+
+	$.tablesorter.addParser({
+		id: 'updated-at',
+
+		is: function() {
+			return false; // return false so this parser is not auto detected
+		},
+
+		format: function(s, table, cell, cellIndex) {
+			return (new Date($(cell).data('updated-at')).getTime() / 1000);
+		},
+
+		type: 'numeric'
+	});
+
+	$.tablesorter.addParser({
+		id: 'latest',
+
+		is: function() {
+			return false; // return false so this parser is not auto detected
+		},
+
+		format: function(s, table, cell, cellIndex) {
+			return (new Date($(cell).closest('tr').find('td:eq(1) .sprite-time').attr('title')).getTime() / 1000);
+		},
+
+		type: 'numeric'
+	});
+
+	$('.tracker-table').tablesorter({
+		//FIXME: This is kinda unneeded, and it does add a longer delay to the tablesorter load, but we need it for setting the header sort direction icons..
+		sortList: getListSort(list_sort_type, list_sort_order),
+
+		headers : {
+			2 : { sortInitialOrder : 'desc' },
+			3 : { sortInitialOrder : 'desc' }
+		}
+	});
+	$.tablesorter.addParser({
+		id: 'updated-at',
+
+		is: function() {
+			return false; // return false so this parser is not auto detected
+		},
+
+		format: function(s, table, cell, cellIndex) {
+			return (new Date($(cell).data('updated-at')).getTime() / 1000);
+		},
+
+		type: 'numeric'
+	});
+
+	$('.tracker-table').tablesorter({
+		// sortList: [[0,0], [1,0]]
+
+		headers : {
+			2 : { sortInitialOrder : 'desc' }
+		}
+	});
 
 	/** UX Improvements **/
 
@@ -61,6 +120,8 @@ $(function(){
 	});
 
 	setupStickyListHeader();
+
+	setupNavOptions();
 
 	//Setup update timer
 	if(typeof use_live_countdown_timer !== 'undefined' && use_live_countdown_timer && (! /^\/list\//.test(location.pathname))) {
@@ -359,6 +420,62 @@ $(function(){
 				nav.css('width', 'initial');
 			}
 		}
+	}
+
+	function setupNavOptions() {
+		//Setup nav slide toggle
+		$('#toggle-nav-options').click(function(e) {
+			e.preventDefault();
+
+			let icon    = $(this).find('> i'),
+			    options = $('#nav-options');
+			icon.toggleClass('down');
+
+			if(icon.hasClass('down')) {
+				options.hide().slideDown(500);
+			} else {
+				options.show().slideUp(500);
+			}
+		});
+
+		$('.list_sort').change(function() {
+			let tables = $('.tracker-table'),
+			    type   = $('select[name=list_sort_type]').val(),
+			    order  = $('select[name=list_sort_order]').val();
+
+			tables.trigger('sorton', [ getListSort(type, order) ]);
+		});
+	}
+	function getListSort(type, order) {
+		let sortArr = [];
+
+		let sortOrder = (order === 'asc' ? 'a' : 'd');
+		switch(type) {
+			case 'unread':
+				sortArr = [[/* unread */ 0, 'a'], [/* title*/ 1, sortOrder]];
+				break;
+
+			case 'unread_latest':
+				sortArr = [[/* unread */ 0, 'a'], [/* title*/ 3, sortOrder]];
+				break;
+
+			case 'alphabetical':
+				sortArr = [[/* title */ 1, sortOrder]];
+				break;
+
+			case 'my_status':
+				sortArr = [[/* unread */ 2, sortOrder]];
+				break;
+
+			case 'latest':
+				sortArr = [[/* unread */ 3, sortOrder]];
+				break;
+
+			default:
+				break;
+		}
+
+		return sortArr;
 	}
 
 	function setupTagEditor() {

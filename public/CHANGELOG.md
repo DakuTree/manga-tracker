@@ -2,10 +2,17 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-09]
+### Added
+- Dashboard nav now has a dropdown options menu.
+  - This has an alternate method to sorting your list that uses the same sorting methods as the backend does.
+  - Also moved the Export List link to here.
+
 ### Changed
 - `[Backend]` Updated Composer dependencies.
 - Added fallback for Tablesorter JS.
 - Table headers now show sort direction.
+- Both "My Status" & "Latest Release" table columns should now sort by date rather than Alphanumerically now.
+- Lots of Dashboard HTML & LESS cleanup.
 
 ### Fixed
 - Fix for Fallen Angels Scans not showing images.

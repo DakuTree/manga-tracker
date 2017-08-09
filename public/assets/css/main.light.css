@@ -16,7 +16,7 @@ a {
 
 	font-weight: normal;
 }
-a:hover {
+a:hover, a:focus {
 	color: #23527C;
 }
 select {
@@ -524,36 +524,47 @@ body {
 
 	text-align: center;
 }
+#page[data-page="dashboard"] > div {
+	margin-bottom: 5px;
+}
+#page[data-page="dashboard"] #update-notice .close {
+	line-height: inherit;
+}
 #page[data-page="dashboard"] #inactive-series {
 	overflow-y: scroll;
 
 	max-height: 250px;
 }
-#page[data-page="dashboard"] > .alert .close {
-	line-height: inherit;
+#page[data-page="dashboard"] #list-nav {
+	background-color: #FFFFFF;
 }
-#page[data-page="dashboard"] > div {
-	margin-bottom: 5px;
+#page[data-page="dashboard"] #list-nav.fixed-header {
+	position: fixed;
+	z-index: 1;
+	top: 25px;
+
+	width: 100%;
+	max-width: 1000px;
 }
-#page[data-page="dashboard"] > div .list-header {
+#page[data-page="dashboard"] #list-nav .list-header {
 	padding-right: 4px;
 
 	text-align: right;
 }
-#page[data-page="dashboard"] > div#list-nav {
-	background-color: #FFFFFF;
-}
-#page[data-page="dashboard"] > div > nav ul > li.active {
+#page[data-page="dashboard"] #list-nav #category-nav ul > li.active {
 	background-color: #EEEEEE;
 }
-#page[data-page="dashboard"] > div > nav ul > li a {
+a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:focus {
+	background-color: #EEEEEE;
+}
+#page[data-page="dashboard"] #list-nav #category-nav ul > li a {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-#page[data-page="dashboard"] > div > nav ul > li a:hover {
+#page[data-page="dashboard"] #list-nav #category-nav ul > li a:hover, #page[data-page="dashboard"] #list-nav #category-nav ul > li a:focus {
 	background-color: #EEEEEE;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links {
+#page[data-page="dashboard"] #list-nav .nav-row {
 	clear: both;
 	overflow: auto;
 
@@ -561,23 +572,18 @@ body {
 
 	background-color: #EEEEEE;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links #move-container {
-	margin-left: 10px;
-}
-#page[data-page="dashboard"] > div > #tracker-table-links div {
+#page[data-page="dashboard"] #list-nav .nav-row div {
 	display: inline-block;
 
 	text-align: center;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links .pull-right input {
-	position: absolute;
-
-	visibility: hidden;
+#page[data-page="dashboard"] #list-nav .nav-row div:not(:first-child) {
+	margin-left: 10px;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links label {
+#page[data-page="dashboard"] #list-nav .nav-row label {
 	margin-bottom: 0;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links label span {
+#page[data-page="dashboard"] #list-nav .nav-row label span {
 	cursor: pointer;
 
 	color: #003399;
@@ -585,54 +591,99 @@ body {
 
 	font-weight: normal;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links label span:hover {
+#page[data-page="dashboard"] #list-nav .nav-row label span:hover {
 	text-decoration: underline;
 }
-#page[data-page="dashboard"] > div > #tracker-table-links #import-status {
-	margin-right: 10px;
-}
-#page[data-page="dashboard"] > div > #tracker-table-links #search {
+#page[data-page="dashboard"] #list-nav #tracker-table-links #search {
 	height: 26px;
 	padding: 6px 8px;
 
 	font-size: 13px;
 }
-#page[data-page="dashboard"] > .tracker-table {
+#page[data-page="dashboard"] #list-nav #tracker-table-links #toggle-nav-options {
+	color: inherit;
+}
+#page[data-page="dashboard"] #list-nav #tracker-table-links #toggle-nav-options i {
+	-webkit-transition: all 0.5s linear;
+	   -moz-transition: all 0.5s linear;
+	     -o-transition: all 0.5s linear;
+	        transition: all 0.5s linear;
+}
+#page[data-page="dashboard"] #list-nav #tracker-table-links #toggle-nav-options i.down {
+	-webkit-transform: rotate(180deg);
+	   -moz-transform: rotate(180deg);
+	    -ms-transform: rotate(180deg);
+	     -o-transform: rotate(180deg);
+	        transform: rotate(180deg);
+}
+#page[data-page="dashboard"] #list-nav #nav-options {
+	display: none;
+	clear: both;
+
+	padding: 3px 7px;
+
+	background-color: #EEEEEE;
+}
+#page[data-page="dashboard"] #list-nav #nav-options div {
+	display: inline-block;
+
+	text-align: center;
+}
+#page[data-page="dashboard"] .tracker-table {
 	width: 100%;
 
 	text-align: left;
 }
-#page[data-page="dashboard"] > .tracker-table > thead th {
+#page[data-page="dashboard"] .tracker-table .sorter-false {
+	background-image: none !important;
+}
+#page[data-page="dashboard"] .tracker-table .header, #page[data-page="dashboard"] .tracker-table .tablesorter-header {
+	padding: 4px 20px 4px 4px;
+
+	cursor: pointer;
+	white-space: normal;
+
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+#page[data-page="dashboard"] .tracker-table thead .headerSortUp, #page[data-page="dashboard"] .tracker-table thead .tablesorter-headerAsc, #page[data-page="dashboard"] .tracker-table thead .tablesorter-headerSortUp {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+}
+#page[data-page="dashboard"] .tracker-table thead .headerSortDown, #page[data-page="dashboard"] .tracker-table thead .tablesorter-headerDesc, #page[data-page="dashboard"] .tracker-table thead .tablesorter-headerSortDown {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+}
+#page[data-page="dashboard"] .tracker-table > thead th {
 	background-color: #EEEEEE;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] > .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
 	background-color: #F7F7F7;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr:hover {
+#page[data-page="dashboard"] .tracker-table > tbody > tr:hover {
 	background-color: #EAEAEA;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(1) {
 	width: 5%;
 
 	text-align: center;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(1) > input {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(1) > input {
 	vertical-align: sub;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) {
 	width: 50%;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > img {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) > img {
 	width: 15px;
 	height: 15px;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .mal-link {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) .mal-link {
 	text-decoration: none;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2):hover .toggle-info {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2):hover .toggle-info {
 	display: inline;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info {
 	display: none;
 
 	margin-right: 15px;
@@ -643,58 +694,50 @@ body {
 
 	font-weight: normal;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info:hover {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) .toggle-info:hover {
 	text-decoration: underline;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info {
 	display: none;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info input {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) > .more-info input {
 	font-style: normal;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(2) > .has-tags {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(2) > .has-tags {
 	display: block;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(3) {
 	width: 20%;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter {
 	font-size: 11px;
 	font-style: italic;
 	line-height: 11px;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:before {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:before {
 	content: " (";
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:after {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(3) .hidden-chapter:after {
 	content: ")";
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(4) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(4) {
 	width: 20%;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(5) {
 	width: 5%;
 	padding: 0 5px;
 
 	text-align: right;
 	white-space: nowrap;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .list-icon:not(:nth-last-child(1)) {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(5) .list-icon:not(:nth-last-child(1)) {
 	margin-right: 2px;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .update-read {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(5) .update-read {
 	cursor: pointer;
 }
-#page[data-page="dashboard"] > .tracker-table > tbody > tr > td:nth-of-type(5) .ignore-latest {
+#page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(5) .ignore-latest {
 	cursor: pointer;
-}
-#page[data-page="dashboard"] #list-nav.fixed-header {
-	position: fixed;
-	z-index: 1;
-	top: 25px;
-
-	width: 100%;
-	max-width: 1000px;
 }
 #page[data-page="history"] #history-options {
 	margin-bottom: 5px;

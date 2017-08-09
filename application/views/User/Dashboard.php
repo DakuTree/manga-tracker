@@ -42,7 +42,7 @@
 		</div>
 	</nav>
 
-	<div id="tracker-table-links">
+	<div id="tracker-table-links" class="nav-row">
 		<div class="pull-left">
 			<div id="mass-action">
 				<b>Modify selected: </b>
@@ -68,6 +68,17 @@
 			</div>
 		</div>
 		<div class="pull-right">
+			<a href="#" id="toggle-nav-options"><i class="fa fa-cog"></i></a>
+		</div>
+	</div>
+
+	<div id="nav-options" class="nav-row">
+		<div class="pull-left">
+			<?=form_label('List sort: ', 'list_sort_type')?>
+			<?=form_dropdown('list_sort_type', $list_sort_type, $list_sort_type_selected, ['class' => 'list_sort'])?>
+			<?=form_dropdown('list_sort_order', $list_sort_order, $list_sort_order_selected, ['class' => 'list_sort'])?>
+		</div>
+		<div class="pull-right">
 			<!-- NOTE: We would use the download attr here, but it can cause issues if the user logs out -->
 			<a href="<?=base_url('export_list')?>">Export List</a>
 		</div>
@@ -75,14 +86,15 @@
 </div>
 
 <?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
-<table class="tablesorter tablesorter-bootstrap tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>" data-unread="<?=$trackerDataType['unread_count']?>">
+<table class="tablesorter-bootstrap tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>" data-unread="<?=$trackerDataType['unread_count']?>">
 	<thead>
 		<tr>
-			<th class="header read headerSortDown"></th>
-			<th class="header read"><div class="tablesorter-header-inner">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></div></th>
-			<th class="header read"><div class="tablesorter-header-inner">My Status</div></th>
-			<th class="header read"><div class="tablesorter-header-inner">Latest Release</div></th>
-			<th></th>
+			<!-- TODO: Add headerSortDown or headerSortUp depending on sort -->
+			<th class="header read"></th>
+			<th class="header read">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></th>
+			<th class="header read sorter-updated-at">My Status</th>
+			<th class="header read sorter-latest">Latest Release</th>
+			<th data-sorter="false"></th>
 		</tr>
 	</thead>
 	<tbody class="js-striped">
@@ -100,7 +112,7 @@
 		?>
 		<tr data-id="<?=$row['id']?>" <?=$trInfo?>>
 			<td>
-				<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
+				<span class="hidden"><?=$row['new_chapter_exists']?></span>
 				<input type="checkbox" name="check">
 			</td>
 			<td>
@@ -132,7 +144,7 @@
 					</small>
 				</div>
 			</td>
-			<td>
+			<td data-updated-at="<?=$row['last_updated']?>">
 				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=htmlentities($row['generated_current_data']['number'])?></a>
 				<?php if(!is_null($row['title_data']['ignore_chapter'])) { ?><span class='hidden-chapter' title='The latest chapter was marked as ignored.'><?=$row['generated_ignore_data']['number']?></span><?php } ?>
 			</td>
@@ -162,4 +174,7 @@
 	const use_live_countdown_timer = <?=$use_live_countdown_timer?>;
 	//noinspection JSAnnotator
 	const mal_sync = "<?=$mal_sync?>";
+
+	const list_sort_type  = "<?=$list_sort_type_selected?>";
+	const list_sort_order = "<?=$list_sort_order_selected?>";
 </script>

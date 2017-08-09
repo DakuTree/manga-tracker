@@ -48,6 +48,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					'mal_id'                => $row->mal_id ?? $row->title_mal_id, //TODO: This should have an option
 					'mal_type'              => (!is_null($row->mal_id) ? 'chapter' : (!is_null($row->title_mal_id) ? 'title' : 'none')),
 
+					'last_updated' => $row->last_updated,
+
 					'title_data' => [
 						'id'              => $row->title_id,
 						'title'           => $row->title,
