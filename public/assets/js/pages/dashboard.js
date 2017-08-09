@@ -36,10 +36,8 @@ $(function(){
 			let searchID  = data.iFilter.match(/^mal:([0-9]+)$/)[1],
 			    currentID = data.$row.find('> td:eq(1) .sprite-myanimelist-net').attr('title');
 
-			console.log(searchID + ' ||| ' + currentID);
 			return searchID === currentID;
 		}
-		// ALWAYS return null if your custom filter type doesn't match
 		return null;
 	};
 
@@ -59,19 +57,6 @@ $(function(){
 			filter_saveFilters : false,
 			filter_reset: '.reset'
 		}
-	});
-	$.tablesorter.addParser({
-		id: 'updated-at',
-
-		is: function() {
-			return false; // return false so this parser is not auto detected
-		},
-
-		format: function(s, table, cell, cellIndex) {
-			return (new Date($(cell).data('updated-at')).getTime() / 1000);
-		},
-
-		type: 'numeric'
 	});
 
 	$('.tracker-table').tablesorter({
