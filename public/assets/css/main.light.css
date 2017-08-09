@@ -89,6 +89,111 @@ h1 {
 .tooltip .tooltip-inner {
 	max-width: 100%;
 }
+.btn-group input:valid + .clear-text-input {
+	display: block;
+
+	-webkit-animation: fadeIn 1s;
+	   -moz-animation: fadeIn 1s;
+	     -o-animation: fadeIn 1s;
+	        animation: fadeIn 1s;
+}
+.btn-group .clear-text-input {
+	position: absolute;
+	top: 0;
+	right: 5px;
+	bottom: 0;
+
+	display: none;
+
+	height: 14px;
+	margin: auto;
+
+	cursor: pointer;
+
+	color: #CCCCCC;
+
+	font-size: 14px;
+}
+@-webkit-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-moz-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-ms-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-o-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@-webkit-keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+@-moz-keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+@-ms-keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+@-o-keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
 #site-header {
 	/* dropdown */
 }
@@ -178,46 +283,6 @@ html {
 body {
 	/* Margin bottom by footer height */
 	margin-bottom: 40px;
-}
-@-webkit-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@-moz-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@-ms-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@-o-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
 }
 #site-footer {
 	position: absolute;
@@ -656,6 +721,9 @@ a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a 
 #page[data-page="dashboard"] .tracker-table > thead th {
 	background-color: #EEEEEE;
 }
+#page[data-page="dashboard"] .tracker-table > thead th:nth-of-type(1) {
+	width: 40px;
+}
 #page[data-page="dashboard"] .tracker-table > tbody > tr.striped, #page[data-page="dashboard"] .tracker-table > tbody.js-striped > tr:nth-of-type(even) {
 	background-color: #F7F7F7;
 }
@@ -663,7 +731,7 @@ a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a 
 	background-color: #EAEAEA;
 }
 #page[data-page="dashboard"] .tracker-table > tbody > tr > td:nth-of-type(1) {
-	width: 5%;
+	width: 40px;
 
 	text-align: center;
 }

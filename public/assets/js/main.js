@@ -15,4 +15,10 @@ $(function(){
 		// theme : 'bootstrap',
 		// widgets: ['uitheme']
 	});
+
+	$('.clear-text-input').click(function(e) {
+		e.preventDefault();
+
+		$(this).prev('input').val('').trigger('input');
+	});
 });

@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Dashboard nav now has a dropdown options menu.
   - This has an alternate method to sorting your list that uses the same sorting methods as the backend does.
   - Also moved the Export List link to here.
+- List search now has a clear button.
 
 ### Changed
 - `[Backend]` Updated Composer dependencies.
@@ -13,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Table headers now show sort direction.
 - Both "My Status" & "Latest Release" table columns should now sort by date rather than Alphanumerically now.
 - Lots of Dashboard HTML & LESS cleanup.
+- Unread column now has fixed width.
 
 ### Fixed
 - Fix for Fallen Angels Scans not showing images.

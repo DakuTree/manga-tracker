@@ -64,7 +64,10 @@
 			</div>
 
 			<div id="search-container">
-				<input type="text" class="form-control" aria-label="Search" title="Search. This checks both titles and tags." placeholder="Search" id="search" name="search">
+				<div class="btn-group" style="vertical-align: baseline">
+					<input type="text" class="form-control" aria-label="Search" title="Search. This checks both titles and tags." placeholder="Search" id="search" name="search" required>
+					<span class="clear-text-input glyphicon glyphicon-remove-circle" data-clear-id="search"></span>
+				</div>
 			</div>
 		</div>
 		<div class="pull-right">

@@ -97,3 +97,34 @@ h1 {
 		max-width: 100%;
 	}
 }
+
+.btn-group {
+	input:valid + .clear-text-input { //requires html required to work correctly
+		display:block;
+		.animation(fadeIn 1s);
+	}
+	.clear-text-input {
+		display: none; //hide by default.
+
+		position: absolute;
+		right: 5px;
+		top: 0;
+		bottom: 0;
+		height: 14px;
+		margin: auto;
+		font-size: 14px;
+		cursor: pointer;
+		color: #ccc;
+	}
+}
+
+.keyframes(fadeIn, {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+});
+
+
+.keyframes(fadeOut, {
+	from { opacity: 1; }
+	to   { opacity: 0; }
+});
