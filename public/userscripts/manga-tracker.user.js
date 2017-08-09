@@ -35,7 +35,7 @@
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
 // @updated      2017-08-09
-// @version      1.7.44
+// @version      1.7.45
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -920,7 +920,8 @@ let base_site = {
 			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g).filter(function(value, index, self) {
 				return self.indexOf(value) === index;
 			}).map(function(e) {
-				return JSON.parse('"' + e.replace(/"/g, '\\"') + '"');
+				let val = e.replace(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
+				return JSON.parse('"' + val.replace(/"/g, '\\"') + '"');
 			});
 			this.page_count = this.viewerCustomImageList.length;
 
