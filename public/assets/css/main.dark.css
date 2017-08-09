@@ -724,10 +724,10 @@ a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a 
 #page[data-page="dashboard"] .tracker-table > thead th:nth-of-type(1) {
 	width: 40px;
 }
-#page[data-page="dashboard"] .tracker-table > tbody > tr:nth-of-type(even), #page[data-page="dashboard"] .tracker-table > tbody > tr:nth-of-type(even) > td {
+#page[data-page="dashboard"] .tracker-table > tbody > tr.even, #page[data-page="dashboard"] .tracker-table > tbody > tr.even > td {
 	background-color: #161616;
 }
-#page[data-page="dashboard"] .tracker-table > tbody > tr:nth-of-type(odd), #page[data-page="dashboard"] .tracker-table > tbody > tr:nth-of-type(odd) > td {
+#page[data-page="dashboard"] .tracker-table > tbody > tr.odd, #page[data-page="dashboard"] .tracker-table > tbody > tr.odd > td {
 	background-color: transparent;
 }
 #page[data-page="dashboard"] .tracker-table > tbody > tr:hover {
