@@ -439,9 +439,32 @@ $(function(){
 		});
 
 		$('.list_sort').change(function() {
-			let tables = $('.tracker-table'),
-			    type   = $('select[name=list_sort_type]').val(),
-			    order  = $('select[name=list_sort_order]').val();
+			let tables    = $('.tracker-table'),
+			    type      = $('select[name=list_sort_type]').val(),
+			    order_ele = $('select[name=list_sort_order]'),
+			    order     = order_ele.val();
+
+			if($(this).attr('name', 'list_sort_type')) {
+				//Type has changed, so set order to default.
+				switch(type) {
+					case 'unread_latest':
+						order = 'desc';
+						break;
+
+					case 'my_status':
+						order = 'desc';
+						break;
+
+					case 'latest':
+						order = 'desc';
+						break;
+
+					default:
+						order = 'asc';
+						break;
+				}
+				order_ele.val(order); //thankfully .val doesn't re-trigger .change
+			}
 
 			tables.trigger('sorton', [ getListSort(type, order) ]);
 		});

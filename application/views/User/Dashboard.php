@@ -89,7 +89,6 @@
 <table class="tablesorter-bootstrap tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>" data-unread="<?=$trackerDataType['unread_count']?>">
 	<thead>
 		<tr>
-			<!-- TODO: Add headerSortDown or headerSortUp depending on sort -->
 			<th class="header read"></th>
 			<th class="header read">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></th>
 			<th class="header read sorter-updated-at">My Status</th>
