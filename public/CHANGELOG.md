@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-08]
+### Changed
+- `[Backend]` Updated Composer dependencies.
+- Added fallback for Tablesorter JS.
+
 ## [2017-08-07]
 ### Added
 - Added "_Unread (Latest Release)_" sort method.
