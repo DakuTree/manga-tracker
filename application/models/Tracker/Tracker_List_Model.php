@@ -9,9 +9,9 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		$userID = (is_null($userID) ? (int) $this->User->id : $userID);
 
 		$query = $this->db
-			->select('tracker_chapters.*,
+			->select('tracker_chapters.*, CONVERT_TZ(tracker_chapters.last_updated, @@session.time_zone, \'+00:00\') AS utc_last_updated,
 			          tracker_titles.site_id, tracker_titles.title, tracker_titles.title_url, tracker_titles.latest_chapter, tracker_titles.last_updated AS title_last_updated, tracker_titles.status AS title_status, tracker_titles.mal_id AS title_mal_id, tracker_titles.last_checked > DATE_SUB(NOW(), INTERVAL 1 WEEK) AS title_active, tracker_titles.failed_checks AS title_failed_checks,
-			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status')
+			          tracker_sites.site, tracker_sites.site_class, tracker_sites.status AS site_status', FALSE)
 			->from('tracker_chapters')
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
@@ -48,7 +48,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					'mal_id'                => $row->mal_id ?? $row->title_mal_id, //TODO: This should have an option
 					'mal_type'              => (!is_null($row->mal_id) ? 'chapter' : (!is_null($row->title_mal_id) ? 'title' : 'none')),
 
-					'last_updated' => $row->last_updated,
+					'last_updated' => $row->utc_last_updated,
 
 					'title_data' => [
 						'id'              => $row->title_id,
