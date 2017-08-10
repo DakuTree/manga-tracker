@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Striped rows should appear on non-default categories again.
 - Changing sort direction in the nav dropdown should work properly now.
+- Trying to sort by title when your default sort is "Unread (Alphabetical)" should now sort by ASC on first click, rather than DESC.
 
 ## [2017-08-09]
 ### Added

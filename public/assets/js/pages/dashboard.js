@@ -46,6 +46,7 @@ $(function(){
 		sortList: getListSort(list_sort_type, list_sort_order),
 
 		headers : {
+			1 : { sortInitialOrder : 'asc'  },
 			2 : { sortInitialOrder : 'desc' },
 			3 : { sortInitialOrder : 'desc' }
 		},
@@ -56,6 +57,15 @@ $(function(){
 			filter_columnFilters: false,
 			filter_saveFilters : false,
 			filter_reset: '.reset'
+		},
+		initialized: function(table) {
+			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort
+			//SEE: https://github.com/Mottie/tablesorter/issues/1445#issuecomment-321537911
+			let sortVars = table.config.sortVars;
+			sortVars.forEach(function(el) {
+				// reset the internal counter
+				el.count = -1;
+			});
 		}
 	});
 
