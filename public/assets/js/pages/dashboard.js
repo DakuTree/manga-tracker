@@ -11,7 +11,7 @@ $(function(){
 		},
 
 		format: function(s, table, cell, cellIndex) {
-			return (new Date($(cell).data('updated-at')).getTime() / 1000);
+			return parseInt($(cell).data('updated-at').replace(/[^0-9]+/g, ''));
 		},
 
 		type: 'numeric'
@@ -25,7 +25,7 @@ $(function(){
 		},
 
 		format: function(s, table, cell, cellIndex) {
-			return (new Date($(cell).closest('tr').find('td:eq(1) .sprite-time').attr('title')).getTime() / 1000);
+			return parseInt($(cell).closest('tr').find('td:eq(1) .sprite-time').attr('title').replace(/[^0-9]+/g, ''));
 		},
 
 		type: 'numeric'
