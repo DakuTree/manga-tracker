@@ -5,7 +5,7 @@ $(function() {
 
 	//Disallow disabling category if category has series
 	$('input[type=checkbox][name^=category_custom]').change(function () {
-		if($(this).data('has-series') === '1') {
+		if($(this).attr('data-has-series') === '1') {
 			//FIXME: Using alerts is kinda ugh.
 			alert('Unable to disable category while it still contains series.');
 			$(this).prop('checked', !$(this).prop('checked'));

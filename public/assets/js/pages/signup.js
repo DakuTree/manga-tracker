@@ -44,7 +44,7 @@ $(function() {
 		let $widget = $(this),
 		    $button = $widget.find('button'),
 		    $checkbox = $widget.find('input:checkbox'),
-		    color = $button.data('color'),
+		    color = $button.attr('data-color'),
 		    settings = {
 			    on: {
 				    icon: 'glyphicon glyphicon-check'
@@ -69,12 +69,12 @@ $(function() {
 			let isChecked = $checkbox.is(':checked');
 
 			// Set the button's state
-			$button.data('state', (isChecked) ? 'on' : 'off');
+			$button.attr('data-state', (isChecked) ? 'on' : 'off');
 
 			// Set the button's icon
 			$button.find('.state-icon')
 				.removeClass()
-				.addClass('state-icon ' + settings[$button.data('state')].icon);
+				.addClass('state-icon ' + settings[$button.attr('data-state')].icon);
 
 			// Update the button's color
 			if (isChecked) {
@@ -94,7 +94,7 @@ $(function() {
 
 			// Inject the icon if applicable
 			if ($button.find('.state-icon').length === 0) {
-				$button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i>');
+				$button.prepend('<i class="state-icon ' + settings[$button.attr('data-state')].icon + '"></i>');
 			}
 		}
 		init();

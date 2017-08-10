@@ -11,7 +11,7 @@ $(function(){
 		},
 
 		format: function(s, table, cell, cellIndex) {
-			return parseInt($(cell).data('updated-at').replace(/[^0-9]+/g, ''));
+			return parseInt($(cell).attr('data-updated-at').replace(/[^0-9]+/g, ''));
 		},
 
 		type: 'numeric'
@@ -108,7 +108,7 @@ $(function(){
 
 	//Set favicon to unread ver.
 	if(! /^\/list\//.test(location.pathname)) {
-		setFavicon($('table[data-list=reading]').data('unread'));
+		setFavicon($('table[data-list=reading]').attr('data-unread'));
 
 		//This is mostly a hack for the userscript, but I guess it could be handy.
 		$('.footer-debug').click(function() {
@@ -290,10 +290,10 @@ $(function(){
 		e.preventDefault();
 
 		let _this          = this,
-		    current_mal_id = $(this).data('mal-id');
+		    current_mal_id = $(this).attr('data-mal-id');
 
 		//If trackr.moe already has it's own MAL id for the series, ask if the user wants to override it (if they haven't already).
-		if($(this).data('mal-type') === 'title' && $(this).data('mal-id') && !confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) { return; }
+		if($(this).attr('data-mal-type') === 'title' && $(this).attr('data-mal-id') && !confirm('A MAL ID already exists for this series on our backend.\n Are you sure you want to override it?')) { return; }
 
 		let new_mal_id     = prompt('MAL ID:', current_mal_id);
 		if(/^([0-9]+|none)?$/.test(new_mal_id)) {
@@ -341,7 +341,7 @@ $(function(){
 				}
 			}
 
-			$(this).data('mal-id', new_mal_id);
+			$(this).attr('data-mal-id', new_mal_id);
 		} else if (new_mal_id === null) {
 			//input cancelled, do nothing
 		} else {
@@ -637,7 +637,7 @@ $(function(){
 		table.find('thead > tr > th:eq(1) > div').text('Series'+unreadText);
 
 		//Update data attr
-		table.data('unread', totalUnread);
+		table.attr('data-unread', totalUnread);
 
 		//Update favicon
 		setFavicon(totalUnread);
