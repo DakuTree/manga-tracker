@@ -78,7 +78,7 @@
 	<div id="nav-options" class="nav-row">
 		<div class="pull-left">
 			<?=form_label('List sort: ', 'list_sort_type')?>
-			<?=form_dropdown('list_sort_type', $list_sort_type, $list_sort_type_selected, ['class' => 'list_sort'])?>
+			<?=form_dropdown('list_sort_type', ['n/a' => '----------'] + $list_sort_type, $list_sort_type_selected, ['class' => 'list_sort'])?>
 			<?=form_dropdown('list_sort_order', $list_sort_order, $list_sort_order_selected, ['class' => 'list_sort'])?>
 		</div>
 		<div class="pull-right">

@@ -431,6 +431,8 @@ $(function(){
 			    order_ele = $('select[name=list_sort_order]'),
 			    order     = order_ele.val();
 
+			if(type === 'n/a') { return; } //do nothing, if n/a
+
 			if($(this).attr('name') === 'list_sort_type') {
 				//Type has changed, so set order to default.
 				switch(type) {
