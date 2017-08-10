@@ -31,6 +31,9 @@ $(function(){
 		type: 'numeric'
 	});
 
+	/**
+	 * @return {boolean|null}
+	 */
 	$.tablesorter.filter.types.FindMalId = function( config, data ) {
 		if(/^mal:[0-9]+$/.test(data.iFilter)) {
 			let searchID  = data.iFilter.match(/^mal:([0-9]+)$/)[1],
@@ -57,8 +60,8 @@ $(function(){
 
 		headers : {
 			1 : { sortInitialOrder : 'asc'  },
-			2 : { sortInitialOrder : 'desc' },
-			3 : { sortInitialOrder : 'desc' }
+			2 : { sortInitialOrder : 'desc', sorter: 'updated-at' },
+			3 : { sortInitialOrder : 'desc', sorter: 'latest' }
 		},
 
 		widgets: ['zebra', 'filter'],

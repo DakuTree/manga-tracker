@@ -94,8 +94,8 @@
 		<tr>
 			<th class="header read"></th>
 			<th class="header read">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></th>
-			<th class="header read sorter-updated-at">My Status</th>
-			<th class="header read sorter-latest">Latest Release</th>
+			<th class="header read">My Status</th>
+			<th class="header read">Latest Release</th>
 			<th data-sorter="false"></th>
 		</tr>
 	</thead>
