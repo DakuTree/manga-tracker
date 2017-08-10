@@ -431,7 +431,7 @@ $(function(){
 			    order_ele = $('select[name=list_sort_order]'),
 			    order     = order_ele.val();
 
-			if($(this).attr('name', 'list_sort_type')) {
+			if($(this).attr('name') === 'list_sort_type') {
 				//Type has changed, so set order to default.
 				switch(type) {
 					case 'unread_latest':

@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-08-10]
 ### Fixed
 - Striped rows should appear on non-default categories again.
+- Changing sort direction in the nav dropdown should work properly now.
 
 ## [2017-08-09]
 ### Added
