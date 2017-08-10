@@ -185,6 +185,7 @@ $(function(){
 	$('.update-read').click(function() {
 		let _this = this;
 		let row             = $(this).closest('tr'),
+		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
 		    latest_chapter  = $(row).find('.latest'),
@@ -197,7 +198,14 @@ $(function(){
 		$.post(base_url + 'ajax/update_inline', postData, () => {
 			update_icons.hide();
 
-			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
+			$(current_chapter)
+				.attr('href', $(latest_chapter).attr('href'))
+				.text($(latest_chapter).text());
+
+			//Update updated-at time for sorting purposes.
+			let chapter_parent = $(current_chapter).parent();
+			chapter_parent.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
+			table.trigger('updateCell', [chapter_parent[0], false, null]);
 
 			updateUnread();
 		}).fail((jqXHR, textStatus, errorThrown) => {
