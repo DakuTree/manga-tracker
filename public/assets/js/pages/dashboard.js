@@ -42,6 +42,16 @@ $(function(){
 	};
 
 	$('.tracker-table').tablesorter({
+		initialized: function(table) {
+			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort
+			//SEE: https://github.com/Mottie/tablesorter/issues/1445#issuecomment-321537911
+			let sortVars = table.config.sortVars;
+			sortVars.forEach(function(el) {
+				// reset the internal counter
+				el.count = -1;
+			});
+		},
+
 		//FIXME: This is kinda unneeded, and it does add a longer delay to the tablesorter load, but we need it for setting the header sort direction icons..
 		sortList: getListSort(list_sort_type, list_sort_order),
 
@@ -57,15 +67,6 @@ $(function(){
 			filter_columnFilters: false,
 			filter_saveFilters : false,
 			filter_reset: '.reset'
-		},
-		initialized: function(table) {
-			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort
-			//SEE: https://github.com/Mottie/tablesorter/issues/1445#issuecomment-321537911
-			let sortVars = table.config.sortVars;
-			sortVars.forEach(function(el) {
-				// reset the internal counter
-				el.count = -1;
-			});
 		}
 	});
 
@@ -466,6 +467,56 @@ $(function(){
 			}
 
 			tables.trigger('sorton', [ getListSort(type, order) ]);
+		});
+
+		$('.tracker-table').bind('sortEnd', function(/**e, table**/) {
+			let type_ele  = $('select[name=list_sort_type]'),
+				order_ele = $('select[name=list_sort_order]'),
+				sortList = this.config.sortList,
+				sort = sortList.reduce(function(acc, cur, i) {
+					acc[cur[0]] = cur[1];
+					return acc;
+				}, {});
+
+			let sortType  = 'n/a',
+			    sortOrder = 'asc';
+			switch(Object.keys(sort).join()) {
+				case '0,1':
+					if(sort[0] === 0) {
+						sortType  = 'unread';
+						sortOrder = (sort[1] === 0 ? 'asc' : 'desc');
+					}
+					break;
+
+				case '0,3':
+					if(sort[0] === 0) {
+						sortType  = 'unread-latest';
+						sortOrder = (sort[1] === 0 ? 'asc' : 'desc');
+					}
+					break;
+
+				case '1':
+					sortType = 'alphabetical';
+					sortOrder = (sort[1] === 0 ? 'asc' : 'desc');
+					break;
+
+				case '2':
+					sortType = 'my_status';
+					sortOrder = (sort[2] === 0 ? 'asc' : 'desc');
+					break;
+
+				case '3':
+					sortType = 'latest';
+					sortOrder = (sort[3] === 0 ? 'asc' : 'desc');
+					break;
+
+				default:
+					//we already default to n/a
+					break;
+			}
+
+			type_ele.val(sortType);
+			order_ele.val(sortOrder);
 		});
 	}
 	function getListSort(type, order) {
