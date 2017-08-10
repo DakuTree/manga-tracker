@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-10]
+### Fixed
+- Striped rows should appear on non-default categories again.
+
 ## [2017-08-09]
 ### Added
 - Dashboard nav now has a dropdown options menu.

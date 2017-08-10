@@ -117,8 +117,15 @@ $(function(){
 
 		$('.tracker-table:visible').hide();
 
-		let datalist = $(this).attr('data-list');
-		$(`.tracker-table[data-list="${datalist}"]`).show();
+		let datalist = $(this).attr('data-list'),
+		    newTable = $(`.tracker-table[data-list="${datalist}"]`);
+
+		newTable.show();
+
+		//Trigger update to generate even/odd rows. Tablesorter doesn't appear to auto-generate on hidden tables for some reason..
+		if(!newTable.has('.odd, .even').length) {
+			newTable.trigger('update', [true]);
+		}
 
 		//Scroll to top of page
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -175,6 +182,7 @@ $(function(){
 		};
 		$.post(base_url + 'ajax/update_inline', postData, () => {
 			update_icons.hide();
+
 			$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
 
 			updateUnread();
