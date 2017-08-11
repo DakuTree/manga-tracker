@@ -72,7 +72,7 @@ class DynastyScans extends Base_Site_Model {
 				if($data) {
 					$titleData['title'] = $data['nodes_title']->textContent;
 					//In cases where the series is a doujin, try and prepend the copyright.
-					preg_match('/\/doujins\/[^"]+">(.+)?(?=<\/a>)<\/a>/', $content['body'], $matchesD);
+					preg_match('/\/doujins\/[^"]+">(.+?)(?=<\/a>)<\/a>/', $content['body'], $matchesD);
 					if(!empty($matchedD) && substr($matchesD[1], 0, -7) !== 'Original') {
 						$titleData['title'] = substr($matchesD[1], 0, -7).' - '.$titleData['title'];
 					}

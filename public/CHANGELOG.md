@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-11]
+### Fixed
+- DynastyScans oneshots should now properly grab the title without also grabbing html.
+
 ## [2017-08-10]
 ### Fixed
 - Striped rows should appear on non-default categories again.
