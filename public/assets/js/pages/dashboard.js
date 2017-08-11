@@ -652,7 +652,7 @@ $(function(){
 	}
 
 	function setFavicon(text) {
-		text = parseInt(text) > 50 ? '50+' : text;
+		text = parseInt(text) > 99 ? '99+' : text;
 
 		let favicon = $('link[rel="shortcut icon"]');
 		if(parseInt(text) !== 0) {

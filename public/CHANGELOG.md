@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-11]
+### Changed
+- Bumped the favicon unread count max count from 50 to 99.
+
 ### Fixed
 - DynastyScans oneshots should now properly grab the title without also grabbing html.
 
