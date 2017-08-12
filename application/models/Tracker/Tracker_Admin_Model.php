@@ -13,7 +13,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		// @formatter:off
 		$query = $this->db
 			->select('
-				tracker_titles.id,
+				tracker_titles.id as title_id,
 				tracker_titles.title,
 				tracker_titles.title_url,
 				tracker_titles.status,
@@ -65,16 +65,16 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				print "> {$row->title} <{$row->site_class}> | <{$row->id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
+				print "> {$row->title} <{$row->site_class}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 				if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
 					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
 					//       Should we even use this? Y/N
-					if($this->Tracker->title->updateByID((int) $row->id, $titleData['latest_chapter'])) {
+					if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
 						//Make sure last_checked is always updated on successful run.
 						//CHECK: Is there a reason we aren't just doing this in updateByID?
 						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-						         ->where('id', $row->id)
+						         ->where('id', $row->title_id)
 						         ->update('tracker_titles');
 
 						print " - ({$titleData['latest_chapter']})\n";
@@ -85,7 +85,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 					}
 				} else {
 					log_message('error', "{$row->title} failed to update successfully");
-					$this->Tracker->title->updateFailedChecksByID((int) $row->id);
+					$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
 
 					print " - FAILED TO PARSE\n";
 				}

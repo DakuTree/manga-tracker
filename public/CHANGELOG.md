@@ -9,7 +9,8 @@ All notable changes to this project will be documented in this file.
   - This should be much less error prone compared to parsing the DOM, _and_ it should work with much older versions of FoolSlide!
   - See: #147
 - The userscript now waits for the topbar to load before attempting to load viewer.
-
+  - Fixes #151.
+- `[Backend]`
 ## [2017-08-11]
 ### Changed
 - Bumped the favicon unread count max count from 50 to 99.
