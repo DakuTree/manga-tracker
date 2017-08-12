@@ -298,4 +298,57 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 		return (!empty($titleData) ? $titleData : NULL);
 	}
+
+	//Since we're just checking the latest updates page and not a following page, we just need to simulate a follow.
+	//TODO: It would probably be better to have some kind of var which says that the custom update uses a following page..
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
+		$content = ['status_code' => 200];
+		$callback($content, $extra['id']);
+	}
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		//NOTE: desc_created might not work well for sites that delay their releases (HelveticaScans for example)
+		//      There shouldn't be much issue unless a site has a delay on a chapter long than it takes for 20 chapters to release (unlikely).
+		$jsonURL = "{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json";
+		if($content = $this->get_content($jsonURL)) {
+			$json = json_decode($content['body'], TRUE);
+
+			$parsedTitles = [];
+			foreach($json['chapters'] as $chapterData) {
+				if(!in_array($chapterData['comic']['stub'], $parsedTitles)) {
+					$parsedTitles[] = $chapterData['comic']['stub'];
+
+					$titleData = [];
+					$titleData['title'] = trim($chapterData['comic']['name']);
+
+					$latestChapter = $chapterData['chapter'];
+
+					$latestChapterString = "en/{$latestChapter['volume']}/{$latestChapter['chapter']}";
+					if($latestChapter['subchapter'] !== '0') {
+						$latestChapterString .= "/{$latestChapter['subchapter']}";
+					}
+					$titleData['latest_chapter'] = $latestChapterString;
+
+					//No need to use date() here since this is already formatted as such.
+					$titleData['last_updated'] = ($latestChapter['updated'] !== '0000-00-00 00:00:00' ? $latestChapter['updated'] : $latestChapter['created']);
+
+					$titleDataList[$chapterData['comic']['stub']] = $titleData;
+				} else {
+					//We already have title data for this title.
+					continue;
+				}
+			}
+		}
+
+		return $titleDataList;
+	}
+	public function doCustomCheck(string $oldChapterString, string $newChapterString) {
+		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
+		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
+
+		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
+
+		return $status;
+	}
 }

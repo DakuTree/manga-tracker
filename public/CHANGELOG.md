@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-12]
+### Added
+- All FoolSlide sites (except Jaimini's Box) now use the custom updater!
+
 ### Changed
 - `[Backend]` All FoolSlide sites now extend from a generic FoolSlide class.
   - This was mainly done to make it easier to mass-tweak FoolSlide sites in the future, as well as reduce a ton of duplication.
@@ -12,6 +15,8 @@ All notable changes to this project will be documented in this file.
   - Fixes #151.
 - `[Backend]` Now using an alias for title ID when updating to avoid accidently screw-ups (Which did happen).
   - See: #152
+- `[Backend]` Custom updater now requires the `tracker_sites.use_custom` column to be set to `Y` to allow updates.
+  - This was already required elsewhere.
 
 ## [2017-08-11]
 ### Changed

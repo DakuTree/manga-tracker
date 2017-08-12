@@ -26,4 +26,5 @@ class JaiminisBox extends Base_FoolSlide_Site_Model {
 		}
 		return (!empty($titleData) ? $titleData : NULL);
 	}
+	public function doCustomUpdate() {}
 }
