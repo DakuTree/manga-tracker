@@ -279,7 +279,11 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 			if($json && count($json['chapters']) > 0) {
 				$titleData['title'] = trim($json['comic']['name']);
 
-				$latestChapter = end($json['chapters'])['chapter'];
+				//FoolSlide title API doesn't appear to let you sort (yet every other API method which has chapters does, so we need to sort ourselves..
+				usort($json['chapters'], function($a, $b) {
+					return floatval("{$b['chapter']['chapter']}.{$b['chapter']['subchapter']}") <=> floatval("{$a['chapter']['chapter']}.{$a['chapter']['subchapter']}");
+				});
+				$latestChapter = reset($json['chapters'])['chapter'];
 
 				$latestChapterString = '';
 				if($latestChapter['volume'] !== '0') {
