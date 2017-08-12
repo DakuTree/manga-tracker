@@ -9,7 +9,7 @@ class Tracker_Sites_Model extends CI_Model {
 		//TODO: Is this a good idea? There wasn't a good consensus on if this is good practice or not..
 		//      It's probably a minor speed reduction, but that isn't much of an issue.
 		//      An alternate solution would simply have a function which generates a PHP file with code to load each model. Similar to: https://github.com/shish/shimmie2/blob/834bc740a4eeef751f546979e6400fd089db64f8/core/util.inc.php#L1422
-		if(!class_exists($name) || !(get_parent_class($name) === 'Base_Site_Model')) {
+		if(!class_exists($name) || !(in_array(get_parent_class($name), ['Base_Site_Model', 'Base_FoolSlide_Site_Model']))) {
 			return get_instance()->{$name};
 		} else {
 			$this->loadSite($name);
@@ -168,34 +168,6 @@ abstract class Base_Site_Model extends CI_Model {
 		return $data;
 	}
 
-	//This has it's own function due to FoOlSlide being used a lot by fan translation sites, and the code being pretty much the same across all of them.
-	final public function parseFoolSlide(string $fullURL, string $title_url) {
-		$titleData = [];
-
-		if($content = $this->get_content($fullURL, "", "", FALSE, TRUE, ['adult' => 'true'])) {
-			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
-
-			$data = $this->parseTitleDataDOM(
-				$content,
-				$title_url,
-				"//div[@class='large comic']/h1[@class='title']",
-				"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
-				"div[@class='meta_r']",
-				"div[@class='title']/a"
-			);
-			if($data) {
-				$titleData['title'] = trim($data['nodes_title']->textContent);
-
-				$link                        = (string) $data['nodes_chapter']->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-
-				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
-			}
-		}
-
-		return (!empty($titleData) ? $titleData : NULL);
-	}
-
 	final public function doCustomFollow(string $data = "", array $extra = []) : array {
 		$titleData = [];
 		$this->handleCustomFollow(function($content, $id, closure $successCallback = NULL) use(&$titleData) {
@@ -277,5 +249,53 @@ abstract class Base_Site_Model extends CI_Model {
 		}
 
 		return $status;
+	}
+}
+
+abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
+	public $titleFormat   = '/^[a-z0-9_-]+$/';
+	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+
+	public $baseURL = '';
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "{$this->baseURL}/series/{$title_url}";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		$chapter_parts = explode('/', $chapter); //returns #LANG#/#VOLUME#/#CHAPTER#/#CHAPTER_EXTRA#(/#PAGE#/)
+		return [
+			'url'    => "{$this->baseURL}/read/{$title_url}/{$chapter}/",
+			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
+		];
+	}
+
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
+		$fullURL = $this->getFullTitleURL($title_url);
+
+		$titleData = [];
+
+		if($content = $this->get_content($fullURL, "", "", FALSE, TRUE, ['adult' => 'true'])) {
+			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
+
+			$data = $this->parseTitleDataDOM(
+				$content,
+				$title_url,
+				"//div[@class='large comic']/h1[@class='title']",
+				"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
+				"div[@class='meta_r']",
+				"div[@class='title']/a"
+			);
+			if($data) {
+				$titleData['title'] = trim($data['nodes_title']->textContent);
+
+				$link                        = (string) $data['nodes_chapter']->getAttribute('href');
+				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
+
+				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
+			}
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
 	}
 }

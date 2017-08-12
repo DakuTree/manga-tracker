@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-12]
+### Changed
+- `[Backend]` All FoolSlide sites now extend from a generic FoolSlide class.
+
 ## [2017-08-11]
 ### Changed
 - Bumped the favicon unread count max count from 50 to 99.
