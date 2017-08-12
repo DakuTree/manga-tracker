@@ -125,11 +125,11 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 									print " - Title doesn't exist? ($titleID)\n";
 								}
 							} else {
-								print " - Failed Check.\n";
+								print " - Failed Check (DB: '{$dbTitleData['latest_chapter']}' || UPDATE: '{$titleData['latest_chapter']}')\n";
 							}
 						} else {
 							log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
-							print " - Possibly diff language than in DB? ($titleURL)\n";
+							print " - Title doesn't currently exist in DB? Maybe different language or title stub change? ($titleURL)\n";
 						}
 					} else {
 						log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} failed to custom update successfully");
