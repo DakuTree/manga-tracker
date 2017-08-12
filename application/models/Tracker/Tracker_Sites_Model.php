@@ -293,7 +293,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 				$titleData['latest_chapter'] = $latestChapterString;
 
 				//No need to use date() here since this is already formatted as such.
-				$titleData['last_updated'] = $latestChapter['updated'];
+				$titleData['last_updated'] = ($latestChapter['updated'] !== '0000-00-00 00:00:00' ? $latestChapter['updated'] : $latestChapter['created']);
 			}
 		}
 
