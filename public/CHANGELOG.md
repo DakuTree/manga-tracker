@@ -10,7 +10,9 @@ All notable changes to this project will be documented in this file.
   - See: #147
 - The userscript now waits for the topbar to load before attempting to load viewer.
   - Fixes #151.
-- `[Backend]`
+- `[Backend]` Now using an alias for title ID when updating to avoid accidently screw-ups (Which did happen).
+  - See: #152
+
 ## [2017-08-11]
 ### Changed
 - Bumped the favicon unread count max count from 50 to 99.
