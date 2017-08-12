@@ -285,11 +285,11 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 				});
 				$latestChapter = reset($json['chapters'])['chapter'];
 
-				$latestChapterString = '';
+				$latestChapterString = 'en/';
 				if($latestChapter['volume'] !== '0') {
-					$latestChapterString .= "v{$latestChapter['volume']}/";
+					$latestChapterString .= "{$latestChapter['volume']}/";
 				}
-				$latestChapterString .= "c{$latestChapter['chapter']}";
+				$latestChapterString .= "{$latestChapter['chapter']}";
 				if($latestChapter['subchapter'] !== '0') {
 					$latestChapterString .= ".{$latestChapter['subchapter']}";
 				}
