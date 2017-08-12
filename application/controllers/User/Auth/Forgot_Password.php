@@ -76,7 +76,7 @@ class Forgot_Password extends No_Auth_Controller {
 			$min_password_length = $this->config->item('min_password_length', 'ion_auth');
 			$max_password_length = $this->config->item('max_password_length', 'ion_auth');
 			$this->form_validation->set_rules('new_password',         "Password",         'required|min_length['.$min_password_length.']|max_length['.$max_password_length.']');
-			$this->form_validation->set_rules('new_password_confirm', "Password Confirm", 'required|matches[password]');
+			$this->form_validation->set_rules('new_password_confirm', "Password Confirm", 'required|matches[new_password]');
 
 			if ($this->form_validation->run() === TRUE) {
 				//form is valid, process the password reset request

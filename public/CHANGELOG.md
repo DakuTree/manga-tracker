@@ -18,6 +18,10 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Custom updater now requires the `tracker_sites.use_custom` column to be set to `Y` to allow updates.
   - This was already required elsewhere.
 
+### Fixed
+- Password reset should work again.
+  - Thanks to @Vexnyx (#132).
+
 ## [2017-08-11]
 ### Changed
 - Bumped the favicon unread count max count from 50 to 99.
