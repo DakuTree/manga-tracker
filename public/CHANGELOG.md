@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 ## [2017-08-12]
 ### Changed
 - `[Backend]` All FoolSlide sites now extend from a generic FoolSlide class.
+  - This was mainly done to make it easier to mass-tweak FoolSlide sites in the future, as well as reduce a ton of duplication.
+- `[Backend]` FoolSlide sites now use the API to grab new title data rather than checking the actual title page and parsing the DOM.
+  - This should be much less error prone compared to parsing the DOM, _and_ it should work with much older versions of FoolSlide!
+  - See: #147
 
 ## [2017-08-11]
 ### Changed

@@ -271,28 +271,29 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	}
 
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
-		$fullURL = $this->getFullTitleURL($title_url);
-
 		$titleData = [];
 
-		if($content = $this->get_content($fullURL, "", "", FALSE, TRUE, ['adult' => 'true'])) {
-			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
+		$jsonURL = "{$this->baseURL}/api/reader/comic/stub/{$title_url}/format/json";
+		if($content = $this->get_content($jsonURL)) {
+			$json = json_decode($content['body'], TRUE);
+			if($json && count($json['chapters']) > 0) {
+				$titleData['title'] = trim($json['comic']['name']);
 
-			$data = $this->parseTitleDataDOM(
-				$content,
-				$title_url,
-				"//div[@class='large comic']/h1[@class='title']",
-				"(//div[@class='list']/div[@class='group']/div[@class='title' and text() = 'Chapters']/following-sibling::div[@class='element'][1] | //div[@class='list']/div[@class='element'][1] | //div[@class='list']/div[@class='group'][1]/div[@class='element'][1])[1]",
-				"div[@class='meta_r']",
-				"div[@class='title']/a"
-			);
-			if($data) {
-				$titleData['title'] = trim($data['nodes_title']->textContent);
+				$latestChapter = end($json['chapters'])['chapter'];
 
-				$link                        = (string) $data['nodes_chapter']->getAttribute('href');
-				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
+				$latestChapterString = '';
+				if($latestChapter['volume'] !== '0') {
+					$latestChapterString .= "v{$latestChapter['volume']}/";
+				}
+				$latestChapterString .= "c{$latestChapter['chapter']}";
+				if($latestChapter['subchapter'] !== '0') {
+					$latestChapterString .= ".{$latestChapter['subchapter']}";
+				}
 
-				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
+				$titleData['latest_chapter'] = $latestChapterString;
+
+				//No need to use date() here since this is already formatted as such.
+				$titleData['last_updated'] = $latestChapter['updated'];
 			}
 		}
 
