@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` FoolSlide sites now use the API to grab new title data rather than checking the actual title page and parsing the DOM.
   - This should be much less error prone compared to parsing the DOM, _and_ it should work with much older versions of FoolSlide!
   - See: #147
+- The userscript now waits for the topbar to load before attempting to load viewer.
 
 ## [2017-08-11]
 ### Changed

@@ -34,8 +34,8 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
-// @updated      2017-08-09
-// @version      1.7.45
+// @updated      2017-08-12
+// @version      1.7.46
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -95,11 +95,13 @@ let base_site = {
 
 			_this.stylize();
 
-			_this.setupTopBar();
+			_this.setupTopBar(function() {
+				//We should only load the viewer if we've been successful with loading the topbar.
 
-			/** @namespace config.options.disable_viewer */
-			if(config.options.disable_viewer) { return; }
-			_this.setupViewer();
+				/** @namespace config.options.disable_viewer */
+				if(config.options.disable_viewer) { return; }
+				_this.setupViewer();
+			});
 		});
 	},
 
@@ -152,15 +154,21 @@ let base_site = {
 	preSetupTopBar  : function(callback) { callback(); }, //callback must always be called
 
 	/**
-	 * Used to remove old topbar (if exists) after adding our own.
+	 * @callback postSetupTopBarCallback
+	 * @param {bool} [useCustomHeader]
+	 * @param {bool} [useCustomImageList]
+	 */
+
+	/**
+	 * Used to do things after setting up the topbar. Usually used to remove old topbars if they exist.
 	 *
 	 * @function
 	 * @name  base_site.postSetupTopBar
 	 * @alias sites.*.postSetupTopBar
 	 *
-	 * @param {jQuery=} topbar
+	 * @param {postSetupTopBarCallback} callback
 	 */
-	postSetupTopBar : function(topbar) {}, // jshint ignore:line
+	postSetupTopBar : function(callback) { callback(); }, //callback must always be called
 
 	/**
 	 * @callback preSetupViewerCallback
@@ -208,7 +216,7 @@ let base_site = {
 	 * @abstract
 	 * @final
 	 */
-	setupTopBar : function() {
+	setupTopBar : function(callback) {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
@@ -298,7 +306,7 @@ let base_site = {
 				_this.reloadPages();
 			});
 
-			_this.postSetupTopBar(topbar);
+			_this.postSetupTopBar(callback);
 		});
 	},
 
@@ -930,10 +938,12 @@ let base_site = {
 			}
 		};
 
-		this.postSetupTopBar = function() {
+		this.postSetupTopBar = function(callback) {
 			$('.topbar_left > .tbtitle:eq(2)').remove();
 			$('.topbar_right').remove();
 			$('#bottombar').remove();
+
+			callback();
 		};
 
 		this.preSetupViewer = function(callback) {
@@ -1203,10 +1213,12 @@ let sites = {
 				}
 			});
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			$('#top_center_bar, #bottom_center_bar').remove();
 			$('#tool').parent().find('> .gap').remove();
 			$('#series').css('padding-top', '0');
+
+			callback();
 		},
 		preSetupViewer : function(callback) {
 			let _this = this;
@@ -1325,8 +1337,10 @@ let sites = {
 				}
 			});
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			$('.go_page:first').remove();
+
+			callback();
 		},
 		preSetupViewer : function(callback) {
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
@@ -1562,9 +1576,11 @@ let sites = {
 				attempts++;
 			}, 500);
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
 			$('#topchapter > #mangainfo ~ div, #bottomchapter > #mangainfo ~ div').remove();
+
+			callback();
 		},
 		preSetupViewer : function(callback) {
 			$('.episode-table').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
@@ -1609,6 +1625,7 @@ let sites = {
 		preSetupTopBar : function(callback) {
 			let _this = this;
 
+			//We need to use AJAX as the chapter pages don't provide a full chapter list.
 			$.ajax({
 				url: _this.title_url,
 				beforeSend: function(xhr) {
@@ -1625,8 +1642,10 @@ let sites = {
 				}
 			});
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			$('.subnav').remove(); //Remove topbar, since we have our own
+
+			callback();
 		},
 		preSetupViewer : function(callback) {
 			$('.page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
@@ -1694,12 +1713,14 @@ let sites = {
 			});
 			this.page_count = this.viewerCustomImageList.length;
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			let image = $('#divImage');
 
 			//Remove extra unneeded elements.
 			image.prevAll().remove();
 			image.nextAll().remove();
+
+			callback();
 		},
 		preSetupViewer : function(callback) {
 			$('#divImage').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
@@ -1757,9 +1778,11 @@ let sites = {
 			this.chapterList        = generateChapterList($('select[name=chapter_list] > option'), 'data-chapterurl');
 			this.chapterListCurrent = this.chapter_url.substr(29);
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			$('.samBannerUnit').remove(); //Remove huge header banner.
 			$('.AdBlockOn').remove(); //Remove huge header banner.
+
+			callback();
 		}
 	}),
 
@@ -2043,12 +2066,14 @@ let sites = {
 			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 			callback(true);
 		},
-		postSetupTopBar : function() {
+		postSetupTopBar : function(callback) {
 			let viewer = $('.viewer-cnt');
 
 			//Remove extra unneeded elements.
 			viewer.prevAll().remove();
 			viewer.nextAll().remove();
+
+			callback();
 		}
 	}),
 
@@ -2134,6 +2159,8 @@ let sites = {
 						});
 
 						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
+							//TODO: Move as much of this as possible to using the actual site functions.
+
 							let data    = JSON.parse(new_value).manga,
 							    site    = data.site,
 							    title   = data.title,
