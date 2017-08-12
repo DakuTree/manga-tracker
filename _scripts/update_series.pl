@@ -29,4 +29,5 @@ if($trackrLocation =~ /\/dev\//) {
 	system("sudo -u www-data CI_ENV=\"production\" php ${trackrLocation}/public/index.php admin/update_series");
 }
 
+print "\n";
 ####################}
