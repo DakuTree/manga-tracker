@@ -285,15 +285,10 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 				});
 				$latestChapter = reset($json['chapters'])['chapter'];
 
-				$latestChapterString = 'en/';
-				if($latestChapter['volume'] !== '0') {
-					$latestChapterString .= "{$latestChapter['volume']}/";
-				}
-				$latestChapterString .= "{$latestChapter['chapter']}";
+				$latestChapterString = "en/{$latestChapter['volume']}/{$latestChapter['chapter']}";
 				if($latestChapter['subchapter'] !== '0') {
-					$latestChapterString .= ".{$latestChapter['subchapter']}";
+					$latestChapterString .= "/{$latestChapter['subchapter']}";
 				}
-
 				$titleData['latest_chapter'] = $latestChapterString;
 
 				//No need to use date() here since this is already formatted as such.
