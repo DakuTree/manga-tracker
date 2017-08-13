@@ -276,7 +276,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 		$jsonURL = "{$this->baseURL}/api/reader/comic/stub/{$title_url}/format/json";
 		if($content = $this->get_content($jsonURL)) {
 			$json = json_decode($content['body'], TRUE);
-			if($json && count($json['chapters']) > 0) {
+			if($json && isset($json['chapters']) && count($json['chapters']) > 0) {
 				$titleData['title'] = trim($json['comic']['name']);
 
 				//FoolSlide title API doesn't appear to let you sort (yet every other API method which has chapters does, so we need to sort ourselves..
