@@ -411,7 +411,7 @@ class Sites_Model_test extends TestCase {
 
 	public function test_MerakiScans() {
 		$testSeries = [
-			'ninja-shinobu-chan-no-junjou' => 'Ninja Shinobu-chan no Junjou',
+			'ninja-shinobu-san-no-junjou'  => 'Ninja Shinobu-chan no Junjou',
 			'red-storm'                    => 'Red Storm',
 			'clover'                       => 'Clover',
 			'the-mythical-realm'           => 'The Mythical Realm',
