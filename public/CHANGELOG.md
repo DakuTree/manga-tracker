@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-14]
+### Added
+- IPv6 Support.
+
 ### Changed
 - `[Backend]` Custom updater now only logs missing titles if using following pages.
 
