@@ -169,27 +169,35 @@ $(function(){
 	/** Setup title handlers **/
 
 	//Update latest chapter (via "I've read the latest chapter")
-	$('.update-read').click(function() {
-		let _this = this;
+	$('.update-read').click(function(e, data) {
 		let row             = $(this).closest('tr'),
 		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
 		    latest_chapter  = $(row).find('.latest');
 
-		let postData = {
-			id      : chapter_id,
-			chapter : latest_chapter.attr('data-chapter')
-		};
-		$.post(base_url + 'ajax/update_inline', postData, () => {
+		if (!(data && data.isUserscript)) {
+			let postData = {
+				id     : chapter_id,
+				chapter: latest_chapter.attr('data-chapter')
+			};
+			$.post(base_url + 'ajax/update_inline', postData, () => {
+				$(current_chapter)
+					.attr('href', $(latest_chapter).attr('href'))
+					.text($(latest_chapter).text());
+
+				updateUnread(table, row);
+			}).fail((jqXHR, textStatus, errorThrown) => {
+				_handleAjaxError(jqXHR, textStatus, errorThrown);
+			});
+		} else {
+			console.log('Userscript is updating table...');
 			$(current_chapter)
 				.attr('href', $(latest_chapter).attr('href'))
 				.text($(latest_chapter).text());
 
 			updateUnread(table, row);
-		}).fail((jqXHR, textStatus, errorThrown) => {
-			_handleAjaxError(jqXHR, textStatus, errorThrown);
-		});
+		}
 	});
 
 	//Ignore latest chapter

@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - `[Backend]` Custom updater now only logs missing titles if using following pages.
 - `[Backend]` updateUnread now handles hiding icons & updating table sort.
+- Userscript now updates "My Status" & unread info for table sort
+  - Fixes: #153
+  - Had to enable unsafeWindow for this which I've been wanting to avoid. Oh well.
 
 ### Fixed
 - `[Backend]` Page loading will now call `setupViewerContainerError` if the ajax response is empty.
