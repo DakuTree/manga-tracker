@@ -73,14 +73,6 @@ $(function(){
 		}
 	});
 
-	$('.tracker-table').tablesorter({
-		// sortList: [[0,0], [1,0]]
-
-		headers : {
-			2 : { sortInitialOrder : 'desc' }
-		}
-	});
-
 	/** UX Improvements **/
 
 	//This makes it easier to press the row checkbox.
