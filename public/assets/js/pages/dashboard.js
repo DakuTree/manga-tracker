@@ -100,12 +100,7 @@ $(function(){
 
 	//Set favicon to unread ver.
 	if(! /^\/list\//.test(location.pathname)) {
-		setFavicon($('table[data-list=reading]').attr('data-unread'));
-
-		//This is mostly a hack for the userscript, but I guess it could be handy.
-		$('.footer-debug').click(function() {
-			updateUnread();
-		});
+		updateFavicon();
 	}
 
 	//Click to hide notice
@@ -180,31 +175,18 @@ $(function(){
 		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
-		    latest_chapter  = $(row).find('.latest'),
-		    update_icons    = $(_this).parent().find('.update-read, .ignore-latest');
+		    latest_chapter  = $(row).find('.latest');
 
 		let postData = {
 			id      : chapter_id,
 			chapter : latest_chapter.attr('data-chapter')
 		};
 		$.post(base_url + 'ajax/update_inline', postData, () => {
-			update_icons.hide();
-
 			$(current_chapter)
 				.attr('href', $(latest_chapter).attr('href'))
 				.text($(latest_chapter).text());
 
-			//Update updated-at time for sorting purposes.
-			let chapter_parent = $(current_chapter).parent();
-			chapter_parent.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
-			table.trigger('updateCell', [chapter_parent[0], false, null]);
-
-			//Update unread status for sorting purposes.
-			let unread = $(row).find('> td:eq(0) > span');
-			unread.text('1');
-			table.trigger('updateCell', [unread[0], false, null]);
-
-			updateUnread();
+			updateUnread(table, row);
 		}).fail((jqXHR, textStatus, errorThrown) => {
 			_handleAjaxError(jqXHR, textStatus, errorThrown);
 		});
@@ -212,12 +194,11 @@ $(function(){
 
 	//Ignore latest chapter
 	$('.ignore-latest').click(function() {
-		let _this = this;
 		let row             = $(this).closest('tr'),
+		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
-		    latest_chapter  = $(row).find('.latest'),
-		    update_icons    = $(_this).parent().find('.update-read, .ignore-latest');
+		    latest_chapter  = $(row).find('.latest');
 
 		if(confirm('Ignore latest chapter?')) {
 			let postData = {
@@ -225,12 +206,11 @@ $(function(){
 				chapter : latest_chapter.attr('data-chapter')
 			};
 			$.post(base_url + 'ajax/ignore_inline', postData, () => {
-				update_icons.hide();
 				$(current_chapter).parent().append(
 					$('<span/>', {class: 'hidden-chapter', title: 'This latest chapter was marked as ignored.', text: $(latest_chapter).text()})
 				);
 
-				updateUnread();
+				updateUnread(table, row);
 			}).fail((jqXHR, textStatus, errorThrown) => {
 				_handleAjaxError(jqXHR, textStatus, errorThrown);
 			});
@@ -633,9 +613,22 @@ $(function(){
 		}
 	}
 
-	function updateUnread() {
-		let table       = $('table[data-list=reading]'),
-		    totalUnread = table.find('tr .update-read:not([style])').length;
+	function updateUnread(table, row) {
+		let totalUnread  = table.find('tr .update-read:not([style])').length,
+		    unread_e     = row.find('> td:eq(0) > span'),
+		    chapter_e    = row.find('> td:eq(2)'),
+		    update_icons = row.find('.update-read, .ignore-latest');
+
+		//Hide update icons
+		update_icons.hide();
+
+		//Update updated-at time for sorting purposes.
+		chapter_e.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
+		table.trigger('updateCell', [chapter_e[0], false, null]);
+
+		//Update unread status for sorting purposes.
+		unread_e.text('1');
+		table.trigger('updateCell', [unread_e[0], false, null]);
 
 		//Update header text
 		let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');
@@ -645,14 +638,17 @@ $(function(){
 		table.attr('data-unread', totalUnread);
 
 		//Update favicon
-		setFavicon(totalUnread);
+		if(table.attr('data-list') === 'reading') {
+			updateFavicon();
+		}
 	}
 
-	function setFavicon(text) {
-		text = parseInt(text) > 99 ? '99+' : text;
+	function updateFavicon() {
+		let unreadCount = $('table[data-list=reading]').attr('data-unread')
+		unreadCount = parseInt(unreadCount) > 99 ? '99+' : unreadCount;
 
 		let favicon = $('link[rel="shortcut icon"]');
-		if(parseInt(text) !== 0) {
+		if(parseInt(unreadCount) !== 0) {
 			let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0];
 			//Bug?: Unable to set this via jQuery for some reason..
 			canvas.width  = 32;
@@ -669,10 +665,10 @@ $(function(){
 
 				context.lineWidth   = 3;
 				context.strokeStyle = 'white';
-				context.strokeText(text, 32, 30);
+				context.strokeText(unreadCount, 32, 30);
 
 				context.fillStyle = 'black';
-				context.fillText(text, 32, 30);
+				context.fillText(unreadCount, 32, 30);
 
 				favicon.attr('href', canvas.toDataURL());
 			};

@@ -2178,12 +2178,13 @@ let sites = {
 							if(row.length) {
 								let current_chapter = $(row).find('.current'),
 								    latest_chapter  = $(row).find('.latest'),
-								    updateIcons     = $(row).find('.update-read, .ignore-latest');
-								if(chapter.toString() === latest_chapter.data('chapter').toString()) {
-									updateIcons.hide();
-									$(current_chapter).attr('href', $(latest_chapter).attr('href')).text($(latest_chapter).text());
+								    update_ele      = $(row).find('.update-read');
+								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
+									$(current_chapter)
+										.attr('href', $(latest_chapter).attr('href'))
+										.text($(latest_chapter).text());
 
-									$('.footer-debug').click(); //This is a hack to force icon reload without using unsafeWindow
+									update_ele.trigger('click', {isUserscript: true});
 								} else {
 									//Chapter isn't latest.
 								}

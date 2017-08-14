@@ -7,12 +7,15 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `[Backend]` Custom updater now only logs missing titles if using following pages.
+- `[Backend]` updateUnread now handles hiding icons & updating table sort.
 
 ### Fixed
 - `[Backend]` Page loading will now call `setupViewerContainerError` if the ajax response is empty.
   - Fixes: #166
 - Marking series as read should now properly set update unread status in table sort.
   - Fixes: #160
+- Tablesorter is now no longer initialized twice.
+
 ## [2017-08-12]
 ### Added
 - All FoolSlide sites (except Jaimini's Box) now use the custom updater!
