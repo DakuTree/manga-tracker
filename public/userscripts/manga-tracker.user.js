@@ -34,8 +34,8 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
-// @updated      2017-08-12
-// @version      1.7.46
+// @updated      2017-08-14
+// @version      1.7.47
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -604,9 +604,14 @@ let base_site = {
 					page   : pageN,
 					// async: useASync,
 					success: function (data) {
-						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+						if(data.length > 0) {
 
-						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+							let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+
+							_this.setupViewerContainer($(original_image).attr('src'), this.page);
+						} else {
+							_this.setupViewerContainerError(url, this.page, false);
+						}
 						promiseResolve();
 					},
 					error: function () {

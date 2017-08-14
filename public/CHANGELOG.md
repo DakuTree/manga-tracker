@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-14]
+### Fixed
+- `[Backend]` Page loading will now call `setupViewerContainerError` if the ajax response is empty.
+  - Fixes: #166
+
 ## [2017-08-12]
 ### Added
 - All FoolSlide sites (except Jaimini's Box) now use the custom updater!
