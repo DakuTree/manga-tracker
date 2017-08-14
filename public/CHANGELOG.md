@@ -11,7 +11,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - `[Backend]` Page loading will now call `setupViewerContainerError` if the ajax response is empty.
   - Fixes: #166
-
+- Marking series as read should now properly set update unread status in table sort.
+  - Fixes: #160
 ## [2017-08-12]
 ### Added
 - All FoolSlide sites (except Jaimini's Box) now use the custom updater!

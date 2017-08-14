@@ -207,6 +207,11 @@ $(function(){
 			chapter_parent.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
 			table.trigger('updateCell', [chapter_parent[0], false, null]);
 
+			//Update unread status for sorting purposes.
+			let unread = $(row).find('> td:eq(0) > span');
+			unread.text('1');
+			table.trigger('updateCell', [unread[0], false, null]);
+
 			updateUnread();
 		}).fail((jqXHR, textStatus, errorThrown) => {
 			_handleAjaxError(jqXHR, textStatus, errorThrown);
