@@ -3,6 +3,7 @@
 class MangaFox extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(?:v[0-9a-zA-Z]+\/)?c[0-9\.]+$/';
+	public $customType    = 1;
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://mangafox.me/manga/{$title_url}/";

@@ -27,6 +27,13 @@ abstract class Base_Site_Model extends CI_Model {
 	public $titleFormat   = '';
 	public $chapterFormat = '';
 
+	/**
+	 * 0: No custom updater.
+	 * 1: Uses following page.
+	 * 2: Uses latest releases page.
+	 */
+	public $customType = 0;
+
 	public function __construct() {
 		parent::__construct();
 
@@ -255,6 +262,7 @@ abstract class Base_Site_Model extends CI_Model {
 abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+	public $customType    = 2;
 
 	public $baseURL = '';
 

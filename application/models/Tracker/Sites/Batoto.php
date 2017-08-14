@@ -10,6 +10,7 @@ class Batoto extends Base_Site_Model {
 	//FIXME: We're not validating the chapter name since we don't know what all the possible valid characters can be
 	//       Preferably we'd just use /^[0-9a-z]+:--:(v[0-9]+\/)?c[0-9]+(\.[0-9]+)?$/
 	public $chapterFormat = '/^[0-9a-z]+:--:.+$/';
+	public $customType    = 1;
 
 	public function getFullTitleURL(string $title_string) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?

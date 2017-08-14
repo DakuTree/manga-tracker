@@ -106,7 +106,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 		$sites = $query->result_array();
 		foreach ($sites as $site) {
-			if($titleDataList = $this->sites->{$site['site_class']}->doCustomUpdate()) {
+			$siteClass = $this->sites->{$site['site_class']};
+			if($titleDataList = $siteClass->doCustomUpdate()) {
 				foreach ($titleDataList as $titleURL => $titleData) {
 					print "> {$titleData['title']} <{$site['site_class']}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 					if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
@@ -128,8 +129,11 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 								print " - Failed Check (DB: '{$dbTitleData['latest_chapter']}' || UPDATE: '{$titleData['latest_chapter']}')\n";
 							}
 						} else {
-							log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
-							print " - Title doesn't currently exist in DB? Maybe different language or title stub change? ($titleURL)\n";
+							//We only need to log if following page is missing title, not latest releases
+							if($siteClass->customType === 1) {
+								log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
+								print " - Title doesn't currently exist in DB? Maybe different language or title stub change? ($titleURL)\n";
+							}
 						}
 					} else {
 						log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} failed to custom update successfully");

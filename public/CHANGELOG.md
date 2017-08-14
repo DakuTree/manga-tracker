@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-14]
+### Changed
+- `[Backend]` Custom updater now only logs missing titles if using following pages.
+
 ### Fixed
 - `[Backend]` Page loading will now call `setupViewerContainerError` if the ajax response is empty.
   - Fixes: #166
