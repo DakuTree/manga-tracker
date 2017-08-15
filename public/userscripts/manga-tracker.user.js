@@ -34,8 +34,8 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
-// @updated      2017-08-14
-// @version      1.7.47
+// @updated      2017-08-15
+// @version      1.7.48
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -346,12 +346,13 @@ let base_site = {
 					if(!hasEmptyValues(params.manga)) {
 						let status = $('#TrackerStatus');
 						$.post(main_site + '/ajax/userscript/update', params, function (json) {
-							GM_setValue('lastUpdatedSeries', JSON.stringify(params));
+							/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
+
+							GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href})));
 
 							//TODO: We should really output this somewhere other than the topbar..
 							status.text('Attempting update...');
 
-							/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 							switch(json.mal_sync) {
 								case 'disabled':
 									status.text('Updated');
@@ -2170,7 +2171,8 @@ let sites = {
 							let data    = JSON.parse(new_value).manga,
 							    site    = data.site,
 							    title   = data.title,
-							    chapter = data.chapter;
+							    chapter = data.chapter,
+							    url     = data.url;
 
 							let row = $(`i[title="${site}"]`) //Find everything using site
 										.closest('tr')
@@ -2180,14 +2182,15 @@ let sites = {
 								let current_chapter = $(row).find('.current'),
 								    latest_chapter  = $(row).find('.latest'),
 								    update_ele      = unsafeWindow.$(row).find('.update-read');
-								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
-									$(current_chapter)
-										.attr('href', $(latest_chapter).attr('href'))
-										.text($(latest_chapter).text());
 
-									update_ele.trigger('click', {isUserscript: true});
+								$(current_chapter)
+									.attr('href', url)
+									.text(chapter);
+								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
+									update_ele.trigger('click', {isUserscript: true, isLatest: true});
 								} else {
 									//Chapter isn't latest.
+									update_ele.trigger('click', {isUserscript: true, isLatest: false});
 								}
 							}
 						});

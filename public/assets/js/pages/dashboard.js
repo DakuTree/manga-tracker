@@ -192,11 +192,18 @@ $(function(){
 			});
 		} else {
 			console.log('Userscript is updating table...');
-			$(current_chapter)
-				.attr('href', $(latest_chapter).attr('href'))
-				.text($(latest_chapter).text());
 
-			updateUnread(table, row);
+			//Userscript handles updating current_chapter url/text.
+
+			if(data.isLatest) {
+				updateUnread(table, row);
+			} else {
+				let chapter_e = current_chapter.parent();
+
+				//Update updated-at time for sorting purposes.
+				chapter_e.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
+				table.trigger('updateCell', [chapter_e[0], false, null]);
+			}
 		}
 	});
 

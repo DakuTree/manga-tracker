@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-15]
+### Fixed
+- Userscript should now update "My Status" regardless if the chapter is latest or not.
+  - Fixes: #169
 ## [2017-08-14]
 ### Added
 - IPv6 Support.
