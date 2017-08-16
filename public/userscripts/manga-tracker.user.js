@@ -34,8 +34,8 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
-// @updated      2017-08-15
-// @version      1.7.48
+// @updated      2017-08-16
+// @version      1.7.49
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -469,15 +469,36 @@ let base_site = {
 				'csrf_token'        : csrfToken
 			};
 			if(chapterN < 1000) {
+				let status = $('#TrackerStatus');
+
 				GM_xmlhttpRequest({
 					method: 'POST',
 					url: 'https://myanimelist.net/ownlist/manga/edit.json',
 					data: JSON.stringify(json),
-					onload: function() {
-						$('#TrackerStatus').html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
+					onload: function(response) {
+						if(response.responseText !== '{"errors":[{"message":"failed to edit"}]}') {
+							status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
+						} else {
+							status.text('Updated (MAL missing from list, attempting to add...)');
+							GM_xmlhttpRequest({
+								method: 'POST',
+								url: 'https://myanimelist.net/ownlist/manga/add.json',
+								data: JSON.stringify(json),
+								onload: function(response) {
+									if(response.responseText !== '{"errors":[{"message":"The manga is already in your list."}]}') {
+										status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
+									} else {
+										status.text('Updated (Adding to MAL failed?)');
+									}
+								},
+								onerror: function() {
+									status.text('Updated (MAL Sync failed)');
+								}
+							});
+						}
 					},
 					onerror: function() {
-						$('#TrackerStatus').text('Updated (MAL Sync failed)');
+						status.text('Updated (MAL Sync failed)');
 					}
 				});
 			} else {

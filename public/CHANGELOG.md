@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-16]
+### Changed
+- Userscript will now attempt to add to MAL if ID exists and the series is missing from your list.
+  - See: #143
+
 ## [2017-08-15]
 ### Changed
 - User sessions now expire after 3 days, up from 1 day.
