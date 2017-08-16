@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
   - See: #143
 - DeathToll & Mangaichi icons are no longer invisible.
 
+### Fixed
+- 
+  - See: #169
+
 ## [2017-08-15]
 ### Changed
 - User sessions now expire after 3 days, up from 1 day.

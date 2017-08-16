@@ -35,7 +35,7 @@
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
 // @updated      2017-08-16
-// @version      1.7.49
+// @version      1.7.50
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -348,7 +348,7 @@ let base_site = {
 						$.post(main_site + '/ajax/userscript/update', params, function (json) {
 							/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-							GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href})));
+							GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
 
 							//TODO: We should really output this somewhere other than the topbar..
 							status.text('Attempting update...');
@@ -1009,10 +1009,16 @@ let base_site = {
 	title   : '',
 
 	/**
-	 * Chapter name
+	 * Chapter
 	 * @type {String}
 	 */
 	chapter : '',
+
+	/**
+	 * Chapter number (Used when updating updating trackr.moe table on another window)
+	 * @type {String}
+	 */
+	chapterNumber : '',
 
 	//Used by everything for easy access
 
@@ -1407,13 +1413,14 @@ let sites = {
 			this.is_web_toon    = ($(web_toon_check).length ? ($(web_toon_check).text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
-			this.chapter_number = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2] + (chapterNParts[3] ? '-'+chapterNParts[3] : '');
+			this.chapterNumber = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2] + (chapterNParts[3] ? '-'+chapterNParts[3] : '');
 
 			this.title_url      = reader.find('a[href*="/comic/"]:first').attr('href');
 			this.manga_language = $('select[name=group_select]:first > option:selected').text().trim().replace(/.* - ([\S]+)$/, '$1');
 
 			this.title          = this.title_url.replace(/.*r([0-9]+)$/, '$1') + ':--:' + this.manga_language;
-			this.chapter        = this.chapter_hash + ':--:' + this.chapter_number;
+			this.chapter        = this.chapter_hash + ':--:' + this.chapterNumber;
+
 			this.chapter_url    = this.https+'://bato.to/reader#'+this.chapter_hash;
 
 			let chapterListOptions  = $('select[name=chapter_select]:first > option');
@@ -1426,7 +1433,7 @@ let sites = {
 			}
 			this.chapterList            = generateChapterList(chapterListOptions.reverseObj(), 'value');
 
-			this.viewerChapterName      = this.chapter_number;
+			this.viewerChapterName      = this.chapterNumber;
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });
 			this.viewerChapterURLFormat = this.https+'://bato.to/areader?id='+this.chapter_hash+'&p=' + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="comic_page".+?(?=>)>)[\s\S]+$/;
@@ -1692,6 +1699,7 @@ let sites = {
 			    chapter_id   = window.location.search.match(/episode_no=([0-9]+)/)[1];
 			this.title       = title_id   + ':--:' + this.segments[1] + ':--:' + this.segments[3] + ':--:' + this.segments[2];
 			this.chapter     = chapter_id + ':--:' + this.segments[4];
+			this.chapterNumber = this.segments[4];
 
 			this.title_url   = 'http://www.webtoons.com/'+this.segments[1]+'/'+this.segments[2]+'/'+this.segments[3]+'/list?title_no='+title_id;
 			this.chapter_url = 'http://www.webtoons.com/'+this.segments[1]+'/'+this.segments[2]+'/'+this.segments[3]+'/'+this.segments[4]+'/viewer?title_no='+title_id+'&episode_no='+chapter_id;
@@ -2189,10 +2197,11 @@ let sites = {
 						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
 							//TODO: Move as much of this as possible to using the actual site functions.
 
-							let data    = JSON.parse(new_value).manga,
-							    site    = data.site,
-							    title   = data.title,
-							    chapter = data.chapter,
+							let data    = JSON.parse(new_value),
+							    site    = data.manga.site,
+							    title   = data.manga.title,
+							    chapter = data.manga.chapter,
+							    chapterNumber = data.chapterNumber,
 							    url     = data.url;
 
 							let row = $(`i[title="${site}"]`) //Find everything using site
@@ -2206,7 +2215,7 @@ let sites = {
 
 								$(current_chapter)
 									.attr('href', url)
-									.text(chapter);
+									.text(chapterNumber);
 								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
 									update_ele.trigger('click', {isUserscript: true, isLatest: true});
 								} else {
