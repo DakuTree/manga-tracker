@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
   - `mal:any` matches everything that has a MAL id.
   - `mal:none` matches everything that has been marked that it doesn't have an ID.
   - `mal:notset` matches everything that has yet to have an ID set.
+- Login now has an option to set length of time to remember the user (from last login).
 
 ### Changed
 - Userscript will now attempt to add to MAL if ID exists and the series is missing from your list.

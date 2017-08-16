@@ -5,7 +5,7 @@
  * @property CI_Calendar         $calendar                            This class enables the creation of calendars
  * @property CI_Cache            $cache                               Caching Class
  * @property CI_Cart             $cart                                Shopping Cart Class
- * @property CI_Config           $config                              This class contains functions that enable config files to be managed
+ * @property MY_Config           $config                              This class contains functions that enable config files to be managed
  * @property CI_Controller       $controller                          This class object is the super class that every library in CodeIgniter will be assigned to
  * @property CI_DB_forge         $dbforge                             Database Forge Class
  * @property CI_DB_query_builder $db                                  This is the platform-independent base Query Builder implementation class
@@ -69,7 +69,7 @@ class CI_Controller {}
  * @property CI_Calendar         $calendar                            This class enables the creation of calendars
  * @property CI_Cache            $cache                               Caching Class
  * @property CI_Cart             $cart                                Shopping Cart Class
- * @property CI_Config           $config                              This class contains functions that enable config files to be managed
+ * @property MY_Config           $config                              This class contains functions that enable config files to be managed
  * @property CI_Controller       $controller                          This class object is the super class that every library in CodeIgniter will be assigned to
  * @property CI_DB_forge         $dbforge                             Database Forge Class
  * @property CI_DB_query_builder $db                                  This is the platform-independent base Query Builder implementation class
@@ -133,7 +133,7 @@ class CI_Model {}
  * @property CI_Calendar         $calendar                            This class enables the creation of calendars
  * @property CI_Cache            $cache                               Caching Class
  * @property CI_Cart             $cart                                Shopping Cart Class
- * @property CI_Config           $config                              This class contains functions that enable config files to be managed
+ * @property MY_Config           $config                              This class contains functions that enable config files to be managed
  * @property CI_Controller       $controller                          This class object is the super class that every library in CodeIgniter will be assigned to
  * @property CI_DB_forge         $dbforge                             Database Forge Class
  * @property CI_DB_query_builder $db                                  This is the platform-independent base Query Builder implementation class
@@ -198,7 +198,7 @@ class CI_Migration {}
  * @property CI_Calendar         $calendar                            This class enables the creation of calendars
  * @property CI_Cache            $cache                               Caching Class
  * @property CI_Cart             $cart                                Shopping Cart Class
- * @property CI_Config           $config                              This class contains functions that enable config files to be managed
+ * @property MY_Config           $config                              This class contains functions that enable config files to be managed
  * @property CI_Controller       $controller                          This class object is the super class that every library in CodeIgniter will be assigned to
  * @property CI_DB_forge         $dbforge                             Database Forge Class
  * @property CI_DB_query_builder $db                                  This is the platform-independent base Query Builder implementation class

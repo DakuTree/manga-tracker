@@ -32,6 +32,33 @@ class Login extends No_Auth_Controller {
 			$identity = $this->User->find_email_from_identity($this->input->post('identity'));
 
 			$remember = (bool) $this->input->post('remember');
+			if($remember) {
+				switch($this->input->post('remember_time')) {
+					case '1day':
+						$this->config->set_item_by_index('user_expire', 86400, 'ion_auth');
+						break;
+
+					case '3day':
+						//This is default so do nothing.
+						break;
+
+					case '1week':
+						$this->config->set_item_by_index('user_expire', 604800, 'ion_auth');
+						break;
+
+					case '1month':
+						$this->config->set_item_by_index('user_expire', 2419200, 'ion_auth');
+						break;
+
+					case '3month':
+						$this->config->set_item_by_index('user_expire', 7257600, 'ion_auth');
+						break;
+
+					default:
+						//Somehow remember_time isn't set?
+						break;
+				}
+			}
 
 			if($identity && $this->ion_auth->login($identity, $this->input->post('password'), $remember)) {
 				//login is successful
@@ -100,6 +127,22 @@ class Login extends No_Auth_Controller {
 
 				'checked' => 'checked',
 				'value'   => 'remember' //CI is stupid, so we need to pass a value so CI can see it's checked :\
+			);
+			$this->body_data['form_remember_time'] = array(
+				'name'    => 'remember_time',
+				'id'      => 'remember_time',
+
+				'class'   => 'form-control form-control-inline',
+				'style'   => 'vertical-align: middle',
+
+				'title'   => 'Session timeout'
+			);
+			$this->body_data['form_remember_time_data'] = array(
+				'1day'   => 'for 24 hours',
+				'3day'   => 'for 3 Days',
+				'1week'  => 'for 1 Week',
+				'1month' => 'for 1 Month',
+				'3month' => 'for 3 Months'
 			);
 			$this->body_data['form_submit'] = array(
 				'name' => 'submit',

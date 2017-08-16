@@ -15,11 +15,20 @@
 					<?=form_input($form_password)?>
 				</div>
 				<span><?=print_r($notices, TRUE)?></span>
-				<span class="button-checkbox">
-					<button type="button" class="btn" data-color="info">Remember Me</button>
-					<?=form_checkbox($form_remember)?>
-					<a href="<?=base_url('user/forgot_password')?>" class="btn btn-link pull-right">Forgot Password?</a>
-				</span>
+
+				<div class="row">
+					<div class="col-xs-8 col-sm-8 col-md-8">
+						<span class="button-checkbox">
+							<button type="button" class="btn" data-color="info">Remember Me</button>
+							<?=form_checkbox($form_remember)?>
+						</span>
+
+						<?=form_dropdown('remember_time', $form_remember_time_data, '3day', $form_remember_time)?>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4">
+						<a href="<?=base_url('user/forgot_password')?>" class="btn btn-link pull-right">Forgot Password?</a>
+					</div>
+				</div>
 
 				<hr class="colorgraph">
 

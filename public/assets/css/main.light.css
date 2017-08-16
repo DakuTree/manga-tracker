@@ -114,6 +114,12 @@ h1 {
 
 	font-size: 14px;
 }
+.form-control-inline {
+	display: inline;
+
+	width: auto;
+	min-width: 0;
+}
 @-webkit-keyframes fadeIn {
 	from {
 		opacity: 0;
