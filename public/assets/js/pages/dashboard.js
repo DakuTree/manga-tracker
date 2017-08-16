@@ -44,6 +44,19 @@ $(function(){
 		return null;
 	};
 
+	/**
+	 * @return {boolean|null}
+	 */
+	$.tablesorter.filter.types.FindSite = function( config, data ) {
+		if(/^site:[\w-.]+$/.test(data.iFilter)) {
+			let searchSite  = data.iFilter.match(/^site:([\w-.]+)$/)[1].replace(/\./g, '-'),
+			    currentSite = data.$row.find('> td:eq(1) .sprite-site').attr('class').split(' ')[1].substr(7);
+
+			return searchSite === currentSite;
+		}
+		return null;
+	};
+
 	$('.tracker-table').tablesorter({
 		initialized: function(table) {
 			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort

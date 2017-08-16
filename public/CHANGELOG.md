@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-16]
+### Added
+- Site metatag for filtering a specific site.
+  - Example: `site:mangafox.me` would return everything where mangafox.me is the site.
+  - Closes: #156
+
 ### Changed
 - Userscript will now attempt to add to MAL if ID exists and the series is missing from your list.
   - See: #143
