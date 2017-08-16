@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Site metatag for filtering a specific site.
   - Example: `site:mangafox.me` would return everything where mangafox.me is the site.
-  - Closes: #156
+  - Closes: #156.
+- MAL metatag now has `any`, `none`, and `notset` options for more filtering.
+  - `mal:any` matches everything that has a MAL id.
+  - `mal:none` matches everything that has been marked that it doesn't have an ID.
+  - `mal:notset` matches everything that has yet to have an ID set.
 
 ### Changed
 - Userscript will now attempt to add to MAL if ID exists and the series is missing from your list.

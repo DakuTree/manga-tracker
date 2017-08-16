@@ -35,11 +35,30 @@ $(function(){
 	 * @return {boolean|null}
 	 */
 	$.tablesorter.filter.types.FindMalId = function( config, data ) {
-		if(/^mal:[0-9]+$/.test(data.iFilter)) {
-			let searchID  = data.iFilter.match(/^mal:([0-9]+)$/)[1],
-			    currentID = data.$row.find('> td:eq(1) .sprite-myanimelist-net').attr('title');
+		if(/^mal:(?:[0-9]+|any|none|notset)$/.test(data.iFilter)) {
+			let searchID  = data.iFilter.match(/^mal:([0-9]+|any|none|notset)$/)[1].toLowerCase();
 
-			return searchID === currentID;
+			let status = false;
+			switch(searchID) {
+				case 'any':
+					status = (data.$row.find('> td:eq(1) i.sprite-myanimelist-net').length > 0);
+					break;
+
+				case 'none':
+					status = (data.$row.find('> td:eq(1) i.sprite-myanimelist-net-none').length > 0);
+					break;
+
+				case 'notset':
+					status = (data.$row.find('> td:eq(1) i[class*="sprite-myanimelist-net"]').length === 0);
+					break;
+
+				default:
+					let currentID = data.$row.find('> td:eq(1) i.sprite-myanimelist-net').attr('title');
+					status = (searchID === currentID);
+					break;
+			}
+
+			return status;
 		}
 		return null;
 	};
@@ -49,7 +68,7 @@ $(function(){
 	 */
 	$.tablesorter.filter.types.FindSite = function( config, data ) {
 		if(/^site:[\w-.]+$/.test(data.iFilter)) {
-			let searchSite  = data.iFilter.match(/^site:([\w-.]+)$/)[1].replace(/\./g, '-'),
+			let searchSite  = data.iFilter.match(/^site:([\w-.]+)$/i)[1].replace(/\./g, '-').toLowerCase(),
 			    currentSite = data.$row.find('> td:eq(1) .sprite-site').attr('class').split(' ')[1].substr(7);
 
 			return searchSite === currentSite;
