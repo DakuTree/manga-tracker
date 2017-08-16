@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Userscript will now attempt to add to MAL if ID exists and the series is missing from your list.
   - See: #143
+- DeathToll & Mangaichi icons are no longer invisible.
 
 ## [2017-08-15]
 ### Changed
