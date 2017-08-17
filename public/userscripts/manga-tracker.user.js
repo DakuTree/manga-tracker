@@ -2095,12 +2095,17 @@ let sites = {
 			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
 
 			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
-			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
-			this.viewerRegex            = /^[\s\S]*<div id="ppp" style>[\s\S]*(<img class="img)/;
+			this.viewerCustomImageList = $('body').find('> script:eq(1)').html().match(/"page_image"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			}).map(function(e) {
+				let val = e.replace(/"page_image"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
+				return JSON.parse('"' + val.replace(/"/g, '\\"') + '"');
+			});
+			this.page_count = this.viewerCustomImageList.length;
 		},
 		preSetupViewer : function(callback) {
 			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true);
+			callback(true, true);
 		},
 		postSetupTopBar : function(callback) {
 			let viewer = $('.viewer-cnt');
