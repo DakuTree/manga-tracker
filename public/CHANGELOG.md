@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2017-08-16]
+## [2017-08-17]
 ### Fixed
 - Userscript now properly recognizes decimal chapters on FallenAngelsScans.
 
