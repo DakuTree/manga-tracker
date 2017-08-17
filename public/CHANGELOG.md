@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2017-08-17]
+## [2017-08-16]
 ### Fixed
 - Userscript now properly recognizes decimal chapters on FallenAngelsScans.
 
@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 - DeathToll & Mangaichi icons are no longer invisible.
 
 ### Fixed
--
+- Userscript should now update "My Status" regardless if the chapter is latest or not.
   - See: #169
 
 ## [2017-08-15]
