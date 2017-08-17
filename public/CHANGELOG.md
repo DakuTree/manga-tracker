@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-16]
+### Fixed
+- Userscript now properly recognizes decimal chapters on FallenAngelsScans.
+
+## [2017-08-16]
 ### Added
 - Site metatag for filtering a specific site.
   - Example: `site:mangafox.me` would return everything where mangafox.me is the site.
@@ -18,7 +22,7 @@ All notable changes to this project will be documented in this file.
 - DeathToll & Mangaichi icons are no longer invisible.
 
 ### Fixed
-- 
+-
   - See: #169
 
 ## [2017-08-15]
