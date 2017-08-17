@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 - DeathToll & Mangaichi icons are no longer invisible.
 
 ### Fixed
-- Userscript should now update "My Status" regardless if the chapter is latest or not.
+- Userscript now properly updates Batoto based chapter numbers on "My Status"
   - See: #169
 
 ## [2017-08-15]
