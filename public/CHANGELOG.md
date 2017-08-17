@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2017-08-17]
 ### Added
-- Site support for White Cloud Pavilion and World Three
+- Site support for White Cloud Pavilion, World Three, and HotChocolateScans.
 
 ### Fixed
 - Userscript now properly recognizes decimal chapters on FallenAngelsScans.

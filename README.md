@@ -38,3 +38,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * LHtranslation
 * White Cloud Pavilion
 * World Three
+* Hot Chocolate Scans
