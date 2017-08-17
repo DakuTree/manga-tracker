@@ -36,3 +36,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * FallenAngelsScans
 * Mangaichi Scanlation Division
 * LHtranslation
+* White Cloud Pavillion

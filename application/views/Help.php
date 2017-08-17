@@ -54,5 +54,6 @@
 		<li>FallenAngelsScans</li>
 		<li>Mangaichi Scanlation Division</li>
 		<li>LHtranslation</li>
+		<li>White Cloud Pavillion</li>
 	</ul>
 </div>

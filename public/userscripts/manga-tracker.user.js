@@ -34,8 +34,9 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
+// @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-08-17
-// @version      1.7.51
+// @version      1.7.52
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2155,6 +2156,18 @@ let sites = {
 		preSetupViewer : function(callback) {
 			$('.chapter-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 			callback(false, true);
+		}
+	}),
+
+	/**
+	 * White Cloud Pavillion (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'archangelscans.com' : extendSite({
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://archangelscans.com/free';
+			this.setupFoolSlide(3);
+			callback();
 		}
 	}),
 

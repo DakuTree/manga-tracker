@@ -456,6 +456,20 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('MangaichiScans', 'Bad Status Code (404)');
 	}
 
+	public function test_WhiteCloudPavillion() {
+		$testSeries = [
+			'autophagy_regulation'         => 'Autophagy Regulation',
+			'i_the_female_robot'           => 'I, The Female Robot',
+			'shen_yin_wang_zuo'            => 'Shen Yin Wang Zuo'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('WhiteCloudPavillion', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_WhiteCloudPavillion_fail() {
+		$this->_testSiteFailure('WhiteCloudPavillion', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 
