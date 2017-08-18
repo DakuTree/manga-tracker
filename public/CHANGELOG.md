@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Site support for White Cloud Pavilion, World Three, and HotChocolateScans.
 
+### Changed
+- Userscript no longer runs on iframes.
+
 ### Fixed
 - Userscript now properly recognizes decimal chapters on FallenAngelsScans.
 
