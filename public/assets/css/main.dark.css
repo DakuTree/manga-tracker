@@ -383,181 +383,199 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.17.png") no-repeat;
+	background: url("../../img/sites.18.png") no-repeat;
 }
-.sprite-site.sprite-bato-to {
+.sprite-site.sprite-archangelscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: 0px 0;
 }
-.sprite-site.sprite-dynasty-scans-com {
+.sprite-site.sprite-bato-to {
 	width: 16px;
 	height: 16px;
 
 	background-position: -18px 0;
 }
-.sprite-site.sprite-gameofscanlation-moe {
+.sprite-site.sprite-dynasty-scans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -36px 0;
 }
-.sprite-site.sprite-helveticascans-com {
+.sprite-site.sprite-gameofscanlation-moe {
 	width: 16px;
 	height: 16px;
 
 	background-position: -54px 0;
 }
-.sprite-site.sprite-jaiminisbox-com {
+.sprite-site.sprite-helveticascans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -72px 0;
 }
-.sprite-site.sprite-kissmanga-com {
+.sprite-site.sprite-hotchocolatescans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -90px 0;
 }
-.sprite-site.sprite-kobato-hologfx-com {
+.sprite-site.sprite-jaiminisbox-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -108px 0;
 }
-.sprite-site.sprite-lhtranslation-com {
+.sprite-site.sprite-kissmanga-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -126px 0;
 }
-.sprite-site.sprite-manga-fascans-com {
+.sprite-site.sprite-kobato-hologfx-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -144px 0;
 }
-.sprite-site.sprite-mangafox-me {
+.sprite-site.sprite-lhtranslation-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -162px 0;
 }
-.sprite-site.sprite-mangaichiscans-mokkori-fr {
+.sprite-site.sprite-manga-fascans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -180px 0;
 }
-.sprite-site.sprite-mngcow-co {
+.sprite-site.sprite-mangafox-me {
 	width: 16px;
 	height: 16px;
 
 	background-position: -198px 0;
 }
-.sprite-site.sprite-myanimelist-net-none {
+.sprite-site.sprite-mangaichiscans-mokkori-fr {
 	width: 16px;
 	height: 16px;
 
 	background-position: -216px 0;
 }
-.sprite-site.sprite-myanimelist-net {
+.sprite-site.sprite-mngcow-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -234px 0;
 }
-.sprite-site.sprite-otscans-com {
+.sprite-site.sprite-myanimelist-net-none {
 	width: 16px;
 	height: 16px;
 
 	background-position: -252px 0;
 }
-.sprite-site.sprite-read-egscans-com {
+.sprite-site.sprite-myanimelist-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -270px 0;
 }
-.sprite-site.sprite-reader-deathtollscans-net {
+.sprite-site.sprite-otscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -288px 0;
 }
-.sprite-site.sprite-reader-kireicake-com {
+.sprite-site.sprite-read-egscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -306px 0;
 }
-.sprite-site.sprite-reader-s2smanga-com {
+.sprite-site.sprite-reader-deathtollscans-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -324px 0;
 }
-.sprite-site.sprite-reader-seaotterscans-com {
+.sprite-site.sprite-reader-kireicake-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -342px 0;
 }
-.sprite-site.sprite-reader-sensescans-com {
+.sprite-site.sprite-reader-s2smanga-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -360px 0;
 }
-.sprite-site.sprite-reader-whiteoutscans-com {
+.sprite-site.sprite-reader-seaotterscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -378px 0;
 }
-.sprite-site.sprite-readms-net {
+.sprite-site.sprite-reader-sensescans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -396px 0;
 }
-.sprite-site.sprite-www-demonicscans-com {
+.sprite-site.sprite-reader-whiteoutscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -414px 0;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -432px 0;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -450px 0;
 }
-.sprite-site.sprite-www-merakiscans-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -468px 0;
 }
-.sprite-site.sprite-www-readmanga-today {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -486px 0;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-merakiscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -504px 0;
+}
+.sprite-site.sprite-www-readmanga-today {
+	width: 16px;
+	height: 16px;
+
+	background-position: -522px 0;
+}
+.sprite-site.sprite-www-slide-world-three-org {
+	width: 16px;
+	height: 16px;
+
+	background-position: -540px 0;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -558px 0;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;
