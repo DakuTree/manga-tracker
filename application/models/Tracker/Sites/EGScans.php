@@ -2,7 +2,7 @@
 
 class EGScans extends Base_Site_Model {
 	public $titleFormat   = '/^[A-Za-z0-9\-_\!,]+$/';
-	public $chapterFormat = '/^Chapter_[0-9]+(?:_extra)?$/';
+	public $chapterFormat = '/^Chapter_[0-9]+(?:_[E|e]xtra)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://read.egscans.com/{$title_url}/";
