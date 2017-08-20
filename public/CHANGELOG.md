@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-20]
+### Fixed
+- Favouriting more than one chapter from the same series should work now.
+
 ## [2017-08-17]
 ### Added
 - Site support for White Cloud Pavilion, World Three, and HotChocolateScans.

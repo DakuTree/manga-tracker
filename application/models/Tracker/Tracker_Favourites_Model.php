@@ -89,6 +89,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 				//Check if it is already favourited
 				$idFQuery = $this->db->select('id')
 				                     ->where('chapter_id', $idCQueryRow->id)
+				                     ->where('chapter', $chapter)
 				                     ->get('tracker_favourites');
 				if($idFQuery->num_rows() > 0) {
 					//Chapter is already favourited, so remove it from DB
