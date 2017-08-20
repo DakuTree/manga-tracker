@@ -76,6 +76,21 @@ $(function(){
 		return null;
 	};
 
+	/**
+	 * @return {boolean|null}
+	 */
+	$.tablesorter.filter.types.FindTag = function(config, data) {
+		if(/^tag:[a-z0-9\-_:]{1,255}$/.test(data.iFilter)) {
+			let searchTag = data.iFilter.match(/^tag:([a-z0-9\-_:]{1,255})$/)[1],
+			    tagArray  = data.$row.find('td:eq(1) .tag-list .tag').map((i, e) => {
+			        return $(e).text();
+			    }).toArray();
+
+			return $.inArray(searchTag, tagArray) !== -1;
+		}
+		return null;
+	};
+
 	$('.tracker-table').tablesorter({
 		initialized: function(table) {
 			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort

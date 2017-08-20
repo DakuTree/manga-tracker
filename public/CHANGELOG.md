@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-20]
+### Added
+- Tag metatag for filtering tags.
+  - Example: `tag:complete` would find everything tagged as complete.
+  - Example: `tag:complete AND mal:none` would find everything tagged as complete AND marked as not having a MAL id.
+
 ### Fixed
 - Favouriting more than one chapter from the same series should work now.
 
