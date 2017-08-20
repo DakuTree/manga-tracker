@@ -631,7 +631,17 @@ $(function(){
 				};
 				$.post(base_url + 'ajax/tag_update', postData, () => {
 					$(input).val(tag_list_new);
-					$(_this).closest('.more-info').find('.tag-list').text(tag_list_new || 'none');
+
+					let $tag_list = $(_this).closest('.more-info').find('.tag-list');
+					if(!tag_list_new) {
+						$tag_list.text('none');
+					} else {
+						let tagArr = tag_list_new.split(',').map((e, i) => {
+							return $('<i/>', {class: 'tag', text: e});
+						});
+						$tag_list.html(tagArr);
+					}
+
 					$(_this).closest('.tag-edit').toggleClass('hidden');
 				}).fail((jqXHR, textStatus, errorThrown) => {
 					_handleAjaxError(jqXHR, textStatus, errorThrown);

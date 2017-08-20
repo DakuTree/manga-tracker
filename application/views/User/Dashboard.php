@@ -136,7 +136,7 @@
 						|
 						<a href="#" class="set-mal-id" data-mal-id="<?=$row['mal_id']?>" data-mal-type="<?=$row['mal_type']?>">Set MAL ID</a> <?php if(!is_null($row['mal_id']) && $row['mal_type'] == 'chapter') { ?><span>(<small><?=($row['mal_id'] !== '0' ? $row['mal_id'] : 'none')?></small>)</span><?php } ?>
 						|
-						Tags (<a href="#" class="edit-tags small">Edit</a>): <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
+						Tags (<a href="#" class="edit-tags small">Edit</a>): <span class="text-lowercase tag-list"><?=($row['has_tags'] ? implode("", array_map(function ($str) { return "<i class='tag'>{$str}</i>"; }, explode(",", $row['tag_list']))) : "none")?></span>
 						<div class="input-group hidden tag-edit">
 							<input type="text" class="form-control" placeholder="tag1,tag2,tag3" maxlength="255" pattern='[a-z0-9-_,]{0,255}' value="<?=$row['tag_list']?>">
 							<span class="input-group-btn">

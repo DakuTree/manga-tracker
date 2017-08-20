@@ -179,6 +179,10 @@
 					& > .has-tags {
 						display: block;
 					}
+
+					& .tag-list > .tag:not(:first-of-type):before {
+						content: ",";
+					}
 				}
 				& > td:nth-of-type(3) {
 					width: 20%;
