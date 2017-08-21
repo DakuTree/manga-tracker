@@ -59,9 +59,22 @@ class AdminCLI extends CLI_Controller {
 		$this->Tracker->admin->refollowCustom();
 	}
 
-	public function test() {
-		//print_r($this->Tracker->sites->{'GameOfScanlation'}->getTitleData('legendary-moonlight-sculptor.99'));
-		print_r($this->Tracker->sites->{'MangaCow'}->getTitleData('The_scholars_reincarnation'));
-		//$this->Tracker->sites->{'Batoto'}->doCustomUpdate();
+	public function testSite($type, $site, $title = NULL) {
+		switch($type) {
+			case 'update':
+				if(!is_null($title)) {
+					print_r($this->Tracker->sites->{$site}->getTitleData($title));
+				}
+				break;
+
+			case 'custom_update':
+				print_r($this->Tracker->sites->{$site}->doCustomUpdate());
+				break;
+
+			default:
+				print "Missing parameters.";
+				break;
+		}
+		print "\n";
 	}
 }

@@ -117,7 +117,8 @@ if(is_cli()) {
 	$route['admin/update_series_custom'] = 'AdminCLI/updateSeriesCustom';
 	$route['admin/update_titles']        = 'AdminCLI/updateTitles';
 	$route['admin/refollow_custom']      = 'AdminCLI/refollowCustom';
-	$route['admin/test']                 = 'AdminCLI/test';
+	$route['admin/test']                 = 'AdminCLI/testSite/do/nothing';
+	$route['admin/test/(.*?)/(.*)']      = 'AdminCLI/testSite/$1/$2';
 }
 
 /*** DISALLOWED ROUTING ***/
