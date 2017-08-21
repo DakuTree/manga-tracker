@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-21]
+### Fixed
+- FoolSlide sites should now properly show the formatted chapter on the dashboard when updating via the userscript.
+
 ## [2017-08-20]
 ### Added
 - Tag metatag for filtering tags.

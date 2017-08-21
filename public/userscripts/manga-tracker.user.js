@@ -37,8 +37,8 @@
 // @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-18
-// @version      1.7.56
+// @updated      2017-08-21
+// @version      1.7.57
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -946,6 +946,10 @@ let base_site = {
 			this.title   = this.segments[0];
 			this.chapter = this.segments[1] + '/' + this.segments[2] + '/' + this.segments[3] + (this.segments[4] && this.segments[4] !== 'page' ? '/' + this.segments[4] : '');
 
+			let chapterArr     = this.chapter.split('/');
+			this.chapterNumber = (chapterArr[1] !== '0' ? `v${chapterArr[1]}/` : '') + `c${chapterArr[2]}` + (chapterArr[3] ? `.${chapterArr[3]}` : '');
+
+			//($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 			this.title_url   = this.foolSlideBaseURL+'/'+this.title;
 			this.chapter_url = this.foolSlideBaseURL+'/read/'+this.title+'/'+this.chapter;
 
