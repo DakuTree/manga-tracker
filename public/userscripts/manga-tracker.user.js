@@ -38,7 +38,7 @@
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-08-18
-// @version      1.7.55
+// @version      1.7.56
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2258,12 +2258,13 @@ let sites = {
 								    update_ele      = unsafeWindow.$(row).find('.update-read');
 
 								$(current_chapter)
-									.attr('href', url)
-									.text(chapterNumber);
+									.attr('href', url);
 								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
+									$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
 									update_ele.trigger('click', {isUserscript: true, isLatest: true});
 								} else {
 									//Chapter isn't latest.
+									$(current_chapter).text(chapterNumber);
 									update_ele.trigger('click', {isUserscript: true, isLatest: false});
 								}
 							}
