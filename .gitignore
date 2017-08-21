@@ -37,5 +37,8 @@ application/tests_codeception/_support/_generated/*.php
 
 _scripts/config.ini
 _scripts/*.sh
+_scripts/geckodriver.log
+_scripts/userscript_testing/chromedriver.exe
+_scripts/userscript_testing/tampermonkey_*.crx
 
 public/favicon.*.png
