@@ -57,5 +57,6 @@
 		<li>White Cloud Pavilion</li>
 		<li>World Three</li>
 		<li>Hot Chocolate Scans</li>
+		<li>Mangazuki</li>
 	</ul>
 </div>

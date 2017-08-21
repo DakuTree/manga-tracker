@@ -39,3 +39,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * White Cloud Pavilion
 * World Three
 * Hot Chocolate Scans
+* Mangazuki

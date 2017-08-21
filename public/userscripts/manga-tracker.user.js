@@ -37,8 +37,9 @@
 // @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @updated      2017-08-21
-// @version      1.7.57
+// @version      1.7.58
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2198,6 +2199,55 @@ let sites = {
 			this.foolSlideBaseURL = this.https+'://hotchocolatescans.com/fs';
 			this.setupFoolSlide(3);
 			callback();
+		}
+	}),
+
+	/**
+	 * Mangazuki
+	 * @type {SiteObject}
+	 */
+	'mangazuki.co' : extendSite({
+		setObjVars : function() {
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3];
+
+			this.title_url   = this.https+'://mangazuki.co/series/'+this.title;
+			this.chapter_url = this.https+'://mangazuki.co/read/'+this.title+'/'+this.chapter;
+
+			this.chapterListCurrent = this.chapter_url;
+
+			this.viewerChapterName      = 'c'+this.chapter;
+			this.viewerTitle            = $('.content-wrapper > div:eq(1) > div > h1 > a').text();
+			this.viewerCustomImageList  = $('.content-wrapper').find('img').map(function(i, e) {
+				return $(e).attr('src');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		},
+		preSetupTopBar : function(callback) {
+			let _this = this;
+
+			//We need to use AJAX as the chapter pages don't provide a full chapter list.
+			$.ajax({
+				url: _this.title_url,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+					xhr.setRequestHeader('Pragma', 'no-cache');
+				},
+				cache: false,
+				success: function(response) {
+					let $container = $(response).wrap('<div />').parent();
+					$container.find('.text-muted, .media-left, .media-right').remove();
+					console.log($container);
+					_this.chapterList = generateChapterList($('.media-list > li > a', $container).reverseObj(), 'href');
+
+					callback();
+				}
+			});
+		},
+		preSetupViewer : function(callback) {
+			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+
+			callback(false, true);
 		}
 	}),
 
