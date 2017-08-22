@@ -40,7 +40,7 @@
 // @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-08-22
-// @version      1.7.60
+// @version      1.7.61
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -941,8 +941,8 @@ let base_site = {
 	 *
 	 * @final
 	 */
-	setupFoolSlide : function(segmentsStart) {
-		this.segments = this.segments.slice(segmentsStart);
+	setupFoolSlide : function() {
+		this.segments = this.segments.slice(this.segments.indexOf('read') + 1);
 
 		this.setObjVars = function() {
 			this.title   = this.segments[0];
@@ -1786,7 +1786,7 @@ let sites = {
 	 */
 	'reader.kireicake.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -1797,7 +1797,7 @@ let sites = {
 	 */
 	'reader.whiteoutscans.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -1926,7 +1926,7 @@ let sites = {
 	 */
 	'reader.seaotterscans.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -1942,7 +1942,7 @@ let sites = {
 				location.pathname = location.pathname.replace(/^\/reader/, '/r');
 			} else {
 				this.foolSlideBaseURL = this.https+'://helveticascans.com/r';
-				this.setupFoolSlide(3);
+				this.setupFoolSlide();
 				callback();
 			}
 		}
@@ -1965,7 +1965,7 @@ let sites = {
 	 */
 	'reader.sensescans.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -1977,7 +1977,7 @@ let sites = {
 	'jaiminisbox.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://jaiminisbox.com/reader';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -1989,7 +1989,7 @@ let sites = {
 	'kobato.hologfx.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://kobato.hologfx.com/reader';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2001,7 +2001,7 @@ let sites = {
 	'www.demonicscans.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://www.demonicscans.com/FoOlSlide';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2012,7 +2012,7 @@ let sites = {
 	 */
 	'reader.deathtollscans.net' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2024,7 +2024,7 @@ let sites = {
 	'otscans.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://otscans.com/foolslide';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2035,7 +2035,7 @@ let sites = {
 	 */
 	'reader.s2smanga.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2081,7 +2081,7 @@ let sites = {
 	'www.merakiscans.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://www.merakiscans.com/reader';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2135,7 +2135,7 @@ let sites = {
 	'mangaichiscans.mokkori.fr' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://mangaichiscans.mokkori.fr/fs';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2175,7 +2175,7 @@ let sites = {
 	'archangelscans.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://archangelscans.com/free';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2186,7 +2186,7 @@ let sites = {
 	 */
 	'www.slide.world-three.org' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2198,7 +2198,7 @@ let sites = {
 	'hotchocolatescans.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://hotchocolatescans.com/fs';
-			this.setupFoolSlide(3);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),
@@ -2270,7 +2270,7 @@ let sites = {
 	 */
 	'reader.ygscans.com' : extendSite({
 		preInit : function(callback) {
-			this.setupFoolSlide(2);
+			this.setupFoolSlide();
 			callback();
 		}
 	}),

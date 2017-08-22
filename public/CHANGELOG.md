@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - Support for Yummy Gummy Scans
   - Thanks to @Vexnyx (#182).
 
+### Changed
+- `[Backend]` Userscript setupFoolSlide function now auto-detects segments to remove.
+
 ## [2017-08-21]
 ### Added
 - Support for mangazuki.co.
