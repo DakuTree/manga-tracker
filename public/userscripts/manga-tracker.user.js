@@ -2218,7 +2218,7 @@ let sites = {
 			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerChapterName      = 'c'+this.chapter;
-			this.viewerTitle            = $('.content-wrapper > div:eq(1) > div > h1 > a').text();
+			this.viewerTitle            = $.trim(($('.content-wrapper > div:eq(1) > div > h1 > a').text()));
 			this.viewerCustomImageList  = $('.content-wrapper').find('img').map(function(i, e) {
 				return $(e).attr('src');
 			});
