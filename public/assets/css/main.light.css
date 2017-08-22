@@ -383,7 +383,7 @@ body {
 
 	vertical-align: text-bottom;
 
-	background: url("../../img/sites.19.png") no-repeat;
+	background: url("../../img/sites.20.png") no-repeat;
 }
 .sprite-site.sprite-archangelscans-com {
 	width: 16px;
@@ -535,53 +535,59 @@ body {
 
 	background-position: -432px 0;
 }
-.sprite-site.sprite-readms-net {
+.sprite-site.sprite-reader-ygscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -450px 0;
 }
-.sprite-site.sprite-www-demonicscans-com {
+.sprite-site.sprite-readms-net {
 	width: 16px;
 	height: 16px;
 
 	background-position: -468px 0;
 }
-.sprite-site.sprite-www-mangahere-co {
+.sprite-site.sprite-www-demonicscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -486px 0;
 }
-.sprite-site.sprite-www-mangapanda-com {
+.sprite-site.sprite-www-mangahere-co {
 	width: 16px;
 	height: 16px;
 
 	background-position: -504px 0;
 }
-.sprite-site.sprite-www-merakiscans-com {
+.sprite-site.sprite-www-mangapanda-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -522px 0;
 }
-.sprite-site.sprite-www-readmanga-today {
+.sprite-site.sprite-www-merakiscans-com {
 	width: 16px;
 	height: 16px;
 
 	background-position: -540px 0;
 }
-.sprite-site.sprite-www-slide-world-three-org {
+.sprite-site.sprite-www-readmanga-today {
 	width: 16px;
 	height: 16px;
 
 	background-position: -558px 0;
 }
-.sprite-site.sprite-www-webtoons-com {
+.sprite-site.sprite-www-slide-world-three-org {
 	width: 16px;
 	height: 16px;
 
 	background-position: -576px 0;
+}
+.sprite-site.sprite-www-webtoons-com {
+	width: 16px;
+	height: 16px;
+
+	background-position: -594px 0;
 }
 #page[data-page="index"] h1 {
 	font-size: 36px;
