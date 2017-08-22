@@ -1,11 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-22]
+### Added
+- Support for Yummy Gummy Scans
+  - Thanks to @Vexnyx (#182).
+
 ## [2017-08-21]
 ### Added
 - Support for mangazuki.co.
   - Thanks to @Vesnyx for the userscript code.
-- Support for Yummy Gummy Scans
 
 ### Fixed
 - FoolSlide sites should now properly show the formatted chapter on the dashboard when updating via the userscript.

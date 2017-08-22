@@ -38,9 +38,9 @@
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
-// @include      /^http:\/\/reader\.ygscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-21
-// @version      1.7.59
+// @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @updated      2017-08-22
+// @version      1.7.60
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2249,6 +2249,18 @@ let sites = {
 			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(false, true);
+		}
+	}),
+
+
+	/**
+	 * Yummy Gummy Scans (No subdomain)
+	 * @type {SiteObject}
+	 */
+	'ygscans.com' : extendSite({
+		preInit : function() {
+			//Auto-redirect to subdomain if using non-subdomain url.
+			location.href = location.href.replace(/^https?:\/\/ygscans\.com\/reader/, 'http://reader.ygscans.com'); //NOTE: Subdomain doesn't have https support for some reason.
 		}
 	}),
 
