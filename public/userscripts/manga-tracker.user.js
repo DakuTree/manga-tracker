@@ -616,10 +616,10 @@ let base_site = {
 								//do nothing
 								break;
 						}
-						$(document).keydown(function(event){
-							changeZoom(event.key);
-						});
 					};
+					$(document).keydown(function(event){
+						changeZoom(event.key);
+					});
 				}
 
 				_this.postSetupViewer();
