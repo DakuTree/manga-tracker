@@ -38,8 +38,9 @@
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
+// @include      /^http:\/\/reader\.ygscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-08-21
-// @version      1.7.58
+// @version      1.7.59
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -615,10 +616,10 @@ let base_site = {
 								//do nothing
 								break;
 						}
-						$(document).keydown(function(event){
-							changeZoom(event.key);
-						});
 					};
+					$(document).keydown(function(event){
+						changeZoom(event.key);
+					});
 				}
 
 				_this.postSetupViewer();
@@ -2217,7 +2218,7 @@ let sites = {
 			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerChapterName      = 'c'+this.chapter;
-			this.viewerTitle            = $('.content-wrapper > div:eq(1) > div > h1 > a').text();
+			this.viewerTitle            = $.trim(($('.content-wrapper > div:eq(1) > div > h1 > a').text()));
 			this.viewerCustomImageList  = $('.content-wrapper').find('img').map(function(i, e) {
 				return $(e).attr('src');
 			});
@@ -2248,6 +2249,17 @@ let sites = {
 			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(false, true);
+		}
+	}),
+
+	/**
+	 * Yummy Gummy Scans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.ygscans.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide(2);
+			callback();
 		}
 	}),
 
