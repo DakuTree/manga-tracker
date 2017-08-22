@@ -514,6 +514,20 @@ class Sites_Model_test extends TestCase {
 		$this->_testSiteFailure('Mangazuki', 'Bad Status Code (404)');
 	}
 
+	public function test_YummyGummyScans() {
+		$testSeries = [
+			'celestial-destroyer'          => 'Celestial Destroyer',
+			'hinmin-choujin-kanenashi-kun' => 'Hinmin Choujin Kanenashi-kun',
+			'maou-no-hisho'                => 'Maou no Hisho'
+		];
+		$randSeries = array_rand($testSeries);
+
+		$this->_testSiteSuccess('YummyGummyScans', $randSeries, $testSeries[$randSeries]);
+	}
+	public function test_YummyGummyScans_fail() {
+		$this->_testSiteFailure('YummyGummyScans', 'Bad Status Code (404)');
+	}
+
 	private function _testSiteSuccess(string $siteName, string $title_url, string $expectedTitle) {
 		$result = $this->Sites_Model->{$siteName}->getTitleData($title_url);
 

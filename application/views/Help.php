@@ -58,5 +58,6 @@
 		<li>World Three</li>
 		<li>Hot Chocolate Scans</li>
 		<li>Mangazuki</li>
+		<li>Yummy Gummy Scans</li>
 	</ul>
 </div>

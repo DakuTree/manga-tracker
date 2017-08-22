@@ -40,3 +40,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * World Three
 * Hot Chocolate Scans
 * Mangazuki
+* Yummy Gummy Scans
