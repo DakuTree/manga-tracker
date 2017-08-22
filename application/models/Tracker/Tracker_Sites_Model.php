@@ -319,7 +319,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 		//NOTE: desc_created might not work well for sites that delay their releases (HelveticaScans for example)
 		//      There shouldn't be much issue unless a site has a delay on a chapter long than it takes for 20 chapters to release (unlikely).
 		$jsonURL = "{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json";
-		if($content = $this->get_content($jsonURL)) {
+		if(($content = $this->get_content($jsonURL)) && $content['status_code'] == 200) {
 			$json = json_decode($content['body'], TRUE);
 
 			$parsedTitles = [];
@@ -347,6 +347,8 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 					continue;
 				}
 			}
+		} else {
+			log_message('error', "Custom updating failed for {$this->baseURL}.");
 		}
 
 		return $titleDataList;
