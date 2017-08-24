@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass S2Scans
+ * @group FoolSlide
  */
 class S2Scans_test extends SiteTestCase {
 	public function test_success() {

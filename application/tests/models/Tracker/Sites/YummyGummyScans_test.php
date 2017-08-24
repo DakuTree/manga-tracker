@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass YummyGummyScans
+ * @group FoolSlide
  */
 class YummyGummyScans_test extends SiteTestCase {
 	public function test_success() {

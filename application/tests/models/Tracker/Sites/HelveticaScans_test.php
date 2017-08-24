@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass HelveticaScans
+ * @group FoolSlide
  */
 class HelveticaScans_test extends SiteTestCase {
 	public function test_success() {

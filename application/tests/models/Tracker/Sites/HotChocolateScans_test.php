@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass HotChocolateScans
+ * @group FoolSlide
  */
 class HotChocolateScans_test extends SiteTestCase {
 	public function test_success() {

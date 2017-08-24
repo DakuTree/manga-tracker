@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass WhiteoutScans
+ * @group FoolSlide
  */
 class WhiteoutScans_test extends SiteTestCase {
 	public function test_success() {

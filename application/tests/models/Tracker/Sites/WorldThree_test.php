@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass WorldThree
+ * @group FoolSlide
  */
 class WorldThree_test extends SiteTestCase {
 	public function test_success() {

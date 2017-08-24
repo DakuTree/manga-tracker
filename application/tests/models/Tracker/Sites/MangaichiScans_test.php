@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass MangaichiScans
+ * @group FoolSlide
  */
 class MangaichiScans_test extends SiteTestCase {
 	public function test_success() {

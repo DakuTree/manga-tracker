@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass SenseScans
+ * @group FoolSlide
  */
 class SenseScans_test extends SiteTestCase {
 	public function test_success() {

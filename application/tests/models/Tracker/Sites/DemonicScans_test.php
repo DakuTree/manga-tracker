@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass DemonicScans
+ * @group FoolSlide
  */
 class DemonicScans_test extends SiteTestCase {
 	public function test_success() {

@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass JaiminisBox
+ * @group FoolSlide
  */
 class JaiminisBox_test extends SiteTestCase {
 	public function test_success() {

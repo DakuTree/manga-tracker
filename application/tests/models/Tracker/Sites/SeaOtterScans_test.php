@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass SeaOtterScans
+ * @group FoolSlide
  */
 class SeaOtterScans_test extends SiteTestCase {
 	public function test_success() {

@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass DeathTollScans
+ * @group FoolSlide
  */
 class DeathTollScans_test extends SiteTestCase {
 	public function test_success() {

@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass OneTimeScans
+ * @group FoolSlide
  */
 class OneTimeScans_test extends SiteTestCase {
 	public function test_success() {

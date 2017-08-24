@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass KireiCake
+ * @group FoolSlide
  */
 class KireiCake_test extends SiteTestCase {
 	public function test_success() {
