@@ -413,7 +413,7 @@ class Sites_Model_test extends TestCase {
 		$testSeries = [
 			'ninja-shinobu-san-no-junjou'  => 'Ninja Shinobu-chan no Junjou',
 			'red-storm'                    => 'Red Storm',
-			'clover'                       => 'Clover',
+			'clover-tetsuhiro-hirakawa'    => 'Clover (TETSUHIRO Hirakawa)',
 			'the-mythical-realm'           => 'The Mythical Realm',
 			'the-great-wife'               => 'The Great Wife'
 		];

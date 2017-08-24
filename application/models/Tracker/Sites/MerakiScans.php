@@ -27,7 +27,7 @@ class MerakiScans extends Base_Site_Model {
 			$title_url,
 			"//h1",
 			"//ul[contains(@class, 'mng_chp')]/li[1]/a[1]",
-			"//b[@class='dte']",
+			"b[@class='dte']",
 			"",
 			"404 Page Not Found"
 		);
