@@ -80,13 +80,15 @@ $(function(){
 	 * @return {boolean|null}
 	 */
 	$.tablesorter.filter.types.FindTag = function(config, data) {
-		if(/^tag:[a-z0-9\-_:]{1,255}$/.test(data.iFilter)) {
-			let searchTag = data.iFilter.match(/^tag:([a-z0-9\-_:]{1,255})$/)[1],
-			    tagArray  = data.$row.find('td:eq(1) .tag-list .tag').map((i, e) => {
-			        return $(e).text();
-			    }).toArray();
+		if(/^tag:[a-z0-9\-_:,]{1,255}$/.test(data.iFilter)) {
+			let searchTagList  = data.iFilter.match(/^tag:([a-z0-9\-_:,]{1,255})$/)[1],
+			    searchTagArray = searchTagList.split(',');
 
-			return $.inArray(searchTag, tagArray) !== -1;
+			let rowTagArray = data.$row.find('td:eq(1) .tag-list .tag').map((i, e) => {
+				return $(e).text();
+			}).toArray();
+
+			return searchTagArray.every(tag => ($.inArray(tag, rowTagArray) !== -1));
 		}
 		return null;
 	};

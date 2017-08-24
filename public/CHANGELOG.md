@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-24]
+### Changed
+- It is now possible to filter by multiple tags by separating tags with commas.
+  - Previously needed to do: `tag:1 AND tag:2 AND tag:3` to search for multiple tags.
+  - Now this works too: `tag:1,2,3`
+  - Closes #181.
+
 ## [2017-08-23]
 ### Fixed
 - MerakiScans fixed.
