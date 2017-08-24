@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
   - Previously needed to do: `tag:1 AND tag:2 AND tag:3` to search for multiple tags.
   - Now this works too: `tag:1,2,3`
   - Closes #181.
+- `[Backend]` Site tests now have their own file, rather than bunching them all in a single file.
+  - Also added a few new functions to remove duplication (namely `_testSiteSuccessRandom` & `skipTravisSSL`).
+  - See: #157
 
 ## [2017-08-23]
 ### Fixed

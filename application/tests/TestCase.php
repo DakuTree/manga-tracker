@@ -86,4 +86,63 @@ class TestCase extends CIPHPUnitTestCase {
 			$this->markTestSkipped('This test doesn\'t play nice with Travis'.($reason ? "\nReason: $reason" : ""));
 		}
 	}
+	public function skipTravisSSL() {
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
+	}
+}
+
+/**
+ * @group SiteTests
+ */
+class SiteTestCase extends TestCase {
+	private $Sites_Model;
+	private $siteName;
+
+	public function setUp() {
+		$this->resetInstance();
+
+		$this->Sites_Model = new Tracker_Sites_Model();
+		$this->siteName = str_replace('_test', '', get_class($this));
+	}
+
+	protected function _testSiteSuccess(string $title_url, string $expectedTitle) {
+		$result = $this->Sites_Model->{$this->siteName}->getTitleData($title_url);
+
+		//FIXME: We should _try_ and test response code here, specificially against error 537 which is cloudflare "site is down" error
+		$this->assertInternalType('array', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url})");
+
+		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url})");
+		$this->assertRegExp($this->Sites_Model->{$this->siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url})");
+		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated'], "Title URL ({$title_url})");
+
+	}
+	protected function _testSiteSuccessRandom(array $testTitles) {
+		$title_url = array_rand($testTitles);
+		$expectedTitle = $testTitles[$title_url];
+
+		$result = $this->Sites_Model->{$this->siteName}->getTitleData($title_url);
+
+		//FIXME: We should _try_ and test response code here, specificially against error 537 which is cloudflare "site is down" error
+		$this->assertInternalType('array', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('title', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('latest_chapter', $result, "Title URL ({$title_url})");
+		$this->assertArrayHasKey('last_updated', $result, "Title URL ({$title_url})");
+
+		$this->assertEquals($expectedTitle, $result['title'], "Title URL ({$title_url})");
+		$this->assertRegExp($this->Sites_Model->{$this->siteName}->chapterFormat, $result['latest_chapter'], "Title URL ({$title_url})");
+		$this->assertRegExp('/^[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+$/', $result['last_updated'], "Title URL ({$title_url})");
+
+	}
+	protected function _testSiteFailure(string $errorMessage, string $title_url = 'i_am_a_bad_url') {
+		$this->markTestSkipped('MonkeyPatching slows down our tests a ton so we\'ve disabled it for now (which also disables tests which use it).');
+
+		MonkeyPatch::patchFunction('log_message', NULL, $this->siteName); //Stop logging stuff...
+		$result = $this->Sites_Model->{$this->siteName}->getTitleData($title_url);
+
+		$this->assertNull($result, "Title URL ({$title_url}");
+		MonkeyPatch::verifyInvokedOnce('log_message', ['error', "{$this->siteName} : {$title_url} | {$errorMessage}"]);
+	}
 }
