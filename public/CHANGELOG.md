@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-23]
+### Fixed
+- MerakiScans fixed.
+  - Closes #185
+
 ## [2017-08-22]
 ### Added
 - Support for Yummy Gummy Scans

@@ -24,7 +24,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/kobato\.hologfx\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/www\.merakiscans\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/merakiscans\.com\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/)?$/
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+\/?(?:Chapter_[0-9]+(?:_extra)?(?:&display=(default|webtoon))?\/?)?$/
@@ -39,8 +39,8 @@
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-22
-// @version      1.7.60
+// @updated      2017-08-23
+// @version      1.7.61
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2075,16 +2075,59 @@ let sites = {
 	}),
 
 	/**
-	 * Meraki Scans (FoolSlide)
+	 * Meraki Scans
 	 * @type {SiteObject}
 	 */
-	'www.merakiscans.com' : extendSite({
-		preInit : function(callback) {
-			this.foolSlideBaseURL = this.https+'://www.merakiscans.com/reader';
-			this.setupFoolSlide(3);
-			callback();
-		}
-	}),
+		'merakiscans.com' : extendSite({
+			setObjVars : function() {
+				let _this = this;
+
+				this.title       = this.segments[1];
+				this.chapter     = this.segments[2];
+
+				this.title_url   = 'http://merakiscans.com/'+this.title+'/';
+				this.chapter_url = this.title_url+this.chapter+'/';
+
+				/** @type {(jQuery)} */
+				let pageNav = $('.wpm_nav');
+
+				pageNav.find('select:first > option').each(function(i, e) {
+					$(e).val(_this.title_url + $(e).val() + '/');
+				});
+				this.chapterList        = generateChapterList(pageNav.find('select:first > option').reverseObj(), 'value');
+				this.chapterListCurrent = this.chapter_url;
+
+				this.viewerCustomImageList = $('#longWrap').html().match(/(http:\/\/merakiscans\.com\/wp-content\/manga\/[^"]+)/g).filter(function(value, index, self) {
+					return self.indexOf(value) === index;
+				});
+				this.page_count = this.viewerCustomImageList.length;
+
+				this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
+				this.viewerTitle            = $('.ttl > a').text();
+
+				this.searchURLFormat = 'http://merakiscans.com/manga-list/search/{%SEARCH%}';
+
+				if(this.segments[3]) {
+					this.currentPage = parseInt(this.segments[3]);
+				}
+			},
+			postSetupTopBar : function(callback) {
+				let image = $('#singleWrap');
+
+				//Remove extra unneeded elements.
+				image.prevAll().remove();
+				image.nextAll().remove();
+
+				callback();
+			},
+			preSetupViewer : function(callback) {
+				$('.wpm_nav, .wpm_ifo_box').remove();
+				$('#toHome, #toTop').remove();
+
+				$('#singleWrap').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+				callback(false, true);
+			}
+		}),
 
 	/**
 	 * Fallen Angels Scans
@@ -2251,7 +2294,6 @@ let sites = {
 			callback(false, true);
 		}
 	}),
-
 
 	/**
 	 * Yummy Gummy Scans (No subdomain)
