@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass WhiteCloudPavillion
+ */
 class WhiteCloudPavillion_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

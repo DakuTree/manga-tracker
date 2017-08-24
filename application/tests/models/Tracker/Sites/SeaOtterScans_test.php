@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass SeaOtterScans
+ */
 class SeaOtterScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

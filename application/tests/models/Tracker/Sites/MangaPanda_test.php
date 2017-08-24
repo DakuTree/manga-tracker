@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass MangaPanda
+ */
 class MangaPanda_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

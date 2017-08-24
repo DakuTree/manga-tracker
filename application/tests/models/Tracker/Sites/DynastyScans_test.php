@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * @coversDefaultClass DynastyScans
+ */
 class DynastyScans_test extends SiteTestCase {
 	public function test_success_1() { //Test Series
-		$this->skipTravisSSL();
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
 		$testSeries = [
 			'qualia_the_purple:--:0'       => 'Qualia the Purple',
@@ -12,7 +15,7 @@ class DynastyScans_test extends SiteTestCase {
 		$this->_testSiteSuccessRandom($testSeries);
 	}
 	public function test_success_2() { //Test Oneshot
-		$this->skipTravisSSL();
+		$this->skipTravis("Travis's PHP Curl ver. doesn't seem to play nice with SSL.");
 
 		$testSeries = [
 			'afterschool_girl:--:1'     => 'Afterschool Girl',

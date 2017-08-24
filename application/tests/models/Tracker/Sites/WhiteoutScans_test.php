@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass WhiteoutScans
+ */
 class WhiteoutScans_test extends SiteTestCase {
 	public function test_success() {
 		//WhiteoutScans only appears to translate ReLife?

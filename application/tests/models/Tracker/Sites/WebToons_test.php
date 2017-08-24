@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass WebToons
+ */
 class WebToons_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

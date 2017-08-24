@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass S2Scans
+ */
 class S2Scans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

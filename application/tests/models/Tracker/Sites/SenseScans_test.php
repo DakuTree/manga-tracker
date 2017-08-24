@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass SenseScans
+ */
 class SenseScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

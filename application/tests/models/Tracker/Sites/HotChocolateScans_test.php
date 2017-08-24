@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass HotChocolateScans
+ */
 class HotChocolateScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

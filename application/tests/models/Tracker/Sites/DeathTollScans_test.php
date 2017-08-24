@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass DeathTollScans
+ */
 class DeathTollScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

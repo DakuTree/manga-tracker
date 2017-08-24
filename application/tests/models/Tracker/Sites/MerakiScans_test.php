@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass MerakiScans
+ */
 class MerakiScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

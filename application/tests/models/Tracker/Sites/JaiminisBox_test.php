@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * @coversDefaultClass JaiminisBox
+ */
 class JaiminisBox_test extends SiteTestCase {
 	public function test_success() {
-		$this->skipTravisSSL();
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 
 		$testSeries = [
 			'black_clover'          => 'Black Clover',
@@ -14,7 +17,7 @@ class JaiminisBox_test extends SiteTestCase {
 		$this->_testSiteSuccessRandom($testSeries);
 	}
 	public function test_failure() {
-		$this->skipTravisSSL();
+		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 		$this->_testSiteFailure('Bad Status Code (404)');
 	}
 }

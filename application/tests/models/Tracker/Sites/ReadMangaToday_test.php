@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass ReadMangaToday
+ */
 class ReadMangaToday_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

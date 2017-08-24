@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass Batoto
+ */
 class Batoto_test extends SiteTestCase {
 	public function test_success() {
 		$this->skipTravis('Missing required cookies.');

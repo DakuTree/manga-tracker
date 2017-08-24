@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass KissManga
+ */
 class KissManga_test extends SiteTestCase {
 	public function test_success() {
 		$this->markTestSkipped('KissManga is not supported for the time being');

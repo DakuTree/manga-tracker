@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass YummyGummyScans
+ */
 class YummyGummyScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

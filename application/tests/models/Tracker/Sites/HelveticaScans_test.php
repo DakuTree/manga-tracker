@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass HelveticaScans
+ */
 class HelveticaScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

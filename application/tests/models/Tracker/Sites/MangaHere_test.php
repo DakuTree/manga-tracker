@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass MangaHere
+ */
 class MangaHere_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

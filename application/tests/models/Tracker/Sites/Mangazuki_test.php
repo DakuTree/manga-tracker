@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass Mangazuki
+ */
 class Mangazuki_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

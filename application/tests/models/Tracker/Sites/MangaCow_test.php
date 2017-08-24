@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass MangaCow
+ */
 class MangaCow_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [

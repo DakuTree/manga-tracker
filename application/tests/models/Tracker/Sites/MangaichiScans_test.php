@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @coversDefaultClass MangaichiScans
+ */
 class MangaichiScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
