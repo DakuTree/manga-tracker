@@ -6,6 +6,10 @@
 		<testsuite name="MainTestSuite">
 			<directory suffix="test.php">./</directory>
 			<exclude>./_ci_phpunit_test/</exclude>
+			<exclude>./models/Tracker/Sites/</exclude>
+		</testsuite>
+		<testsuite name="SiteTestSuite">
+			<directory suffix="test.php">./models/Tracker/Sites/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

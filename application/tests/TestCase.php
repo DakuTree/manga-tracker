@@ -91,9 +91,6 @@ class TestCase extends CIPHPUnitTestCase {
 	}
 }
 
-/**
- * @group SiteTests
- */
 class SiteTestCase extends TestCase {
 	private $Sites_Model;
 	private $siteName;

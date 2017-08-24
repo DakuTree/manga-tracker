@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Site tests now have their own file, rather than bunching them all in a single file.
   - Also added a few new functions to remove duplication (namely `_testSiteSuccessRandom` & `skipTravisSSL`).
   - See: #157
+- `[Backend]` Updated PHPUnit to 6.3.0.
 
 ## [2017-08-23]
 ### Fixed

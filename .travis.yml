@@ -36,7 +36,7 @@ install:
 
 script:
   #phpunit testing
-  - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover --exclude-group SiteTests && cd $TRAVIS_BUILD_DIR
+  - cd application/tests/ && ../../vendor/bin/phpunit --coverage-clover=/tmp/coverage.clover --testsuite MainTestSuite && cd $TRAVIS_BUILD_DIR
   #codeception acceptance testing
   # FIXME: This in currently on-hold due to a bug with phantomjs freezing. See https://github.com/ariya/phantomjs/issues/14286
   # Also see link for last version of working .travis.yml - https://github.com/DakuTree/manga-tracker/blob/c636bfd728965c2e9bf5890c7b12edc31905a95f/.travis.yml
