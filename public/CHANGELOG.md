@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-25]
+### Changed
+- mangastream.com now redirects to readms.net
+  - Closes: #187
+
 ### Fixed
 - Login remember time should work properly now.
 
