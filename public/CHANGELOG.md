@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-25]
+### Fixed
+- Login remember time should work properly now.
+
 ## [2017-08-24]
 ### Changed
 - It is now possible to filter by multiple tags by separating tags with commas.

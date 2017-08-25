@@ -33,30 +33,9 @@ class Login extends No_Auth_Controller {
 
 			$remember = (bool) $this->input->post('remember');
 			if($remember) {
-				switch($this->input->post('remember_time')) {
-					case '1day':
-						$this->config->set_item_by_index('user_expire', 86400, 'ion_auth');
-						break;
-
-					case '3day':
-						//This is default so do nothing.
-						break;
-
-					case '1week':
-						$this->config->set_item_by_index('user_expire', 604800, 'ion_auth');
-						break;
-
-					case '1month':
-						$this->config->set_item_by_index('user_expire', 2419200, 'ion_auth');
-						break;
-
-					case '3month':
-						$this->config->set_item_by_index('user_expire', 7257600, 'ion_auth');
-						break;
-
-					default:
-						//Somehow remember_time isn't set?
-						break;
+				$expire_time = $this->ion_auth->set_user_expire_time($this->input->post('remember_time'));
+				if($expire_time > 0) {
+					$this->input->set_cookie('remember_time', $this->input->post('remember_time'), $expire_time);
 				}
 			}
 
