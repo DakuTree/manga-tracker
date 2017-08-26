@@ -71,6 +71,10 @@ class AdminCLI extends CLI_Controller {
 				print_r($this->Tracker->sites->{$site}->doCustomUpdate());
 				break;
 
+			case 'force_update':
+				print_r($this->Tracker->admin->updateAllTitlesBySite($site));
+				break;
+
 			default:
 				print "Missing parameters.";
 				break;

@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-26]
+### Added
+- `[Admin]` Added an easy CLI method to trigger an update for every single series on a site.
+
 ### Fixed
 - Bato.to is no longer truncating the chapter URL.
   - Seems like bato.to no longer uses HTTPS urls on the chapter list, despite viewing the page in https. Weird.

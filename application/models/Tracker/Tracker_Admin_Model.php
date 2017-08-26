@@ -94,6 +94,81 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 	}
 
 	/**
+	 * Intended to be only used as a quick way to update all series on a site after a bug.
+	 * @param string $site
+	 */
+	public function updateAllTitlesBySite(string $site) {
+		// @formatter:off
+		$query = $this->db
+			->select('
+				tracker_titles.id as title_id,
+				tracker_titles.title,
+				tracker_titles.title_url,
+				tracker_titles.status,
+				tracker_sites.site,
+				tracker_sites.site_class,
+				tracker_sites.status,
+				tracker_titles.latest_chapter,
+				tracker_titles.last_updated,
+				from_unixtime(MAX(auth_users.last_login)) AS timestamp
+			')
+			->from('tracker_titles')
+			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+			->join('tracker_chapters', 'tracker_titles.id = tracker_chapters.title_id', 'left')
+			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
+			->where('tracker_sites.status', 'enabled')
+			->where('tracker_sites.site_class', $site)
+			->group_start()
+				//Check if title is marked as on-going...
+				->where('tracker_titles.status', 0)
+			->group_end()
+			->or_group_start()
+				//Check if title is marked as complete...
+				->where('tracker_titles.status', 1)
+			->group_end()
+			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
+			->group_by('tracker_titles.id, tracker_chapters.active')
+			//Check if the series is actually being tracked by someone
+			->having('timestamp IS NOT NULL')
+			//AND if it's currently marked as active by the user
+			->having('tracker_chapters.active', 'Y')
+			//AND if they have been active in the last 120 hours (5 days)
+			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
+			->order_by('tracker_titles.title', 'ASC')
+			->get();
+		// @formatter:on
+
+		if($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				print "> {$row->title} <{$row->site_class}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
+				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
+				if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
+					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
+					//       Should we even use this? Y/N
+					if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
+						//Make sure last_checked is always updated on successful run.
+						//CHECK: Is there a reason we aren't just doing this in updateByID?
+						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+						         ->where('id', $row->title_id)
+						         ->update('tracker_titles');
+
+						print " - ({$titleData['latest_chapter']})\n";
+					} else {
+						log_message('error', "{$row->title} failed to update successfully");
+
+						print " - Something went wrong?\n";
+					}
+				} else {
+					log_message('error', "{$row->title} failed to update successfully");
+					$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
+
+					print " - FAILED TO PARSE\n";
+				}
+			}
+		}
+	}
+
+	/**
 	 * Checks for any sites which support custom updating (usually via following lists) and updates them.
 	 * This is run hourly.
 	 */
