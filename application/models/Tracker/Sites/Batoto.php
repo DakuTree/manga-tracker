@@ -59,7 +59,8 @@ class Batoto extends Base_Site_Model {
 			$titleData['title'] = html_entity_decode(trim($data['nodes_title']->textContent));
 
 			preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', trim($data['nodes_chapter']->nodeValue), $text);
-			$titleData['latest_chapter'] = substr($data['nodes_chapter']->getAttribute('href'), 23) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
+			$chapter_url = $data['nodes_chapter']->getAttribute('href');
+			$titleData['latest_chapter'] = substr($chapter_url, strpos($chapter_url, "reader#") + 7) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
 
 			$dateString = $data['nodes_latest']->nodeValue;
 			if($dateString == 'An hour ago') {
@@ -168,7 +169,8 @@ class Batoto extends Base_Site_Model {
 
 									$chapter = $nodes_chapter->item(0);
 									preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Ch.(?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', trim($chapter->nodeValue), $text);
-									$titleData['latest_chapter'] = substr($chapter->getAttribute('href'), 8) . ':--:' . ((!empty($text['volume']) ? 'v' . $text['volume'] . '/' : '') . 'c' . $text['chapter'] . (!empty($text['extra']) ? '-' . $text['extra'] : ''));
+									$chapter_url = $chapter->getAttribute('href');
+									$titleData['latest_chapter'] = substr($chapter_url, strpos($chapter_url, "reader#") + 7) . ':--:' . ((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
 
 									$dateString = $nodes_latest->item(0)->nodeValue;
 									if($dateString == 'An hour ago') {

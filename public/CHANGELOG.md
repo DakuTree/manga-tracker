@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-26]
+### Fixed
+- Bato.to is no longer truncating the chapter URL.
+  - Seems like bato.to no longer uses HTTPS urls on the chapter list, despite viewing the page in https. Weird.
+  - SEE: #189
+
 ## [2017-08-25]
 ### Changed
 - mangastream.com now redirects to readms.net
