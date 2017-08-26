@@ -316,11 +316,16 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		//NOTE: desc_created might not work well for sites that delay their releases (HelveticaScans for example)
-		//      There shouldn't be much issue unless a site has a delay on a chapter long than it takes for 20 chapters to release (unlikely).
 		$jsonURL = "{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json";
 		if(($content = $this->get_content($jsonURL)) && $content['status_code'] == 200) {
 			$json = json_decode($content['body'], TRUE);
+
+			//This should fix edge cases where chapters are uploaded in bulk in the wrong order (HelveticaScans does this with Mousou Telepathy).
+			usort($json['chapters'], function($a, $b) {
+				$a_date = new DateTime($a['chapter']['updated'] !== '0000-00-00 00:00:00' ? $a['chapter']['updated'] : $a['chapter']['created']);
+				$b_date = new DateTime($b['chapter']['updated'] !== '0000-00-00 00:00:00' ? $b['chapter']['updated'] : $b['chapter']['created']);
+				return $b_date <=> $a_date;
+			});
 
 			$parsedTitles = [];
 			foreach($json['chapters'] as $chapterData) {

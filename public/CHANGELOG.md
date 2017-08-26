@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 - Bato.to is no longer truncating the chapter URL.
   - Seems like bato.to no longer uses HTTPS urls on the chapter list, despite viewing the page in https. Weird.
   - SEE: #189
+- FoolSlide custom updates now sorts by updated then created.
+  - This fixes edge cases where series are uploaded in bulk in the wrong order. (HelveticaScans does this with Mousou Telepathy)
 
 ## [2017-08-25]
 ### Changed
