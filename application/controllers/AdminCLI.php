@@ -59,11 +59,11 @@ class AdminCLI extends CLI_Controller {
 		$this->Tracker->admin->refollowCustom();
 	}
 
-	public function testSite($type, $site, $title = NULL) {
+	public function testSite($type, $site, $extra = NULL) {
 		switch($type) {
 			case 'update':
-				if(!is_null($title)) {
-					print_r($this->Tracker->sites->{$site}->getTitleData($title));
+				if(!is_null($extra )) {
+					print_r($this->Tracker->sites->{$site}->getTitleData($extra));
 				}
 				break;
 
@@ -72,7 +72,7 @@ class AdminCLI extends CLI_Controller {
 				break;
 
 			case 'force_update':
-				print_r($this->Tracker->admin->updateAllTitlesBySite($site));
+				print_r($this->Tracker->admin->updateAllTitlesBySite($site, $extra));
 				break;
 
 			default:

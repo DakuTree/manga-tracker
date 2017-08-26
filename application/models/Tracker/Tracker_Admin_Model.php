@@ -95,9 +95,11 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 	/**
 	 * Intended to be only used as a quick way to update all series on a site after a bug.
-	 * @param string $site
+	 *
+	 * @param string      $site
+	 * @param null|string $last_checked
 	 */
-	public function updateAllTitlesBySite(string $site) {
+	public function updateAllTitlesBySite(string $site, ?string $last_checked = NULL) {
 		// @formatter:off
 		$query = $this->db
 			->select('
@@ -121,10 +123,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->group_start()
 				//Check if title is marked as on-going...
 				->where('tracker_titles.status', 0)
-			->group_end()
-			->or_group_start()
 				//Check if title is marked as complete...
-				->where('tracker_titles.status', 1)
+				->or_where('tracker_titles.status', 1)
 			->group_end()
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 			->group_by('tracker_titles.id, tracker_chapters.active')
@@ -134,9 +134,12 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->having('tracker_chapters.active', 'Y')
 			//AND if they have been active in the last 120 hours (5 days)
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
-			->order_by('tracker_titles.title', 'ASC')
-			->get();
+			->order_by('tracker_titles.last_checked', 'ASC');
 		// @formatter:on
+		if(!is_null($last_checked)) {
+			$query = $query->where('tracker_titles.last_checked >', $last_checked);
+		}
+		$query = $query->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
