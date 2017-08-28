@@ -1,23 +1,23 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- *		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
- * Requirements: PHP5 or above
- *
- */
+* Name:  Ion Auth
+*
+* Author: Ben Edmunds
+*		  ben.edmunds@gmail.com
+*         @benedmunds
+*
+* Added Awesomeness: Phil Sturgeon
+*
+* Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
+*
+* Created:  10.01.2009
+*
+* Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
+* Original Author name has been kept but that does not mean that the method has not been modified.
+*
+* Requirements: PHP5 or above
+*
+*/
 
 class Ion_auth
 {
@@ -56,7 +56,7 @@ class Ion_auth
 	 */
 	public function __construct()
 	{
-		$this->load->config('ion_auth', TRUE);
+		$this->config->load('ion_auth', TRUE);
 		$this->load->library(array('email'));
 		$this->lang->load('ion_auth');
 		$this->load->helper(array('cookie', 'language','url'));
@@ -66,13 +66,7 @@ class Ion_auth
 		$this->load->model('vendor/ion_auth_model');
 
 		$this->_cache_user_in_group =& $this->ion_auth_model->_cache_user_in_group;
-
-		//auto-login the user if they are remembered
-		if (!$this->logged_in() && get_cookie($this->config->item('identity_cookie_name', 'ion_auth')) && get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
-		{
-			$this->ion_auth_model->login_remembered_user();
-		}
-
+	
 		$email_config = $this->config->item('email_config', 'ion_auth');
 
 		if ($this->config->item('use_ci_email', 'ion_auth') && isset($email_config) && is_array($email_config))
@@ -139,8 +133,8 @@ class Ion_auth
 		if ( $this->ion_auth_model->forgotten_password($identity) )   //changed
 		{
 			// Get user information
-			$identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
-			$user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  // changed to get_user_by_identity from email
+      $identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
+      $user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  // changed to get_user_by_identity from email
 
 			if ($user)
 			{
@@ -221,7 +215,7 @@ class Ion_auth
 			{
 				$this->set_message('password_change_successful');
 				$this->ion_auth_model->trigger_events(array('post_password_change', 'password_change_successful'));
-				return $data;
+					return $data;
 			}
 			else
 			{
@@ -394,14 +388,14 @@ class Ion_auth
 
 		$identity = $this->config->item('identity', 'ion_auth');
 
-		if (substr(CI_VERSION, 0, 1) == '2')
+                if (substr(CI_VERSION, 0, 1) == '2')
 		{
 			$this->session->unset_userdata( array($identity => '', 'id' => '', 'user_id' => '') );
-		}
-		else
-		{
-			$this->session->unset_userdata( array($identity, 'id', 'user_id') );
-		}
+                }
+                else
+                {
+                	$this->session->unset_userdata( array($identity, 'id', 'user_id') );
+                }
 
 		// delete the remember me cookies if they exist
 		if (get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
@@ -442,8 +436,16 @@ class Ion_auth
 	public function logged_in()
 	{
 		$this->ion_auth_model->trigger_events('logged_in');
-
-		return (bool) $this->session->userdata('identity');
+                
+                $recheck= $this->ion_auth_model->recheck_session();
+        
+                //auto-login the user if they are remembered
+                if ( ! $recheck && get_cookie($this->config->item('identity_cookie_name', 'ion_auth')) && get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
+		{
+			$recheck = $this->ion_auth_model->login_remembered_user();
+		}
+                
+                return $recheck;
 	}
 
 	/**

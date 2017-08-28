@@ -165,7 +165,7 @@ class Base_Ion_auth_model extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->load->config('ion_auth', TRUE);
+		$this->config->load('ion_auth', TRUE);
 		$this->load->helper('cookie');
 		$this->load->helper('date');
 		$this->lang->load('ion_auth');
@@ -374,6 +374,20 @@ class Base_Ion_auth_model extends CI_Model
 		$buffer = '';
 		$buffer_valid = false;
 
+		if (function_exists('random_bytes')) {
+			$buffer = random_bytes($raw_salt_len);
+			if ($buffer) {
+				$buffer_valid = true;
+			}
+		}
+
+		if (!$buffer_valid && function_exists('mcrypt_create_iv') && !defined('PHALANGER')) {
+			$buffer = mcrypt_create_iv($raw_salt_len, MCRYPT_DEV_URANDOM);
+			if ($buffer) {
+				$buffer_valid = true;
+			}
+		}
+
 		if (!$buffer_valid && function_exists('openssl_random_pseudo_bytes')) {
 			$buffer = openssl_random_pseudo_bytes($raw_salt_len);
 			if ($buffer) {
@@ -508,6 +522,11 @@ class Base_Ion_auth_model extends CI_Model
 		if (!isset($id))
 		{
 			$this->set_error('deactivate_unsuccessful');
+			return FALSE;
+		}
+		elseif($this->ion_auth->logged_in() && $this->user()->row()->id == $id)
+		{
+			$this->set_error('deactivate_current_user_unsuccessful');
 			return FALSE;
 		}
 
@@ -780,7 +799,8 @@ class Base_Ion_auth_model extends CI_Model
 			}
 		}
 
-		$this->forgotten_password_code = $key;
+		// Limit to 40 characters since that's how our DB field is setup
+		$this->forgotten_password_code = substr($key, 0, 40);
 
 		$this->trigger_events('extra_where');
 
@@ -913,7 +933,7 @@ class Base_Ion_auth_model extends CI_Model
 
 		$this->db->insert($this->tables['users'], $user_data);
 
-		$id = $this->db->insert_id();
+		$id = $this->db->insert_id($this->tables['users'] . '_id_seq');
 
 		// add in groups array if it doesn't exists and stop adding into default group if default group ids are set
 		if( isset($default_group->id) && empty($groups) )
@@ -959,7 +979,7 @@ class Base_Ion_auth_model extends CI_Model
 		                  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);
 
-		if($this->is_time_locked_out($identity))
+		if($this->is_max_login_attempts_exceeded($identity))
 		{
 			// Hash something anyway, just to take up time
 			$this->hash_password($password);
@@ -1016,17 +1036,66 @@ class Base_Ion_auth_model extends CI_Model
 	}
 
 	/**
+	 * recheck_session verifies if the session should be rechecked according to
+	 * the configuration item recheck_timer. If it does, then it will check if the user is still active
+	 * @return bool
+	 */
+	public function recheck_session()
+	{
+		$recheck = (null !== $this->config->item('recheck_timer', 'ion_auth')) ? $this->config->item('recheck_timer', 'ion_auth') : 0;
+
+		if($recheck!==0)
+		{
+			$last_login = $this->session->userdata('last_check');
+			if($last_login+$recheck < time())
+			{
+				$query = $this->db->select('id')
+				                  ->where(array($this->identity_column=>$this->session->userdata('identity'),'active'=>'1'))
+				                  ->limit(1)
+				                  ->order_by('id', 'desc')
+				                  ->get($this->tables['users']);
+				if ($query->num_rows() === 1)
+				{
+					$this->session->set_userdata('last_check',time());
+				}
+				else
+				{
+					$this->trigger_events('logout');
+
+					$identity = $this->config->item('identity', 'ion_auth');
+
+					if (substr(CI_VERSION, 0, 1) == '2')
+					{
+						$this->session->unset_userdata( array($identity => '', 'id' => '', 'user_id' => '') );
+					}
+					else
+					{
+						$this->session->unset_userdata( array($identity, 'id', 'user_id') );
+					}
+					return false;
+				}
+			}
+		}
+
+		return (bool) $this->session->userdata('identity');
+	}
+
+	/**
 	 * is_max_login_attempts_exceeded
 	 * Based on code from Tank Auth, by Ilya Konyukhov (https://github.com/ilkon/Tank-Auth)
 	 *
-	 * @param string $identity
+	 * @param string $identity: user's identity
+	 * @param string $ip_address: IP address
+	 *                            Only used if track_login_ip_address set to TRUE.
+	 *                            If NULL (default value), current IP address is used.
+	 *                            Use get_last_attempt_ip($identity) to retrieve user's last IP
 	 * @return boolean
 	 **/
-	public function is_max_login_attempts_exceeded($identity) {
+	public function is_max_login_attempts_exceeded($identity, $ip_address = NULL) {
 		if ($this->config->item('track_login_attempts', 'ion_auth')) {
 			$max_attempts = $this->config->item('maximum_login_attempts', 'ion_auth');
 			if ($max_attempts > 0) {
-				$attempts = $this->get_attempts_num($identity);
+				$attempts = $this->get_attempts_num($identity, $ip_address);
 				return $attempts >= $max_attempts;
 			}
 		}
@@ -1037,18 +1106,25 @@ class Base_Ion_auth_model extends CI_Model
 	 * Get number of attempts to login occured from given IP-address or identity
 	 * Based on code from Tank Auth, by Ilya Konyukhov (https://github.com/ilkon/Tank-Auth)
 	 *
-	 * @param	string $identity
-	 * @return	int
+	 * @param string $identity: user's identity
+	 * @param string $ip_address: IP address
+	 *                            Only used if track_login_ip_address set to TRUE.
+	 *                            If NULL (default value), current IP address is used.
+	 *                            Use get_last_attempt_ip($identity) to retrieve user's last IP
+	 * @return int
 	 */
-	public function get_attempts_num($identity)
+	public function get_attempts_num($identity, $ip_address = NULL)
 	{
 		if ($this->config->item('track_login_attempts', 'ion_auth')) {
-			$ip_address = $this->_prepare_ip($this->input->ip_address());
 			$this->db->select('1', FALSE);
+			$this->db->where('login', $identity);
 			if ($this->config->item('track_login_ip_address', 'ion_auth')) {
+				if (!isset($ip_address)) {
+					$ip_address = $this->_prepare_ip($this->input->ip_address());
+				}
 				$this->db->where('ip_address', $ip_address);
-				$this->db->where('login', $identity);
-			} else if (strlen($identity) > 0) $this->db->or_where('login', $identity);
+			}
+			$this->db->where('time >', time() - $this->config->item('lockout_time', 'ion_auth'), FALSE);
 			$qres = $this->db->get($this->tables['login_attempts']);
 			return $qres->num_rows();
 		}
@@ -1059,26 +1135,44 @@ class Base_Ion_auth_model extends CI_Model
 	 * Get a boolean to determine if an account should be locked out due to
 	 * exceeded login attempts within a given period
 	 *
-	 * @return	boolean
+	 * This function is only a wrapper for is_max_login_attempts_exceeded() since it
+	 * only retrieve attempts within the given period.
+	 * It is kept for retrocompatibility purpose.
+	 *
+	 * @param string $identity: user's identity
+	 * @param string $ip_address: IP address
+	 *                            Only used if track_login_ip_address set to TRUE.
+	 *                            If NULL (default value), current IP address is used.
+	 *                            Use get_last_attempt_ip($identity) to retrieve user's last IP
+	 * @return boolean
 	 */
-	public function is_time_locked_out($identity) {
-
-		return $this->is_max_login_attempts_exceeded($identity) && $this->get_last_attempt_time($identity) > time() - $this->config->item('lockout_time', 'ion_auth');
+	public function is_time_locked_out($identity, $ip_address = NULL) {
+		return $this->is_max_login_attempts_exceeded($identity, $ip_address);
 	}
 
 	/**
 	 * Get the time of the last time a login attempt occured from given IP-address or identity
 	 *
-	 * @param	string $identity
-	 * @return	int
+	 * This function is no longer used.
+	 * It is kept for retrocompatibility purpose.
+	 *
+	 * @param string $identity: user's identity
+	 * @param string $ip_address: IP address
+	 *                            Only used if track_login_ip_address set to TRUE.
+	 *                            If NULL (default value), current IP address is used.
+	 *                            Use get_last_attempt_ip($identity) to retrieve user's last IP
+	 * @return int
 	 */
-	public function get_last_attempt_time($identity) {
+	public function get_last_attempt_time($identity, $ip_address = NULL) {
 		if ($this->config->item('track_login_attempts', 'ion_auth')) {
-			$ip_address = $this->_prepare_ip($this->input->ip_address());
-
 			$this->db->select('time');
-			if ($this->config->item('track_login_ip_address', 'ion_auth')) $this->db->where('ip_address', $ip_address);
-			else if (strlen($identity) > 0) $this->db->or_where('login', $identity);
+			$this->db->where('login', $identity);
+			if ($this->config->item('track_login_ip_address', 'ion_auth')) {
+				if (!isset($ip_address)) {
+					$ip_address = $this->_prepare_ip($this->input->ip_address());
+				}
+				$this->db->where('ip_address', $ip_address);
+			}
 			$this->db->order_by('id', 'desc');
 			$qres = $this->db->get($this->tables['login_attempts'], 1);
 
@@ -1091,15 +1185,41 @@ class Base_Ion_auth_model extends CI_Model
 	}
 
 	/**
+	 * Get the IP address of the last time a login attempt occured from given identity
+	 *
+	 * @param string $identity: user's identity
+	 * @return string
+	 */
+	public function get_last_attempt_ip($identity) {
+		if ($this->config->item('track_login_attempts', 'ion_auth') && $this->config->item('track_login_ip_address', 'ion_auth')) {
+			$this->db->select('ip_address');
+			$this->db->where('login', $identity);
+			$this->db->order_by('id', 'desc');
+			$qres = $this->db->get($this->tables['login_attempts'], 1);
+
+			if($qres->num_rows() > 0) {
+				return $qres->row()->ip_address;
+			}
+		}
+
+		return '';
+	}
+
+	/**
 	 * increase_login_attempts
 	 * Based on code from Tank Auth, by Ilya Konyukhov (https://github.com/ilkon/Tank-Auth)
 	 *
-	 * @param string $identity
+	 * Note: the current IP address will be used if track_login_ip_address config value is TRUE
+	 *
+	 * @param string $identity: user's identity
 	 **/
 	public function increase_login_attempts($identity) {
 		if ($this->config->item('track_login_attempts', 'ion_auth')) {
-			$ip_address = $this->_prepare_ip($this->input->ip_address());
-			return $this->db->insert($this->tables['login_attempts'], array('ip_address' => $ip_address, 'login' => $identity, 'time' => time()));
+			$data = array('ip_address' => '', 'login' => $identity, 'time' => time());
+			if ($this->config->item('track_login_ip_address', 'ion_auth')) {
+				$data['ip_address'] = $this->_prepare_ip($this->input->ip_address());
+			}
+			return $this->db->insert($this->tables['login_attempts'], $data);
 		}
 		return FALSE;
 	}
@@ -1108,15 +1228,29 @@ class Base_Ion_auth_model extends CI_Model
 	 * clear_login_attempts
 	 * Based on code from Tank Auth, by Ilya Konyukhov (https://github.com/ilkon/Tank-Auth)
 	 *
-	 * @param string $identity
+	 * @param string $identity: user's identity
+	 * @param int $old_attempts_expire_period: in seconds, any attempts older than this value will be removed.
+	 *                                         It is used for regularly purging the attempts table.
+	 *                                         (for security reason, minimum value is lockout_time config value)
+	 * @param string $ip_address: IP address
+	 *                            Only used if track_login_ip_address set to TRUE.
+	 *                            If NULL (default value), current IP address is used.
+	 *                            Use get_last_attempt_ip($identity) to retrieve user's last IP
 	 **/
-	public function clear_login_attempts($identity, $expire_period = 86400) {
+	public function clear_login_attempts($identity, $old_attempts_expire_period = 86400, $ip_address = NULL) {
 		if ($this->config->item('track_login_attempts', 'ion_auth')) {
-			$ip_address = $this->_prepare_ip($this->input->ip_address());
+			// Make sure $old_attempts_expire_period is at least equals to lockout_time
+			$old_attempts_expire_period = max($old_attempts_expire_period, $this->config->item('lockout_time', 'ion_auth'));
 
-			$this->db->where(array('ip_address' => $ip_address, 'login' => $identity));
+			$this->db->where('login', $identity);
+			if ($this->config->item('track_login_ip_address', 'ion_auth')) {
+				if (!isset($ip_address)) {
+					$ip_address = $this->_prepare_ip($this->input->ip_address());
+				}
+				$this->db->where('ip_address', $ip_address);
+			}
 			// Purge obsolete login attempts
-			$this->db->or_where('time <', time() - $expire_period, FALSE);
+			$this->db->or_where('time <', time() - $old_attempts_expire_period, FALSE);
 
 			return $this->db->delete($this->tables['login_attempts']);
 		}
@@ -1157,15 +1291,11 @@ class Base_Ion_auth_model extends CI_Model
 	{
 		$this->trigger_events('like');
 
-		if (!is_array($like))
-		{
-			$like = array($like => array(
-				'value'    => $value,
-				'position' => $position,
-			));
-		}
-
-		array_push($this->_ion_like, $like);
+		array_push($this->_ion_like, array(
+			'like'     => $like,
+			'value'    => $value,
+			'position' => $position
+		));
 
 		return $this;
 	}
@@ -1257,10 +1387,10 @@ class Base_Ion_auth_model extends CI_Model
 		{
 			//default selects
 			$this->db->select(array(
-				                  $this->tables['users'].'.*',
-				                  $this->tables['users'].'.id as id',
-				                  $this->tables['users'].'.id as user_id'
-			                  ));
+				$this->tables['users'].'.*',
+				$this->tables['users'].'.id as id',
+				$this->tables['users'].'.id as user_id'
+			));
 		}
 
 		// filter by group id(s) if passed
@@ -1321,7 +1451,7 @@ class Base_Ion_auth_model extends CI_Model
 		{
 			foreach ($this->_ion_like as $like)
 			{
-				$this->db->or_like($like);
+				$this->db->or_like($like['like'], $like['value'], $like['position']);
 			}
 
 			$this->_ion_like = array();
@@ -1688,10 +1818,10 @@ class Base_Ion_auth_model extends CI_Model
 		}
 
 		set_cookie(array(
-			           'name'   => 'lang_code',
-			           'value'  => $lang,
-			           'expire' => $expire
-		           ));
+			'name'   => 'lang_code',
+			'value'  => $lang,
+			'expire' => $expire
+		));
 
 		return TRUE;
 	}
@@ -1712,7 +1842,8 @@ class Base_Ion_auth_model extends CI_Model
 			$this->identity_column             => $user->{$this->identity_column},
 			'email'                => $user->email,
 			'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
-			'old_last_login'       => $user->last_login
+			'old_last_login'       => $user->last_login,
+			'last_check'           => time(),
 		);
 
 		$this->session->set_userdata($session_data);
@@ -1757,16 +1888,16 @@ class Base_Ion_auth_model extends CI_Model
 			}
 
 			set_cookie(array(
-				           'name'   => $this->config->item('identity_cookie_name', 'ion_auth'),
-				           'value'  => $user->{$this->identity_column},
-				           'expire' => $expire
-			           ));
+				'name'   => $this->config->item('identity_cookie_name', 'ion_auth'),
+				'value'  => $user->{$this->identity_column},
+				'expire' => $expire
+			));
 
 			set_cookie(array(
-				           'name'   => $this->config->item('remember_cookie_name', 'ion_auth'),
-				           'value'  => $salt,
-				           'expire' => $expire
-			           ));
+				'name'   => $this->config->item('remember_cookie_name', 'ion_auth'),
+				'value'  => $salt,
+				'expire' => $expire
+			));
 
 			$this->trigger_events(array('post_remember_user', 'remember_user_successful'));
 			return TRUE;
@@ -1800,6 +1931,7 @@ class Base_Ion_auth_model extends CI_Model
 		$query = $this->db->select($this->identity_column.', id, email, last_login')
 		                  ->where($this->identity_column, urldecode(get_cookie($this->config->item('identity_cookie_name', 'ion_auth'))))
 		                  ->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
+		                  ->where('active',1)
 		                  ->limit(1)
 		                  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);
@@ -1860,7 +1992,7 @@ class Base_Ion_auth_model extends CI_Model
 
 		// insert the new group
 		$this->db->insert($this->tables['groups'], $data);
-		$group_id = $this->db->insert_id();
+		$group_id = $this->db->insert_id($this->tables['groups'] . '_id_seq');
 
 		// report success
 		$this->set_message('group_creation_successful');

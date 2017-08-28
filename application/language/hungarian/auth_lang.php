@@ -55,7 +55,7 @@ $lang['create_user_heading']                           = 'Felhasználó létreho
 $lang['create_user_subheading']                        = 'Kérem adja meg a felhasználó adatait az alábbi űrlapon.';
 $lang['create_user_fname_label']                       = 'Keresztnév:';
 $lang['create_user_lname_label']                       = 'Vezetéknév:';
-$lang['create_user_identity_label']                    = 'Identity:';
+$lang['create_user_identity_label']                    = 'Felhasználónév:';
 $lang['create_user_company_label']                     = 'Cég neve:';
 $lang['create_user_email_label']                       = 'E-mail:';
 $lang['create_user_phone_label']                       = 'Telefonszám:';
@@ -64,7 +64,7 @@ $lang['create_user_password_confirm_label']            = 'Jelszó megerősítés
 $lang['create_user_submit_btn']                        = 'Felhasználó létrehozása';
 $lang['create_user_validation_fname_label']            = 'Keresztnév';
 $lang['create_user_validation_lname_label']            = 'Vezetéknév';
-$lang['create_user_validation_identity_label']         = 'Identity';
+$lang['create_user_validation_identity_label']         = 'Felhasználónév';
 $lang['create_user_validation_email_label']            = 'E-mail cím';
 $lang['create_user_validation_phone_label']            = 'Telefonszám';
 $lang['create_user_validation_company_label']          = 'Cég neve';
@@ -132,6 +132,7 @@ $lang['forgot_password_validation_email_label']  = 'E-mail cím';
 $lang['forgot_password_username_identity_label'] = 'Felhasználónév';
 $lang['forgot_password_email_identity_label']    = 'E-mail';
 $lang['forgot_password_email_not_found']         = 'Nem található ez az e-mail cím.';
+$lang['forgot_password_identity_not_found']         = 'No record of that username address.';
 
 // Reset Password
 $lang['reset_password_heading']                               = 'Jelszó változtatása';
