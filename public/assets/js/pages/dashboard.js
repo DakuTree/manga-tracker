@@ -146,6 +146,24 @@ $(function(){
 		}
 	});
 
+	//Requires user confirm to change page if any boxes are checked
+	$('input[name=check]').change(function() {
+		if(window.onbeforeunload === null) {
+			window.onbeforeunload = function (e) {
+				e = e || window.event;
+
+				let dialogText = 'You appear to have some checked titles.\nDo you still wish to continue?';
+				// For IE and Firefox prior to version 4
+				if (e) { e.returnValue = dialogText; }
+
+				// For others, except Chrome (https://bugs.chromium.org/p/chromium/issues/detail?id=587940)
+				return dialogText;
+			};
+		} else if($('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)').length === 0) {
+			window.onbeforeunload = null;
+		}
+	});
+
 	//This shows/hides the row info row.
 	$('.toggle-info').click(function(e) {
 		e.preventDefault();
