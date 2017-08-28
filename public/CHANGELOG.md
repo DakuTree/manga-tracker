@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
   - Example: `checked:yes` would find everything that has been checked.
   - Example: `checked:no` would find everything that isn't checked.
 - Confirm when moving to a new page while having checked rows.
+- Confirm when moving selected rows to a new category.
 
 ### Changed
 - `[Backend]` Updated Ion Auth.

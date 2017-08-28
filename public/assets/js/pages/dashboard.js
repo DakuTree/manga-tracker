@@ -460,10 +460,12 @@ $(function(){
 
 	//Set category
 	$('#move-input').change(function() {
-		let selected = $(this).find(':selected');
+		let selected      = $(this).find(':selected'),
+		    selected_name = selected.text();
 		if(selected.is('[value]')) {
-			let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)');
-			if(checked_rows.length > 0) {
+			let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)'),
+			    total_rows   = checked_rows.length;
+			if(checked_rows.length > 0 && confirm(`Are you sure you want to move the ${total_rows} selected row(s) to the ${selected_name} category?`)) {
 				let row_ids = $(checked_rows).map(function() {
 					return parseInt($(this).attr('data-id'));
 				}).toArray();
@@ -473,6 +475,8 @@ $(function(){
 				}).fail((jqXHR, textStatus, errorThrown) => {
 					_handleAjaxError(jqXHR, textStatus, errorThrown);
 				});
+			} else {
+				$('#move-input').val('---');
 			}
 		}
 	});
