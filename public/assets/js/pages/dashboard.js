@@ -92,6 +92,20 @@ $(function(){
 		}
 		return null;
 	};
+	/**
+	 * @return {boolean|null}
+	 */
+	$.tablesorter.filter.types.FindChecked = function( config, data ) {
+		if(/^checked:(?:yes|no)$/.test(data.iFilter)) {
+			let checked = data.iFilter.match(/^checked:(yes|no)$/)[1].toLowerCase();
+
+			let status = data.$row.find('> td:eq(0) input').is(':checked');
+			if(checked === 'no') { status = !status; }
+
+			return status;
+		}
+		return null;
+	};
 
 	$('.tracker-table').tablesorter({
 		initialized: function(table) {

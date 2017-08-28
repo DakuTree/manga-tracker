@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-28]
+### Added
+- Checked metatag for filtering titles that have been checked.
+  - Example: `checked:yes` would find everything that has been checked.
+  - Example: `checked:no` would find everything that isn't checked.
+
 ### Changed
 - `[Backend]` Updated Ion Auth.
 - `[Backend]` Moved _most_ third party libs over to the third_party folder & autoloaded them from there.
