@@ -8,6 +8,11 @@ class User_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 
+		//This needs to be set here as needs to be set before `logged_in` is called.
+		if($remember = $this->input->cookie('remember_time')) {
+			$this->set_user_expire_time($remember);
+		}
+
 		//CHECK: Should this be placed elsewhere?
 		if($this->logged_in()) {
 			if(!$this->session->userdata('username')) {
@@ -123,6 +128,34 @@ class User_Model extends CI_Model {
 		}
 
 		return $userID ?? FALSE;
+	}
+
+	public function set_user_expire_time($remember) : int {
+		$expire_time = 0;
+		switch($remember) {
+			case '1day':
+				$expire_time = 86400;
+				break;
+			case '3day':
+				//This is default so do nothing.
+				break;
+			case '1week':
+				$expire_time = 604800;
+				break;
+			case '1month':
+				$expire_time = 2419200;
+				break;
+			case '3month':
+				$expire_time = 7257600;
+				break;
+			default:
+				//Somehow remember_time isn't set?
+				break;
+		}
+		if($expire_time > 0) {
+			$this->config->set_item_by_index('user_expire', $expire_time, 'ion_auth');
+		}
+		return $expire_time;
 	}
 
 	/** NOTICES **/

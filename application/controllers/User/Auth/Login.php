@@ -33,7 +33,7 @@ class Login extends No_Auth_Controller {
 
 			$remember = (bool) $this->input->post('remember');
 			if($remember) {
-				$expire_time = $this->ion_auth->set_user_expire_time($this->input->post('remember_time'));
+				$expire_time = $this->User->set_user_expire_time($this->input->post('remember_time'));
 				if($expire_time > 0) {
 					$this->input->set_cookie('remember_time', $this->input->post('remember_time'), $expire_time);
 				}

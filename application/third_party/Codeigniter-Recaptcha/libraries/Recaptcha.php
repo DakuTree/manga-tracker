@@ -89,11 +89,11 @@ class ReCaptcha {
 
 		$getResponse = $this->_submitHttpGet(
 			$this->_siteVerifyUrl, array(
-				                     'secret' => $this->_secret,
-				                     'remoteip' => (!is_null($remoteIp)) ? $remoteIp : $this->ci->input->ip_address(),
-				                     'v' => $this->_version,
-				                     'response' => $response
-			                     )
+				'secret' => $this->_secret,
+				'remoteip' => (!is_null($remoteIp)) ? $remoteIp : $this->ci->input->ip_address(),
+				'v' => $this->_version,
+				'response' => $response
+			)
 		);
 		$answers = json_decode($getResponse, TRUE);
 

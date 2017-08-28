@@ -4,7 +4,7 @@ class UsernameCheck extends AJAX_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->library('vendor/Limiter');
+		$this->load->library('Limiter');
 		$this->load->library('form_validation');
 	}
 

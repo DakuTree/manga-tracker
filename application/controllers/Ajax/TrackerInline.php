@@ -6,7 +6,7 @@ class TrackerInline extends Auth_Controller {
 	public function __construct() {
 		parent::__construct(FALSE);
 
-		$this->load->library('vendor/Limiter');
+		$this->load->library('Limiter');
 		$this->load->library('form_validation');
 
 		//1000 requests per hour to either AJAX request.

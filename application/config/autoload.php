@@ -38,7 +38,14 @@
 |  $autoload['packages'] = array(APPPATH.'third_party', '/usr/local/shared');
 |
 */
-$autoload['packages'] = array();
+$autoload['packages'] = array(
+	APPPATH.'third_party/Gravatar',
+	APPPATH.'third_party/Limiter',
+	APPPATH.'third_party/Ion-Auth',
+	APPPATH.'third_party/Codeigniter-Recaptcha',
+	APPPATH.'third_party/asset-helper'
+);
+
 
 /*
 | -------------------------------------------------------------------
@@ -57,7 +64,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('session', 'vendor/ion_auth', 'vendor/gravatar');
+$autoload['libraries'] = array('session', 'ion_auth', 'gravatar');
 
 /*
 | -------------------------------------------------------------------
@@ -82,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'vendor/asset', 'generic_helper');
+$autoload['helper'] = array('url', 'asset', 'generic_helper');
 
 /*
 | -------------------------------------------------------------------
