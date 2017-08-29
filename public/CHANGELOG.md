@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2017-08-28]
+## [2017-08-29]
 ### Added
 - Checked metatag for filtering titles that have been checked.
   - Example: `checked:yes` would find everything that has been checked.
@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Updated Ion Auth.
 - `[Backend]` Moved _most_ third party libs over to the third_party folder & autoloaded them from there.
   - Is this autoload packages option new, or am I just blind?
+
+### Fixed
+- Filters should work properly after updating the MAL ID or tags.
 
 ## [2017-08-26]
 ### Added

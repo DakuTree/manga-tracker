@@ -382,10 +382,12 @@ $(function(){
 
 			let tr         = $(this).closest('tr'),
 			    td         = tr.find('td:eq(1)'),
+			    table      = $(this).closest('table'),
 			    id         = tr.attr('data-id'),
 			    icon_link  = $(td).find('.sprite-myanimelist-net').parent(),
 			    iconN_link = $(td).find('.sprite-myanimelist-net-none').parent(),
-			    id_text    = $(this).find('+ span');
+			    id_text    = $(this).find('+ span'),
+			    deferred   = $.Deferred();
 
 			if(new_mal_id !== '' && new_mal_id !== 'none' && new_mal_id !== 0) {
 				set_mal_id(id, new_mal_id, () => {
@@ -393,6 +395,7 @@ $(function(){
 					if(icon_link.length) {
 						//icon exists, just change link
 						$(icon_link).attr('href', 'https://myanimelist.net/manga/'+new_mal_id);
+						$(icon_link).find('.sprite-myanimelist-net').attr('title', new_mal_id);
 					} else {
 						$($('<a/>', {href: 'https://myanimelist.net/manga/'+new_mal_id, class: 'mal-link'}).append(
 							$('<i/>', {class: 'sprite-site sprite-myanimelist-net', title: new_mal_id})
@@ -400,6 +403,8 @@ $(function(){
 					}
 
 					set_id_text($(_this), id_text, new_mal_id);
+
+					deferred.resolve();
 				});
 			} else {
 				if(new_mal_id === 'none' || new_mal_id === 0) {
@@ -412,17 +417,24 @@ $(function(){
 						)).prepend(' ').insertAfter(td.find('.sprite-site'));
 
 						set_id_text($(_this), id_text, 'none');
+
+						deferred.resolve();
 					});
 				} else {
 					set_mal_id(id, null, () => {
 						icon_link.remove();
 						iconN_link.remove();
 						id_text.remove();
+
+						deferred.resolve();
 					});
 				}
 			}
 
-			$(this).attr('data-mal-id', new_mal_id);
+			deferred.done(() => {
+				$(this).attr('data-mal-id', new_mal_id);
+				table.trigger('updateCell', [td[0], false, null]);
+			});
 		} else if (new_mal_id === null) {
 			//input cancelled, do nothing
 		} else {
@@ -674,7 +686,9 @@ $(function(){
 			//CHECK: We would use jQuery.validate here but I don't think it works without an actual form.
 			let input    = $(this).closest('.tag-edit').find('input'),
 			    tag_list = input.val().toString().trim().replace(/,,/g, ','),
-			    id       = $(this).closest('tr').attr('data-id');
+			    id       = $(this).closest('tr').attr('data-id'),
+			    table    = $(this).closest('table'),
+			    td       = $(this).closest('td');
 
 			//Validation
 			validate_tag_list(tag_list, (tag_list_new) => {
@@ -694,6 +708,8 @@ $(function(){
 						});
 						$tag_list.html(tagArr);
 					}
+
+					table.trigger('updateCell', [td[0], false, null]);
 
 					$(_this).closest('.tag-edit').toggleClass('hidden');
 				}).fail((jqXHR, textStatus, errorThrown) => {
