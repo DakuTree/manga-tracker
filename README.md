@@ -41,3 +41,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Hot Chocolate Scans
 * Mangazuki
 * Yummy Gummy Scans
+* Champion Scans

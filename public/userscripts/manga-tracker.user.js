@@ -40,8 +40,9 @@
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-08-25
-// @version      1.7.62
+// @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @updated      2017-08-30
+// @version      1.7.63
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1645,7 +1646,7 @@ let sites = {
 			location.href = location.href.replace('mangastream.com/read', 'readms.net/r');
 		}
 	}),
-	
+
 	/**
 	 * MangaStream
 	 * @type {SiteObject}
@@ -2323,6 +2324,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'reader.ygscans.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * Champion Scans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.championscans.com' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();
