@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-08-30]
+### Fixed
+- Logout now removes `remember_time` cookie.
+
 ## [2017-08-29]
 ### Added
 - Checked metatag for filtering titles that have been checked.

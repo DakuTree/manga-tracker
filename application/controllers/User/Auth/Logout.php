@@ -6,6 +6,8 @@ class Logout extends User_Controller {
 	function __construct() {
 		parent::__construct();
 
+		$this->load->helper('cookie');
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters(
 			$this->config->item('error_start_delimiter', 'ion_auth'),
@@ -19,6 +21,7 @@ class Logout extends User_Controller {
 
 		//TODO (CHECK): Is there any point to checking if the user is even logged in before doing this?
 		$this->ion_auth->logout();
+		delete_cookie('remember_time');
 
 		//TODO: Notify user on successful logout.
 		$this->session->set_flashdata('notices', $this->ion_auth->messages());
