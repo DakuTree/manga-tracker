@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-08-30]
+### Added
+- Added support for Champion Scans.
+
 ### Fixed
 - Logout now removes `remember_time` cookie.
 

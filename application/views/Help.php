@@ -59,5 +59,6 @@
 		<li>Hot Chocolate Scans</li>
 		<li>Mangazuki</li>
 		<li>Yummy Gummy Scans</li>
+		<li>Champion Scans</li>
 	</ul>
 </div>
