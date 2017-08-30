@@ -4,7 +4,7 @@
  * @coversDefaultClass ChampionScans
  * @group FoolSlide
  */
-class S2Scans_test extends SiteTestCase {
+class ChampionScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
 			'no-game-no-life' => 'No Game No Life',
