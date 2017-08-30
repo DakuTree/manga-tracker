@@ -35,7 +35,8 @@ class Mangazuki extends Base_Site_Model {
 
 			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 
-			$dateString = str_replace('Added ', '',$data['nodes_latest']->textContent);
+			$dateString = preg_replace('/^Added (?:on )?/', '',$data['nodes_latest']->textContent);
+			print $dateString;
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime($dateString));
 		}
 

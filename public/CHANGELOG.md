@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 ## [2017-08-30]
 ### Added
 - Added support for Champion Scans.
+- LHTranslation tests.
 
 ### Fixed
 - Logout now removes `remember_time` cookie.
+- Fixed Mangazuki not updating when date string was different than expected.
 
 ## [2017-08-29]
 ### Added
