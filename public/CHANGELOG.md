@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - Added support for Champion Scans.
 - LHTranslation tests.
 
+### Changed
+- Trying to login with a non-existent identity should now return the "Incorrect Login" error, rather than no error.
+
 ### Fixed
 - Logout now removes `remember_time` cookie.
 - Fixed Mangazuki not updating when date string was different than expected.

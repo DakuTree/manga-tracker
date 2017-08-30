@@ -39,26 +39,32 @@ class Login extends No_Auth_Controller {
 				}
 			}
 
-			if($identity && $this->ion_auth->login($identity, $this->input->post('password'), $remember)) {
-				//login is successful
+			if($identity) {
+				if($this->ion_auth->login($identity, $this->input->post('password'), $remember)) {
+					//login is successful
 
-				//Add some extra session data
-				$this->session->set_userdata('username', $this->ion_auth->user()->row()->username);
+					//Add some extra session data
+					$this->session->set_userdata('username', $this->ion_auth->user()->row()->username);
 
-				//Errors
-				$this->session->set_flashdata('notices', $this->ion_auth->messages());
+					//Errors
+					$this->session->set_flashdata('notices', $this->ion_auth->messages());
 
-				//redirect to main page, or previous URL
-				$this->session->keep_flashdata('referred_from');
-				if($prevURL = $this->session->flashdata('referred_from')) {
-					redirect($prevURL);
-				} else { //@codeCoverageIgnore
-					redirect('/'); //TODO (CHECK): Should this be refresh?
-				} //@codeCoverageIgnore
+					//redirect to main page, or previous URL
+					$this->session->keep_flashdata('referred_from');
+					if($prevURL = $this->session->flashdata('referred_from')) {
+						redirect($prevURL);
+					} else { //@codeCoverageIgnore
+						redirect('/'); //TODO (CHECK): Should this be refresh?
+					} //@codeCoverageIgnore
+				} else {
+					//login was unsuccessful
+					$this->session->set_flashdata('notices', $this->ion_auth->errors());
+
+					$isValid = FALSE;
+				}
 			} else {
-				//login was unsuccessful
-
-				$this->session->set_flashdata('notices', $this->ion_auth->errors());
+				//identity doesn't exist
+				$this->session->set_flashdata('notices', '<p>Incorrect Login</p>');
 
 				$isValid = FALSE;
 			}
