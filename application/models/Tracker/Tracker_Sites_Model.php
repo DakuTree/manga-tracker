@@ -261,7 +261,7 @@ abstract class Base_Site_Model extends CI_Model {
 
 abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
-	public $chapterFormat = '/^en\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+	public $chapterFormat = '/^en(?:-us)?\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 	public $customType    = 2;
 
 	public $baseURL = '';
@@ -293,7 +293,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 				});
 				$latestChapter = reset($json['chapters'])['chapter'];
 
-				$latestChapterString = "en/{$latestChapter['volume']}/{$latestChapter['chapter']}";
+				$latestChapterString = "{$latestChapter['language']}/{$latestChapter['volume']}/{$latestChapter['chapter']}";
 				if($latestChapter['subchapter'] !== '0') {
 					$latestChapterString .= "/{$latestChapter['subchapter']}";
 				}
