@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-02]
+### Changed
+- `[Backend]` IPv6 addresses are no longer truncated in the DB.
+- `[Backend]` Email addresses can now be 254 characters.
+
+## [2017-09-01]
+### Added
+- Script to automatically generate & update all files required for adding support for a new FoolSlide site.
+
 ## [2017-08-30]
 ### Added
 - Added support for Champion Scans.
