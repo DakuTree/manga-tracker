@@ -136,9 +136,9 @@ EOT;
 		if(strpos($changelogFile, $date) !== FALSE) {
 			//Log already exists for current date.
 			if(strpos($changelogFile, "[$date]\r\n### Added") !== FALSE) {
-				$changelogFile = str_replace("[$date]\r\n### Added", "[$date]\r\n### Added\r\n- Added support for support for {$this->className}.", $changelogFile);
+				$changelogFile = str_replace("[$date]\r\n### Added", "[$date]\r\n### Added\r\n- Added support for support for {$this->className}.\r\n", $changelogFile);
 			} else {
-				$changelogFile = str_replace("[$date]\r\n", "[$date]\r\n### Added\r\n- Added support for {$this->className}.\"", $changelogFile);
+				$changelogFile = str_replace("[$date]\r\n", "[$date]\r\n### Added\r\n- Added support for {$this->className}.\r\n", $changelogFile);
 			}
 		} else {
 			//Log doesn't exist.
