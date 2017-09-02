@@ -60,5 +60,6 @@
 		<li>Mangazuki</li>
 		<li>Yummy Gummy Scans</li>
 		<li>Champion Scans</li>
+		<li>Pure Mashiro Scans</li>
 	</ul>
 </div>

@@ -42,3 +42,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Mangazuki
 * Yummy Gummy Scans
 * Champion Scans
+* Pure Mashiro Scans

@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-09-02]
+### Added
+- Added support for Pure Mashiro Scans.
+
 ### Changed
 - `[Backend]` IPv6 addresses are no longer truncated in the DB.
 - `[Backend]` Email addresses can now be 254 characters.
