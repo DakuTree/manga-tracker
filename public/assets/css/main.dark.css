@@ -757,7 +757,7 @@ a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a 
 	background-image: none !important;
 }
 #page[data-page="dashboard"] .tracker-table .header, #page[data-page="dashboard"] .tracker-table .tablesorter-header {
-	padding: 4px 20px 4px 4px;
+	padding: 4px;
 
 	cursor: pointer;
 	white-space: normal;
@@ -780,6 +780,7 @@ a #page[data-page="dashboard"] #list-nav #category-nav ul > li.active:active, a 
 }
 #page[data-page="dashboard"] .tracker-table > thead th:last-of-type {
 	cursor: default;
+	text-align: center;
 }
 #page[data-page="dashboard"] .tracker-table > tbody > tr.even {
 	background-color: #161616;

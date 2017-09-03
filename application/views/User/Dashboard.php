@@ -106,7 +106,9 @@
 				<div class="tablesorter-header-inner">
 					Latest Release
 				</div></th>
-			<th data-sorter="false"></th>
+			<th data-sorter="false">
+				<i class="fa fa-spinner fa-spin"></i>
+			</th>
 		</tr>
 	</thead>
 	<tbody>

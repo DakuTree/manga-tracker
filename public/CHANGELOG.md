@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Last table header on dashboard now has default pointer.
+- Table now has a loading icon that displays on initial load.
 
 ### Fixed
 - Highlighted rows no longer get their color overridden by the striped css.

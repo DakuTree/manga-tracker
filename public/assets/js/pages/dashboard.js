@@ -116,6 +116,8 @@ $(function(){
 				// reset the internal counter
 				el.count = -1;
 			});
+
+			$(table.config.headerList[4]).find('.fa-spin').remove();
 		},
 
 		//FIXME: This is kinda unneeded, and it does add a longer delay to the tablesorter load, but we need it for setting the header sort direction icons..
