@@ -19,7 +19,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.15/css/theme.bootstrap_3.min.css" integrity="sha256-kHFAS2GpR7DKNTb9SMX1aaoBxjLsZyeAX2Dh7h4UB1g=" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.4/cookieconsent.min.css" />
 
+	<?php if(ENVIRONMENT == 'production') { ?>
 	<link rel="stylesheet" href="<?=$complied_css_path?>">
+	<?php } else { ?>
+	<link rel="stylesheet/less" href="<?=asset_url()?>less/main.less" type="text/css">
+	<script>less = {env: 'development', relativeUrls: true, modifyVars: {themeLocation: 'common\\themes\\<?=$theme?>'}};</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
+	<?php } ?>
 
 	<!--[if lt IE 9]>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>

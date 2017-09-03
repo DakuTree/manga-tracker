@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Last table header on dashboard now has default pointer.
 - Table now has a loading icon that displays on initial load.
+- Compiled CSS is no longer committed, and LESSjs is now used to load less on development.
+  - This should make it for easier for new devs to get started.
+  - CSS is still generated before it is pushed to production.
 
 ### Fixed
 - Highlighted rows no longer get their color overridden by the striped css.

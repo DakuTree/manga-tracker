@@ -19,6 +19,7 @@ class MY_Controller extends CI_Controller {
 		//TODO: Move this to a lib or something.
 		$this->global_data['analytics_tracking_id'] = $this->config->item('tracking_id');
 
+		$this->global_data['theme'] = $this->User_Options->get('theme');
 		$css_path = "css/main.{$this->User_Options->get('theme')}";
 		$this->global_data['complied_css_path'] = asset_url()."{$css_path}.".filemtime(APPPATH . "../public/assets/{$css_path}.css").".css";
 

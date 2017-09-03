@@ -502,12 +502,29 @@ $(function(){
 		    nav        = $('#list-nav'),
 		    offset     = nav.offset().top - nav.find('> ul').height() - 21,
 		    list_table = $('table[data-list]');
-		$window.scroll(function() {
-			//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
-			//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
-			handleScroll();
-		});
-		handleScroll(); //Make sure we also trigger on page load.
+		if(offset > 10) {
+			//normal load
+			$window.scroll(function() {
+				//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
+				//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
+				handleScroll();
+			});
+			handleScroll(); //Make sure we also trigger on page load.
+		} else {
+			//page was loaded via less but less hasn't parsed yet.
+			let existCondition = setInterval(function() {
+				if($('style[id="less:less-main"]').length) {
+					offset = nav.offset().top - nav.find('> ul').height() - 2; //reset offset
+
+					$window.scroll(function() {
+						handleScroll();
+					});
+					handleScroll(); //Make sure we also trigger on page load.
+
+					clearInterval(existCondition);
+				}
+			}, 500);
+		}
 
 		function handleScroll() {
 			if($window.scrollTop() >= offset) {
