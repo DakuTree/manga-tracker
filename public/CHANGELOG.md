@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - DigitalOcean referral link to the support us section on the about page.
   - Only really to be used if you're planning on using it anyway. Would prefer people spend their money on supporting the industry..
 
+### Changed
+- Last table header on dashboard now has default pointer.
+
 ### Fixed
 - Highlighted rows no longer get their color overridden by the striped css.
 
