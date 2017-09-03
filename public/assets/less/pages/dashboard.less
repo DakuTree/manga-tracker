@@ -138,11 +138,14 @@
 		}
 		& > tbody {
 			& > tr {
-				&.even, &.even > td {
+				&.even {
 					background-color: @backgroundQuaternary;
 				}
-				&.odd, &.odd > td {
+				&.odd {
 					background-color: transparent;
+				}
+				&.even > td, &.odd > td {
+					background-color: inherit;
 				}
 
 				&:hover {
