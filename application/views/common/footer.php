@@ -78,7 +78,14 @@
 		const base_url = "<?=base_url()?>";
 		const page     = "<?=$page?>";
 	</script>
+	<?php if(ENVIRONMENT == 'production') { ?>
 	<script src="<?=$complied_js_path?>"></script>
+	<?php } else { ?>
+	<script src="<?=js_url()?>main.js"></script>
+	<?php foreach(array_slice(scandir(APPPATH.'../public/assets/js/pages/'), 2) as $filename) { ?>
+	<script src="<?=js_url()?>pages/<?=$filename?>"></script>
+	<?php } ?>
+	<?php } ?>
 
 	<?php if(ENVIRONMENT == 'production') { ?>
 	<script>

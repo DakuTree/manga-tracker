@@ -44,6 +44,6 @@ _scripts/userscript_testing/tampermonkey_*.crx
 #Compilied files
 public/assets/css/main.light.css
 public/assets/css/main.dark.css
-#public/assets/js/compiled.min.js
+public/assets/js/compiled.min.js
 
 public/favicon.*.png
