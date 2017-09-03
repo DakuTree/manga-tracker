@@ -71,6 +71,12 @@ h1 {
 .alert-warning a {
 	color: #337AB7;
 }
+.bg-info {
+	background: #D9EDF7 !important;
+}
+.bg-warning {
+	background: #FCF8E3 !important;
+}
 .bg-danger {
 	background: #290000 !important;
 }
