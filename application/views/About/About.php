@@ -28,7 +28,7 @@
 		<br>
 		If you want to support us in a non-monetary way however, spreading the word about the site is always a nice help.
 		<br>
-		Starring the project on <a href="https://github.com/DakuTree/manga-tracker">Github</a>, or giving me a follow on <a href="https://twitter.com/DakuTree">Twitter</a> is also a appreciated.
+		Starring the project on <a href="https://github.com/DakuTree/manga-tracker">Github</a>, or giving me a follow on <a href="https://twitter.com/DakuTree">Twitter</a> is also appreciated.
 	</p>
 
 	<h3>Contact</h3>
