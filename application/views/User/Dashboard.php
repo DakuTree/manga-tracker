@@ -93,9 +93,19 @@
 	<thead>
 		<tr>
 			<th class="header read"></th>
-			<th class="header read">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></th>
-			<th class="header read">My Status</th>
-			<th class="header read">Latest Release</th>
+			<th class="header read">
+				<div class="tablesorter-header-inner">
+					Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?>
+				</div>
+			</th>
+			<th class="header read">
+				<div class="tablesorter-header-inner">
+					My Status
+				</div></th>
+			<th class="header read">
+				<div class="tablesorter-header-inner">
+					Latest Release
+				</div></th>
 			<th data-sorter="false"></th>
 		</tr>
 	</thead>
