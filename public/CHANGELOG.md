@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-03]
+### Added
+- DigitalOcean referral link to the support us section on the about page.
+  - Only really to be used if you're planning on using it anyway. Would prefer people spend their money on supporting the industry..
+
+### Fixed
+- Highlighted rows no longer get their color overridden by the striped css.
+
 ## [2017-09-02]
 ### Added
 - Added support for Pure Mashiro Scans.
