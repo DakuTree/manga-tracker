@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-06
-// @version      1.7.67
+// @version      1.7.68
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1204,7 +1204,7 @@ let sites = {
 			this.title_url   = 'http://mangafox.me/manga/'+this.title+'/';
 			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
 
-			this.chapterListCurrent = this.chapter_url;
+			this.chapterListCurrent = this.chapter_url+'1.html';
 			this.chapterList        = {}; //This is set via preSetupTopbar
 
 			this.viewerTitle            = $('#series').find('> strong:last > a').text().slice(0, -6);
@@ -1252,7 +1252,7 @@ let sites = {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
+						_this.chapterList[url+'1.html'] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
 						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
