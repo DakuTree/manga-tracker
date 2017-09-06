@@ -42,8 +42,8 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-02
-// @version      1.7.66
+// @updated      2017-09-06
+// @version      1.7.67
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2083,7 +2083,8 @@ let sites = {
 			}
 		},
 		preSetupViewer : function(callback) {
-			$('.content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			$('body > .header + .content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			$('#viewer + .container-fixed').remove();
 			callback(true);
 		}
 	}),
