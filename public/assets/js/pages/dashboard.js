@@ -134,7 +134,8 @@ $(function(){
 			filter_external : '#search',
 			filter_columnFilters: false,
 			filter_saveFilters : false,
-			filter_reset: '.reset'
+			filter_reset: '.reset',
+			filter_searchFiltered: false //FIXME: This is a temp fix for #201. More info here: https://mottie.github.io/tablesorter/docs/#widget-filter-searchfiltered
 		}
 	});
 

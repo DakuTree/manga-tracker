@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-07]
+### Fixed
+- Searching `mal:` then waiting while having a series containing `mal:` will no longer stop mal metatags from working.
+  - Fixes #201.
+
 ## [2017-09-03]
 ### Added
 - DigitalOcean referral link to the support us section on the about page.
