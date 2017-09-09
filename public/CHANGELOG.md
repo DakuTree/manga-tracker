@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-09]
+### Fixed
+- Modifying / moving series will no longer trigger on window.onbeforeunload.
+
 ## [2017-09-07]
 ### Fixed
 - Searching `mal:` then waiting while having a series containing `mal:` will no longer stop mal metatags from working.

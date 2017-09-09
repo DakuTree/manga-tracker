@@ -332,6 +332,7 @@ $(function(){
 			switch($(this).val()) {
 				case 'delete':
 					if(confirm(`Are you sure you want to delete the ${total_rows} selected row(s)?`)) {
+						window.onbeforeunload = null;
 						$.post(base_url + 'ajax/delete_inline', postData, () => {
 							redirect = true;
 							location.reload();
@@ -348,6 +349,7 @@ $(function(){
 						validate_tag_list(tags, (tag_list_new) => {
 							postData.tag_string = tag_list_new;
 
+							window.onbeforeunload = null;
 							$.post(base_url + 'ajax/mass_tag_update', postData, () => {
 								redirect = true;
 								location.reload(); //unlike a normal tag update, it's probably better to just force a reload here.
@@ -485,6 +487,7 @@ $(function(){
 					return parseInt($(this).attr('data-id'));
 				}).toArray();
 
+				window.onbeforeunload = null;
 				$.post(base_url + 'ajax/set_category', {'id[]' : row_ids, category : selected.attr('value')}, () => {
 					location.reload();
 				}).fail((jqXHR, textStatus, errorThrown) => {
