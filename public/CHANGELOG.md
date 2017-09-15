@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-15]
+### Added
+- Search metatag cheatsheet on the help page.
+
 ## [2017-09-09]
 ### Fixed
 - Modifying / moving series will no longer trigger on window.onbeforeunload.

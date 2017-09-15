@@ -24,6 +24,52 @@
 	<p>Note: We know this might be a bit tedious, but it's the best method we can do at the moment.</p>
 </div>
 
+<h1>Advanced searching</h1>
+<div>
+	<p>The search we use on the dashboard is powered by TableSorter which adds some various useful filters for advanced searching. A list of these can be found <a href="https://mottie.github.io/tablesorter/docs/example-widget-filter.html#notes">here</a>.</p>
+
+	<p>In addition to these filters, we also have our own custom filters which I have listed below:</p>
+	<ul>
+		<li>
+			<b>mal:<code>[ID]|any|none|notset</code></b>
+			<br>Examples:
+			<ul>
+				<li><code>mal:123</code> - Returns everything that has <b>123</b> as the MAL ID.</li>
+				<li><code>mal:any</code> - Returns everything that has the MAL ID set.</li>
+				<li><code>mal:none</code> - Returns everything that has the MAL ID set as <b>none</b>.</li>
+				<li><code>mal:notset</code> - Returns everything that does not have the MAL ID set.</li>
+			</ul>
+		</li>
+		<br>
+		<li>
+			<b>site:<code>[DOMAIN]</code></b>
+			<br>Examples:
+			<ul>
+				<li><code>site:mangafox.me</code> - Returns everything that followed on <b>MangaFox</b>.</li>
+				<li><code>site:bato.to</code> - Returns everything that followed on <b>Batoto</b>.</li>
+			</ul>
+		</li>
+		<br>
+		<li>
+			<b>tag:<code>[TAG]</code></b>
+			<br>Examples:
+			<ul>
+				<li><code>tag:complete</code> - Returns everything that is tagged as <b>complete</b>.</li>
+				<li><code>tag:complete,one-shot</code> - Returns everything that is tagged as <b>complete</b> and <b>one-shot</b>.</li>
+			</ul>
+		</li>
+		<br>
+		<li>
+			<b>checked:<code>yes|no</code></b>
+			<br>Examples:
+			<ul>
+				<li><code>checked:yes</code> - Returns everything that has been checked.</li>
+				<li><code>checked:no</code> - Returns everything that has not been checked.</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
 <h1>Supported Sites</h1>
 <div>
 	<ul>
