@@ -2214,15 +2214,14 @@ let sites = {
 			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
 			this.chapterList        = generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
 
-			this.viewerCustomImageList = $('img.chapter-img').map(function(i, e) {
-				return $(e).attr('src');
-			});
+			this.viewerChapterURLFormat = this.https + `://lhtranslation.com/read-${this.title}-chapter-${this.chapter}-page-%pageN%.html`;
+			this.viewerRegex            = /(<img class="chapter-img" [\s\S][^>]+>)/;
 
-			this.page_count = this.viewerCustomImageList.length;
+			this.page_count = $('.chapter-content > select:eq(0) > option').length - 1;
 		},
 		preSetupViewer : function(callback) {
 			$('.chapter-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(false, true);
+			callback(false, false);
 		}
 	}),
 
