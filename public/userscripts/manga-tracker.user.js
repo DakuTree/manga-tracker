@@ -42,8 +42,8 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-06
-// @version      1.7.68
+// @updated      2017-09-16
+// @version      1.7.69
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2212,7 +2212,7 @@ let sites = {
 			this.chapter_url = this.https + `://lhtranslation.com/read-${this.title}-chapter-${this.chapter}.html`;
 
 			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
-			this.chapterList        = generateChapterList($('.chapter-before:eq(1) .select-chapter > select > option').reverseObj(), 'value');
+			this.chapterList        = generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
 
 			this.viewerCustomImageList = $('img.chapter-img').map(function(i, e) {
 				return $(e).attr('src');
