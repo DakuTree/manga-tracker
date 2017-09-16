@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-16]
+### Changes
+- LHTranslation now works on page URLs.
+
+### Fixed
+- LHTranslation should work again.
+
 ## [2017-09-15]
 ### Added
 - Search metatag cheatsheet on the help page.

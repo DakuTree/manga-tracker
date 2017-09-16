@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+\.html$/
+// @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
 // @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -2204,7 +2204,7 @@ let sites = {
 	 */
 	'lhtranslation.com' : extendSite({
 		setObjVars : function() {
-			this.segments = this.segments[1].match(/^read-(.*?)-chapter-([0-9\.]+)\.html$/);
+			this.segments = this.segments[1].match(/^read-(.*?)-chapter-([0-9\.]+)(?:-page-[0-9]+)?\.html$/);
 			this.title         = this.segments[1];
 			this.chapter       = this.segments[2];
 
