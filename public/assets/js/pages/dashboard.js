@@ -129,6 +129,13 @@ $(function(){
 			3 : { sortInitialOrder : 'desc', sorter: 'latest' }
 		},
 
+		textExtraction: {
+			1: function (node) {
+				// return only the text from the text node (ignores DIV contents)
+				return $(node).find('.title').text();
+			}
+		},
+
 		widgets: ['zebra', 'filter'],
 		widgetOptions : {
 			filter_external : '#search',
@@ -136,7 +143,9 @@ $(function(){
 			filter_saveFilters : false,
 			filter_reset: '.reset',
 			filter_searchFiltered: false //FIXME: This is a temp fix for #201. More info here: https://mottie.github.io/tablesorter/docs/#widget-filter-searchfiltered
-		}
+		},
+
+
 	});
 
 	/** UX Improvements **/

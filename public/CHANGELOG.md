@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 ## [2017-09-22]
 ### Changes
 - KissManga disabled alert now only shows when manually trying to update.
+- Search now only checks the title, rather than the entire `<td>` element.
+  - Closes #208
 
 ### Fixed
 - It is now possible to change user options again.
