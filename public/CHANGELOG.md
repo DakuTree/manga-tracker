@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Changes
 - KissManga disabled alert now only shows when manually trying to update.
 
+### Fixed
+- It is now possible to change user options again.
+
 ## [2017-09-16]
 ### Changes
 - LHTranslation now works on page URLs.

@@ -72,7 +72,7 @@
 					<div class="form-group">
 						<?=form_label('Site Theme', 'theme')?>
 						<div class="btn-group" data-toggle="buttons">
-							<?=form_dropdown('theme', $theme, $theme_selected)?>
+							<?=form_dropdown('theme', $theme_option, $theme_option_selected)?>
 						</div>
 					</div>
 				</div>

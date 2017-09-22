@@ -101,14 +101,14 @@ class Options extends Auth_Controller {
 		$this->body_data['list_sort_order_selected'] = $this->User_Options->get('list_sort_order');
 
 		/** THEME  **/
-		$this->body_data['theme'] = array_intersect_key(
+		$this->body_data['theme_option'] = array_intersect_key(
 			array(
 				'light' => 'Light',
 				'dark'  => 'Dark'
 			),
 			array_flip(array_values($this->User_Options->options['theme']['valid_options']))
 		);
-		$this->body_data['theme_selected'] = $this->User_Options->get('theme');
+		$this->body_data['theme_option_selected'] = $this->User_Options->get('theme');
 
 		/** ENABLE PUBLIC LIST **/
 		$this->body_data = array_merge($this->body_data, $this->User_Options->generate_radio_array(
