@@ -42,8 +42,8 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-16
-// @version      1.7.69
+// @updated      2017-09-22
+// @version      1.7.70
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1789,8 +1789,11 @@ let sites = {
 		},
 
 		//FIXME: KissManga banned us. SEE: https://github.com/DakuTree/manga-tracker/issues/64
-		trackChapter : function() {
-			alert('KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.');
+		trackChapter : function(askForConfirmation) {
+			if(askForConfirmation === true) {
+				//Only show on alert when manually updating.
+				alert('KissManga decided to IP ban our server, which means tracking is no longer possible.\nThis may be fixed at a later date, sorry for the inconvenience.');
+			}
 		}
 	}),
 
