@@ -25,30 +25,6 @@
           <option name="HEX_COLOR_LONG_FORMAT" value="true" />
           <option name="KEEP_SINGLE_LINE_BLOCKS" value="true" />
         </CssCodeStyleSettings>
-        <DBN-PSQL>
-          <case-options enabled="false">
-            <option name="KEYWORD_CASE" value="lower" />
-            <option name="FUNCTION_CASE" value="lower" />
-            <option name="PARAMETER_CASE" value="lower" />
-            <option name="DATATYPE_CASE" value="lower" />
-            <option name="OBJECT_CASE" value="preserve" />
-          </case-options>
-          <formatting-settings enabled="false" />
-        </DBN-PSQL>
-        <DBN-SQL>
-          <case-options enabled="false">
-            <option name="KEYWORD_CASE" value="lower" />
-            <option name="FUNCTION_CASE" value="lower" />
-            <option name="PARAMETER_CASE" value="lower" />
-            <option name="DATATYPE_CASE" value="lower" />
-            <option name="OBJECT_CASE" value="preserve" />
-          </case-options>
-          <formatting-settings enabled="false">
-            <option name="STATEMENT_SPACING" value="one_line" />
-            <option name="CLAUSE_CHOP_DOWN" value="chop_down_if_statement_long" />
-            <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
-          </formatting-settings>
-        </DBN-SQL>
         <JSCodeStyleSettings>
           <option name="ALIGN_OBJECT_PROPERTIES" value="2" />
           <option name="ALIGN_VAR_STATEMENTS" value="1" />
@@ -69,30 +45,6 @@
           <option name="ALIGN_CLASS_CONSTANTS" value="true" />
           <option name="PREFER_TEMPLATE_INDENTS" value="true" />
         </PHPCodeStyleSettings>
-        <DBN-PSQL>
-          <case-options enabled="false">
-            <option name="KEYWORD_CASE" value="lower" />
-            <option name="FUNCTION_CASE" value="lower" />
-            <option name="PARAMETER_CASE" value="lower" />
-            <option name="DATATYPE_CASE" value="lower" />
-            <option name="OBJECT_CASE" value="preserve" />
-          </case-options>
-          <formatting-settings enabled="false" />
-        </DBN-PSQL>
-        <DBN-SQL>
-          <case-options enabled="false">
-            <option name="KEYWORD_CASE" value="lower" />
-            <option name="FUNCTION_CASE" value="lower" />
-            <option name="PARAMETER_CASE" value="lower" />
-            <option name="DATATYPE_CASE" value="lower" />
-            <option name="OBJECT_CASE" value="preserve" />
-          </case-options>
-          <formatting-settings enabled="false">
-            <option name="STATEMENT_SPACING" value="one_line" />
-            <option name="CLAUSE_CHOP_DOWN" value="chop_down_if_statement_long" />
-            <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
-          </formatting-settings>
-        </DBN-SQL>
         <SqlCodeStyleSettings>
           <option name="NEW_LINE_BEFORE_HAVING" value="false" />
           <option name="NEW_LINE_BEFORE_QUERY_INSIDE_PARENTHESIS" value="true" />
