@@ -1,5 +1,8 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Class Tracker_Sites_Model
+ */
 class Tracker_Sites_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
@@ -17,15 +20,15 @@ class Tracker_Sites_Model extends CI_Model {
 		}
 	}
 
-	private function loadSite(string $siteName) {
+	private function loadSite(string $siteName) : void {
 		$this->{$siteName} = new $siteName();
 	}
 }
 
 abstract class Base_Site_Model extends CI_Model {
 	public $site          = '';
-	public $titleFormat   = '';
-	public $chapterFormat = '';
+	public $titleFormat   = '//';
+	public $chapterFormat = '//';
 
 	/**
 	 * 0: No custom updater.
@@ -42,23 +45,103 @@ abstract class Base_Site_Model extends CI_Model {
 		$this->site = get_class($this);
 	}
 
+	/**
+	 * Generates URL to the title page of the requested series.
+	 *
+	 * NOTE: In some cases, we are required to store more data in the title_string than is needed to generate the URL. (Namely as the title_string is our unique identifier for that series)
+	 *       When storing additional data, we use ':--:' as a delimiter to separate the data. Make sure to handle this as needed.
+	 *
+	 * Example:
+	 *    return "http://mangafox.me/manga/{$title_url}/";
+	 *
+	 * Example (with extra data):
+	 *    $title_parts = explode(':--:', title_url);
+	 *    return "https://bato.to/comic/_/comics/-r".$title_parts[0];
+	 *
+	 * @param string $title_url
+	 * @return string
+	 */
 	abstract public function getFullTitleURL(string $title_url) : string;
 
+	/**
+	 * Generates chapter data from given $title_url and $chapter.
+	 *
+	 * Chapter must be in a (v[0-9]+/)?c[0-9]+(\..+)? format.
+	 *
+	 * NOTE: In some cases, we are required to store the chapter number, and the segment required to generate the chapter URL separately.
+	 *       Much like when generating the title URL, we use ':--:' as a delimiter to separate the data. Make sure to handle this as needed.
+	 *
+	 * Example:
+	 *     return [
+	 *        'url'    => $this->getFullTitleURL($title_url).'/'.$chapter,
+	 *        'number' => "c{$chapter}"
+	 *    ];
+	 *
+	 * @param string $title_url
+	 * @param string $chapter
+	 * @return array [url, number]
+	 */
 	abstract public function getChapterData(string $title_url, string $chapter) : array;
 
+	/**
+	 * Used to get the latest chapter of given $title_url.
+	 *
+	 * This <should> utilize both get_content and parseTitleDataDOM functions when possible, as these can both reduce a lot of the code required to set this up.
+	 *
+	 * $titleData params must be set accordingly:
+	 * * `title` should always be used with html_entity_decode.
+	 * * `latest_chapter` must match $this->chapterFormat.
+	 * * `last_updated` should always be in date("Y-m-d H:i:s") format.
+	 * * `followed` should never be set within via getTitleData, with the exception of via a array_merge with doCustomFollow.
+	 *
+	 * $firstGet is set to true when the series is first added to the DB, and is used to follow the series on given site (if possible).
+	 *
+	 * @param string $title_url
+	 * @param bool   $firstGet
+	 * @return array|null [title,latest_chapter,last_updated,followed?]
+	 */
 	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array;
 
+	/**
+	 * Validates given $title_url against titleFormat.
+	 *
+	 * Failure to match against titleFormat will stop the series from being added to the DB.
+	 *
+	 * @param string $title_url
+	 * @return bool
+	 */
 	final public function isValidTitleURL(string $title_url) : bool {
 		$success = (bool) preg_match($this->titleFormat, $title_url);
 		if(!$success) log_message('error', "Invalid Title URL ({$this->site}): {$title_url}");
 		return $success;
 	}
+
+	/**
+	 * Validates given $chapter against chapterFormat.
+	 *
+	 * Failure to match against chapterFormat will stop the chapter being updated.
+	 *
+	 * @param string $chapter
+	 * @return bool
+	 */
 	final public function isValidChapter(string $chapter) : bool {
 		$success = (bool) preg_match($this->chapterFormat, $chapter);
 		if(!$success) log_message('error', "Invalid Chapter ({$this->site}): {$chapter}");
 		return $success;
 	}
 
+	/**
+	 * Used by getTitleData (& similar functions) to get the requested page data.
+	 *
+	 * @param string $url
+	 * @param string $cookie_string
+	 * @param string $cookiejar_path
+	 * @param bool   $follow_redirect
+	 * @param bool   $isPost
+	 * @param array  $postFields
+	 *
+	 * @return array|bool
+	 */
 	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -105,6 +188,15 @@ abstract class Base_Site_Model extends CI_Model {
 	}
 
 	/**
+	 * Used by getTitleData to get the title, latest_chapter & last_updated data from the data returned by get_content.
+	 *
+	 * parseTitleDataDOM checks if the data returned by get_content is valid via a few simple checks.
+	 * * If the request was actually successful, had a valid status code & data wasn't empty. We also do an additional check on an optional $failure_string param, which will throw a failure if it's matched.
+	 *
+	 * Data is cleaned by cleanTitleDataDOM prior to being passed to DOMDocument.
+	 *
+	 * All $node_* params must be XPath to the requested node, and must only return 1 result. Anything else will throw a failure.
+	 *
 	 * @param array  $content
 	 * @param string $title_url
 	 * @param string $node_title_string
@@ -112,8 +204,7 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param string $node_latest_string
 	 * @param string $node_chapter_string
 	 * @param string $failure_string
-	 *
-	 * @return DOMElement[]|false
+	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
 	final protected function parseTitleDataDOM(
 		$content, string $title_url,
@@ -171,10 +262,28 @@ abstract class Base_Site_Model extends CI_Model {
 		return FALSE;
 	}
 
+	/**
+	 * Used by parseTitleDataDOM to clean the data prior to passing it to DOMDocument & DOMXPath.
+	 * This is mostly done as an (assumed) speed improvement due to the reduced amount of DOM to parse, or simply just making it easier to parse with XPath.
+	 *
+	 * @param string $data
+	 * @return string
+	 */
 	public function cleanTitleDataDOM(string $data) : string {
 		return $data;
 	}
 
+	/**
+	 * Used to follow a series on given site if supported.
+	 *
+	 * This is called by getTitleData if $firstGet is true (which occurs when the series is first being added to the DB).
+	 *
+	 * Most of the actual following is done by handleCustomFollow.
+	 *
+	 * @param string $data
+	 * @param array  $extra
+	 * @return array
+	 */
 	final public function doCustomFollow(string $data = "", array $extra = []) : array {
 		$titleData = [];
 		$this->handleCustomFollow(function($content, $id, closure $successCallback = NULL) use(&$titleData) {
@@ -202,12 +311,53 @@ abstract class Base_Site_Model extends CI_Model {
 		}, $data, $extra);
 		return $titleData;
 	}
-	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
-	public function doCustomUpdate() {}
-	public function doCustomCheck(string $oldChapter, string $newChapter) {}
-	final public function doCustomCheckCompare(array $oldChapterSegments, array $newChapterSegments) : bool {
-		//FIXME: Make this more generic when we have more site support for it. MangaFox and Batoto have similar chapter formats.
 
+	/**
+	 * Used by doCustomFollow to handle following series on sites.
+	 *
+	 * Uses get_content to get data.
+	 *
+	 * $callback must return ($content, $id, closure $successCallback = NULL).
+	 * * $content is simply just the get_content data.
+	 * * $id is the dbID. This should be passed by the $extra arr.
+	 * * $successCallback is an optional success check to make sure the series was properly followed.
+	 *
+	 * @param callable $callback
+	 * @param string   $data
+	 * @param array    $extra
+	 */
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
+
+	/**
+	 * Used to check the sites following page for new updates (if supported).
+	 * This should work much like getTitleData, but instead checks the following page.
+	 *
+	 * This must return an array containing arrays of each of the chapters data.
+	 */
+	public function doCustomUpdate() {}
+
+	/**
+	 * Used by the custom updater to check if a chapter looks newer than the current one.
+	 *
+	 * This calls doCustomCheckCompare which handles the majority of the checking.
+	 * NOTE: Depending on the site, you may need to call getChapterData to get the chapter number to be used with this.
+	 *
+	 * @param string $oldChapter
+	 * @param string $newChapter
+	 */
+	public function doCustomCheck(string $oldChapter, string $newChapter) {}
+
+	/**
+	 * Used by doCustomCheck to check if a chapter looks newer than the current one.
+	 * Chapter must be in a (v[0-9]+/)?c[0-9]+(\..+)? format.
+	 *
+	 * To avoid issues with the occasional off case, this will only ever return true if we are 100% sure that the new chapter is newer than the old one.
+	 *
+	 * @param array $oldChapterSegments
+	 * @param array $newChapterSegments
+	 * @return bool
+	 */
+	final public function doCustomCheckCompare(array $oldChapterSegments, array $newChapterSegments) : bool {
 		//NOTE: We only need to check against the new chapter here, as that is what is used for confirming update.
 		$status = FALSE;
 

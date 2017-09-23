@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-23]
+### Added
+- `[Backend]` Documentation for Base_Site_Model.
+
 ## [2017-09-22]
 ### Changes
 - KissManga disabled alert now only shows when manually trying to update.
