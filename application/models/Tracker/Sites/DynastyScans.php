@@ -6,15 +6,15 @@ class DynastyScans extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_]+:--:(?:0|1)$/';
 	public $chapterFormat = '/^[0-9a-z_]+$/';
 
-	public function getFullTitleURL(string $title_string) : string {
-		$title_parts = explode(':--:', $title_string);
+	public function getFullTitleURL(string $title_url) : string {
+		$title_parts = explode(':--:', $title_url);
 		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
 
 		return 'https://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
 	}
 
-	public function getChapterData(string $title_string, string $chapter) : array {
-		$title_parts = explode(':--:', $title_string);
+	public function getChapterData(string $title_url, string $chapter) : array {
+		$title_parts = explode(':--:', $title_url);
 		/* Known chapter url formats (# is numbers):
 		       chapters_#A_#B - Ch#A-#B
 		       ch_#A          - Ch#A

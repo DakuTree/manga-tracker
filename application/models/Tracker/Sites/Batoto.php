@@ -12,16 +12,16 @@ class Batoto extends Base_Site_Model {
 	public $chapterFormat = '/^[0-9a-z]+:--:.+$/';
 	public $customType    = 1;
 
-	public function getFullTitleURL(string $title_string) : string {
+	public function getFullTitleURL(string $title_url) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?
 		//NOTE: This points to a generic URL which will redirect according to the ID.
 		//      It's possible the title of a series can change, essentially making it possible for us to have multiple versions of the same title. This stops that.
-		$title_parts = explode(':--:', $title_string);
-		return "https://bato.to/comic/_/comics/-r".$title_parts[0];
+		$title_parts = explode(':--:', $title_url);
+		return "https://bato.to/comic/_/comics/-r{$title_parts[0]}";
 	}
 
-	public function getChapterData(string $title_string, string $chapter) : array {
-		//$title_string isn't used here.
+	public function getChapterData(string $title_url, string $chapter) : array {
+		//$title_url isn't used here.
 
 		$chapter_parts = explode(':--:', $chapter);
 		return [
