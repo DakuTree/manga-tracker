@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-27
-// @version      1.7.72
+// @version      1.7.73
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1274,7 +1274,7 @@ let sites = {
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
-				url     : _this.chapter_url.replace('mangafox.me/manga', 'm.mangafox.me/roll_manga'),
+				url     : 'https:'+_this.chapter_url.replace('mangafox.me/manga', 'm.mangafox.me/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText,
