@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-27
-// @version      1.7.73
+// @version      1.7.74
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -61,6 +61,7 @@
 // @noframes
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
+// @connect      m.mangahere.co
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
@@ -1391,9 +1392,40 @@ let sites = {
 			callback();
 		},
 		preSetupViewer : function(callback) {
+			let _this = this;
+
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback(true);
+			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
+			GM_xmlhttpRequest({
+				url     : 'https:'+_this.chapter_url.replace('www.mangahere.co/manga', 'm.mangahere.co/roll_manga'),
+				method  : 'GET',
+				onload  : function(response) {
+					let data = response.responseText,
+					    imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.lazy[data-original]');
+
+					// console.log(imageList);
+					_this.viewerCustomImageList = imageList.map(function(i, e) {
+						//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
+						return $(e).attr('data-original').replace('https://mhcdn.secure.footprint.net', 'http://c.mhcdn.net');
+					});
+
+					if(_this.viewerCustomImageList.length) {
+						//Sometimes the page count on the actual site isn't accurate, but the mobile sites is. Fix when possible.
+						_this.page_count = _this.viewerCustomImageList.length;
+
+						callback(false, true);
+					} else {
+						console.log('trackr - Mobile site returned no images? Falling back to old loading method');
+						callback(false, false);
+					}
+
+				},
+				onerror : function() {
+					console.log('trackr - Unable to load mobile site, fallback to old page loading method');
+					callback(false, false);
+				}
+			});
 		}
 	}),
 

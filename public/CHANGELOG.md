@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-09-27]
+### Added
+- MangaHere now uses mobile reader for faster loading when possible.
+
 ### Fixed
 - MangaFox & MangaHere now use https URLs.
 
