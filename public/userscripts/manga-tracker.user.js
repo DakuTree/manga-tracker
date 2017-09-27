@@ -7,8 +7,8 @@
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
 // @icon         https://trackr.moe/favicon.production.png
 // @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
-// @include      /^http:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
-// @include      /^http:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
+// @include      /^https?:\/\/mangafox\.me\/manga\/.+\/(?:.*\/)?.*\/.*$/
+// @include      /^https?:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
 // @include      /^https:/\/dynasty-scans\.com\/chapters\/.+$/
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
@@ -42,8 +42,8 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-22
-// @version      1.7.70
+// @updated      2017-09-27
+// @version      1.7.71
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1201,8 +1201,8 @@ let sites = {
 
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
-			this.title_url   = 'http://mangafox.me/manga/'+this.title+'/';
-			this.chapter_url = 'http://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
+			this.title_url   = 'https://mangafox.me/manga/'+this.title+'/';
+			this.chapter_url = 'https://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url+'1.html';
 			this.chapterList        = {}; //This is set via preSetupTopbar
@@ -1212,7 +1212,7 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
-			this.searchURLFormat = 'http://mangafox.me/search.php?advopts=1&name={%SEARCH%}';
+			this.searchURLFormat = 'https://mangafox.me/search.php?advopts=1&name={%SEARCH%}';
 
 			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
 
@@ -1318,8 +1318,8 @@ let sites = {
 			this.title         = this.segments[2];
 			this.chapter       = ((!!this.segments[4] && ! /\.html$/.test(this.segments[4])) ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
-			this.title_url   = 'http://www.mangahere.co/manga/'+this.title+'/';
-			this.chapter_url = 'http://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
+			this.title_url   = 'https://www.mangahere.co/manga/'+this.title+'/';
+			this.chapter_url = 'https://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url;
 			// this.chapterList        = {}; //This is set via preSetupTopbar
