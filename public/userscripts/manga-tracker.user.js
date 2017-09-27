@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-27
-// @version      1.7.71
+// @version      1.7.72
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1202,7 +1202,7 @@ let sites = {
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
 			this.title_url   = 'https://mangafox.me/manga/'+this.title+'/';
-			this.chapter_url = 'https://mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
+			this.chapter_url = '//mangafox.me/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url+'1.html';
 			this.chapterList        = {}; //This is set via preSetupTopbar
@@ -1282,7 +1282,8 @@ let sites = {
 
 					// console.log(imageList);
 					_this.viewerCustomImageList = imageList.map(function(i, e) {
-						return $(e).attr('data-original');
+						//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
+						return $(e).attr('data-original').replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
 					});
 
 					if(_this.viewerCustomImageList.length) {
@@ -1319,7 +1320,7 @@ let sites = {
 			this.chapter       = ((!!this.segments[4] && ! /\.html$/.test(this.segments[4])) ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
 			this.title_url   = 'https://www.mangahere.co/manga/'+this.title+'/';
-			this.chapter_url = 'https://www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
+			this.chapter_url = '//www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url;
 			// this.chapterList        = {}; //This is set via preSetupTopbar
