@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-27
-// @version      1.7.74
+// @version      1.7.75
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -631,6 +631,13 @@ let base_site = {
 
 			function addToContainer(pageN, promiseResolve, promiseReject) {
 				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
+
+				//FIXME: (TEMP HACK) Due to MH being weird with https redirects, we need to do this.
+				//       When I get the time we should move this to the parent object so we can override it.
+				if(url.includes('mangahere.co', 0)) {
+					url = url.replace('1.html', '');
+				}
+
 				$.ajax({
 					url    : url,
 					type   : 'GET',
