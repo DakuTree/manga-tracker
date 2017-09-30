@@ -157,8 +157,8 @@ abstract class Base_Site_Model extends CI_Model {
 		//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
 		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36');
 
-		//TODO: Check in a while if this being enabled still causes issues
-		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
+		//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 
