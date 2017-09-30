@@ -42,8 +42,8 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-27
-// @version      1.7.75
+// @updated      2017-09-30
+// @version      1.7.76
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1245,26 +1245,52 @@ let sites = {
 
 			//The inline chapter list is cached. This causes new chapters to not properly show on the list. (Why the cache isn't reset when a new chapter is added is beyond me)
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
-			$.ajax({
-				url: _this.title_url,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
-					xhr.setRequestHeader('Pragma', 'no-cache');
-				},
-				cache: false,
-				success: function(response) {
-					response = response.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
-					let div = $('<div/>').append($(response));
+			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
+			GM_xmlhttpRequest({
+				url     : _this.title_url.replace('mangafox.me', 'm.mangafox.me'),
+				method  : 'GET',
+				onload  : function(response) {
+					let data = response.responseText;
+					data = data.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
 
-					$('#chapters > .chlist > li > div > a + * > a', div).reverseObj().each(function() {
+					let div = $('<div/>').append($(data));
+
+					$('.chlist a', div).reverseObj().each(function() {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
+						url = url.replace('m.mangafox.me/manga/', 'mangafox.me/manga/');
 						_this.chapterList[url+'1.html'] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
-						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
 					callback();
+
+				},
+				onerror : function() {
+					console.log('trackr - Unable to load mobile site, fallback to old loading method');
+					$.ajax({
+						url: _this.title_url,
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+							xhr.setRequestHeader('Pragma', 'no-cache');
+						},
+						cache: false,
+						success: function(response) {
+							response = response.replace(/^[\S\s]*(<div id="chapters"\s*>[\S\s]*)<div id="discussion" >[\S\s]*$/, '$1'); //Only grab the chapter list
+							let div = $('<div/>').append($(response));
+
+							$('#chapters > .chlist > li > div > a + * > a', div).reverseObj().each(function() {
+								let chapterTitle     = $('+ span.title', this).text().trim(),
+								    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
+
+								_this.chapterList[url+'1.html'] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
+									.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							});
+
+							callback();
+						}
+					});
 				}
 			});
 		},
@@ -1370,26 +1396,51 @@ let sites = {
 			let _this = this;
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
-			$.ajax({
-				url: _this.title_url,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
-					xhr.setRequestHeader('Pragma', 'no-cache');
-				},
-				cache: false,
-				success: function(response) {
-					response = response.replace(/^[\S\s]*(<section id="main" class="main clearfix">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
-					let div = $('<div/>').append($(response).find('.detail_list > ul:first'));
+			GM_xmlhttpRequest({
+				url     : _this.title_url.replace('www.mangahere.co', 'm.mangahere.co'),
+				method  : 'GET',
+				onload  : function(response) {
+					let data = response.responseText;
+					data = data.replace(/^[\S\s]*(<section class="main">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
+					let div = $('<div/>').append($(data));
 
-					$('li > span.left > a', div).reverseObj().each(function() {
+					$('.manga-chapters > ul > li > a', div).reverseObj().each(function() {
 						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
+						url = url.replace('m.mangahere.co/manga/', 'www.mangahere.co/manga/');
 						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
-						                            .replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
+
 					callback();
+
+				},
+				onerror : function() {
+					console.log('trackr - Unable to load mobile site, fallback to old loading method');
+					$.ajax({
+						url: _this.title_url,
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+							xhr.setRequestHeader('Pragma', 'no-cache');
+						},
+						cache: false,
+						success: function(response) {
+							response = response.replace(/^[\S\s]*(<section id="main" class="main clearfix">[\S\s]*(?=<\/section>)<\/section>)[\S\s]*$/, '$1'); //Only grab the chapter list
+							let div = $('<div/>').append($(response).find('.detail_list > ul:first'));
+
+							$('li > span.left > a', div).reverseObj().each(function() {
+								let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
+								    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
+
+								_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
+									.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
+							});
+
+							callback();
+						}
+					});
 				}
 			});
 		},

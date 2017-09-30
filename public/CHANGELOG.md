@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-30]
+### Changed
+- MangaFox/MangaHere now uses the mobile viewer to load the chapter list.
+  - This should also fix part of #214.
+
 ## [2017-09-27]
 ### Added
 - MangaHere now uses mobile reader for faster loading when possible.
