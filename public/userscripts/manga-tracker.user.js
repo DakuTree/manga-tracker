@@ -1289,6 +1289,9 @@ let sites = {
 							});
 
 							callback();
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							callback();
 						}
 					});
 				}
@@ -1438,6 +1441,9 @@ let sites = {
 									.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 							});
 
+							callback();
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
 							callback();
 						}
 					});
