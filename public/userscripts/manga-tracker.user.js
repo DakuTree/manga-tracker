@@ -1217,7 +1217,7 @@ let sites = {
 
 			this.viewerTitle            = $('#series').find('> strong:last > a').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%'+'.html';
-			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<div id="MarketGid[\s\S]*$/;
+			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<\/div>[\s\S]*<div id="shares"[\s\S]*$/;
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
 			this.searchURLFormat = 'https://mangafox.me/search.php?advopts=1&name={%SEARCH%}';
