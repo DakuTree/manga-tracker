@@ -42,8 +42,9 @@
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-09-30
-// @version      1.7.77
+// @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
+// @updated      2017-10-01
+// @version      1.7.78
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2478,6 +2479,22 @@ let sites = {
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();
+		}
+	}),
+
+	/**
+	 * RavensScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'ravens-scans.com' : extendSite({
+		preInit : function(callback) {
+			if(location.href.indexOf('/multi/') !== -1) {
+				location.href = location.href.replace('/multi/', '/lector/').replace('.0', '');
+			} else {
+				this.foolSlideBaseURL = this.https+'://ravens-scans.com/lector';
+				this.setupFoolSlide();
+				callback();
+			}
 		}
 	}),
 

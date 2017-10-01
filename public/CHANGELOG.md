@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-10-01]
+### Added
+- `[Backend]` Base_FoolSlide_Site_Model now has getChapterURL, getJSONTitleURL & getJSONUpdateURL functions.
+  - Some FoolSlide sites (namely forks) don't have the API available on the same baseURL that the rest of the site is on. This allows us to overwrite them.
+  
+- Added support for RavensScans.
+  - Closes #198.
+
 ### Fixed
 - MangaFox should no longer load secure.footprint.net URLs wherever possible (This should avoid it getting caught by adblock).
 - MangaFox & MangaHere should now properly fallback to an empty chapter list if it fails to load.
