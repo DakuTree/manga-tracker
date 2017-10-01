@@ -43,7 +43,7 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-09-30
-// @version      1.7.76
+// @version      1.7.77
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -645,10 +645,11 @@ let base_site = {
 					// async: useASync,
 					success: function (data) {
 						if(data.length > 0) {
+							data = data.replace(_this.viewerRegex, '$1');
+							data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
 
-							let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-
-							_this.setupViewerContainer($(original_image).attr('src'), this.page);
+							let original_image = $(data).find('img:first').addBack('img:first');
+							_this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
 						} else {
 							_this.setupViewerContainerError(url, this.page, false);
 						}

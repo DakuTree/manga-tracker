@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-01]
+### Fixed
+- MangaFox should no longer load secure.footprint.net URLs wherever possible (This should avoid it getting caught by adblock).
+- MangaFox & MangaHere should now properly fallback to an empty chapter list if it fails to load.
+  - We still need a better solution here though..
+- `[Backend]` addToContainer now prevents jQuery from preloading images.
+
 ## [2017-09-30]
 ### Changed
 - MangaFox/MangaHere now uses the mobile viewer to load the chapter list.
