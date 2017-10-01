@@ -1314,31 +1314,60 @@ let sites = {
 				url     : 'https:'+_this.chapter_url.replace('mangafox.me/manga', 'm.mangafox.me/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
-					let data = response.responseText,
-					    imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.reader-page');
+					let data      = response.responseText,
+					    imageList = [];
 
-					// console.log(imageList);
-					_this.viewerCustomImageList = imageList.map(function(i, e) {
-						//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
-						return $(e).attr('data-original').replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
-					});
+					if(data.indexOf('it’s licensed and not available.') === -1) {
+						//Avoid attempting to load imageList if is licensed.
+						imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.reader-page');
 
-					if(_this.viewerCustomImageList.length) {
-						//Sometimes the page count on the actual site isn't accurate, but the mobile sites is. Fix when possible.
-						_this.page_count = _this.viewerCustomImageList.length;
+						_this.viewerCustomImageList = imageList.map(function(i, e) {
+							//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
+							return $(e).attr('data-original').replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
+						});
 
-						callback(false, true);
+						if(_this.viewerCustomImageList.length) {
+							//Sometimes the page count on the actual site isn't accurate, but the mobile sites is. Fix when possible.
+							_this.page_count = _this.viewerCustomImageList.length;
+
+							callback(false, true);
+						} else {
+							console.log('trackr - Mobile site returned no images? Falling back to old loading method');
+							callback(false, false);
+						}
 					} else {
-						console.log('trackr - Mobile site returned no images? Falling back to old loading method');
+						console.log('trackr - Mobile site returned licensed. Falling back to old method.');
 						callback(false, false);
 					}
-
 				},
 				onerror : function() {
 					console.log('trackr - Unable to load mobile site, fallback to old page loading method');
 					callback(false, false);
 				}
 			});
+		},
+		setupViewerContainer : function(imgURL, pageN) {
+			let _this = this;
+
+			imgURL = imgURL.replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net')
+
+			let image_container = $('<div/>', {id: `trackr-page-${pageN}`, class: 'read_img'}).append(
+				//We want to completely recreate the image element to remove all additional attributes
+				$('<img/>', {src: imgURL})
+					.on('load', function() {
+						_this.updatePagesLoaded(true);
+					})
+					.on('error', function() {
+						_this.setupViewerContainerError(imgURL, pageN, true);
+					})
+			).append(
+				//Add page number
+				$('<div/>', {class: 'pageNumber'}).append(
+					$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
+			);
+
+			//Replace the placeholder image_container with the real one
+			$(`#trackr-page-${pageN}`).replaceWith(image_container);
 		}
 	}),
 
@@ -1416,9 +1445,7 @@ let sites = {
 							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
 
-
 					callback();
-
 				},
 				onerror : function() {
 					console.log('trackr - Unable to load mobile site, fallback to old loading method');
