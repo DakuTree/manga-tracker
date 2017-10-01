@@ -423,15 +423,18 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public function getChapterData(string $title_url, string $chapter) : array {
 		$chapter_parts = explode('/', $chapter); //returns #LANG#/#VOLUME#/#CHAPTER#/#CHAPTER_EXTRA#(/#PAGE#/)
 		return [
-			'url'    => "{$this->baseURL}/read/{$title_url}/{$chapter}/",
+			'url'    => $this->getChapterURL($title_url, $chapter),
 			'number' => ($chapter_parts[1] !== '0' ? "v{$chapter_parts[1]}/" : '') . "c{$chapter_parts[2]}" . (isset($chapter_parts[3]) ? ".{$chapter_parts[3]}" : '')/*)*/
 		];
+	}
+	public function getChapterURL(string $title_url, string $chapter) : string {
+		return "{$this->baseURL}/read/{$title_url}/{$chapter}/";
 	}
 
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		$jsonURL = "{$this->baseURL}/api/reader/comic/stub/{$title_url}/format/json";
+		$jsonURL = $this->getJSONTitleURL($title_url);
 		if($content = $this->get_content($jsonURL)) {
 			$json = json_decode($content['body'], TRUE);
 			if($json && isset($json['chapters']) && count($json['chapters']) > 0) {
@@ -466,7 +469,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$jsonURL = "{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json";
+		$jsonURL = $this->getJSONUpdateURL();
 		if(($content = $this->get_content($jsonURL)) && $content['status_code'] == 200) {
 			$json = json_decode($content['body'], TRUE);
 
@@ -515,5 +518,12 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
 
 		return $status;
+	}
+
+	public function getJSONTitleURL(string $title_url) : string {
+		return "{$this->baseURL}/api/reader/comic/stub/{$title_url}/format/json";
+	}
+	public function getJSONUpdateURL() : string {
+		return "{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json";
 	}
 }
