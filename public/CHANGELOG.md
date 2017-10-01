@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 ### Added
 - `[Backend]` Base_FoolSlide_Site_Model now has getChapterURL, getJSONTitleURL & getJSONUpdateURL functions.
   - Some FoolSlide sites (namely forks) don't have the API available on the same baseURL that the rest of the site is on. This allows us to overwrite them.
-  
 - Added support for RavensScans.
   - Closes #198.
 
@@ -14,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - MangaFox & MangaHere should now properly fallback to an empty chapter list if it fails to load.
   - We still need a better solution here though..
 - `[Backend]` addToContainer now prevents jQuery from preloading images.
+- LHTranslation should work again.
+  - Closes #210.
 
 ## [2017-09-30]
 ### Changed

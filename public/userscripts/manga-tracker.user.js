@@ -34,7 +34,7 @@
 // @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^http:\/\/lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
+// @include      /^http:\/\/read\.lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
 // @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -44,7 +44,7 @@
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @updated      2017-10-01
-// @version      1.7.78
+// @version      1.7.79
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2331,26 +2331,35 @@ let sites = {
 	 * LHtranslation
 	 * @type {SiteObject}
 	 */
-	'lhtranslation.com' : extendSite({
+	'read.lhtranslation.com' : extendSite({
+		preInit : function(callback) {
+			//Force webtoon mode.
+			if(getCookie('read_type') === '1') {
+				callback();
+			} else {
+				document.cookie = 'read_type=1; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
+				location.reload();
+			}
+		},
 		setObjVars : function() {
 			this.segments = this.segments[1].match(/^read-(.*?)-chapter-([0-9\.]+)(?:-page-[0-9]+)?\.html$/);
 			this.title         = this.segments[1];
 			this.chapter       = this.segments[2];
 
-			this.title_url   = this.https + `://lhtranslation.com/manga-${this.title}.html`;
-			this.chapter_url = this.https + `://lhtranslation.com/read-${this.title}-chapter-${this.chapter}.html`;
+			this.title_url   = this.https + `://read.lhtranslation.com/manga-${this.title}.html`;
+			this.chapter_url = this.https + `://read.lhtranslation.com/read-${this.title}-chapter-${this.chapter}.html`;
 
 			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
 			this.chapterList        = generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
 
-			this.viewerChapterURLFormat = this.https + `://lhtranslation.com/read-${this.title}-chapter-${this.chapter}-page-%pageN%.html`;
-			this.viewerRegex            = /(<img class="chapter-img" [\s\S][^>]+>)/;
-
-			this.page_count = $('.chapter-content > select:eq(0) > option').length - 1;
+			this.viewerCustomImageList  = $('img.chapter-img').map(function(i, e) {
+				return $(e).attr('src');
+			});
+			this.page_count = $('img.chapter-img').length;
 		},
 		preSetupViewer : function(callback) {
 			$('.chapter-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(false, false);
+			callback(false, true);
 		}
 	}),
 
