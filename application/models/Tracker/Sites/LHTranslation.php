@@ -5,6 +5,7 @@ class LHTranslation extends Base_Site_Model {
 	public $chapterFormat = '/^[0-9\.]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
+		$title_url = str_replace('.','', $title_url);
 		return "http://lhtranslation.com/{$title_url}";
 	}
 
@@ -18,6 +19,7 @@ class LHTranslation extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
+		$title_url = str_replace('.','', $title_url);
 		$fullURL = "http://lhtranslation.com/{$title_url}/feed/";
 		$content = $this->get_content($fullURL);
 
