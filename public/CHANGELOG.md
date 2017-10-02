@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-02]
+### Changed
+- `[Backend]` Updated CodeIgniter to 3.1.6.
+
 ## [2017-10-01]
 ### Added
 - `[Backend]` Base_FoolSlide_Site_Model now has getChapterURL, getJSONTitleURL & getJSONUpdateURL functions.
