@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-10-03]
 ### Fixed
 - readmanga.today should now load images again.
+- readms.net should now load images again.
 
 ## [2017-10-02]
 ### Changed

@@ -1793,7 +1793,7 @@ let sites = {
 			this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
 			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();
 			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
-			this.viewerRegex            = /^[\s\S]+(<div class="page">.+(?:.+)?(?=<\/div>)<\/div>)[\s\S]+$/;
+			this.viewerRegex            = /^[\S\s]*(<div class="page">[\S\s]*?(?=<\/div>)<\/div>)[\S\s]*$/;
 
 			if(this.segments[5]) {
 				this.currentPage = parseInt(this.segments[5].replace(/^([0-9]+).*$/, '$1'));
