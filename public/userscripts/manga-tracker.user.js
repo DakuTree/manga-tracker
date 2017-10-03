@@ -43,8 +43,8 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
-// @updated      2017-10-01
-// @version      1.7.79
+// @updated      2017-10-03
+// @version      1.7.80
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2205,7 +2205,7 @@ let sites = {
 
 			//this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
-			this.viewerRegex            = /^[\s\S]*<div class="content-list col-md-12 page_chapter">\s+(<img[\s\S][^>]+>)/;
+			this.viewerRegex            = /^[\s\S]*<div class="content-list col-md-12 page_chapter">[\s\S]*(<img[\s\S][^>]+>)[\s\S]*<!--col-md-12-->[\s\S]*$/;
 
 			if(this.segments[3]) {
 				this.currentPage = parseInt(this.segments[3]);
