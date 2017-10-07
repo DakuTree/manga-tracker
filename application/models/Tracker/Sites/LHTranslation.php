@@ -10,6 +10,7 @@ class LHTranslation extends Base_Site_Model {
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
+		$title_url = str_replace('-chapter', '', $title_url);
 		return [
 			'url'    => "http://read.lhtranslation.com/read-{$title_url}-chapter-{$chapter}.html",
 			'number' => "c{$chapter}"
