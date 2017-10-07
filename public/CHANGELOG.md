@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-07]
+### Fixed
+- Should be able to use "to" in searches now.
+  - "to" was a designator for the tablesorter range filter, which is why there was issues.
+
 ## [2017-10-03]
 ### Fixed
 - readmanga.today should now load images again.

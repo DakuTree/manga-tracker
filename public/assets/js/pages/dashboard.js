@@ -107,6 +107,10 @@ $(function(){
 		return null;
 	};
 
+	//The range filter uses "to" as a designator which can cause issues when searching. - SEE: #221
+	//FIXME: We should try and presserve the original filter and just remove to "to" designator. Same goes to the "and" designator for
+	delete $.tablesorter.filter.types.range;
+
 	$('.tracker-table').tablesorter({
 		initialized: function(table) {
 			//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort
