@@ -74,8 +74,10 @@ class Tracker_List_Model extends Tracker_Base_Model {
 
 				$arr['series'][$row->category]['manga'][] = $data;
 
-				if(!$arr['has_inactive']) $arr['has_inactive'] = !$data['title_data']['active'];
-				if($arr['has_inactive'])  $arr['inactive_titles'][$data['full_title_url']] = $data['title_data']['title'];
+				if(!$data['title_data']['active']) {
+					if(!$arr['has_inactive']) $arr['has_inactive'] = TRUE;
+					$arr['inactive_titles'][$data['full_title_url']] = $data['title_data']['title'];
+				}
 			}
 
 			//FIXME: This is not good for speed, but we're kind of required to do this for UX purposes.

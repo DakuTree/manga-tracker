@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-08]
+### Fixed
+- Inactive series error list should no longer contain series that aren't inactive.
+
 ## [2017-10-07]
 ### Fixed
 - Should be able to use "to" in searches now.
