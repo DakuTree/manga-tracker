@@ -5,8 +5,9 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		parent::__construct();
 	}
 
-	public function get(?int $userID = NULL) {
+	public function get(?int $userID = NULL, string $category = 'all') {
 		$userID = (is_null($userID) ? (int) $this->User->id : $userID);
+		$enabledCategories = $this->getEnabledCategories($userID);
 
 		$query = $this->db
 			->select('tracker_chapters.*, CONVERT_TZ(tracker_chapters.last_updated, @@session.time_zone, \'+00:00\') AS utc_last_updated,
@@ -16,11 +17,14 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			->join('tracker_titles', 'tracker_chapters.title_id = tracker_titles.id', 'left')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 			->where('tracker_chapters.user_id', $userID)
-			->where('tracker_chapters.active', 'Y')
-			->get();
+			->where('tracker_chapters.active', 'Y');
+		if($category !== 'all' && in_array($category, array_keys($enabledCategories))) {
+			$query->where('tracker_chapters.category', $category);
+			$enabledCategories = [$category => $enabledCategories[$category]]; //hack
+		}
+		$result = $query->get();
 
 		$arr = ['series' => [], 'has_inactive' => FALSE, 'inactive_titles' => []];
-		$enabledCategories = $this->getEnabledCategories($userID);
 		foreach($enabledCategories as $category => $name) {
 			$arr['series'][$category] = [
 				'name'         => $name,
@@ -28,8 +32,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				'unread_count' => 0
 			];
 		}
-		if($query->num_rows() > 0) {
-			foreach ($query->result() as $row) {
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
 				$is_unread = intval(($row->latest_chapter == $row->ignore_chapter) || ($row->latest_chapter == $row->current_chapter) ? '1' : '0');
 				$arr['series'][$row->category]['unread_count'] = (($arr['series'][$row->category]['unread_count'] ?? 0) + !$is_unread);
 				$data = [

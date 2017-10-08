@@ -75,6 +75,9 @@ $route['history/([0-9]+)/([0-9]+)']  = 'TitleHistory/index/$1/$2';
 
 $route['update_status'] = 'UpdateStatus';
 
+$route['api/internal/get_list']                                                  = 'API/Internal/GetList';
+$route['api/internal/get_list/(reading|on-hold|plan-to-read|(custom(?:1|2|3)))'] = 'API/Internal/GetList/index/$1';
+
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
 $route['ajax/get_apikey']             = 'Ajax/GetKey';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
