@@ -471,42 +471,44 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 		$jsonURL = $this->getJSONUpdateURL();
 		if(($content = $this->get_content($jsonURL)) && $content['status_code'] == 200) {
-			$json = json_decode($content['body'], TRUE);
+			if($json = json_decode($content['body'], TRUE) && isset($json['chapters'])) {
+				//This should fix edge cases where chapters are uploaded in bulk in the wrong order (HelveticaScans does this with Mousou Telepathy).
+				usort($json['chapters'], function($a, $b) {
+					$a_date = new DateTime($a['chapter']['updated'] !== '0000-00-00 00:00:00' ? $a['chapter']['updated'] : $a['chapter']['created']);
+					$b_date = new DateTime($b['chapter']['updated'] !== '0000-00-00 00:00:00' ? $b['chapter']['updated'] : $b['chapter']['created']);
+					return $b_date <=> $a_date;
+				});
 
-			//This should fix edge cases where chapters are uploaded in bulk in the wrong order (HelveticaScans does this with Mousou Telepathy).
-			usort($json['chapters'], function($a, $b) {
-				$a_date = new DateTime($a['chapter']['updated'] !== '0000-00-00 00:00:00' ? $a['chapter']['updated'] : $a['chapter']['created']);
-				$b_date = new DateTime($b['chapter']['updated'] !== '0000-00-00 00:00:00' ? $b['chapter']['updated'] : $b['chapter']['created']);
-				return $b_date <=> $a_date;
-			});
+				$parsedTitles = [];
+				foreach($json['chapters'] as $chapterData) {
+					if(!in_array($chapterData['comic']['stub'], $parsedTitles)) {
+						$parsedTitles[] = $chapterData['comic']['stub'];
 
-			$parsedTitles = [];
-			foreach($json['chapters'] as $chapterData) {
-				if(!in_array($chapterData['comic']['stub'], $parsedTitles)) {
-					$parsedTitles[] = $chapterData['comic']['stub'];
+						$titleData = [];
+						$titleData['title'] = trim($chapterData['comic']['name']);
 
-					$titleData = [];
-					$titleData['title'] = trim($chapterData['comic']['name']);
+						$latestChapter = $chapterData['chapter'];
 
-					$latestChapter = $chapterData['chapter'];
+						$latestChapterString = "en/{$latestChapter['volume']}/{$latestChapter['chapter']}";
+						if($latestChapter['subchapter'] !== '0') {
+							$latestChapterString .= "/{$latestChapter['subchapter']}";
+						}
+						$titleData['latest_chapter'] = $latestChapterString;
 
-					$latestChapterString = "en/{$latestChapter['volume']}/{$latestChapter['chapter']}";
-					if($latestChapter['subchapter'] !== '0') {
-						$latestChapterString .= "/{$latestChapter['subchapter']}";
+						//No need to use date() here since this is already formatted as such.
+						$titleData['last_updated'] = ($latestChapter['updated'] !== '0000-00-00 00:00:00' ? $latestChapter['updated'] : $latestChapter['created']);
+
+						$titleDataList[$chapterData['comic']['stub']] = $titleData;
+					} else {
+						//We already have title data for this title.
+						continue;
 					}
-					$titleData['latest_chapter'] = $latestChapterString;
-
-					//No need to use date() here since this is already formatted as such.
-					$titleData['last_updated'] = ($latestChapter['updated'] !== '0000-00-00 00:00:00' ? $latestChapter['updated'] : $latestChapter['created']);
-
-					$titleDataList[$chapterData['comic']['stub']] = $titleData;
-				} else {
-					//We already have title data for this title.
-					continue;
 				}
+			} else {
+				log_message('error', "{$this->site} - Custom updating failed (no chapters arg?) for {$this->baseURL}.");
 			}
 		} else {
-			log_message('error', "Custom updating failed for {$this->baseURL}.");
+			log_message('error', "{$this->site} - Custom updating failed for {$this->baseURL}.");
 		}
 
 		return $titleDataList;
