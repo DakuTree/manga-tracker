@@ -1951,6 +1951,7 @@ let sites = {
 	 */
 	'gameofscanlation.moe' : extendSite({
 		setObjVars : function() {
+			let _this = this;
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
 			//The ID one works only on the title page, and the no ID one works on the chapter page.
 			this.title       = $('#readerHeader').find('> .thelefted a:last').attr('href').split('/')[1];
@@ -1964,7 +1965,13 @@ let sites = {
 			this.title_url   = 'https://gameofscanlation.moe/forums/'+this.title+'/';
 			this.chapter_url = 'https://gameofscanlation.moe/projects/'+this.title.replace(/\.[0-9]+$/, '')+'/'+this.chapter+'/';
 
-			this.chapterList        = generateChapterList($('select[name=chapter_list] > option'), 'data-chapterurl');
+			let tempList = generateChapterList($('select[name=chapter_list] > option'), 'data-chapterurl');
+			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
+				let segments = key.split('/');
+				result[`projects/${_this.title}/${segments[2]}/`] = tempList[key];
+				return result;
+			}, {});
+
 			this.chapterListCurrent = this.chapter_url.substr(29);
 		},
 		postSetupTopBar : function(callback) {
