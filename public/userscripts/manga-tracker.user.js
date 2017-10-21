@@ -43,8 +43,8 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
-// @updated      2017-10-14
-// @version      1.7.81
+// @updated      2017-10-22
+// @version      1.7.82
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -975,13 +975,15 @@ let base_site = {
 
 			this.viewerTitle = $('.topbar_left > .dropdown_parent > .text a').text();
 
-			//FoolSlide has the list of images stored in an html tag we can use instead of having to AJAX each page.
-			this.viewerCustomImageList = $('#content').find('> script:first').html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				let val = e.replace(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
-				return JSON.parse('"' + val.replace(/"/g, '\\"') + '"');
-			});
+			if(this.viewerCustomImageList.length === 0) {
+				//FoolSlide has the list of images stored in an html tag we can use instead of having to AJAX each page.
+				this.viewerCustomImageList = ($('#content').find('> script:first').html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g) || []).filter(function(value, index, self) {
+					return self.indexOf(value) === index;
+				}).map(function(e) {
+					let val = e.replace(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
+					return JSON.parse('"' + val.replace(/"/g, '\\"') + '"');
+				});
+			}
 			this.page_count = this.viewerCustomImageList.length;
 
 			if((this.segments[4] && this.segments[4] === 'page') && this.segments[5]) {
@@ -2127,7 +2129,13 @@ let sites = {
 	'jaiminisbox.com' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://jaiminisbox.com/reader';
+
+			//Jaimini's Box seems to be yet another weird FoolSlide fork.
+			this.viewerCustomImageList = unsafeWindow.pages.map(function(e) {
+				return e.url.replace(/https:\/\/images[0-9]+-focus-opensocial\.googleusercontent\.com\/gadgets\/proxy\?container=focus\&refresh=604800\&url=/, '');
+			});
 			this.setupFoolSlide();
+
 			callback();
 		}
 	}),

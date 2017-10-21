@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-22]
+### Fixed
+- Jaimini's Box works again.
+  - Fixes #225.
+
 ## [2017-10-21]
 ### Fixed
 - WebToons no longer dies when failing to parse xml.
