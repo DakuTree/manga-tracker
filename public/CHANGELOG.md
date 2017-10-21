@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-21]
+### Fixed
+- WebToons no longer dies when failing to parse xml.
+
+## [2017-10-14]
+### Fixed
+- GameOfScanlation should now select the correct chapter on the odd case where the title segment is different from the actual title.
+  - Fixes #224.
+
 ## [2017-10-08]
 ### Fixed
 - Inactive series error list should no longer contain series that aren't inactive.

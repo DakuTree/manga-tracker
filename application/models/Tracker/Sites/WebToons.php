@@ -46,17 +46,21 @@ class WebToons extends Base_Site_Model {
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
 		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
-			$xml = simplexml_load_string($data) or die("Error: Cannot create object");
-			if(isset($xml->{'channel'}->item[0])) {
-				$titleData['title'] = trim((string) $xml->{'channel'}->title);
+			$xml = simplexml_load_string($data);
+			if($xml) {
+				if(isset($xml->{'channel'}->item[0])) {
+					$titleData['title'] = trim((string) $xml->{'channel'}->title);
 
-				$chapterURLSegments = explode('/', ((string) $xml->{'channel'}->item[0]->link));
-				$titleData['latest_chapter'] = preg_replace('/^.*?([0-9]+)$/', '$1', $chapterURLSegments[7]) . ':--:' . $chapterURLSegments[6];
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
+					$chapterURLSegments = explode('/', ((string) $xml->{'channel'}->item[0]->link));
+					$titleData['latest_chapter'] = preg_replace('/^.*?([0-9]+)$/', '$1', $chapterURLSegments[7]) . ':--:' . $chapterURLSegments[6];
+					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
 
-				if($firstGet) {
-					$titleData = array_merge($titleData, $this->doCustomFollow($content['body'], ['id' => $title_parts[0]]));
+					if($firstGet) {
+						$titleData = array_merge($titleData, $this->doCustomFollow($content['body'], ['id' => $title_parts[0]]));
+					}
 				}
+			} else {
+				log_message('error', "URL isn't valid XML/RSS? (WebToons): {$title_url}");
 			}
 		} else {
 			log_message('error', "Series missing? (WebToons): {$title_url}");
