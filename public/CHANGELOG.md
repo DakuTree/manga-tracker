@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-23]
+### Fixed
+- Custom Updating works again on FoolSlide sites.
+
 ## [2017-10-22]
 ### Fixed
 - Jaimini's Box works again.

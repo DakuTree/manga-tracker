@@ -471,7 +471,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 		$jsonURL = $this->getJSONUpdateURL();
 		if(($content = $this->get_content($jsonURL)) && $content['status_code'] == 200) {
-			if($json = json_decode($content['body'], TRUE) && isset($json['chapters'])) {
+			if(($json = json_decode($content['body'], TRUE)) && isset($json['chapters'])) {
 				//This should fix edge cases where chapters are uploaded in bulk in the wrong order (HelveticaScans does this with Mousou Telepathy).
 				usort($json['chapters'], function($a, $b) {
 					$a_date = new DateTime($a['chapter']['updated'] !== '0000-00-00 00:00:00' ? $a['chapter']['updated'] : $a['chapter']['created']);
