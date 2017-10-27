@@ -44,8 +44,9 @@
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-10-27
-// @version      1.7.83
+// @version      1.7.84
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2529,6 +2530,18 @@ let sites = {
 	 */
 	'reader.thecatscans.com' : extendSite({
 		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * HatigarmScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'hatigarmscans.eu' : extendSite({
+		preInit : function(callback) {
+			this.foolSlideBaseURL = this.https+'://hatigarmscans.eu/hs';
 			this.setupFoolSlide();
 			callback();
 		}

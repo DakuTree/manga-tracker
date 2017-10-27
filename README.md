@@ -45,3 +45,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Pure Mashiro Scans
 * Ravens Scans
 * CatScans
+* HatigarmScans
