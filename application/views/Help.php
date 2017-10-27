@@ -108,5 +108,6 @@
 		<li>Champion Scans</li>
 		<li>Pure Mashiro Scans</li>
 		<li>Ravens Scans</li>
+		<li>Cat Scans</li>
 	</ul>
 </div>

@@ -44,3 +44,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Champion Scans
 * Pure Mashiro Scans
 * Ravens Scans
+* CatScans

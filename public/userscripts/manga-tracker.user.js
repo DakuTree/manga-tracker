@@ -43,8 +43,9 @@
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
-// @updated      2017-10-22
-// @version      1.7.82
+// @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @updated      2017-10-27
+// @version      1.7.83
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2519,6 +2520,17 @@ let sites = {
 				this.setupFoolSlide();
 				callback();
 			}
+		}
+	}),
+
+	/**
+	 * CatScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.thecatscans.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
 		}
 	}),
 

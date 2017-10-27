@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-10-27]
+### Added
+- Added support for CatScans.
+
 ### Fixed
 - LHTranslation should now properly fail if it doesn't return title.
 
