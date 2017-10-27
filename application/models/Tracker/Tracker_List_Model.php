@@ -24,7 +24,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		}
 		$result = $query->get();
 
-		$arr = ['series' => [], 'has_inactive' => FALSE, 'inactive_titles' => []];
+		$arr = ['series' => [], 'extra_data' => ['inactive_titles' => []]];
 		foreach($enabledCategories as $category => $name) {
 			$arr['series'][$category] = [
 				'name'         => $name,
@@ -79,8 +79,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 				$arr['series'][$row->category]['manga'][] = $data;
 
 				if(!$data['title_data']['active']) {
-					if(!$arr['has_inactive']) $arr['has_inactive'] = TRUE;
-					$arr['inactive_titles'][$data['full_title_url']] = $data['title_data']['title'];
+					$arr['extra_data']['inactive_titles'][$data['full_title_url']] = $data['title_data']['title'];
 				}
 			}
 

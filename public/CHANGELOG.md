@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Added support for CatScans.
 
+### Changed
+- Tracker_List_Model::get() now returns a extra_data array.
+  - inactive_titles has also been moved to this extra_data list.
 ### Fixed
 - LHTranslation should now properly fail if it doesn't return title.
 - RavensScans & CatScans now have the correct icon.

@@ -5,7 +5,7 @@
 </div>
 <?php } ?>
 
-<?php if($has_inactive) { ?>
+<?php if(count($inactive_titles) > 0) { ?>
 <div id="inactive-series" class="alert alert-warning" role="alert">
 	Some of the series on your list have been marked as inactive and have not been updated due to either: no active users or having trouble updating.<br>
 	These will be updated during the next update (Within next 4hrs~).<br>
