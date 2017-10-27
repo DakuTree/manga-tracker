@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - LHTranslation should now properly fail if it doesn't return title.
 - RavensScans & CatScans now have the correct icon.
+- FoolSlide generator script should no longer fail on https urls.
 
 ## [2017-10-23]
 ### Fixed

@@ -159,6 +159,7 @@ EOT;
 		$ch = curl_init("{$this->baseURL}/api/reader/chapters/orderby/desc_created/format/json");
 
 		curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_exec($ch);
 		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		curl_close($ch);
