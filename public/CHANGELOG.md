@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-10-27]
+### Fixed
+- LHTranslation should now properly fail if it doesn't return title.
+
 ## [2017-10-23]
 ### Fixed
 - Custom Updating works again on FoolSlide sites.

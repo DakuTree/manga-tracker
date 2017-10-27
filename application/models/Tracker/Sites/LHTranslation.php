@@ -28,10 +28,15 @@ class LHTranslation extends Base_Site_Model {
 		$xml = simplexml_load_string($data) or die("Error: Cannot create object");
 		if(((string) $xml->{'channel'}->title) !== 'Comments on: '){
 			if(isset($xml->{'channel'}->item[0])) {
-				$titleData['title'] = trim(substr((string) $xml->{'channel'}->title, 0, -33));
+				if($title = substr((string) $xml->{'channel'}->title, 0, -33)) {
+					$titleData['title'] = trim($title);
 
-				$titleData['latest_chapter'] = str_replace('-', '.', preg_replace('/^.*?-(?:.*?)chapter-(.*?)\/$/', '$1', (string) $xml->{'channel'}->item[0]->link));
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
+					$titleData['latest_chapter'] = str_replace('-', '.', preg_replace('/^.*?-(?:.*?)chapter-(.*?)\/$/', '$1', (string) $xml->{'channel'}->item[0]->link));
+					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
+				} else {
+					log_message('error', "Title is empty? - {$xml->{'channel'}->title} (LHTranslation): {$title_url}");
+					return NULL;
+				}
 			}
 		} else {
 			log_message('error', "Series missing? (LHTranslation): {$title_url}");
