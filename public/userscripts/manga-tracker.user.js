@@ -13,7 +13,7 @@
 // @include      /^https:/\/dynasty-scans\.com\/chapters\/.+$/
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/readms\.net\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?(?:\?.+)?$/
-// @include      /^https?:\/\/mangastream\.com\/read\/.+\/.+\/[0-9]+(?:\/[0-9]+)?(?:\?.+)?$/
+// @include      /^https?:\/\/mangastream\.com\/r(ead)?\/.+\/.+\/[0-9]+(?:\/[0-9]+)?(?:\?.+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
 // @include      /^http:\/\/kissmanga\.com\/Manga\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_%]+\?id=[0-9]+$/
 // @include      /^https?:\/\/reader\.kireicake\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-10-27
-// @version      1.7.84
+// @updated      2017-11-03
+// @version      1.7.85
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1772,9 +1772,9 @@ let sites = {
 	 * MangaStream (Alt Domain)
 	 * @type {SiteObject}
 	 */
-	'mangastream.com' : extendSite({
+	'readms.net' : extendSite({
 		preInit : function() {
-			location.href = location.href.replace('mangastream.com/read', 'readms.net/r');
+			location.href = location.href.replace('mangastream.com/r', 'mangastream.com/r');
 		}
 	}),
 
@@ -1782,17 +1782,17 @@ let sites = {
 	 * MangaStream
 	 * @type {SiteObject}
 	 */
-	'readms.net' : extendSite({
+	'mangastream.com' : extendSite({
 		setObjVars : function() {
 			this.page_count  = parseInt($('.controls ul:last > li:last').text().replace(/[^0-9]/g, ''));
 			this.title       = this.segments[2];
 			this.chapter     = this.segments[3]+'/'+this.segments[4];
 
-			this.title_url   = this.https+'://readms.net/manga/'+this.title;
-			this.chapter_url =  this.https+'://readms.net/r/'+this.title+'/'+this.chapter;
+			this.title_url   = this.https+'://mangastream.com/manga/'+this.title;
+			this.chapter_url =  this.https+'://mangastream.com/r/'+this.title+'/'+this.chapter;
 
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
-			this.chapterListCurrent = (this.chapter_url+'/1').replace('https://', 'http://'); //FIXME: MS only seems to use http urls, even if you are on https
+			this.chapterListCurrent = '/r/'+this.title+'/'+this.chapter+'/1'; //FIXME: MS only seems to use http urls, even if you are on https
 
 			this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
 			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();

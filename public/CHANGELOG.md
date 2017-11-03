@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-03]
+### Fixed
+- MangaStream works again after yet another domain switch.
+  - Closes #228.
+
 ## [2017-10-27]
 ### Added
 - Added support for CatScans.
