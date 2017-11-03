@@ -12,3 +12,31 @@
 		<ul></ul>
 	</div>
 </div>
+
+<div id="list-container">
+	<header>
+		<div class="pull-right"><a href="<?=base_url('help')?>">Need help?</a></div>
+
+		<nav id="list-nav-category" class="clear">
+			<ul class="nav navbar-nav">
+				<li class="active">
+					<a href="#" data-list="reading">Reading</a>
+				</li>
+				<li>
+					<a href="#" data-list="on-hold">On-Hold</a>
+				</li>
+				<li>
+					<a href="#" data-list="plan-to-read">Plan to Read</a>
+				</li>
+			</ul>
+			<div class="pull-right">
+				<div id="update-timer-container">
+					Next update in: <a id="update-timer" href="<?=base_url('update_status')?>"><?=$this->Tracker->admin->getNextUpdateTime()?></a>
+					<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Each series is updated at different times, but only once every 14 hours.<br>This is to avoid bombarding the sites with 100s of requests all at once.<br>MangaFox, Batoto and FoolSlide sites are exceptions to this and are updated hourly as they use a different (and more efficient) update method."></i>
+				</div>
+			</div>
+		</nav>
+
+		<div id="tracker-table-links" class="nav-row"></div>
+	</header>
+</div>
