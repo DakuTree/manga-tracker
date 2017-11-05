@@ -144,7 +144,7 @@ class WebToons extends Base_Site_Model {
 						}
 					}
 				} else {
-					log_message('error', '{$this->site} | Following list is empty?');
+					log_message('error', "{$this->site} | Following list is empty?");
 				}
 			}
 		}
