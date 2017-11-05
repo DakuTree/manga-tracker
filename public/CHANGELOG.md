@@ -1,6 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-05]
+### Added
+- `[Backend]` myMangaReaderCMS sites now have a generic function for setting up sites.
+
+### Changed
+- Bug report prompt now has a line requesting detailed info (Hopefully this helps...).
+- Viewer is no longer loaded on KissManga.
+  - We no longer support this site, and the viewer appears to be broken anyway.
+
+### Fixed
+- Fixed a few cases where double quotes were single quotes.
+- Mangazuki should work again.
+  - Fixes #229.
+
 ## [2017-11-03]
 ### Fixed
 - MangaStream works again after yet another domain switch.

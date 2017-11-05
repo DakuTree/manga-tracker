@@ -38,7 +38,7 @@
 // @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/mangazuki\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
+// @include      /^https?:\/\/mangazuki\.co\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -46,7 +46,7 @@
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-11-06
-// @version      1.7.86
+// @version      1.8.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1007,6 +1007,52 @@ let base_site = {
 		};
 	},
 
+	/**
+	 * Used to setup (most) sites that use FoolSlide.
+	 * Will most likely not work on sites that use very old versions of FoolSlide.
+	 *
+	 * @function
+	 * @alias sites.*.setupFoolSlide
+	 * @name base_site.setupFoolSlide
+	 *
+	 * @final
+	 */
+	setupMyMangaReaderCMS : function() {
+		this.segments = this.segments.slice(this.segments.indexOf('manga') + 1);
+
+		this.setObjVars = function() {
+			this.title         = this.segments[0];
+			this.chapter       = this.segments[1];
+
+			this.title_url   = this.myMangaReaderCMSBaseURL+'/manga/'+this.title+'/';
+			this.chapter_url = this.title_url + this.chapter;
+
+			this.chapterListCurrent = this.chapter_url;
+			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
+
+			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
+			this.viewerCustomImageList = $('#all').find('> img').map(function(i, e) {
+				return $(e).attr('data-src');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		};
+
+		this.postSetupTopBar = function(callback) {
+			let viewer = $('.viewer-cnt');
+
+			//Remove extra unneeded elements.
+			viewer.prevAll().remove();
+			viewer.nextAll().remove();
+
+			callback();
+		};
+
+		this.preSetupViewer = function(callback) {
+			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		};
+	},
+
 	//Variables
 
 	/**
@@ -1165,7 +1211,13 @@ let base_site = {
 	 * Most of the time this is just location.origin, but sometimes it's also location.origin/foolslide and so on.
 	 * @type {String}
 	 */
-	foolSlideBaseURL : /\/read\//.test(location.pathname) ? location.href.replace(/^(.*?)\/read\/.*$/, '$1') : location.origin
+	foolSlideBaseURL : /\/read\//.test(location.pathname) ? location.href.replace(/^(.*?)\/read\/.*$/, '$1') : location.origin,
+
+	/**
+	 * URL pointing to base myMangaReaderCMS location. Used by myMangaReaderCMS.
+	 * @type {String}
+	 */
+	myMangaReaderCMSBaseURL : /\/manga\//.test(location.pathname) ? location.href.replace(/^(.*?)\/manga\/.*$/, '$1') : location.origin
 };
 
 /**
@@ -2293,43 +2345,12 @@ let sites = {
 	}),
 
 	/**
-	 * Fallen Angels Scans
+	 * Fallen Angels Scans (myMangaReaderCMS)
 	 * @type {SiteObject}
 	 */
 	'manga.fascans.com' : extendSite({
-		setObjVars : function() {
-			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
-
-			this.page_count    = $('.selectpicker > option').length;
-			this.title         = this.segments[2];
-			this.chapter       = this.segments[3];
-
-			this.title_url   = this.https + '://manga.fascans.com/manga/'+this.title+'/';
-			this.chapter_url = this.title_url + this.chapter;
-
-			this.chapterListCurrent = this.chapter_url;
-			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
-
-			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
-			this.viewerCustomImageList = $('body').find('> script:eq(1)').html().match(/"page_image"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g).filter(function(value, index, self) {
-				return self.indexOf(value) === index;
-			}).map(function(e) {
-				let val = e.replace(/"page_image"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
-				return JSON.parse('"' + val.replace(/"/g, '\\"') + '"');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		preSetupViewer : function(callback) {
-			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
-		},
-		postSetupTopBar : function(callback) {
-			let viewer = $('.viewer-cnt');
-
-			//Remove extra unneeded elements.
-			viewer.prevAll().remove();
-			viewer.nextAll().remove();
-
+		preInit : function(callback) {
+			this.setupMyMangaReaderCMS();
 			callback();
 		}
 	}),
@@ -2418,51 +2439,13 @@ let sites = {
 	}),
 
 	/**
-	 * Mangazuki
+	 * Mangazuki (myMangaReaderCMS)
 	 * @type {SiteObject}
 	 */
 	'mangazuki.co' : extendSite({
-		setObjVars : function() {
-			this.title       = this.segments[2];
-			this.chapter     = this.segments[3];
-
-			this.title_url   = this.https+'://mangazuki.co/series/'+this.title;
-			this.chapter_url = this.https+'://mangazuki.co/read/'+this.title+'/'+this.chapter;
-
-			this.chapterListCurrent = this.chapter_url;
-
-			this.viewerChapterName      = 'c'+this.chapter;
-			this.viewerTitle            = $.trim(($('.content-wrapper > div:eq(1) > div > h1 > a').text()));
-			this.viewerCustomImageList  = $('.content-wrapper').find('img').map(function(i, e) {
-				return $(e).attr('src');
-			});
-			this.page_count = this.viewerCustomImageList.length;
-		},
-		preSetupTopBar : function(callback) {
-			let _this = this;
-
-			//We need to use AJAX as the chapter pages don't provide a full chapter list.
-			$.ajax({
-				url: _this.title_url,
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
-					xhr.setRequestHeader('Pragma', 'no-cache');
-				},
-				cache: false,
-				success: function(response) {
-					let $container = $(response).wrap('<div />').parent();
-					$container.find('.text-muted, .media-left, .media-right').remove();
-					console.log($container);
-					_this.chapterList = generateChapterList($('.media-list > li > a', $container).reverseObj(), 'href');
-
-					callback();
-				}
-			});
-		},
-		preSetupViewer : function(callback) {
-			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-
-			callback(false, true);
+		preInit : function(callback) {
+			this.setupMyMangaReaderCMS();
+			callback();
 		}
 	}),
 
