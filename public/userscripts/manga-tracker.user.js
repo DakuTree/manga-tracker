@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-11-03
-// @version      1.7.85
+// @updated      2017-11-05
+// @version      1.7.86
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -831,7 +831,7 @@ let base_site = {
 	 * @final
 	 */
 	reportBug : function() {
-		let bugText = prompt('Describe the bug.');
+		let bugText = prompt('Describe the bug. Please give as much detail as possible.');
 		if(bugText) {
 			if(bugText !== '') {
 				let params = {
