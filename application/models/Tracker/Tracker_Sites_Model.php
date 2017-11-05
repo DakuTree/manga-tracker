@@ -12,7 +12,7 @@ class Tracker_Sites_Model extends CI_Model {
 		//TODO: Is this a good idea? There wasn't a good consensus on if this is good practice or not..
 		//      It's probably a minor speed reduction, but that isn't much of an issue.
 		//      An alternate solution would simply have a function which generates a PHP file with code to load each model. Similar to: https://github.com/shish/shimmie2/blob/834bc740a4eeef751f546979e6400fd089db64f8/core/util.inc.php#L1422
-		if(!class_exists($name) || !(in_array(get_parent_class($name), ['Base_Site_Model', 'Base_FoolSlide_Site_Model']))) {
+		if(!class_exists($name) || !(in_array(get_parent_class($name), ['Base_Site_Model', 'Base_FoolSlide_Site_Model', 'Base_myMangaReaderCMS_Site_Model']))) {
 			return get_instance()->{$name};
 		} else {
 			$this->loadSite($name);
