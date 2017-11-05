@@ -45,7 +45,7 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-11-05
+// @updated      2017-11-06
 // @version      1.7.86
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
@@ -1873,6 +1873,8 @@ let sites = {
 	 */
 	'kissmanga.com' : extendSite({
 		preInit : function(callback) {
+			return;
+
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
 			if($('.cf-browser-verification').length === 0) {
 				//Kissmanga has a built-in method to show all pages on the same page. Check if the cookie is correct, otherwise change and refresh.
