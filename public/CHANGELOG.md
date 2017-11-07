@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-07]
+### Fixed
+- LHTranslation should now grab the title properly.
+
 ## [2017-11-05]
 ### Added
 - `[Backend]` myMangaReaderCMS sites now have a generic function for setting up sites.
