@@ -70,8 +70,8 @@ class MangaFox extends Base_Site_Model {
 		$titleDataList = [];
 
 		$cookies = [
-			"mfvb_userid={$this->config->item('mangafox_userid')}",
-			"mfvb_password={$this->config->item('mangafox_password')}",
+			"mfvb_uf={$this->config->item('mangafox_userid')}",
+			"mfvb_pf={$this->config->item('mangafox_password')}",
 			"bmsort=last_chapter",
 			"bmorder=za"
 		];
@@ -97,6 +97,7 @@ class MangaFox extends Base_Site_Model {
 				$dom->loadHTML($data);
 				libxml_use_internal_errors(FALSE);
 
+				print $data;
 				$xpath      = new DOMXPath($dom);
 				$nodes_rows = $xpath->query("//ul[@id='bmlist']/li/div[@class='series_grp' and h2[@class='title']/span[@class='updatedch'] and dl]");
 				if($nodes_rows->length > 0) {

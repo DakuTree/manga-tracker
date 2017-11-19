@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-19]
+## Fixed
+- Reverted readmanga.today fix as they appear to have reverted their html.
+
 ## [2017-11-07]
 ### Fixed
 - LHTranslation should now grab the title properly.
