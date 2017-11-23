@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-11-19
-// @version      1.8.1
+// @updated      2017-11-23
+// @version      1.8.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1825,8 +1825,15 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'readms.net' : extendSite({
-		preInit : function() {
-			location.href = location.href.replace('mangastream.com/r', 'mangastream.com/r');
+		preInit : function(callback) {
+			let ms = sites['mangastream.com'];
+			this.setObjVars      = ms.setObjVars;
+			this.stylize         = ms.stylize;
+			this.preSetupTopBar  = ms.preSetupTopBar;
+			this.postSetupTopBar = ms.postSetupTopBar;
+			this.preSetupViewer  = ms.preSetupViewer;
+
+			callback();
 		}
 	}),
 
@@ -1840,8 +1847,8 @@ let sites = {
 			this.title       = this.segments[2];
 			this.chapter     = this.segments[3]+'/'+this.segments[4];
 
-			this.title_url   = this.https+'://mangastream.com/manga/'+this.title;
-			this.chapter_url =  this.https+'://mangastream.com/r/'+this.title+'/'+this.chapter;
+			this.title_url   = location.origin+'/manga/'+this.title;
+			this.chapter_url = location.origin+'/r/'+this.title+'/'+this.chapter;
 
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
 			this.chapterListCurrent = '/r/'+this.title+'/'+this.chapter+'/1'; //FIXME: MS only seems to use http urls, even if you are on https

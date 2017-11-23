@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2017-11-23]
 ## Fixed
 - LHTranslation _should_ properly grab the title now.
+- readms.net should no longer get stuck in a redirect loop.
 
 ## [2017-11-19]
 ## Fixed
