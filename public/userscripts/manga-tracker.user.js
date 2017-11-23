@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-11-23
-// @version      1.8.2
+// @updated      2017-11-24
+// @version      1.8.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1832,6 +1832,8 @@ let sites = {
 			this.preSetupTopBar  = ms.preSetupTopBar;
 			this.postSetupTopBar = ms.postSetupTopBar;
 			this.preSetupViewer  = ms.preSetupViewer;
+
+			this.site = 'mangastream.com';
 
 			callback();
 		}
