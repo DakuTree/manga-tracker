@@ -11,11 +11,16 @@ class CatScans_test extends SiteTestCase {
 			'hitsugi-no-chaika'                    => 'Hitsugi no Chaika',
 			'saijaku-muhai-no-bahamut'             => 'Saijaku Muhai no Bahamut',
 			'busou-shoujo-machiavellism'           => 'Busou Shoujo Machiavellism',
-			'kono-subarashii-sekai-ni-shukufuku-o' => 'Kono Subarashii Sekai ni Shukufuku o!',
+			'kono-subarashii-sekai-ni-shukufuku-o' => 'Kono Subarashii Sekai ni Shukufuku o!',
+
 		];
 		$this->_testSiteSuccessRandom($testSeries);
 	}
 	public function test_failure() {
 		$this->_testSiteFailure('Bad Status Code (404)');
+	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
 	}
 }

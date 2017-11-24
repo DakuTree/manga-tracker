@@ -142,4 +142,8 @@ class SiteTestCase extends TestCase {
 		$this->assertNull($result, "Title URL ({$title_url}");
 		MonkeyPatch::verifyInvokedOnce('log_message', ['error', "{$this->siteName} : {$title_url} | {$errorMessage}"]);
 	}
+
+	protected function _testSiteCustom() {
+		$this->assertNotEmpty($this->Sites_Model->{$this->siteName}->doCustomUpdate());
+	}
 }

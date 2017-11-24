@@ -21,4 +21,8 @@ class DokiFansubs_test extends SiteTestCase {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 		$this->_testSiteFailure('Bad Status Code (404)');
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }

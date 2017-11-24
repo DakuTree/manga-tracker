@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-24]
+### Added
+- Tests for custom updating.
+
 ## [2017-11-23]
 ## Fixed
 - LHTranslation _should_ properly grab the title now.

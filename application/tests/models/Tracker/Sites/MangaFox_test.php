@@ -17,4 +17,9 @@ class MangaFox_test extends SiteTestCase {
 	public function test_failure() {
 		$this->_testSiteFailure('Bad Status Code (302)');
 	}
+
+	public function test_custom() {
+		$this->skipTravis('We need login data to make this work properly which we can\'t provide to Travis');
+		$this->_testSiteCustom();
+	}
 }
