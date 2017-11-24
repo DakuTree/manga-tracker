@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Tests for custom updating.
 
+### Changed
+- Old MAL ID method has been disabled.
+  - This was meant to have been done months ago..
+
 ## [2017-11-23]
 ## Fixed
 - LHTranslation _should_ properly grab the title now.

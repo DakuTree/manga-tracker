@@ -317,9 +317,8 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			}
 		}
 
-		//OLD METHOD
-		//TODO: Remove after a few weeks!
-		if(is_null($malIDArr)) {
+		//Old Method.
+		/*if(is_null($malIDArr)) {
 			$queryC2 = $this->db->select('tags')
 			                  ->where('user_id', $userID)
 			                  ->where('title_id', $titleID)
@@ -334,7 +333,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 					];
 				}
 			}
-		}
+		}*/
 
 		return $malIDArr;
 	}
