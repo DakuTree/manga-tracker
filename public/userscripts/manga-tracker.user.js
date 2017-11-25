@@ -31,7 +31,7 @@
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+\/?(?:Chapter_[0-9]+(?:_extra)?(?:&display=(default|webtoon))?\/?)?$/
 // @include      /^https:\/\/otscans\.com\/foolslide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/www\.readmanga\.today\/[^\/]+(\/.*)?$/
+// @include      /^https?:\/\/(?:www\.)?(?:readmanga\.today|readmng\.com)\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-11-24
-// @version      1.8.3
+// @updated      2017-11-25
+// @version      1.8.4
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2264,11 +2264,35 @@ let sites = {
 	}),
 
 	/**
-	 * ReadMangaToday
+	 * ReadMangaToday (Old Domain)
 	 * @type {SiteObject}
 	 */
 	'www.readmanga.today' : extendSite({
+		preInit : function() {
+			//Auto-redirect to new domain
+			location.href = location.href.replace(/^https?:\/\/www\.readmanga\.today/, 'https://www.readmng.com');
+		}
+	}),
+
+	/**
+	 * ReadMangaToday (No www)
+	 * @type {SiteObject}
+	 */
+	'readmng.com' : extendSite({
+		preInit : function() {
+			//Auto-redirect to www (Preferably we'd use non-www, however most of the site links use www.
+			location.href = location.href.replace(/^https?:\/\/readmng\.com/, 'https://www.readmng.com');
+		}
+	}),
+
+	/**
+	 * ReadMangaToday
+	 * @type {SiteObject}
+	 */
+	'www.readmng.com' : extendSite({
 		setObjVars : function() {
+			this.site = 'www.readmanga.today';
+
 			this.segments      = window.location.pathname.replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1').split( '/' );
 
 			//FIXME: Is there a better way to do this? It just feels like an ugly way of setting vars.
@@ -2276,7 +2300,7 @@ let sites = {
 			this.title         = this.segments[1];
 			this.chapter       = this.segments[2];
 
-			this.title_url   = this.https + '://www.readmanga.today/'+this.title+'/';
+			this.title_url   = this.https + '://www.readmng.com/'+this.title+'/';
 			this.chapter_url = this.title_url + this.chapter+'/';
 
 			//Might be easier to keep chapter_url different.

@@ -5,7 +5,7 @@ class ReadMangaToday extends Base_Site_Model {
 	public $chapterFormat = '/^[0-9\.]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://www.readmanga.today/{$title_url}";
+		return "http://www.readmng.com/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
