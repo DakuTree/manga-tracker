@@ -11,6 +11,7 @@ class Batoto extends Base_Site_Model {
 	//       Preferably we'd just use /^[0-9a-z]+:--:(v[0-9]+\/)?c[0-9]+(\.[0-9]+)?$/
 	public $chapterFormat = '/^[0-9a-z]+:--:.+$/';
 	public $customType    = 1;
+	public $hasCloudFlare = TRUE;
 
 	public function getFullTitleURL(string $title_url) : string {
 		//FIXME: This does not point to the language specific title page. Should ask if it is possible to set LANG as arg?

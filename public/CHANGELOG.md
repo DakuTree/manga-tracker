@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-11-28]
+### Added
+- `[Backend]` CloudFlare support!
+  - We can now auto-detect, and bypass CloudFlare on sites that have it!
+
+### Changed
+- `[Backend]` Cache library should now be loaded everywhere.
+
 ## [2017-11-25]
 ### Fixed
 - ReadMangaToday should now work on the new domain (readmng.net).

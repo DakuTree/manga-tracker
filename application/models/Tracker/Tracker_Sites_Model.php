@@ -29,6 +29,7 @@ abstract class Base_Site_Model extends CI_Model {
 	public $site          = '';
 	public $titleFormat   = '//';
 	public $chapterFormat = '//';
+	public $hasCloudFlare = FALSE;
 	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36';
 
 	/**
@@ -144,48 +145,84 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @return array|bool
 	 */
 	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
-		//curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
+		$refresh = TRUE; //For sites that have CloudFlare, we want to loop get_content again.
+		while($refresh) {
+			$refresh = FALSE;
 
-		if($follow_redirect)        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+			//curl_setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
 
-		if(!empty($cookie_string))  curl_setopt($ch, CURLOPT_COOKIE, $cookie_string);
-		if(!empty($cookiejar_path)) curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar_path);
+			if($follow_redirect)        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
-		//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+			if(($cookies = $this->cache->get("cloudflare_{$this->site}"))) {
+				$cookie_string .= "; {$cookies}";
+			}
 
-		//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
+			if(!empty($cookie_string))  curl_setopt($ch, CURLOPT_COOKIE, $cookie_string);
+			if(!empty($cookiejar_path)) curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar_path);
 
-		curl_setopt($ch, CURLOPT_URL, $url);
+			//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
+			curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 
-		if($isPost) {
-			curl_setopt($ch,CURLOPT_POST, count($postFields));
-			curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($postFields));
+			//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
+
+			curl_setopt($ch, CURLOPT_URL, $url);
+
+			if($isPost) {
+				curl_setopt($ch,CURLOPT_POST, count($postFields));
+				curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($postFields));
+			}
+
+			$response = curl_exec($ch);
+			if($response === FALSE) {
+				log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
+				//FIXME: We don't always account for FALSE return
+				return FALSE;
+			}
+
+			$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+			$headers     = http_parse_headers(substr($response, 0, $header_size));
+			$body        = substr($response, $header_size);
+			curl_close($ch);
+
+			if($status_code === 503) $refresh = $this->handleCloudFlare($url, $body);
 		}
-
-		$response = curl_exec($ch);
-		if($response === FALSE) {
-			log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
-			//FIXME: We don't always account for FALSE return
-			return FALSE;
-		}
-
-		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$headers     = http_parse_headers(substr($response, 0, $header_size));
-		$body        = substr($response, $header_size);
-		curl_close($ch);
 
 		return [
 			'headers'     => $headers,
 			'status_code' => $status_code,
 			'body'        => $body
 		];
+	}
+
+	final private function handleCloudFlare(string $url, string $body) : bool {
+		$refresh = FALSE;
+
+		if(strpos($body, 'DDoS protection by Cloudflare') !== false) {
+			if(!$this->hasCloudFlare) {
+				//TODO: Site appears to have enabled CloudFlare, disable it and contact admin.
+				//      We'll continue to bypass CloudFlare as this may occur in a loop.
+			}
+
+			$urlData = [
+				'url'        => $url,
+				'user_agent' => $this->userAgent
+			];
+			//TODO: shell_exec seems bad since the URLs "could" be user inputted? Better way of doing this?
+			$result = shell_exec('python '.APPPATH.'../_scripts/get_cloudflare_cookie.py '.escapeshellarg(json_encode($urlData)));
+			$cookieData = json_decode($result, TRUE);
+
+			$this->cache->save("cloudflare_{$this->site}", $cookieData['cookies'],  31536000 /* 1 year, or until we renew it */);
+			$refresh = TRUE;
+		} else {
+			//Either site doesn't have CloudFlare or we have bypassed it. Either is good!
+		}
+		return $refresh;
 	}
 
 	/**
