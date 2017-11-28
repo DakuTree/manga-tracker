@@ -29,6 +29,7 @@ abstract class Base_Site_Model extends CI_Model {
 	public $site          = '';
 	public $titleFormat   = '//';
 	public $chapterFormat = '//';
+	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36';
 
 	/**
 	 * 0: No custom updater.
@@ -155,7 +156,7 @@ abstract class Base_Site_Model extends CI_Model {
 		if(!empty($cookiejar_path)) curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar_path);
 
 		//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36');
+		curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 
 		//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
