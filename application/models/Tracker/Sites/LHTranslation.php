@@ -21,6 +21,7 @@ class LHTranslation extends Base_Site_Model {
 		$titleData = [];
 
 		$title_url = str_replace('.','', $title_url);
+		$title_url = $this->_fixTitle($title_url);
 		$fullURL = "http://lhtranslation.com/{$title_url}/feed/";
 		$content = $this->get_content($fullURL);
 
@@ -44,5 +45,21 @@ class LHTranslation extends Base_Site_Model {
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	//FIXME: This is just a quick hack, we should really have a better way to handle this.
+	//       Maybe when we finally add an "extra" data option for titles?
+	private function _fixTitle(string $title_url) {
+		//LHTranslation is a mess and doesn't work nice when we try to grab the chapter list.
+		//This is just a quick fix for series with bad titles.
+
+		$fixedTitles = [
+			'genjitsu-shugi-yuusha-no-oukoku-saikenki' => 'genjitsushugisha-no-oukokukaizouki'
+		];
+		if(array_key_exists($title_url, $fixedTitles)) {
+			$title_url = $fixedTitles[$title_url];
+		}
+
+		return $title_url;
 	}
 }
