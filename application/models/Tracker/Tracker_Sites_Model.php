@@ -146,8 +146,10 @@ abstract class Base_Site_Model extends CI_Model {
 	 */
 	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
 		$refresh = TRUE; //For sites that have CloudFlare, we want to loop get_content again.
-		while($refresh) {
+		$loops   = 0;
+		while($refresh && $loops < 2) {
 			$refresh = FALSE;
+			$loops++;
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -157,7 +159,7 @@ abstract class Base_Site_Model extends CI_Model {
 
 			if($follow_redirect)        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
-			if(($cookies = $this->cache->get("cloudflare_{$this->site}"))) {
+			if($cookies = $this->cache->get("cloudflare_{$this->site}")) {
 				$cookie_string .= "; {$cookies}";
 			}
 
@@ -204,6 +206,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$refresh = FALSE;
 
 		if(strpos($body, 'DDoS protection by Cloudflare') !== false) {
+			//print "Cloudflare detected? Grabbing Cookies.\n";
 			if(!$this->hasCloudFlare) {
 				//TODO: Site appears to have enabled CloudFlare, disable it and contact admin.
 				//      We'll continue to bypass CloudFlare as this may occur in a loop.
@@ -218,6 +221,8 @@ abstract class Base_Site_Model extends CI_Model {
 			$cookieData = json_decode($result, TRUE);
 
 			$this->cache->save("cloudflare_{$this->site}", $cookieData['cookies'],  31536000 /* 1 year, or until we renew it */);
+			log_message('debug', "Saving CloudFlare Cookies for {$this->site}");
+
 			$refresh = TRUE;
 		} else {
 			//Either site doesn't have CloudFlare or we have bypassed it. Either is good!
