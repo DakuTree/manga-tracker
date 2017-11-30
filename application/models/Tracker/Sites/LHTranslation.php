@@ -54,7 +54,8 @@ class LHTranslation extends Base_Site_Model {
 		//This is just a quick fix for series with bad titles.
 
 		$fixedTitles = [
-			'genjitsu-shugi-yuusha-no-oukoku-saikenki' => 'genjitsushugisha-no-oukokukaizouki'
+			'genjitsu-shugi-yuusha-no-oukoku-saikenki' => 'genjitsushugisha-no-oukokukaizouki',
+			'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku-' => 'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku'
 		];
 		if(array_key_exists($title_url, $fixedTitles)) {
 			$title_url = $fixedTitles[$title_url];
