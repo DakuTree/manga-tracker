@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-03]
+### Fixed
+- Game of Scanlation should show correct chapter when title contains /\.[0-9]+$/
+
 ## [2017-11-28]
 ### Added
 - `[Backend]` CloudFlare support!
