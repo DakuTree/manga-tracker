@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [2017-12-06]
 ### Fixed
+- MangaFox no longer appears to use https?
+
+## [2017-12-06]
+### Fixed
 - MangaFox should now work on the new domain (mangafox.la).
 
 ## [2017-12-03]

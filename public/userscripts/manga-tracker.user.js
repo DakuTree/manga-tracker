@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-06
-// @version      1.8.6
+// @updated      2017-12-07
+// @version      1.8.7
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1280,8 +1280,6 @@ let sites = {
 	 */
 	'mangafox.me' : extendSite({
 		setObjVars : function () {
-			this.tld = location.hostname.split('.').pop();
-
 			this.segments    = window.location.pathname.split( '/' );
 
 			this.title       = this.segments[2];
@@ -1289,8 +1287,8 @@ let sites = {
 
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
-			this.title_url   = 'http://mangafox.'+this.tld+'/manga/'+this.title+'/';
-			this.chapter_url = '//mangafox.'+this.tld+'/manga/'+this.title+'/'+this.chapter+'/';
+			this.title_url   = 'http://mangafox.la/manga/'+this.title+'/';
+			this.chapter_url = '//mangafox.la/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url+'1.html';
 			this.chapterList        = {}; //This is set via preSetupTopbar
@@ -1300,7 +1298,7 @@ let sites = {
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<\/div>[\s\S]*<div id="shares"[\s\S]*$/;
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
-			this.searchURLFormat = 'http://mangafox.'+this.tld+'/search.php?advopts=1&name={%SEARCH%}';
+			this.searchURLFormat = 'http://mangafox.la/search.php?advopts=1&name={%SEARCH%}';
 
 			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
 
@@ -1329,7 +1327,7 @@ let sites = {
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
-				url     : _this.title_url.replace('mangafox.'+_this.tld, 'm.mangafox.'+_this.tld),
+				url     : _this.title_url.replace('mangafox.la', 'm.mangafox.la'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText;
@@ -1341,7 +1339,7 @@ let sites = {
 						let chapterTitle     = $('+ span.title', this).text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						url = url.replace('m.mangafox.'+_this.tld+'/manga/', 'mangafox.'+_this.tld+'/manga/');
+						url = url.replace('m.mangafox.la/manga/', 'mangafox.la/manga/');
 						_this.chapterList[url+'1.html'] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
 							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
@@ -1393,7 +1391,7 @@ let sites = {
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
-				url     : 'http:'+_this.chapter_url.replace('mangafox.'+_this.tld+'/manga', 'm.mangafox.'+_this.tld+'/roll_manga'),
+				url     : 'http:'+_this.chapter_url.replace('mangafox.la/manga', 'm.mangafox.la/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data      = response.responseText,
