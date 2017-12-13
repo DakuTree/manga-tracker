@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-07
-// @version      1.8.7
+// @updated      2017-12-12
+// @version      1.8.8
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1567,6 +1567,14 @@ let sites = {
 
 			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
+			//Add a notice about adblock.
+			$('#viewer').prepend(
+				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
+					MangaHere has moved to using an image host which is blacklisted by some AdBlockers.
+					If you can't see any images, you will need to whitelist "mhcdn.secure.footprint.net".
+				`})
+			);
+
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
 				url     : 'https:'+_this.chapter_url.replace('www.mangahere.co/manga', 'm.mangahere.co/roll_manga'),
@@ -1578,7 +1586,7 @@ let sites = {
 					// console.log(imageList);
 					_this.viewerCustomImageList = imageList.map(function(i, e) {
 						//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
-						return $(e).attr('data-original').replace('https://mhcdn.secure.footprint.net', 'http://c.mhcdn.net');
+						return $(e).attr('data-original')/*.replace('https://mhcdn.secure.footprint.net', 'http://c.mhcdn.net')*/;
 					});
 
 					if(_this.viewerCustomImageList.length) {

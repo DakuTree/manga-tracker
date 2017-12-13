@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-12]
+### Added
+- MangaHere now has a note at the top about some AdBlockers blacklisting their imagehost & how to fix.
+
+### Fixed
+- MangaHere should load images again.
+  - Looks like they no longer support their old URL format, which means we have to use the AdBlocked one..
+
 ## [2017-12-06]
 ### Fixed
 - MangaFox no longer appears to use https?
