@@ -1,7 +1,7 @@
 #DOCS: http://docs.travis-ci.com/user/languages/php/
 language: php
 php:
-  - 7.1
+  - 7.2
 
 services:
   - mysql
