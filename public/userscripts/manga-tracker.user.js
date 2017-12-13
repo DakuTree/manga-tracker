@@ -46,7 +46,7 @@
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-12-13
-// @version      1.8.9
+// @version      1.8.10
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -592,11 +592,6 @@ let base_site = {
 					_this.trackChapter();
 				}
 
-				//Auto-scroll to page if URL is a specific page URL
-				if(_this.currentPage > 0) {
-					_this.gotoPage(_this.currentPage);
-				}
-
 				//Setup zoom event
 				if(viewer.length) {
 					let changeZoom = function(action) {
@@ -769,6 +764,7 @@ let base_site = {
 	 * @final
 	 */
 	updatePagesLoaded : function(loaded) {
+		let _this = this;
 		this.pagesLoadedAttempts += 1;
 
 		let ele = $('#TrackerBarPages');
@@ -783,9 +779,16 @@ let base_site = {
 			if(this.pagesLoaded >= this.page_count) {
 				//Everything was loaded correctly, hide the page count div.
 				//FIXME: This doesn't always hide correctly?
+
 				setTimeout(function() {
 					ele.html('&nbsp;').hide('slow');
 				}, 1500);
+
+				//Auto-scroll to page if URL is a specific page URL
+				//FIXME: Is there a better place to put this?
+				if(_this.currentPage > 0) {
+					_this.gotoPage(_this.currentPage);
+				}
 			} else {
 				ele
 					.html('') //remove everything from existing container

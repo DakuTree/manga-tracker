@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-12-13]
+### Changes
+- Auto-scroll to linked page now waits for all pages to load before scrolling.
+
 ### Fixed
 - FoolSlide sites now properly auto-scroll to linked pages.
 
