@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-13]
+### Fixed
+- FoolSlide sites now properly auto-scroll to linked pages.
+
 ## [2017-12-12]
 ### Added
 - MangaHere now has a note at the top about some AdBlockers blacklisting their imagehost & how to fix.

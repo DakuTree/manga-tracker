@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-12
-// @version      1.8.8
+// @updated      2017-12-13
+// @version      1.8.9
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -989,8 +989,9 @@ let base_site = {
 			}
 			this.page_count = this.viewerCustomImageList.length;
 
-			if((this.segments[4] && this.segments[4] === 'page') && this.segments[5]) {
-				this.currentPage = parseInt(this.segments[5]);
+			let sPage = this.segments.indexOf('page');
+			if((sPage !== -1) && this.segments[sPage + 1]) {
+				this.currentPage = parseInt(this.segments[sPage + 1]);
 			}
 		};
 
