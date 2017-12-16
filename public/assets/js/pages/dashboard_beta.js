@@ -3,10 +3,18 @@ $(function(){
 	'use strict';
 	if(page !== 'dashboard_beta') { return false; }
 
+	const siteAliases = {
+		'readms-net'      : 'mangastream-com',
+		'mangafox-la'     : 'mangafox-me',
+		'www-readmng-com' : 'www-readmanga-today'
+	};
+
 	load();
 
 	function load() {
 		$.getJSON(base_url + 'api/internal/get_list/all', function(json) {
+			/** @namespace json.extra_data */
+			/** @namespace json.extra_data.inactive_titles */
 			handleInactive(json.extra_data.inactive_titles);
 
 			handleList(json.series);
@@ -25,6 +33,10 @@ $(function(){
 				if(inactive_titles.hasOwnProperty(url)) {
 					let domain      = url.split('/')[2],
 					    domainClass = domain.replace(/\./g, '-');
+					if(siteAliases[domainClass]) {
+						domainClass = siteAliases[domainClass];
+					}
+
 					//FIXME: Don't append if already exists in list!
 					$('<li/>').append(
 						$('<i/>', {class: `sprite-site sprite-${domainClass}`, title: domain})).append(
