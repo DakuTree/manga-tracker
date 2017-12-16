@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "499b37293f88eee6534ee5138cdae898",
+    "content-hash": "7d8218b45bf2ff04370ae40be7e2cadd",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -280,17 +280,11 @@
         },
         {
             "name": "kenjis/ci-phpunit-test",
-            "version": "v0.15.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "799b5ee7f554e67362bf3bbcf6d187f33aba8b6c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/799b5ee7f554e67362bf3bbcf6d187f33aba8b6c",
-                "reference": "799b5ee7f554e67362bf3bbcf6d187f33aba8b6c",
-                "shasum": ""
+                "reference": "96cb4976804b28cc80b319684cfe2d898c3223b2"
             },
             "require": {
                 "nikic/php-parser": "^2.1|^3.0",
@@ -302,7 +296,6 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -321,7 +314,10 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2017-04-22T23:55:43+00:00"
+            "support": {
+                "forum": "http://forum.codeigniter.com/thread-61725.html"
+            },
+            "time": "2017-11-26 10:20:44"
         },
         {
             "name": "nikic/php-parser",
@@ -1836,7 +1832,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kenjis/ci-phpunit-test": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
