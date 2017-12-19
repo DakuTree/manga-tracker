@@ -297,6 +297,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		$queryC = $this->db->select('mal_id')
 		                   ->where('user_id', $userID)
 		                   ->where('title_id', $titleID)
+		                   ->where('mal_id IS NOT NULL', NULL, FALSE)
 		                   ->get('tracker_chapters');
 
 		if($queryC->num_rows() > 0 && ($rowC = $queryC->row())) {
@@ -306,7 +307,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 			];
 		} else {
 			$queryT = $this->db->select('mal_id')
-			                   ->where('title_id', $titleID)
+			                   ->where('id', $titleID)
 			                   ->get('tracker_titles');
 
 			if($queryT->num_rows() > 0 && ($rowT = $queryT->row())) {
