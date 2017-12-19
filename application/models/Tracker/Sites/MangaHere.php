@@ -5,12 +5,12 @@ class MangaHere extends Base_Site_Model {
 	public $chapterFormat = '/^(?:v[0-9]+\/)?c[0-9]+(?:\.[0-9]+)?$/';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://www.mangahere.co/manga/{$title_url}/";
+		return "http://www.mangahere.cc/manga/{$title_url}/";
 	}
 
 	public function getChapterData(string $title, string $chapter) : array {
 		return [
-			'url'    => "https://www.mangahere.co/manga/{$title}/{$chapter}/",
+			'url'    => "http://www.mangahere.cc/manga/{$title}/{$chapter}/",
 			'number' => $chapter
 		];
 	}

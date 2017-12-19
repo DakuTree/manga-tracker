@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Known MAL IDs should now sync correctly.
   - Closes #238.
+- MangaHere now works on new domain (www.mangahere.cc).
+  - Closes #239.
 
 ## [2017-12-13]
 ### Changes

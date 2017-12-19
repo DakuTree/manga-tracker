@@ -8,7 +8,7 @@
 // @icon         https://trackr.moe/favicon.production.png
 // @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
 // @include      /^https?:\/\/mangafox\.(?:me|la)\/manga\/.+\/(?:.*\/)?.*\/.*$/
-// @include      /^https?:\/\/(?:www\.)?mangahere\.co\/manga\/.+\/.*\/?.*\/.*$/
+// @include      /^https?:\/\/(?:www\.)?mangahere\.c[o|c]\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
 // @include      /^https:/\/dynasty-scans\.com\/chapters\/.+$/
 // @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-13
-// @version      1.8.10
+// @updated      2017-12-19
+// @version      1.8.11
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -66,6 +66,7 @@
 // @connect      m.mangafox.me
 // @connect      m.mangafox.la
 // @connect      m.mangahere.co
+// @connect      m.mangahere.cc
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
@@ -633,7 +634,7 @@ let base_site = {
 
 				//FIXME: (TEMP HACK) Due to MH being weird with https redirects, we need to do this.
 				//       When I get the time we should move this to the parent object so we can override it.
-				if(url.includes('mangahere.co', 0)) {
+				if(url.includes('mangahere.cc', 0)) {
 					url = url.replace('1.html', '');
 				}
 
@@ -1456,6 +1457,26 @@ let sites = {
 	}),
 
 	/**
+	 * MangaHere (Alt Domain)
+	 * @type {SiteObject}
+	 */
+	'www.mangahere.cc' : extendSite({
+		preInit : function(callback) {
+			let ms = sites['www.mangahere.co'];
+			this.setObjVars      = ms.setObjVars;
+			this.stylize         = ms.stylize;
+			this.preSetupTopBar  = ms.preSetupTopBar;
+			this.postSetupTopBar = ms.postSetupTopBar;
+			this.preSetupViewer  = ms.preSetupViewer;
+			this.setupViewerContainer = ms.setupViewerContainer;
+
+			this.site = 'www.mangahere.co';
+
+			callback();
+		}
+	}),
+
+	/**
 	 * MangaHere
 	 * @type {SiteObject}
 	 */
@@ -1469,8 +1490,8 @@ let sites = {
 			this.title         = this.segments[2];
 			this.chapter       = ((!!this.segments[4] && ! /\.html$/.test(this.segments[4])) ? this.segments[3]+'/'+this.segments[4] : this.segments[3]);
 
-			this.title_url   = 'https://www.mangahere.co/manga/'+this.title+'/';
-			this.chapter_url = '//www.mangahere.co/manga/'+this.title+'/'+this.chapter+'/';
+			this.title_url   = 'http://www.mangahere.cc/manga/'+this.title+'/';
+			this.chapter_url = '//www.mangahere.cc/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url;
 			// this.chapterList        = {}; //This is set via preSetupTopbar
@@ -1513,7 +1534,7 @@ let sites = {
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
 			GM_xmlhttpRequest({
-				url     : _this.title_url.replace('www.mangahere.co', 'm.mangahere.co'),
+				url     : _this.title_url.replace('http://www.mangahere.cc', 'https://m.mangahere.co'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText;
@@ -1524,7 +1545,7 @@ let sites = {
 						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						url = url.replace('m.mangahere.co/manga/', 'www.mangahere.co/manga/');
+						url = url.replace('m.mangahere.co/manga/', 'www.mangahere.cc/manga/');
 						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
 							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
@@ -1581,7 +1602,7 @@ let sites = {
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
-				url     : 'https:'+_this.chapter_url.replace('www.mangahere.co/manga', 'm.mangahere.co/roll_manga'),
+				url     : 'https:'+_this.chapter_url.replace('www.mangahere.cc/manga', 'm.mangahere.co/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText,
