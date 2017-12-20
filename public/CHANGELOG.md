@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - `[Backend]` We've started tracking the amount of requests we make per day. This might be useful later down the line...
 
+### Changed
+- `[Backend]` Tweaked Scrutinizer-CI exclusions.
+
 ## [2017-12-19]
 ### Fixed
 - Known MAL IDs should now sync correctly.

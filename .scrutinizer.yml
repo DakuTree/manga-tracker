@@ -7,6 +7,7 @@ filter:
         - 'vendor/*'
         - 'application/language/*'
         - 'application/migrations/*'
+        - 'application/models/Tracker/Sites/*' #FIXME: We aren't currently doing site tests through Travis.
         - 'application/tests/*'
         - 'application/third_party/*'
         - 'public/assets/vendor/*'
