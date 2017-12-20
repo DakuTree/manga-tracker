@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-20]
+### Added
+- `[Backend]` We've started tracking the amount of requests we make per day. This might be useful later down the line...
+
 ## [2017-12-19]
 ### Fixed
 - Known MAL IDs should now sync correctly.

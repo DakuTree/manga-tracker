@@ -180,6 +180,9 @@ abstract class Base_Site_Model extends CI_Model {
 			}
 
 			$response = curl_exec($ch);
+
+			$this->Tracker->admin->incrementRequests();
+
 			if($response === FALSE) {
 				log_message('error', "curl failed with error: ".curl_errno($ch)." | ".curl_error($ch));
 				//FIXME: We don't always account for FALSE return

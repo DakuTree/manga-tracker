@@ -312,6 +312,28 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
+	public function incrementRequests() : void {
+		$temp_now = new DateTime();
+		$temp_now->setTimezone(new DateTimeZone('America/New_York'));
+		$date = $temp_now->format('Y-m-d');
+
+		$query = $this->db->select('1')
+		                  ->from('site_stats')
+		                  ->where('date', $date)
+		                  ->get();
+
+		if($query->num_rows() > 0) {
+			$this->db->set('total_requests', 'total_requests+1', FALSE)
+			         ->where('date', $date)
+			         ->update('site_stats');
+		} else {
+			$this->db->insert('site_stats', [
+				'date'           => $date,
+				'total_requests' => 1
+			]);
+		}
+	}
+
 	public function getNextUpdateTime(string $format = "%H:%I:%S") : string {
 		$temp_now = new DateTime();
 		$temp_now->setTimezone(new DateTimeZone('America/New_York'));
