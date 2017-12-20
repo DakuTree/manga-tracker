@@ -5,12 +5,10 @@ imports:
 filter:
     excluded_paths:
         - 'vendor/*'
-        - 'application/helpers/vendor/*'
-        - 'application/libraries/vendor/*'
-        - 'application/models/vendor/*'
         - 'application/language/*'
         - 'application/migrations/*'
         - 'application/tests/*'
+        - 'application/third_party/*'
         - 'public/assets/vendor/*'
         - 'public/assets/js/compiled.min.js'
         - 'public/assets/css/*'
