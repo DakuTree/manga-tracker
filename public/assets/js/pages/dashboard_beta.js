@@ -1,13 +1,7 @@
-/* globals page, base_url, use_live_countdown_timer, list_sort_type, list_sort_order */
+/* globals page, base_url, use_live_countdown_timer, list_sort_type, list_sort_order, site_aliases */
 $(function(){
 	'use strict';
 	if(page !== 'dashboard_beta') { return false; }
-
-	const siteAliases = {
-		'readms-net'      : 'mangastream-com',
-		'mangafox-la'     : 'mangafox-me',
-		'www-readmng-com' : 'www-readmanga-today'
-	};
 
 	load();
 
@@ -33,8 +27,8 @@ $(function(){
 				if(inactive_titles.hasOwnProperty(url)) {
 					let domain      = url.split('/')[2],
 					    domainClass = domain.replace(/\./g, '-');
-					if(siteAliases[domainClass]) {
-						domainClass = siteAliases[domainClass];
+					if(site_aliases[domainClass]) {
+						domainClass = site_aliases[domainClass];
 					}
 
 					//FIXME: Don't append if already exists in list!

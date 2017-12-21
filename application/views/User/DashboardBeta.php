@@ -40,3 +40,8 @@
 		<div id="tracker-table-links" class="nav-row"></div>
 	</header>
 </div>
+
+<script>
+	// noinspection JSAnnotator
+	const site_aliases = <?=$siteAliases?>;
+</script>
