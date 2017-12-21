@@ -2,6 +2,7 @@
 
 class URI_test extends TestCase {
 	/******** GENERAL/LOGGED OUT TESTS ************/
+	//TODO: We should really move these to their own test files.
 	public function test_index() {
 		$output = $this->request('GET', '/');
 		$this->assertContains('<title>Manga Tracker</title>', $output);
@@ -35,9 +36,56 @@ class URI_test extends TestCase {
 		$this->assertRedirect(base_url('/'));
 	}
 
+	public function test_user_history() {
+		$this->request('GET', '/user/history');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_user_history_page() {
+		$this->request('GET', '/user/history/999');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_user_history_export() {
+		$this->request('GET', '/user/history/export/json');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	public function test_user_favourites() {
+		$this->request('GET', '/user/favourites');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+	public function test_user_favourites_page() {
+		$this->request('GET', '/user/favourites/999');
+		$this->assertRedirect(base_url('/user/login'));
+	}
+
 	public function test_user_options() {
 		$this->request('GET', '/user/options');
 		$this->assertRedirect(base_url('/user/login'));
+	}
+
+	//public function test_public_list_pass() {
+	//	$this->request('GET', '/list/good_name');
+	//	$this->assertResponseCode(200);
+	//}
+	public function test_public_list_fail() {
+		$this->request('GET', '/list/bad_name');
+		$this->assertResponseCode(404);
+	}
+	//public function test_public_list_json_pass() {
+	//	$this->request('GET', '/list/good_name.json');
+	//	$this->assertResponseCode(200);
+	//}
+	public function test_public_list_json_fail() {
+		$this->request('GET', '/list/bad_name.json');
+		$this->assertResponseCode(404);
+	}
+	//public function test_public_list_html_pass() {
+	//	$this->request('GET', '/list/good_name.html');
+	//	$this->assertResponseCode(200);
+	//}
+	public function test_public_list_html_fail() {
+		$this->request('GET', '/list/bad_name.html');
+		$this->assertResponseCode(404);
 	}
 
 	public function test_username_check_get() {
