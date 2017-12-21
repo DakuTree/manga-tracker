@@ -3,7 +3,7 @@
 class Logout extends User_Controller {
 	//we shouldn't care if the user is logged in or not, since ion_auth will take care of things
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 
 		$this->load->helper('cookie');

@@ -1434,7 +1434,7 @@ let sites = {
 		setupViewerContainer : function(imgURL, pageN) {
 			let _this = this;
 
-			imgURL = imgURL.replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net')
+			imgURL = imgURL.replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
 
 			let image_container = $('<div/>', {id: `trackr-page-${pageN}`, class: 'read_img'}).append(
 				//We want to completely recreate the image element to remove all additional attributes
@@ -1575,7 +1575,7 @@ let sites = {
 
 							callback();
 						},
-						error: function(jqXHR, textStatus, errorThrown) {
+						error: function(/*jqXHR, textStatus, errorThrown*/) {
 							callback();
 						}
 					});
@@ -1590,15 +1590,17 @@ let sites = {
 		preSetupViewer : function(callback) {
 			let _this = this;
 
-			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			let newViewer = $('<div/>', {id: 'viewer'});
 
 			//Add a notice about adblock.
-			$('#viewer').prepend(
+			newViewer.prepend(
 				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
 					MangaHere has moved to using an image host which is blacklisted by some AdBlockers.
 					If you can't see any images, you will need to whitelist "mhcdn.secure.footprint.net".
 				`})
 			);
+
+			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
@@ -2482,10 +2484,11 @@ let sites = {
 			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
 			this.chapterList        = generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
 
-			this.viewerCustomImageList  = $('img.chapter-img').map(function(i, e) {
+			let imgList = $('img.chapter-img');
+			this.viewerCustomImageList  = imgList.map(function(i, e) {
 				return $(e).attr('src');
 			});
-			this.page_count = $('img.chapter-img').length;
+			this.page_count = imgList.length;
 		},
 		preSetupViewer : function(callback) {
 			$('.chapter-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div

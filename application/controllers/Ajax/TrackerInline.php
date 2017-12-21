@@ -240,7 +240,6 @@ class TrackerInline extends Auth_Controller {
 	 * URL:        /ajax/hide_notice
 	 */
 	public function hide_notice() : void {
-		$status = $this->User->hideLatestNotice();
 		if($this->User->hideLatestNotice()) {
 			$this->output->set_status_header('200'); //Success!
 		} else {

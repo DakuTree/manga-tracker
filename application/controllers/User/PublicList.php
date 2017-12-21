@@ -27,7 +27,6 @@ class PublicList extends MY_Controller {
 
 				case 'html':
 					$this->body_data['trackerData']  = $trackerData['series'];
-					$this->body_data['has_inactive'] = $trackerData['has_inactive'];
 
 					$this->header_data['show_header'] = FALSE;
 					$this->footer_data['show_footer'] = FALSE;

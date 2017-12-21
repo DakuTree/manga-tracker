@@ -219,7 +219,7 @@ class User_Options_Model extends CI_Model {
 
 	private function set_db(array $idData, array $valueData) : bool {
 		if($this->db->get_where('user_options', $idData)->num_rows() === 0) {
-			$data['type'] = (isset($a['value_int']) ? 0 : (isset($a['value_str']) == 'string' ? 1 : 2));
+			//$data['type'] = (isset($a['value_int']) ? 0 : (isset($a['value_str']) == 'string' ? 1 : 2)); //FIXME: How does this work now?
 			$success = $this->db->insert('user_options', array_merge($idData, $valueData));
 		} else {
 			$this->db->where($idData);
