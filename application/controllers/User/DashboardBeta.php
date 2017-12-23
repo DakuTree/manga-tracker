@@ -9,7 +9,7 @@ class DashboardBeta extends Auth_Controller {
 		$this->header_data['title'] = "Dashboard Beta";
 		$this->header_data['page']  = "dashboard_beta";
 
-		$this->body_data['site_aliases'] = str_replace('-', '.', json_encode($this->config->item('site_aliases')));
+		$this->body_data['siteAliases'] = str_replace('-', '.', json_encode($this->config->item('site_aliases')));
 
 		$this->_render_page('User/DashboardBeta');
 	}
