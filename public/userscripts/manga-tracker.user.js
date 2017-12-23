@@ -33,9 +33,9 @@
 // @include      /^https?:\/\/reader\.s2smanga\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/(?:www\.)?(?:readmanga\.today|readmng\.com)\/[^\/]+(\/.*)?$/
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
-// @include      /^https?:\/\/archangelscans\.com\/free\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/whitecloudpavilion\.com\/manga\/free\/manga\/.*?\/[0-9\.]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-19
-// @version      1.8.11
+// @updated      2017-12-23
+// @version      1.8.12
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1014,8 +1014,7 @@ let base_site = {
 	},
 
 	/**
-	 * Used to setup (most) sites that use FoolSlide.
-	 * Will most likely not work on sites that use very old versions of FoolSlide.
+	 * Used to setup (most) sites that use My Manga Reader CMS.
 	 *
 	 * @function
 	 * @alias sites.*.setupFoolSlide
@@ -1024,7 +1023,7 @@ let base_site = {
 	 * @final
 	 */
 	setupMyMangaReaderCMS : function() {
-		this.segments = this.segments.slice(this.segments.indexOf('manga') + 1);
+		this.segments = this.segments.slice(this.segments.lastIndexOf('manga') + 1);
 
 		this.setObjVars = function() {
 			this.title         = this.segments[0];
@@ -1034,6 +1033,7 @@ let base_site = {
 			this.chapter_url = this.title_url + this.chapter;
 
 			this.chapterListCurrent = this.chapter_url;
+			console.log(this.chapter_url);
 			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
 
 			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
@@ -2497,13 +2497,13 @@ let sites = {
 	}),
 
 	/**
-	 * White Cloud Pavillion (FoolSlide)
+	 * White Cloud Pavillion
 	 * @type {SiteObject}
 	 */
-	'archangelscans.com' : extendSite({
+	'whitecloudpavilion.com' : extendSite({
 		preInit : function(callback) {
-			this.foolSlideBaseURL = this.https+'://archangelscans.com/free';
-			this.setupFoolSlide();
+			this.myMangaReaderCMSBaseURL = this.https+'://whitecloudpavilion.com/manga/free';
+			this.setupMyMangaReaderCMS();
 			callback();
 		}
 	}),

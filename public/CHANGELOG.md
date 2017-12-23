@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-23]
+### Fixed
+- White Cloud Pavilion now works on new domain (whitecloudpavilion.com).
+
 ## [2017-12-20]
 ### Added
 - `[Backend]` We've started tracking the amount of requests we make per day. This might be useful later down the line...
