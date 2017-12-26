@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-12-26]
+### Fixed
+- Series with long titles should no longer cause the viewer to resize.
+
 ## [2017-12-23]
 ### Fixed
 - White Cloud Pavilion now works on new domain (whitecloudpavilion.com).
