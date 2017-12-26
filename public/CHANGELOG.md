@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Tweaked description of userscript options when userscript is not enabled.
 - Move arrayToCSV functions to Portation model.
+- 404 is now thrown on history pages with a bad ID.
 
 ### Fixed
 - Series with long titles should no longer cause the viewer to resize.

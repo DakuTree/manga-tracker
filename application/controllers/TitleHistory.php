@@ -16,14 +16,19 @@ class TitleHistory extends Auth_Controller {
 		//CHECK: Should we only allow people to see history for series they are tracking?
 		$historyData = $this->History->getTitleHistory((int) $titleID, $page);
 
-		$this->body_data['title']       = $historyData['title'];
-		$this->body_data['historyData'] = $historyData['rows'];
-		$this->body_data['currentPage'] = $page;
-		$this->body_data['totalPages']  = $historyData['totalPages'];
-		$this->body_data['titleID']     = (int) $titleID;
+		if(!empty($historyData['title'])) {
+			$this->body_data['title']       = $historyData['title'];
+			$this->body_data['historyData'] = $historyData['rows'];
+			$this->body_data['currentPage'] = $page;
+			$this->body_data['totalPages']  = $historyData['totalPages'];
+			$this->body_data['titleID']     = (int) $titleID;
 
-		if($page > $this->body_data['totalPages'] && $page > 1) redirect("/history/{$titleID}/1");
+			if($page > $this->body_data['totalPages'] && $page > 1) redirect("/history/{$titleID}/1");
 
-		$this->_render_page("TitleHistory");
+			$this->_render_page("TitleHistory");
+
+		} else {
+			show_404();
+		}
 	}
 }
