@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-12-26]
+### Changed
+- Tweaked description of userscript options when userscript is not enabled.
+
 ### Fixed
 - Series with long titles should no longer cause the viewer to resize.
 

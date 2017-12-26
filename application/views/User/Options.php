@@ -124,7 +124,8 @@
 
 
 			<div id="userscript-check" class="alert alert-danger" role="alert">
-				Userscript is not enabled!
+				<p>Userscript is not enabled/installed!</p>
+				<p>Check the <a href="https://trackr.moe/help">help page</a> for how to get set up.</p>
 			</div>
 			<div id="api-key-div">
 				API Key: <strong><span id="api-key">not set</span></strong> | <a id="generate-api-key" href="#" onclick="return false">Generate new API key</a>
