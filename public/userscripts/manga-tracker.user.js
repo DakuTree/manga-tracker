@@ -46,7 +46,7 @@
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2017-12-26
-// @version      1.8.13
+// @version      1.8.14
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2677,9 +2677,9 @@ let sites = {
 							    url     = data.url;
 
 							let row = $(`i[title="${site}"]`) //Find everything using site
-										.closest('tr')
-										.find(`[data-title="${title}"]`) //Find title
-										.closest('tr');
+								.closest('tr')
+								.find(`[data-title="${title}"]`) //Find title
+								.closest('tr');
 							if(row.length) {
 								let current_chapter = $(row).find('.current'),
 								    latest_chapter  = $(row).find('.latest'),
@@ -2769,7 +2769,10 @@ let sites = {
 			}
 		},
 		enableForm : function(form) {
-			$('#userscript-check').remove();
+			$('#userscript-check')
+				.text('Userscript is enabled!')
+				.removeClass('alert-danger')
+				.addClass('alert-success');
 			$(form).find('fieldset').removeAttr('disabled');
 			$(form).find('input[type=submit]').removeAttr('onclick');
 		}

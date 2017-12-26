@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Tweaked description of userscript options when userscript is not enabled.
 - Move arrayToCSV functions to Portation model.
 - 404 is now thrown on history pages with a bad ID.
+- Userscript alert on options page now mentions if userscript is enabled, rather than removing the alert entirely.
 
 ### Fixed
 - Series with long titles should no longer cause the viewer to resize.
