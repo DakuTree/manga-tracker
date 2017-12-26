@@ -1,4 +1,4 @@
-<div id="history-options">
+<div id="export-options">
 	<div class="dropdown pull-right">
 		<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 			Export

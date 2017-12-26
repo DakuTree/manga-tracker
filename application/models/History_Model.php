@@ -270,7 +270,6 @@ class History_Model extends CI_Model {
 	}
 
 	public function userGetHistoryAll() : array {
-		$rowsPerPage = 50;
 		$query = $this->db
 			->select('SQL_CALC_FOUND_ROWS
 			          tt.title, tt.title_url,

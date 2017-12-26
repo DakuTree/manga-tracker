@@ -1,3 +1,17 @@
+<div id="export-options">
+	<div class="dropdown pull-right">
+		<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			Export
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a href="<?=base_url("user/favourites/export/json")?>">Export as JSON</a></li>
+			<li><a href="<?=base_url("user/favourites/export/csv")?>">Export as CSV</a></li>
+		</ul>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
 <table class="table table-striped table-bordered">
 	<tbody>
 		<tr>

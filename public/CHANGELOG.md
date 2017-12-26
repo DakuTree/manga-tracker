@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [2017-12-26]
+### Added
+- favourites export + move arrayToCSV functions to portation model
+
 ### Changed
 - Tweaked description of userscript options when userscript is not enabled.
+- Move arrayToCSV functions to Portation model.
 
 ### Fixed
 - Series with long titles should no longer cause the viewer to resize.

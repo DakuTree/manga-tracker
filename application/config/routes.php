@@ -65,6 +65,7 @@ $route['user/history/([0-9]+)']      = 'User/History/index/$1';
 $route['user/history/export/(csv|json)'] = 'User/History/export/$1';
 $route['user/favourites']            = 'User/Favourites';
 $route['user/favourites/([0-9]+)']   = 'User/Favourites/index/$1';
+$route['user/favourites/export/(csv|json)'] = 'User/Favourites/export/$1';
 $route['user/options']               = 'User/Options';
 
 $route['list/([a-zA-Z0-9_-]+)']              = 'User/PublicList/index/$1';

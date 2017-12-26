@@ -20,4 +20,23 @@ class Favourites extends Auth_Controller {
 
 		$this->_render_page('User/Favourites');
 	}
+
+	public function export(string $type) : void {
+		$favouriteData = $this->Tracker->favourites->getAll();
+
+		switch($type) {
+			case 'json':
+				$this->_render_json($favouriteData, TRUE, 'tracker-history');
+				break;
+
+			case 'csv':
+				$this->output->set_content_type('text/csv', 'utf-8');
+				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($favouriteData, 'Date/Time,Title,Manga URL,Site,Chapter,Chapter Number, Chapter URL'), 'csv',TRUE, 'tracker-favourite');
+				break;
+
+			default:
+				//404
+				break;
+		}
+	}
 }

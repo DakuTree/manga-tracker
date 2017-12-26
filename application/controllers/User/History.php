@@ -31,57 +31,12 @@ class History extends Auth_Controller {
 
 			case 'csv':
 				$this->output->set_content_type('text/csv', 'utf-8');
-				$this->_render_content($this->arrayToCSVRecursive($historyData), 'csv',TRUE, 'tracker-history');
+				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($historyData, 'Date/Time,Title,URL,Site,Status'), 'csv',TRUE, 'tracker-history');
 				break;
 
 			default:
 				//404
 				break;
 		}
-	}
-
-	/**
-	 * Formats a line (passed as a fields  array) as CSV and returns the CSV as a string.
-	 * Adapted from http://us3.php.net/manual/en/function.fputcsv.php#87120
-	 * SEE: http://stackoverflow.com/a/3933816/1168377
-	 *
-	 * @param array  $fields
-	 * @param string $delimiter
-	 * @param string $enclosure
-	 * @param bool   $encloseAll
-	 * @param bool   $nullToMysqlNull
-	 *
-	 * @return string
-	 */
-	private function arrayToCSV(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) : string {
-		$delimiter_esc = preg_quote($delimiter, '/');
-		$enclosure_esc = preg_quote($enclosure, '/');
-
-		$output = array();
-		foreach ($fields as $field) {
-			if ($field === NULL && $nullToMysqlNull) {
-				$output[] = 'NULL';
-				continue;
-			}
-
-			// Enclose fields containing $delimiter, $enclosure or whitespace
-			if ($encloseAll || preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field)) {
-				$output[] = $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure;
-			} else {
-				$output[] = $field;
-			}
-		}
-
-		return implode($delimiter, $output);
-	}
-	private function arrayToCSVRecursive(array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = FALSE, $nullToMysqlNull = FALSE) : string {
-		$csvArr = [
-			'Date/Time,Title,URL,Site,Status'
-		];
-		foreach ($fields as $field) {
-			$csvArr[] = $this->arrayToCSV($field, $delimiter, $enclosure,$encloseAll,$nullToMysqlNull);
-		}
-
-		return implode(PHP_EOL,$csvArr);
 	}
 }
