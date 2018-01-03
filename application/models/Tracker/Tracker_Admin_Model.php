@@ -22,7 +22,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				tracker_sites.status,
 				tracker_titles.latest_chapter,
 				tracker_titles.last_updated,
-				from_unixtime(MAX(auth_users.last_login)) AS timestamp
+				from_unixtime(MAX(auth_users.last_login)) AS timestamp,
+				COUNT(tracker_chapters.title_id) AS users_following
 			')
 			->from('tracker_titles')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
@@ -41,8 +42,13 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 						->where('tracker_sites.use_custom', 'N')
 						->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
 					->group_end()
-					//OR it is a custom update site and hasn't updated within the past 72 hours (3 days)
-					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 72 HOUR)')
+					//OR it is a custom update site, has more than one follower and hasn't updated within the past 72 hours.
+					->or_group_start()
+						->where('users_following > 1')
+						->where('last_checked < DATE_SUB(NOW(), INTERVAL 72 HOUR)')
+					->group_end()
+					//OR it is a custom update site and hasn't updated within the past 120 hours (5 days)
+					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 				->group_end()
 			->group_end()
 			->or_group_start()
