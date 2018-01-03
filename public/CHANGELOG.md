@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Custom updater series with only a single follower will now update every 5 days, up from 3.
   - Just to clarify, this has not changed our hourly updates with the custom updater, it changes the follow-up update we do just in case something happens (like chapters being removed, title_url changing and so on).
+- Updated footer copyright note to 2018.
 
 ## [2017-12-26]
 ### Added
