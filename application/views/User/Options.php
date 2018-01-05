@@ -128,7 +128,10 @@
 				<p>Check the <a href="https://trackr.moe/help">help page</a> for how to get set up.</p>
 			</div>
 			<div id="api-key-div">
-				API Key: <strong><span id="api-key">not set</span></strong> | <a id="generate-api-key" href="#" onclick="return false">Generate new API key</a>
+				API Key: <strong><span id="api-key">not set</span></strong>
+				<p>
+					<a id="generate-api-key" href="#" onclick="return false">Generate/Reset</a> | <a id="restore-api-key" href="#" onclick="return false">Restore</a>
+				</p>
 			</div>
 
 			<?=form_open('', ['method' => 'POST', 'id' => 'userscript-form'])?>

@@ -45,8 +45,8 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2017-12-26
-// @version      1.8.14
+// @updated      2018-01-05
+// @version      1.8.15
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2735,8 +2735,13 @@ let sites = {
 						e.preventDefault();
 					});
 
-					$('#api-key').text(config['api-key'] || 'not set');
-					$('#api-key-div').on('click', '#generate-api-key', function() {
+					if(location.hostname === 'dev.trackr.moe') {
+						$('#api-key').text(config['api-key-dev'] || 'not set');
+					} else {
+						$('#api-key').text(config['api-key'] || 'not set');
+					}
+					let apiDiv = $('#api-key-div');
+					apiDiv.on('click', '#generate-api-key', function() {
 						$.getJSON(main_site + '/ajax/get_apikey', function(json) {
 							if(json['api-key']) {
 								$('#api-key').text(json['api-key']);
@@ -2747,6 +2752,38 @@ let sites = {
 									config['api-key']     = json['api-key'];
 								}
 								GM_setValue('config', JSON.stringify(config));
+							} else {
+								alert('ERROR: Something went wrong!\nJSON missing API key?');
+							}
+						}).fail((jqXHR, textStatus, errorThrown) => {
+							switch(jqXHR.status) {
+								case 400:
+									alert('ERROR: Not logged in?');
+									break;
+								case 429:
+									alert('ERROR: Rate limit reached.');
+									break;
+								default:
+									alert('ERROR: Something went wrong!\n'+errorThrown);
+									break;
+							}
+						});
+					});
+					apiDiv.on('click', '#restore-api-key', function() {
+						$.getJSON(main_site + '/ajax/get_apikey/restore', function(json) {
+							if(json['api-key']) {
+								if(json['api-key'] !== '') {
+									$('#api-key').text(json['api-key']);
+
+									if(location.hostname === 'dev.trackr.moe') {
+										config['api-key-dev'] = json['api-key'];
+									} else {
+										config['api-key']     = json['api-key'];
+									}
+									GM_setValue('config', JSON.stringify(config));
+								} else {
+									alert('API Key hasn\'t been set before. Use generate API key instead.')
+								}
 							} else {
 								alert('ERROR: Something went wrong!\nJSON missing API key?');
 							}

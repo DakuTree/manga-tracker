@@ -116,6 +116,24 @@ class User_Model extends CI_Model {
 
 		return $api_key;
 	}
+	public function restore_api_key() : ?string {
+		$api_key = NULL;
+		if($this->logged_in()) {
+			$this->db->select('api_key')
+			         ->where('id', $this->User->id)
+			         ->get('auth_users');
+
+			$query = $this->db->select('api_key')
+			                  ->where('id', $this->User->id)
+			                  ->get('auth_users');
+
+			if($query->num_rows() > 0) {
+				$api_key = $query->row('api_key');
+			}
+		}
+
+		return $api_key;
+	}
 	
 	public function get_id_from_api_key(string $api_key) {
 		$query = $this->db->select('id')

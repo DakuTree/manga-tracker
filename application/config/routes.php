@@ -84,6 +84,7 @@ $route['api/internal/get_list/(all|reading|on-hold|plan-to-read|(custom(?:1|2|3)
 
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
 $route['ajax/get_apikey']             = 'Ajax/GetKey';
+$route['ajax/get_apikey/restore']     = 'Ajax/GetKey/restore';
 //$route['ajax/get_tracker']            = 'Ajax/Tracker/get';
 
 $route['ajax/update_inline']['post']   = 'Ajax/TrackerInline/update';

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-05]
+### Added
+- Options page now has a link to restore your old API key. Useful if using trackr.moe across multiple browsers.  
+  - SEE: #248
+
 ## [2018-01-03]
 ### Changed
 - Custom updater series with only a single follower will now update every 5 days, up from 3.
