@@ -95,7 +95,7 @@
 
 				<div id="options-mal-sync">
 					<div class="form-group">
-						<?=form_label('Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> add a \'mal:#id#\' tag for syncing to work for that series.<br>For example, One Piece would have the \'mal:13\' tag.<br><br>Only chapter number will be set."></i>', 'mal_sync')?>
+						<?=form_label('Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> set the MAL id for syncing to work for that series.<br>In some cases we already have the MAL id set on the backend (and will be noted as such).<br><br>Only chapter number will be set."></i>', 'mal_sync')?>
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-primary <?=(isset($mal_sync_disabled['checked']) ? 'active' : '')?>">
 								<?=form_radio($mal_sync_disabled)?>
