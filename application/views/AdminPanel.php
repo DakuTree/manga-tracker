@@ -16,7 +16,7 @@
 
 	<br />
 
-	<a href="<?=base_url('admin_panel/convert_mal_tags')?>">Convert MAL tags to new format</a>
+	<a href="<?=base_url('admin_panel/update_mal_id')?>">Update MAL backend IDs (from admins & 2+ matches)</a>
 
 	<br />
 

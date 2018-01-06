@@ -37,9 +37,10 @@ class AdminPanel extends Admin_Controller {
 		set_time_limit(0);
 		$this->Tracker->admin->updateTitles();
 	}
-	public function convert_mal_tags() {
+	public function update_mal_id() {
 		set_time_limit(0);
-		$this->_update_mal_id();
+		$this->_update_mal_backend();
+		print "Success.";
 	}
 
 	private function _list_complete_titles() {
@@ -66,27 +67,41 @@ class AdminPanel extends Admin_Controller {
 		return $completeList;
 	}
 
-	private function _update_mal_id() : void {
-		$query = $this->db->select('id, tags')
-		                  ->from('tracker_chapters')
-		                  ->where('tags REGEXP "[[:<:]]mal:([0-9]+|none)[[:>:]]"', NULL, FALSE)
-		                  ->where('mal_id', NULL)
-		                  ->get();
+	private function _update_mal_backend() : void {
+		//Would prefer to use the query generator here, but don't think it's possible with what I'd like to do here.
 
+		//Set backend MAL id if more than one person has it set as the same ID.
+		//- This should be bumped up as we get more users to avoid abuse.
+		$this->db->query('
+			UPDATE
+				tracker_titles dest,
+				(
+					SELECT tt.id, tc.mal_id
+					FROM `tracker_chapters` tc
+					LEFT JOIN `tracker_titles` tt ON tt.`id` = tc.`title_id`
+					WHERE tt.mal_id IS NULL AND tc.mal_id IS NOT NULL
+					GROUP BY tt.id, tc.mal_id
+					HAVING COUNT(tc.mal_id) > 1
+				) src
+			SET dest.mal_id = src.mal_id
+			WHERE dest.id = src.id
+		');
 
-		if($query->num_rows() > 0) {
-			foreach($query->result() as $row) {
-				preg_match('/\\bmal:([0-9]+|none)\\b/', $row->tags, $matches);
-
-				if(!empty($matches)) {
-					$malID = ($matches[1] !== 'none' ? $matches[1] : '0');
-					$new_tags = implode(',', array_diff( explode(',', $row->tags), [$matches[0]]));
-
-					$this->db->set(['mal_id' => $malID, 'tags' => $new_tags, 'last_updated' => NULL])
-					         ->where('id', $row->id)
-					         ->update('tracker_chapters');
-				}
-			}
-		}
+		//Set backend MAL id if an admin has it set.
+		//TODO: Preferably we'd have a trusted users group, but that is for later down the line...
+		$this->db->query('
+			UPDATE
+				tracker_titles dest,
+				(
+					SELECT tt.id, tc.mal_id
+					FROM `tracker_chapters` tc
+					LEFT JOIN `tracker_titles` tt ON tt.`id` = tc.`title_id`
+					LEFT JOIN `auth_users_groups` aug ON tc.`user_id` = aug.`user_id`
+					WHERE tc.mal_id IS NOT NULL
+					AND aug.`group_id` = 1
+				) src
+			SET dest.mal_id = src.mal_id
+			WHERE dest.id = src.id
+		');
 	}
 }

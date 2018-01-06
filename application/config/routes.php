@@ -116,7 +116,7 @@ $route['admin_panel'] = 'AdminPanel';
 $route['admin_panel/update/normal'] = 'AdminPanel/update_normal';
 $route['admin_panel/update/custom'] = 'AdminPanel/update_custom';
 $route['admin_panel/update/titles'] = 'AdminPanel/update_titles';
-$route['admin_panel/convert_mal_tags'] = 'AdminPanel/convert_mal_tags';
+$route['admin_panel/update_mal_id'] = 'AdminPanel/update_mal_id';
 
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
