@@ -17,6 +17,7 @@
 		<div class="pull-right">
 			<ul class="list-inline">
 				<li><a href="https://github.com/DakuTree/manga-tracker"><i class="fa fa-github-alt" aria-hidden="true"></i> Github</a></li>
+				<li><a href="https://twitter.com/trackr_dev"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
 				<li><a href="<?=base_url('report_bug')?>">Report a Bug</a></li>
 				<li><a href="<?=base_url('stats')?>">Site Stats</a></li>
 				<li><a href="<?=base_url('CHANGELOG.md')?>">Changelog</a></li>
