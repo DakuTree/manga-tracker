@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [2018-01-08]
+### Added
+- Twitter link to footer - https://twitter.com/trackr_dev
+- IDs to help page to allow linking to specific things.
+
 ### Fixed
 - Added a missing WebToons genre (challenge).
 

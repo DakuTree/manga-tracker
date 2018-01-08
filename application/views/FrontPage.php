@@ -21,7 +21,7 @@
 <!-- Content Row -->
 <div class="row">
 	<div class="col-md-4">
-		<h2>Support for 10+ sites</h2>
+		<h2>Support for 35+ sites</h2>
 		<p>trackr.moe has support for 10+ sites, including bato.to, webtoons.com, MangaStream, MangaPanda and <a href="<?=base_url('help')?>">more</a>.</p>
 		<p>Support for new sites are added often and we also take requests for new sites to support!</p>
 	</div>
