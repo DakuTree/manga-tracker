@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Twitter link to footer - https://twitter.com/trackr_dev
 - IDs to help page to allow linking to specific things.
+- Added support for support for PhoenixSerenade - https://reader.serenade.moe/
 
 ### Fixed
 - Added a missing WebToons genre (challenge).

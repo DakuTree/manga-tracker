@@ -45,8 +45,9 @@
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-05
-// @version      1.8.15
+// @include      /^https?:\/\/reader\.serenade\.moe\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @updated      2018-01-08
+// @version      1.8.16
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2620,6 +2621,17 @@ let sites = {
 	'hatigarmscans.eu' : extendSite({
 		preInit : function(callback) {
 			this.foolSlideBaseURL = this.https+'://hatigarmscans.eu/hs';
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * PhoenixSerenade (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.serenade.moe' : extendSite({
+		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();
 		}
