@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-08]
+### Fixed
+- Added a missing WebToons genre (challenge).
+
 ## [2018-01-06]
 ### Added
 - Admin Panel now has a link to quickly update backend MAL IDs from admin users & IDs that have been set by more than one person.

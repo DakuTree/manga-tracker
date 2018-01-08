@@ -16,7 +16,7 @@ class WebToons extends Base_Site_Model {
 	*/
 	//private $validLang = ['en', 'zh-hant', 'zh-hans', 'th', 'id'];
 
-	public $titleFormat   = '/^[0-9]+:--:(?:en|zh-hant|zh-hans|th|id):--:[a-z0-9-]+:--:(?:drama|fantasy|comedy|action|slice-of-life|romance|superhero|thriller|sports|sci-fi|sf)$/';
+	public $titleFormat   = '/^[0-9]+:--:(?:en|zh-hant|zh-hans|th|id):--:[a-z0-9-]+:--:(?:drama|fantasy|comedy|action|slice-of-life|romance|superhero|thriller|sports|sci-fi|sf|challenge)$/';
 	public $chapterFormat = '/^[0-9]+:--:.*$/';
 
 	public function getFullTitleURL(string $title_url) : string {
