@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-09]
+### Added
+- Support for LOLScans.
+
 ## [2018-01-08]
 ### Added
 - Twitter link to footer - https://twitter.com/trackr_dev

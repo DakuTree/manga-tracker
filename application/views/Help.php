@@ -111,5 +111,6 @@
 		<li>Cat Scans</li>
 		<li>HatigarmScans</li>
 		<li>Phoenix Serenade</li>
+		<li>LOLScans</li>
 	</ul>
 </div>

@@ -61,6 +61,7 @@ class AdminCLI extends CLI_Controller {
 	}
 
 	public function testSite($type, $site, $extra = NULL) {
+		print "Testing site\n";
 		switch($type) {
 			case 'update':
 				if(!is_null($extra )) {

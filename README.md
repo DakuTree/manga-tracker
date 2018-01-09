@@ -47,3 +47,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * CatScans
 * HatigarmScans
 * PhoenixSerenade
+* LOLScans
