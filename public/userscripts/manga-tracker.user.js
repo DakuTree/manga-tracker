@@ -48,7 +48,7 @@
 // @include      /^https?:\/\/reader\.serenade\.moe\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/forums\.lolscans\.com\/book\/page2\.php\?c=.*?&t=(manga|webcomic)&pF=projectFolderName$/
 // @updated      2018-01-09
-// @version      1.8.17
+// @version      1.8.18
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2653,7 +2653,7 @@ let sites = {
 			let _this = this;
 
 			this.title         = this.parameters.p;
-			this.chapter       = encodeURIComponent(this.parameters.c);
+			this.chapter       = this.parameters.c;
 
 			this.title_url   = this.https + `://forums.lolscans.com/book/browseChapters.php?p=${this.title}&t=manga&pF=projectFolderName`;
 			this.chapter_url = this.https + `://forums.lolscans.com/book/page2.php?c=${this.chapter}&p=${this.title}&t=manga&pF=projectFolderName`;
