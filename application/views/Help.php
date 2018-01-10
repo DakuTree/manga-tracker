@@ -118,5 +118,6 @@
 		<li>TwistedHelScans</li>
 		<li>Chibi Manga</li>
 		<li>Psycho Play</li>
+		<li>MangaKakalot</li>
 	</ul> <!--ENDOFSITES-->
 </div>

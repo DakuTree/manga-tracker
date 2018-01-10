@@ -54,3 +54,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * TwistedHelScans
 * Chibi Manga
 * Psycho Play
+* MangaKakalot

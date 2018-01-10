@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Support for MangaRock.
 - Support for ChibiManga.
 - Support for Psycho Play.
+- Support for MangaKakalot.
 
 ## [2018-01-09]
 ### Added
