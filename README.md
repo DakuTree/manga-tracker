@@ -52,3 +52,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * EvilFlowers
 * ShoujoHearts
 * TwistedHelScans
+* Chibi Manga

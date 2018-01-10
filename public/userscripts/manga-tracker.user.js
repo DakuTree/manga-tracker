@@ -51,8 +51,9 @@
 // @include      /^http:\/\/reader\.evilflowers\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/shoujohearts\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.twistedhelscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/www\.cmreader\.info/\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-01-10
-// @version      1.8.22
+// @version      1.8.23
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2775,6 +2776,17 @@ let sites = {
 		}
 	}),
 
+	/**
+	 * Chibi Manga (myMangaReaderCMS)
+	 * @type {SiteObject}
+	 */
+	'www.cmreader.info/' : extendSite({
+		preInit : function(callback) {
+			this.setupMyMangaReaderCMS();
+			callback();
+		}
+	}),
+	
 	//Tracking site
 	//FIXME: We <probably> shouldn't have this here, but whatever.
 	'trackr.moe' : extendSite({

@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Support for ShoujoHearts.
 - Support for EvilFlowers.
 - Support for MangaRock.
+- Support for ChibiManga.
 
 ## [2018-01-09]
 ### Added

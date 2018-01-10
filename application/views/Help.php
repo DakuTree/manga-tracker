@@ -116,5 +116,6 @@
 		<li>EvilFlowers</li>
 		<li>ShoujoHearts</li>
 		<li>TwistedHelScans</li>
+		<li>Chibi Manga</li>
 	</ul> <!--ENDOFSITES-->
 </div>
