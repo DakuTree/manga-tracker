@@ -129,7 +129,7 @@ EOT;
 		file_put_contents('./README.md', preg_replace('/(\s*)$/', "$1* {$this->className}$1", $readmeFile, 1));
 
 		$helpFile = file_get_contents('./application/views/Help.php');
-		file_put_contents('./application/views/Help.php', preg_replace('/(\s*<\/ul>)/', "\r\n\t\t<li>{$this->className}</li>$1", $helpFile));
+		file_put_contents('./application/views/Help.php', preg_replace('/(\r\n\t<\/ul> <!--ENDOFSITES-->)/', "\r\n\t\t<li>{$this->className}</li>$1", $helpFile));
 
 		$changelogFile = file_get_contents('./public/CHANGELOG.md');
 		$date = date("Y-m-d", time());
