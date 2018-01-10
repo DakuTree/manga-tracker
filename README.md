@@ -49,3 +49,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * PhoenixSerenade
 * LOLScans
 * MangaRock
+* EvilFlowers

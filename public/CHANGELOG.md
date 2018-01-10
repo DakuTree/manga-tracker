@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2018-01-10]
 ### Added
+- Support for EvilFlowers.
 - Support for MangaRock.
 
 ## [2018-01-09]
