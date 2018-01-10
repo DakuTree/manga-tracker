@@ -114,5 +114,6 @@
 		<li>LOLScans</li>
 		<li>MangaRock</li>
 		<li>EvilFlowers</li>
+		<li>ShoujoHearts</li>
 	</ul> <!--ENDOFSITES-->
 </div>

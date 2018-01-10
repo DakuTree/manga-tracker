@@ -49,8 +49,9 @@
 // @include      /^https?:\/\/forums\.lolscans\.com\/book\/page2\.php\?c=.*?&t=(manga|webcomic)&pF=projectFolderName$/
 // @include      /^https?:\/\/mangarock\.com\/manga\/mrs-serie-[0-9]+\/chapter\/mrs-chapter-[0-9]+$/
 // @include      /^http:\/\/reader\.evilflowers\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/shoujohearts\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-10
-// @version      1.8.20
+// @version      1.8.21
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2745,6 +2746,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'reader.evilflowers.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * ShoujoHearts (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'shoujohearts.com' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();

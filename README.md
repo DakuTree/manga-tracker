@@ -50,3 +50,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * LOLScans
 * MangaRock
 * EvilFlowers
+* ShoujoHearts
