@@ -578,7 +578,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^[0-9\.]+$/';
+	public $chapterFormat = '/^(?:oneshot|chapter-[0-9\.]+)$/';
 	public $customType    = 0; //FIXME
 
 	public $baseURL = '';
@@ -590,7 +590,7 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
 			'url'    => $this->getChapterURL($title_url, $chapter),
-			'number' => "c{$chapter}"
+			'number' => "{$chapter}"
 		];
 	}
 	public function getChapterURL(string $title_url, string $chapter) : string {
@@ -616,7 +616,8 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
+			$segments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
+			$titleData['latest_chapter'] = $segments[5];
 
 			$dateString = $data['nodes_latest']->nodeValue;
 			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));

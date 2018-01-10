@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
 - Support for Psycho Play.
 - Support for MangaKakalot.
 
+### Fixed
+- myMangaReaderCMS sites no longer fail on certain kinds of chapter formats.
+
 ## [2018-01-09]
 ### Added
 - Support for LOLScans.
