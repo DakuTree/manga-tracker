@@ -54,7 +54,7 @@
 // @include      /^https?:\/\/www\.cmreader\.info\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @updated      2018-01-10
-// @version      1.8.25
+// @version      1.8.26
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -2669,13 +2669,12 @@ let sites = {
 				//url - text
 				/** @namespace unsafeWindow.projectFolders */
 				this.chapterList = unsafeWindow.projectFolders[titleOption.val()].reduce(function(acc, chName, i) {
-					let chUrl = `page2.php?c=${encodeURIComponent(chName)}&p=${_this.title}&t=manga&pF=projectFolderName`;
+					let chUrl = `page2.php?c=${chName}&p=${_this.title}&t=manga&pF=projectFolderName`;
 					acc[chUrl] = chName;
 
 					return acc;
 				}, {});
 				this.chapterListCurrent = `page2.php?c=${this.chapter}&p=${this.title}&t=manga&pF=projectFolderName`;
-				console.log(this.chapterListCurrent);
 			} else {
 				alert('Something has went wrong when trying to generate the chapter list. Please submit a bug report.');
 			}
