@@ -51,3 +51,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * MangaRock
 * EvilFlowers
 * ShoujoHearts
+* TwistedHelScans

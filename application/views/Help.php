@@ -115,5 +115,6 @@
 		<li>MangaRock</li>
 		<li>EvilFlowers</li>
 		<li>ShoujoHearts</li>
+		<li>TwistedHelScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>

@@ -50,8 +50,9 @@
 // @include      /^https?:\/\/mangarock\.com\/manga\/mrs-serie-[0-9]+\/chapter\/mrs-chapter-[0-9]+$/
 // @include      /^http:\/\/reader\.evilflowers\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/shoujohearts\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/www\.twistedhelscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-10
-// @version      1.8.21
+// @version      1.8.22
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -989,7 +990,7 @@ let base_site = {
 
 			if(this.viewerCustomImageList.length === 0) {
 				//FoolSlide has the list of images stored in an html tag we can use instead of having to AJAX each page.
-				this.viewerCustomImageList = ($('#content').find('> script:first').html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g) || []).filter(function(value, index, self) {
+				this.viewerCustomImageList = ($('#content, .isreaderc').find('> script:first, + script').first().html().match(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/g) || []).filter(function(value, index, self) {
 					return self.indexOf(value) === index;
 				}).map(function(e) {
 					let val = e.replace(/"url"\s*:\s*"(https?:\\\/\\\/[^"]+)"/, '$1');
@@ -2757,6 +2758,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'shoujohearts.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * TwistedHelScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'www.twistedhelscans.com' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();
