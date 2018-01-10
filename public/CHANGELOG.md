@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Support for EvilFlowers.
 - Support for MangaRock.
 - Support for ChibiManga.
+- Support for Psycho Play.
 
 ## [2018-01-09]
 ### Added

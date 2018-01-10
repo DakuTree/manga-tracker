@@ -117,5 +117,6 @@
 		<li>ShoujoHearts</li>
 		<li>TwistedHelScans</li>
 		<li>Chibi Manga</li>
+		<li>Psycho Play</li>
 	</ul> <!--ENDOFSITES-->
 </div>

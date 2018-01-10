@@ -53,3 +53,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ShoujoHearts
 * TwistedHelScans
 * Chibi Manga
+* Psycho Play
