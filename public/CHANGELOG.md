@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-10]
+### Added
+- Support for MangaRock.
+
 ## [2018-01-09]
 ### Added
 - Support for LOLScans.

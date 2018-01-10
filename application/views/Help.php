@@ -112,5 +112,6 @@
 		<li>HatigarmScans</li>
 		<li>Phoenix Serenade</li>
 		<li>LOLScans</li>
+		<li>MangaRock</li>
 	</ul>
 </div>

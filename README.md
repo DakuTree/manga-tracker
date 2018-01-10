@@ -48,3 +48,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * HatigarmScans
 * PhoenixSerenade
 * LOLScans
+* MangaRock
