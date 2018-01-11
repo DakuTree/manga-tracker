@@ -579,7 +579,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9\.]+)$/';
-	public $customType    = 0; //FIXME
+	public $customType    = 2;
 
 	public $baseURL = '';
 
