@@ -41,7 +41,7 @@
 // @include      /^https?:\/\/mangazuki\.co\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/(reader\.)?ygscans\.com\/(reader\/)?read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.championscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^http:\/\/puremashiro\.moe\/reader\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/reader\.puremashiro\.moe\/read\/.*?\/[a-z\-]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/ravens-scans\.com\/(?:multi|lector)\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9\.]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.thecatscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -54,8 +54,8 @@
 // @include      /^https?:\/\/www\.cmreader\.info\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
-// @updated      2018-01-10
-// @version      1.8.27
+// @updated      2018-01-11
+// @version      1.8.28
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
@@ -1026,8 +1026,8 @@ let base_site = {
 	 * Used to setup (most) sites that use My Manga Reader CMS.
 	 *
 	 * @function
-	 * @alias sites.*.setupFoolSlide
-	 * @name base_site.setupFoolSlide
+	 * @alias sites.*.setupMyMangaReaderCMS
+	 * @name base_site.setupMyMangaReaderCMS
 	 *
 	 * @final
 	 */
@@ -1041,9 +1041,8 @@ let base_site = {
 			this.title_url   = this.myMangaReaderCMSBaseURL+'/manga/'+this.title+'/';
 			this.chapter_url = this.title_url + this.chapter;
 
-			this.chapterListCurrent = this.chapter_url;
-			console.log(this.chapter_url);
 			this.chapterList        = generateChapterList($('#chapter-list').find('> ul > li > a').reverseObj(), 'href');
+			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerTitle            = $('ul[class="nav navbar-nav"] > li:first > a').text().slice(0,-6);
 			this.viewerCustomImageList = $('#all').find('> img').map(function(i, e) {
@@ -2594,7 +2593,7 @@ let sites = {
 	 * PureMashiroScans (FoolSlide)
 	 * @type {SiteObject}
 	 */
-	'puremashiro.moe' : extendSite({
+	'reader.puremashiro.moe' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();

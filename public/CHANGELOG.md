@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-11]
+### Fixed
+- MangaRock - Chapters with volumes should now update properly.
+- PureMashiroScans - Moved over to new subdomain.
+
 ## [2018-01-10]
 ### Added
 - Support for TwistedHelScans.
