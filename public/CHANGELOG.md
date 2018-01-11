@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Public list no longer provides chapter links.
   - This was mainly done for security reasons.
+- `[Admin]` Notices now use markdown!
+  - Now we can use links and other fancy things!
 
 ### Fixed
 - MangaRock - Chapters with volumes should now update properly.

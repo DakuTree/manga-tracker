@@ -138,3 +138,5 @@ $autoload['model'] = array(
 	'Tracker_Model'      => 'Tracker',
 	'History_Model'      => 'History'
 );
+
+require APPPATH . '../vendor/erusev/parsedown/Parsedown.php';

@@ -5,8 +5,11 @@
 
 	"require": {
 		"php"                           : ">=7.2.0",
+
 		"codeigniter/framework"         : "3.1.*",
 		"kenjis/ci-phpunit-test"        : "dev-master#96cb4976804b28cc80b319684cfe2d898c3223b2",
+
+		"erusev/parsedown"              : "1.6.*",
 
 		"bower-asset/jquery"            : "3.2.1",
 		"bower-asset/jquery-validation" : "1.17.0",

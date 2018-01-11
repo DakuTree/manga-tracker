@@ -180,7 +180,7 @@ class User_Model extends CI_Model {
 
 	public function getLatestNotice() {
 		$query = $this->db
-			->select('tn.notice, tn.created_at')
+			->select('tn.notice, DATE_FORMAT(tn.created_at, "%Y/%m/%d") AS date_formatted')
 			->from('tracker_notices AS tn')
 			->where("id > IFNULL((SELECT hidden_notice_id FROM tracker_user_notices WHERE user_id = {$this->User->id}), '0')", NULL, FALSE)
 			->order_by('tn.id DESC')
@@ -192,8 +192,8 @@ class User_Model extends CI_Model {
 			$row = $query->row();
 
 			$noticeData = [
-				'date' => str_replace('-', '/', substr($row->created_at, 0, 10)),
-				'text' => str_replace('|', '<br/>', htmlspecialchars($row->notice))
+				'date' => $row->date_formatted,
+				'text' => Parsedown::instance()->text($row->notice)
 			];
 		}
 

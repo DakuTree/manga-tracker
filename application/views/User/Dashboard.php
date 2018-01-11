@@ -1,7 +1,8 @@
 <?php if($notice = $this->User->getLatestNotice()) { ?>
 <div id="update-notice" class="alert alert-info" role="alert">
 	<a href="#" class="close" data-dismiss="alert">&times;</a>
-	<strong>Update (<?=$notice['date']?>):</strong> <?=$notice['text']?>
+	<strong>Update (<?=$notice['date']?>)</strong>
+	<?=$notice['text']?>
 </div>
 <?php } ?>
 
