@@ -12,7 +12,7 @@ class Batoto_test extends SiteTestCase {
 			'718:--:English'   => 'AKB49 - Renai Kinshi Jourei',
 			'3996:--:English'  => 'Akatsuki no Yona',
 			'12619:--:English' => 'Ojojojo',
-			'10271:--:English' => 'Ballroom e Youkoso'
+			'19012:--:English' => 'KAKAO 79%'
 		];
 		$this->_testSiteSuccessRandom($testSeries);
 	}

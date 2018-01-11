@@ -13,6 +13,6 @@ class DemonicScans_test extends SiteTestCase {
 	}
 
 	public function test_custom() {
-		$this->_testSiteCustom();
+		$this->markTestSkipped('DemonicScans no longer exists.');
 	}
 }

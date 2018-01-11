@@ -6,12 +6,13 @@
  */
 class CatScans_test extends SiteTestCase {
 	public function test_success() {
+		//NOTE: It appears that CatScans routinely removes older chapters which may cause these to fail.
 		$testSeries = [
-			'magika-no-kenshi-to-shoukan-maou'     => 'Magika no Kenshi to Shoukan Maou',
-			'hitsugi-no-chaika'                    => 'Hitsugi no Chaika',
-			'saijaku-muhai-no-bahamut'             => 'Saijaku Muhai no Bahamut',
-			'busou-shoujo-machiavellism'           => 'Busou Shoujo Machiavellism',
-			'kono-subarashii-sekai-ni-shukufuku-o' => 'Kono Subarashii Sekai ni Shukufuku o!',
+			'magika-no-kenshi-to-shoukan-maou' => 'Magika no Kenshi to Shoukan Maou',
+			'clockwork-planet'                 => 'Clockwork Planet',
+			'gamers'                           => 'Gamers!',
+			'busou-shoujo-machiavellism'       => 'Busou Shoujo Machiavellism',
+			'kudamimi-no-neko'                 => 'Kudamimi no Neko',
 
 		];
 		$this->_testSiteSuccessRandom($testSeries);

@@ -6,11 +6,11 @@
 class Mangazuki_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
-			'Dead-Tube'                     => 'DEAD Tube',
-			'Hajimete-no-Gal'               => 'Hajimete no Gal',
-			'Nidome-no-Jinsei-wo-Isekai-de' => 'Nidome no Jinsei wo Isekai de',
-			'Toki-Doki'                     => 'Toki Doki',
-			'Sports-Girl'                   => 'Sports Girl'
+			'que-sera-sera'          => 'Que Sera, Sera',
+			'brawling-go'            => 'Brawling GO!',
+			'minamotokun-monogatari' => 'Minamoto-kun Monogatari',
+			'ghost-love'             => 'Ghost Love',
+			'hcampus'                => 'H-Campus'
 		];
 		$this->_testSiteSuccessRandom($testSeries);
 	}

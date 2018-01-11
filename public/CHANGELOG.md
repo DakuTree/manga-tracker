@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - MangaRock - Chapters with volumes should now update properly.
 - PureMashiroScans - Moved over to new subdomain.
+- get_cloudflare_cookie.py now works on Python 3 (and still works on Python 2).
+- Various site tests work properly again.
 
 ## [2018-01-10]
 ### Added
