@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys, json
 import cfscrape
 
@@ -7,7 +9,7 @@ try:
 
     cookies, user_agent = cfscrape.get_cookie_string(data['url'], user_agent=data['user_agent'])
 
-    print json.dumps({'cookies': cookies, 'agent': user_agent})
+    print(json.dumps({'cookies': cookies, 'agent': user_agent}))
 except:
-    print "No JSON sent?"
+    print("No JSON sent?")
     sys.exit(1)
