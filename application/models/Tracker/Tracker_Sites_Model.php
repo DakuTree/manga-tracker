@@ -578,7 +578,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^(?:oneshot|chapter-[0-9\.]+)$/';
+	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9\.]+)$/';
 	public $customType    = 0; //FIXME
 
 	public $baseURL = '';
@@ -588,9 +588,10 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
+		$chapterN = (ctype_digit($chapter) ? "c${chapter}" : $chapter);
 		return [
 			'url'    => $this->getChapterURL($title_url, $chapter),
-			'number' => "{$chapter}"
+			'number' => $chapterN
 		];
 	}
 	public function getChapterURL(string $title_url, string $chapter) : string {
