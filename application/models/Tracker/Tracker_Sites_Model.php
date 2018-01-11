@@ -618,7 +618,8 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
 			$segments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
-			$titleData['latest_chapter'] = $segments[5];
+			$needle = array_search('manga', array_reverse($segments, TRUE)) + 2;
+			$titleData['latest_chapter'] = $segments[$needle];
 
 			$dateString = $data['nodes_latest']->nodeValue;
 			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
