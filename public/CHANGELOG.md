@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 - myMangaReaderCMS sites now have custom updater support!
   - Sites supported: ChibiManga, FallenAngelScans, Mangazuki, WhiteCloudPavillion
+- Pull Request & Issue templates.
+
+### Changed
+- Public list no longer provides chapter links.
+  - This was mainly done for security reasons.
 
 ### Fixed
 - MangaRock - Chapters with volumes should now update properly.
