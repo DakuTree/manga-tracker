@@ -218,8 +218,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 								print " - Failed Check (DB: '{$dbTitleData['latest_chapter']}' || UPDATE: '{$titleData['latest_chapter']}')\n";
 							}
 						} else {
-							//We only need to log if following page is missing title, not latest releases
 							if($siteClass->customType === 1) {
+								//We only need to log if following page is missing title, not latest releases
 								log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
 								print " - Title doesn't currently exist in DB? Maybe different language or title stub change? ($titleURL)\n";
 							} else {

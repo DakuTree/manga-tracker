@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass WhiteCloudPavillion
+ * @group              myMangaReaderCMS
  */
 class WhiteCloudPavillion_test extends SiteTestCase {
 	public function test_success() {

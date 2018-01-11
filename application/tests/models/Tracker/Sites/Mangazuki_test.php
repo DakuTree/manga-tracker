@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass Mangazuki
+ * @group              myMangaReaderCMS
  */
 class Mangazuki_test extends SiteTestCase {
 	public function test_success() {

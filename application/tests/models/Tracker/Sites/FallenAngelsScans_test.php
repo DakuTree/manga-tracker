@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass FallenAngelsScans
+ * @group              myMangaReaderCMS
  */
 class FallenAngelsScans_test extends SiteTestCase {
 	public function test_success() {

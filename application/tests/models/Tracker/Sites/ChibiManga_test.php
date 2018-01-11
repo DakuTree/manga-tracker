@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass ChibiManga
+ * @group              myMangaReaderCMS
  */
 class ChibiManga_test extends SiteTestCase {
 	public function test_success() {
