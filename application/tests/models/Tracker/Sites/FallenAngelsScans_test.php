@@ -17,4 +17,8 @@ class FallenAngelsScans_test extends SiteTestCase {
 	public function test_failure() {
 		$this->_testSiteFailure('Bad Status Code (500)');
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }
