@@ -33,13 +33,13 @@
 
 	<span id="fb-check" class="fa sr-only cc-grower" style="display: none">&nbsp;</span>
 	<!-- JAVASCRIPT BELOW -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-1.12.4.min.js"><\/script>')</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-3.2.1.min.js"><\/script>')</script>
 
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
-	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate-1.16.0.min.js"><\/script>')</script>
-	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate.additional-methods-1.16.0.min.js"><\/script>')</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
+	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate-1.17.0.min.js"><\/script>')</script>
+	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate.additional-methods-1.17.0.min.js"><\/script>')</script>
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script>$.fn.modal || document.write('<script src="<?=asset_url()?>vendor/js/bootstrap.min.js"><\/script>')</script>
 	<script>
