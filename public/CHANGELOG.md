@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [2018-01-11]
+### Added
+- myMangaReaderCMS sites now have custom updater support!
+  - Sites supported: ChibiManga, FallenAngelScans, Mangazuki, WhiteCloudPavillion
+
 ### Fixed
 - MangaRock - Chapters with volumes should now update properly.
 - PureMashiroScans - Moved over to new subdomain.

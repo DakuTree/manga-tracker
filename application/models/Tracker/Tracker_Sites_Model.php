@@ -627,4 +627,79 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 
 		return (!empty($titleData) ? $titleData : NULL);
 	}
+
+
+	//Since we're just checking the latest updates page and not a following page, we just need to simulate a follow.
+	//TODO: It would probably be better to have some kind of var which says that the custom update uses a following page..
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
+		$content = ['status_code' => 200];
+		$callback($content, $extra['id']);
+	}
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		$updateURL = "{$this->baseURL}/latest-release";
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+			$data = $content['body'];
+
+			$data = preg_replace('/^[\s\S]+<dl>/', '<dl>', $data);
+			$data = preg_replace('/<\/dl>[\s\S]+$/', '</dl>', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(FALSE);
+
+			$xpath      = new DOMXPath($dom);
+			$nodes_rows = $xpath->query("//dl/dd");
+			if($nodes_rows->length > 0) {
+				foreach($nodes_rows as $row) {
+					$titleData = [];
+
+					$nodes_title   = $xpath->query("div[@class='events ']/div[@class='events-body']/h3[@class='events-heading']/a", $row);
+					$nodes_chapter = $xpath->query("div[@class='events ']/div[@class='events-body']/h6[@class='events-subtitle']/a[1]", $row);
+					$nodes_latest  = $xpath->query("div[@class='time']", $row);
+
+					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+						$title = $nodes_title->item(0);
+
+						preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
+						$title_url = $title_url_arr['url'];
+
+						if(!array_key_exists($title_url, $titleDataList)) {
+							$titleData['title'] = trim($title->textContent);
+
+							$chapter = $nodes_chapter->item(0);
+							preg_match('/(?<chapter>[^\/]+(?=\/$|$))/', $chapter->getAttribute('href'), $chapter_arr);
+							$titleData['latest_chapter'] = $chapter_arr['chapter'];
+
+							$dateString = str_replace('/', '-', trim($nodes_latest->item(0)->nodeValue)); //NOTE: We replace slashes here as it stops strtotime interpreting the date as US date format.
+							if($dateString == 'T') {
+								$dateString = date("Y-m-d",now());
+							}
+							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString . ' 00:00'));
+
+							$titleDataList[$title_url] = $titleData;
+						}
+					} else {
+						log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
+					}
+				}
+			} else {
+				log_message('error', "{$this->site} | Following list is empty?");
+			}
+		} else {
+			log_message('error', "{$this->site} - Custom updating failed for {$this->baseURL}.");
+		}
+
+		return $titleDataList;
+	}
+	public function doCustomCheck(string $oldChapterString, string $newChapterString) {
+		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
+		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
+
+		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
+
+		return $status;
+	}
 }
