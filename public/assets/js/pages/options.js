@@ -13,7 +13,7 @@ $(function() {
 	});
 
 	//Enable category when text box is clicked
-	$('input[type=text][name^=category_custom]').click(function () {
+	$('input[type=text][name^=category_custom]').on('click', function () {
 		$(this).parent().find('[type=checkbox]').attr('checked', true);
 	});
 });

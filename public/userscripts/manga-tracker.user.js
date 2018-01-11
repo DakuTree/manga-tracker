@@ -58,7 +58,7 @@
 // @version      1.8.28
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
-// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @resource     fontAwesome   https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.3.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png

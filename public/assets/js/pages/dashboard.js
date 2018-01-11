@@ -155,7 +155,7 @@ $(function(){
 	/** UX Improvements **/
 
 	//This makes it easier to press the row checkbox.
-	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').click(function (e) {
+	$('.tracker-table').find('> tbody > tr > td:nth-of-type(1)').on('click', function (e) {
 		if(!$(e.target).is('input')) {
 			let checkbox = $(this).find('> input[type=checkbox]');
 			$(checkbox).prop('checked', !checkbox.prop('checked'));
@@ -163,7 +163,7 @@ $(function(){
 	});
 
 	//Requires user confirm to change page if any boxes are checked
-	$('input[name=check]').change(function() {
+	$('input[name=check]').on('change', function() {
 		if(window.onbeforeunload === null) {
 			window.onbeforeunload = function (e) {
 				e = e || window.event;
@@ -181,7 +181,7 @@ $(function(){
 	});
 
 	//This shows/hides the row info row.
-	$('.toggle-info').click(function(e) {
+	$('.toggle-info').on('click', function(e) {
 		e.preventDefault();
 
 		$(this).find('+ .more-info').toggle();
@@ -206,7 +206,7 @@ $(function(){
 	});
 
 	//Change list when clicking category tabs
-	$('#category-nav').find('> .nav > li > a').click(function(e) {
+	$('#category-nav').find('> .nav > li > a').on('click', function(e) {
 		e.preventDefault();
 
 		//Change category active state
@@ -266,7 +266,7 @@ $(function(){
 	/** Setup title handlers **/
 
 	//Update latest chapter (via "I've read the latest chapter")
-	$('.update-read').click(function(e, data) {
+	$('.update-read').on('click', function(e, data) {
 		let row             = $(this).closest('tr'),
 		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
@@ -305,7 +305,7 @@ $(function(){
 	});
 
 	//Ignore latest chapter
-	$('.ignore-latest').click(function() {
+	$('.ignore-latest').on('click', function() {
 		let row             = $(this).closest('tr'),
 		    table           = $(this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
@@ -329,7 +329,7 @@ $(function(){
 		}
 	});
 
-	$('#mass-action').find('> select').change(function() {
+	$('#mass-action').find('> select').on('change', function() {
 		let redirect = false;
 
 		let checked_rows = $('.tracker-table:visible').find('tr:has(td input[type=checkbox]:checked)'),
@@ -385,7 +385,7 @@ $(function(){
 	});
 
 	//Set MAL ID
-	$('.set-mal-id').click(function(e) {
+	$('.set-mal-id').on('click', function(e) {
 		e.preventDefault();
 
 		let _this          = this,
@@ -489,7 +489,7 @@ $(function(){
 	setupTagEditor();
 
 	//Set category
-	$('#move-input').change(function() {
+	$('#move-input').on('change', function() {
 		let selected      = $(this).find(':selected'),
 		    selected_name = selected.text();
 		if(selected.is('[value]')) {
@@ -521,7 +521,7 @@ $(function(){
 		    list_table = $('table[data-list]');
 		if(offset > 10) {
 			//normal load
-			$window.scroll(function() {
+			$window.on('scroll', function() {
 				//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
 				//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
 				handleScroll();
@@ -533,7 +533,7 @@ $(function(){
 				if($('style[id="less:less-main"]').length) {
 					offset = nav.offset().top - nav.find('> ul').height() - 2; //reset offset
 
-					$window.scroll(function() {
+					$window.on('scroll', function() {
 						handleScroll();
 					});
 					handleScroll(); //Make sure we also trigger on page load.
@@ -558,7 +558,7 @@ $(function(){
 
 	function setupNavOptions() {
 		//Setup nav slide toggle
-		$('#toggle-nav-options').click(function(e) {
+		$('#toggle-nav-options').on('click', function(e) {
 			e.preventDefault();
 
 			let icon    = $(this).find('> i'),
@@ -572,7 +572,7 @@ $(function(){
 			}
 		});
 
-		$('.list_sort').change(function() {
+		$('.list_sort').on('change', function() {
 			let tables    = $('.tracker-table'),
 			    type      = $('select[name=list_sort_type]').val(),
 			    order_ele = $('select[name=list_sort_order]'),
@@ -605,7 +605,7 @@ $(function(){
 			tables.trigger('sorton', [ getListSort(type, order) ]);
 		});
 
-		$('.tracker-table').bind('sortEnd', function(/**e, table**/) {
+		$('.tracker-table').on('sortEnd', function(/**e, table**/) {
 			let type_ele  = $('select[name=list_sort_type]'),
 				order_ele = $('select[name=list_sort_order]'),
 				sortList = this.config.sortList,
@@ -689,7 +689,7 @@ $(function(){
 
 	function setupTagEditor() {
 		//Toggle input on clicking "Edit"
-		$('.edit-tags').click(function(e) {
+		$('.edit-tags').on('click', function(e) {
 			e.preventDefault();
 			let editorEle = $(this).parent().find('.tag-edit');
 			editorEle.toggleClass('hidden');
@@ -717,7 +717,7 @@ $(function(){
 		});
 
 		//Submit tags
-		$('.tag-edit [type=button]').click(function() {
+		$('.tag-edit [type=button]').on('click', function() {
 			let _this = this;
 			//CHECK: We would use jQuery.validate here but I don't think it works without an actual form.
 			let input    = $(this).closest('.tag-edit').find('input'),
