@@ -19,6 +19,9 @@ application/tests/_ci_phpunit_test/
 application/logs/
 application/tests/build/
 
+#Caching
+application/cache/
+
 #Production config
 #TODO: We should do some manual tweaking here.
 application/config/production/
