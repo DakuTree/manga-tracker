@@ -222,6 +222,8 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 							if($siteClass->customType === 1) {
 								log_message('error', "CUSTOM: {$titleData['title']} - {$site['site_class']} || Title does not exist in DB??");
 								print " - Title doesn't currently exist in DB? Maybe different language or title stub change? ($titleURL)\n";
+							} else {
+								print " - Title isn't currently tracked.\n";
 							}
 						}
 					} else {
