@@ -64,11 +64,11 @@
 						</div>
 				</td>
 				<td>
-					<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow"><?=htmlentities($row['generated_current_data']['number'])?></a>
+					<?=htmlentities($row['generated_current_data']['number'])?>
 					<?php if(!is_null($row['title_data']['ignore_chapter'])) { ?><span class='hidden-chapter' title='The latest chapter was marked as ignored.'><?=$row['generated_ignore_data']['number']?></span><?php } ?>
 				</td>
 				<td>
-					<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>"><?=htmlentities($row['generated_latest_data']['number'])?></a>
+					<?=htmlentities($row['generated_latest_data']['number'])?>
 				</td>
 			</tr>
 		<?php } ?>
