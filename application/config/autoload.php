@@ -139,4 +139,4 @@ $autoload['model'] = array(
 	'History_Model'      => 'History'
 );
 
-require APPPATH . '../vendor/erusev/parsedown/Parsedown.php';
+require_once APPPATH . '../vendor/erusev/parsedown/Parsedown.php';
