@@ -54,16 +54,15 @@
 // @include      /^https?:\/\/www\.cmreader\.info\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
-// @updated      2018-01-11
-// @version      1.8.28
+// @updated      2018-01-12
+// @version      1.8.29
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
-// @resource     fontAwesome   https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
+// @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.3.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
-// @grant        GM_getResourceText
 // @grant        GM_getResourceURL
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -79,7 +78,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
-/* global $, jQuery, GM_addStyle, GM_getResourceText, GM_getResourceURL, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
+/* global $, jQuery, GM_addStyle, GM_getResourceURL, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
 jQuery.fn.reverseObj = function() {
@@ -112,7 +111,8 @@ let base_site = {
 	init : function() {
 		let _this = this;
 
-		GM_addStyle(GM_getResourceText('fontAwesome').replace(/\.\.\//g, 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'));
+		let faStyle = $('<style/>', {type: 'text/css', text: atob(GM_getResourceURL('fontAwesome').substr(21))});
+		$('head').append(faStyle);
 
 		this.preInit(function() {
 			_this.setObjVars();
@@ -245,7 +245,9 @@ let base_site = {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
-			GM_addStyle(GM_getResourceText('userscriptCSS'));
+			let usStyle = $('<style/>', {type: 'text/css', text: atob(GM_getResourceURL('userscriptCSS').substr(21))});
+			$('head').append(usStyle);
+
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
 			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
