@@ -31,8 +31,7 @@ class UpdateStatus extends MY_Controller {
 				tracker_titles.title,
 				tracker_titles.title_url,
 				tracker_sites.site_class,
-				from_unixtime(MAX(auth_users.last_login)) AS timestamp,
-				COUNT(tracker_chapters.title_id) AS users_following
+				from_unixtime(MAX(auth_users.last_login)) AS timestamp
 			')
 			->from('tracker_titles')
 			->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
@@ -53,7 +52,13 @@ class UpdateStatus extends MY_Controller {
 					->group_end()
 					//OR it is a custom update site, has more than one follower and hasn't updated within the past 72 hours.
 					->or_group_start()
-						->where('users_following > 1')
+						->where('tracker_titles.id IN (
+							SELECT title_id
+							FROM tracker_chapters
+							GROUP BY title_id
+							HAVING COUNT(title_id) > 1
+						)', NULL, FALSE)
+
 						->where("last_checked < DATE_SUB(DATE_ADD(NOW(), INTERVAL '{$update_time}' HOUR_MINUTE), INTERVAL 72 HOUR)")
 					->group_end()
 					//OR it is a custom update site and hasn't updated within the past 120 hours (5 days)
