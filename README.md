@@ -59,3 +59,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ForgottenScans
 * SaikoScans
 * ShoujoSense
+* MangaTopia
