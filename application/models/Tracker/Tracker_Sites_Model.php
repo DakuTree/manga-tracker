@@ -657,7 +657,7 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 					$titleData = [];
 
 					$nodes_title   = $xpath->query("div[@class='events ']/div[@class='events-body']/h3[@class='events-heading']/a", $row);
-					$nodes_chapter = $xpath->query("div[@class='events ']/div[@class='events-body']/h6[@class='events-subtitle']/a[1]", $row);
+					$nodes_chapter = $xpath->query("div[@class='events '][1]/div[@class='events-body'][1]/h6[@class='events-subtitle'][1]/a[1]", $row);
 					$nodes_latest  = $xpath->query("div[@class='time']", $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
