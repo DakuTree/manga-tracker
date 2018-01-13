@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2018-01-13]
 ### Added
+- Support for ShoujoSense.
 - Support for SaikoScans.
 
 - Support for ForgottenScans.

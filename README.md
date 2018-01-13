@@ -58,3 +58,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * DKThiasScans
 * ForgottenScans
 * SaikoScans
+* ShoujoSense

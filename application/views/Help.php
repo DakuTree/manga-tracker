@@ -122,5 +122,6 @@
 		<li>DKThiasScans</li>
 		<li>ForgottenScans</li>
 		<li>SaikoScans</li>
+		<li>ShoujoSense</li>
 	</ul> <!--ENDOFSITES-->
 </div>

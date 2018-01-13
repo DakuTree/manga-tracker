@@ -57,8 +57,9 @@
 // @include      /^http:\/\/reader\.dkthias\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.fos-scans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/saikoscans\.ml\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/reader\.shoujosense\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-13
-// @version      1.8.33
+// @version      1.8.34
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -2924,6 +2925,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'saikoscans.ml' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * ShoujoSense (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.shoujosense.com' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();
