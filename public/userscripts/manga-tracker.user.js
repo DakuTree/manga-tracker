@@ -54,8 +54,8 @@
 // @include      /^https?:\/\/www\.cmreader\.info\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
-// @updated      2018-01-12
-// @version      1.8.29
+// @updated      2018-01-13
+// @version      1.8.30
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1408,7 +1408,19 @@ let sites = {
 		preSetupViewer : function(callback) {
 			let _this = this;
 
-			$('#viewer').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			let newViewer = $('<div/>', {id: 'viewer'});
+
+			//Add a notice about adblock.
+			newViewer.prepend(
+				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
+					MangaFox has moved to using an image host which is blacklisted by some AdBlockers.
+					If you can't see any images, you will need to whitelist "lmfcdn.secure.footprint.net.
+					In addition to this, if the loaded image is a MangaFox logo, then the issue is on MangaFox's end and not a bug on our end.
+					".
+				`})
+			);
+
+			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM_xmlhttpRequest({
