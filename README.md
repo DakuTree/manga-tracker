@@ -67,3 +67,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * DamnFeels
 * AtelierDuNoir
 * Lolitannia
+* Riceballicious

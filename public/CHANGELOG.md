@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2018-01-13]
 ### Added
+- Support for Riceballicious.
 - Support for Lolitannia.
 - Support for AtelierDuNoir.
 - Support for DamnFeels.
@@ -13,7 +14,6 @@ All notable changes to this project will be documented in this file.
 - Support for MangaTopia.
 - Support for ShoujoSense.
 - Support for SaikoScans.
-
 - Support for ForgottenScans.
 - Support for DKThiasScans.
 
