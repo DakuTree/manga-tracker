@@ -125,5 +125,11 @@
 		<li>ShoujoSense</li>
 		<li>MangaTopia</li>
 		<li>VortexScans</li>
+		<li>Dokusha</li>
+		<li>ElPsyCongroo</li>
+		<li>Bangaqua</li>
+		<li>DamnFeels</li>
+		<li>AtelierDuNoir</li>
+		<li>Lolitannia</li>
 	</ul> <!--ENDOFSITES-->
 </div>

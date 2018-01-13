@@ -60,8 +60,14 @@
 // @include      /^http:\/\/reader\.shoujosense\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/mangatopia\.net\/slide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.vortex-scans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/dokusha\.info\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/elpsycongroo\.tk\/r\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/bangaqua\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/damn-feels\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/atelierdunoir\.org\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-13
-// @version      1.8.36
+// @version      1.8.42
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -2960,6 +2966,72 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'reader.vortex-scans.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * Dokusha (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'dokusha.info' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * ElPsyCongroo (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'elpsycongroo.tk' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * Bangaqua (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'bangaqua.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * DamnFeels (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'damn-feels.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * AtelierDuNoir (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'atelierdunoir.org' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * Lolitannia (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.holylolikingdom.net' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();

@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [2018-01-13]
 ### Added
+- Support for Lolitannia.
+- Support for AtelierDuNoir.
+- Support for DamnFeels.
+- Support for Bangaqua.
+- Support for ElPsyCongroo.
+- Support for Dokusha.
 - Support for VortexScans.
 - Support for MangaTopia.
 - Support for ShoujoSense.

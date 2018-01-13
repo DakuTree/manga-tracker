@@ -61,3 +61,9 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ShoujoSense
 * MangaTopia
 * VortexScans
+* Dokusha
+* ElPsyCongroo
+* Bangaqua
+* DamnFeels
+* AtelierDuNoir
+* Lolitannia
