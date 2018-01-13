@@ -60,3 +60,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * SaikoScans
 * ShoujoSense
 * MangaTopia
+* VortexScans

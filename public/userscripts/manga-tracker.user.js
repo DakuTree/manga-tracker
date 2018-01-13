@@ -59,8 +59,9 @@
 // @include      /^http:\/\/saikoscans\.ml\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.shoujosense\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/mangatopia\.net\/slide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/reader\.vortex-scans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-13
-// @version      1.8.35
+// @version      1.8.36
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -2948,6 +2949,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'mangatopia.net' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * VortexScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'reader.vortex-scans.com' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();

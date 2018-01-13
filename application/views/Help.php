@@ -124,5 +124,6 @@
 		<li>SaikoScans</li>
 		<li>ShoujoSense</li>
 		<li>MangaTopia</li>
+		<li>VortexScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>
