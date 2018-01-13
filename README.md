@@ -55,3 +55,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Chibi Manga
 * Psycho Play
 * MangaKakalot
+* DKThiasScans

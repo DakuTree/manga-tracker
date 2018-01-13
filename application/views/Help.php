@@ -119,5 +119,6 @@
 		<li>Chibi Manga</li>
 		<li>Psycho Play</li>
 		<li>MangaKakalot</li>
+		<li>DKThiasScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>
