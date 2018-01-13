@@ -29,7 +29,7 @@ class FoolSlideGenerator {
 
 		$this->updateDocs();
 
-		$domain =  preg_replace('#^https?://#', '', $this->baseURL);
+		$domain =  preg_replace('#^https?://(.*?)/.*?$#', '$1', $this->baseURL);
 		say("\nAdmin SQL:");
 		say("INSERT INTO `mangatracker_development`.`tracker_sites` (`id`, `site`, `site_class`, `status`, `use_custom`) VALUES (NULL, '{$domain}', '{$this->className}', 'enabled', 'Y');");
 		say("INSERT INTO `mangatracker_production`.`tracker_sites` (`id`, `site`, `site_class`, `status`, `use_custom`) VALUES (NULL, '{$domain}', '{$this->className}', 'enabled', 'Y');");
