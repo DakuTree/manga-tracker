@@ -120,5 +120,6 @@
 		<li>Psycho Play</li>
 		<li>MangaKakalot</li>
 		<li>DKThiasScans</li>
+		<li>ForgottenScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>

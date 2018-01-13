@@ -56,3 +56,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Psycho Play
 * MangaKakalot
 * DKThiasScans
+* ForgottenScans
