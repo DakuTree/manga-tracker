@@ -89,7 +89,7 @@ class UpdateStatus extends MY_Controller {
 			foreach($query->result() as $row) {
 				$resultArr[] = [
 					'site'           => $row->site_class,
-					'full_title_url' => "<a href='".$this->Tracker->sites->{$row->site_class}->getFullTitleURL($row->title_url)."'>{$row->title}</a>"
+					'full_title_url' => "{$row->title}"
 				];
 			}
 		}
