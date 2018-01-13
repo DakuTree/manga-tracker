@@ -56,8 +56,9 @@
 // @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
 // @include      /^http:\/\/reader\.dkthias\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.fos-scans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/saikoscans\.ml\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-13
-// @version      1.8.32
+// @version      1.8.33
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -2912,6 +2913,17 @@ let sites = {
 	 * @type {SiteObject}
 	 */
 	'reader.fos-scans.com' : extendSite({
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	}),
+
+	/**
+	 * SaikoScans (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	'saikoscans.ml' : extendSite({
 		preInit : function(callback) {
 			this.setupFoolSlide();
 			callback();

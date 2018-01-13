@@ -57,3 +57,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * MangaKakalot
 * DKThiasScans
 * ForgottenScans
+* SaikoScans

@@ -121,5 +121,6 @@
 		<li>MangaKakalot</li>
 		<li>DKThiasScans</li>
 		<li>ForgottenScans</li>
+		<li>SaikoScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>
