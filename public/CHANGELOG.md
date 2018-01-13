@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-13]
+### Fixed
+- MangaKakalot - Chapter number is no longer omitted.
+
 ## [2018-01-11]
 ### Added
 - myMangaReaderCMS sites now have custom updater support!
