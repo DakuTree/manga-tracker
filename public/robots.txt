@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /user/
 Disallow: /history/
-Disallow: /report_bug
+Disallow: /report_issue

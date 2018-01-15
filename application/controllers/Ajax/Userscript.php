@@ -66,27 +66,27 @@ class Userscript extends AJAX_Controller {
 	}
 
 	/**
-	 * Report a bug via userscript.
+	 * Report an Issue via userscript.
 	 *
-	 * REQ_PARAMS: api-key, bug[url], bug[text]
+	 * REQ_PARAMS: api-key, issue[url], issue[text]
 	 * METHOD:     POST
-	 * URL:        /ajax/userscript/report_bug
+	 * URL:        /ajax/userscript/report_issue
 	 */
-	public function report_bug() : void {
+	public function report_issue() : void {
 		$this->load->library('user_agent');
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		$this->form_validation->set_rules('bug[url]',  'Bug [URL]',  'required');
-		$this->form_validation->set_rules('bug[text]', 'Bug [Text]', 'required');
+		$this->form_validation->set_rules('issue[url]',  'issue [URL]',  'required');
+		$this->form_validation->set_rules('issue[text]', 'issue [Text]', 'required');
 
 		if($this->form_validation->run() === TRUE) {
-			$bug = $this->input->post('bug');
+			$issue = $this->input->post('issue');
 
 			//Preferably, I'd like to validate this in some way, but it's a bit too easy to bypass
-			$success = $this->Tracker->bug->report($bug['text'], NULL, $bug['url']);
+			$success = $this->Tracker->issue->report($issue['text'], NULL, $issue['url']);
 			if($success) {
 				$this->output->set_status_header('200'); //Success!
 			} else {
-				$this->output->set_status_header('400', 'Unable to report bug?');
+				$this->output->set_status_header('400', 'Unable to report issue?');
 			}
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
@@ -103,7 +103,7 @@ class Userscript extends AJAX_Controller {
 	public function favourite() : void {
 		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
 
-		if($this->limiter->limit('tracker_userscript_bug', 250)) {
+		if($this->limiter->limit('tracker_userscript_favourite', 250)) {
 			$this->output->set_status_header('429', 'Rate limit reached'); //rate limited reached
 		} else {
 			$this->form_validation->set_rules('manga[site]', 'Manga [Site]', 'required');

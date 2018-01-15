@@ -103,9 +103,9 @@ $route['import_amr']                  = 'Import_AMR';
 
 $route['ajax/userscript/update']['post']     = 'Ajax/Userscript/update';
 $route['ajax/userscript/favourite']['post']  = 'Ajax/Userscript/favourite';
-$route['ajax/userscript/report_bug']['post'] = 'Ajax/Userscript/report_bug';
+$route['ajax/userscript/report_issue']['post'] = 'Ajax/Userscript/report_issue';
 
-$route['report_bug']  = 'ReportBug';
+$route['report_issue']  = 'ReportIssue';
 $route['stats']       = 'Stats';
 $route['help']        = 'Help';
 

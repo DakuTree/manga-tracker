@@ -68,7 +68,7 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-15
-// @version      1.8.44
+// @version      1.8.45
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -279,7 +279,7 @@ let base_site = {
 					).append(
 						next
 					).append(
-						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report a Bug'})
+						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'})
 					).append(
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
@@ -883,7 +883,7 @@ let base_site = {
 				};
 
 				GM_xmlhttpRequest({
-					url     : main_site + '/ajax/userscript/report_bug',
+					url     : main_site + '/ajax/userscript/report_issue',
 					method  : 'POST',
 					data    : $.param(params),
 					headers: {

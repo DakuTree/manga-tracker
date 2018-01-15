@@ -448,7 +448,7 @@ $config['csrf_expire']       = 7200;
 $config['csrf_regenerate']   = TRUE;
 $config['csrf_exclude_uris'] = array(
 	'ajax/userscript/update',
-	'ajax/userscript/report_bug',
+	'ajax/userscript/report_issue',
 	'ajax/userscript/favourite',
 
 	//TODO: These <should> use CSRF, but for now we're going to just exclude them.

@@ -14,7 +14,7 @@ class Tracker_Model extends Tracker_Base_Model {
 	public $portation;
 	public $admin;
 	public $stats;
-	public $bug;
+	public $issue;
 
 	public function __construct() {
 		parent::__construct();
@@ -28,6 +28,6 @@ class Tracker_Model extends Tracker_Base_Model {
 		$this->portation  = new Tracker_Portation_Model();
 		$this->admin      = new Tracker_Admin_Model();
 		$this->stats      = new Tracker_Stats_Model();
-		$this->bug        = new Tracker_Bug_Model();
+		$this->issue      = new Tracker_Issue_Model();
 	}
 }
