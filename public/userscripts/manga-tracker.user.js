@@ -67,8 +67,8 @@
 // @include      /^http:\/\/atelierdunoir\.org\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-13
-// @version      1.8.43
+// @updated      2018-01-15
+// @version      1.8.44
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -83,6 +83,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        unsafeWindow
 // @noframes
+// @connect      trackr.moe
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
 // @connect      m.mangafox.la
@@ -384,58 +385,68 @@ let base_site = {
 
 					if(!hasEmptyValues(params.manga)) {
 						let status = $('#TrackerStatus');
-						$.post(main_site + '/ajax/userscript/update', params, function (json) {
-							/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-							GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
+						GM_xmlhttpRequest({
+							url      :main_site + '/ajax/userscript/update',
+							method  : 'POST',
+							data    : $.param(params),
+							headers: {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							onload  : function(e) {
+								this.attemptingTrack = false;
 
-							//TODO: We should really output this somewhere other than the topbar..
-							status.text('Attempting update...');
+								let data = e.responseText,
+								    json = JSON.parse(data);
 
-							switch(json.mal_sync) {
-								case 'disabled':
-									status.text('Updated');
-									break;
+								/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-								case 'csrf':
-									if(json.mal_id) {
-										if(json.mal_id !== 'none') {
-											status.text('Updated (Found MAL ID, attempting update...)');
-											_this.syncMALCSRF(json.mal_id, json.chapter);
+								GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
+
+								//TODO: We should really output this somewhere other than the topbar..
+								status.text('Attempting update...');
+
+								switch(json.mal_sync) {
+									case 'disabled':
+										status.text('Updated');
+										break;
+
+									case 'csrf':
+										if(json.mal_id) {
+											if(json.mal_id !== 'none') {
+												status.text('Updated (Found MAL ID, attempting update...)');
+												_this.syncMALCSRF(json.mal_id, json.chapter);
+											} else {
+												status.text('Updated (Not on MAL)');
+											}
 										} else {
-											status.text('Updated (Not on MAL)');
+											status.text('Updated (No MAL ID set)');
 										}
-									} else {
-										status.text('Updated (No MAL ID set)');
-									}
 
-									break;
+										break;
 
-								case 'api':
-									//TODO: Not implemented yet.
-									break;
+									case 'api':
+										//TODO: Not implemented yet.
+										break;
 
-								default:
-									break;
-							}
-						})
-							.fail((jqXHR, textStatus, errorThrown) => {
-								status.text('Update failed?');
-								switch(jqXHR.status) {
+									default:
+										break;
+								}
+							},
+							onerror : function(e) {
+								switch(e.status) {
 									case 400:
-										alert('ERROR: ' + errorThrown);
+										alert('ERROR: ' + e.statusText);
 										break;
 									case 429:
 										alert('ERROR: Rate limit reached.');
 										break;
 									default:
-										alert('ERROR: Something went wrong!\n'+errorThrown);
+										alert('ERROR: Something went wrong!\n'+e.statusText);
 										break;
 								}
-							})
-							.always(() => {
-								_this.attemptingTrack = false;
-							});
+							}
+						});
 					} else {
 						alert('Something went wrong when attempting to track');
 						//TODO: Throw bug report
@@ -871,19 +882,28 @@ let base_site = {
 					}
 				};
 
-				$.post(main_site + '/ajax/userscript/report_bug', params, function () {
-					alert('Bug successfully submitted');
-				}).fail((jqXHR, textStatus, errorThrown) => {
-					switch(jqXHR.status) {
-						case 400:
-							alert('ERROR: ' + errorThrown);
-							break;
-						case 429:
-							alert('ERROR: Rate limit reached.');
-							break;
-						default:
-							alert('ERROR: Something went wrong!\n'+errorThrown);
-							break;
+				GM_xmlhttpRequest({
+					url     : main_site + '/ajax/userscript/report_bug',
+					method  : 'POST',
+					data    : $.param(params),
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					onload  : function(/*e*/) {
+						alert('Bug successfully submitted');
+					},
+					onerror : function(e) {
+						switch(e.status) {
+							case 400:
+								alert('ERROR: ' + e.statusText);
+								break;
+							case 429:
+								alert('ERROR: Rate limit reached.');
+								break;
+							default:
+								alert('ERROR: Something went wrong!\n'+e.statusText);
+								break;
+						}
 					}
 				});
 			} else {
@@ -933,20 +953,28 @@ let base_site = {
 				}
 			};
 
-			$.post(main_site + '/ajax/userscript/favourite', params, function (data, textStatus, jqXHR) {
-				//TODO: We should really output this somewhere other than the topbar..
-				$('#TrackerStatus').text(jqXHR.statusText);
-			}).fail((jqXHR, textStatus, errorThrown) => {
-				switch(jqXHR.status) {
-					case 400:
-						alert('ERROR: ' + errorThrown);
-						break;
-					case 429:
-						alert('ERROR: Rate limit reached.');
-						break;
-					default:
-						alert('ERROR: Something went wrong!\n'+errorThrown);
-						break;
+			GM_xmlhttpRequest({
+				url     : main_site + '/ajax/userscript/favourite',
+				method  : 'POST',
+				data    : $.param(params),
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				onload  : function(e) {
+					$('#TrackerStatus').text(e.statusText);
+				},
+				onerror : function(e) {
+					switch(e.status) {
+						case 400:
+							alert('ERROR: ' + e.statusText);
+							break;
+						case 429:
+							alert('ERROR: Rate limit reached.');
+							break;
+						default:
+							alert('ERROR: Something went wrong!\n'+e.statusText);
+							break;
+					}
 				}
 			});
 		} else {
@@ -3167,37 +3195,14 @@ let sites = {
 					}
 					let apiDiv = $('#api-key-div');
 					apiDiv.on('click', '#generate-api-key', function() {
-						$.getJSON(main_site + '/ajax/get_apikey', function(json) {
-							if(json['api-key']) {
-								$('#api-key').text(json['api-key']);
+						GM_xmlhttpRequest({
+							url     : main_site + '/ajax/get_apikey',
+							method  : 'GET',
+							onload  : function(e) {
+								let data = e.responseText,
+								    json = JSON.parse(data);
 
-								if(location.hostname === 'dev.trackr.moe') {
-									config['api-key-dev'] = json['api-key'];
-								} else {
-									config['api-key']     = json['api-key'];
-								}
-								GM_setValue('config', JSON.stringify(config));
-							} else {
-								alert('ERROR: Something went wrong!\nJSON missing API key?');
-							}
-						}).fail((jqXHR, textStatus, errorThrown) => {
-							switch(jqXHR.status) {
-								case 400:
-									alert('ERROR: Not logged in?');
-									break;
-								case 429:
-									alert('ERROR: Rate limit reached.');
-									break;
-								default:
-									alert('ERROR: Something went wrong!\n'+errorThrown);
-									break;
-							}
-						});
-					});
-					apiDiv.on('click', '#restore-api-key', function() {
-						$.getJSON(main_site + '/ajax/get_apikey/restore', function(json) {
-							if(json['api-key']) {
-								if(json['api-key'] !== '') {
+								if(json['api-key']) {
 									$('#api-key').text(json['api-key']);
 
 									if(location.hostname === 'dev.trackr.moe') {
@@ -3207,22 +3212,61 @@ let sites = {
 									}
 									GM_setValue('config', JSON.stringify(config));
 								} else {
-									alert('API Key hasn\'t been set before. Use generate API key instead.')
+									alert('ERROR: Something went wrong!\nJSON missing API key?');
 								}
-							} else {
-								alert('ERROR: Something went wrong!\nJSON missing API key?');
+							},
+							onerror : function(e) {
+								switch(e.status) {
+									case 400:
+										alert('ERROR: Not logged in?');
+										break;
+									case 429:
+										alert('ERROR: Rate limit reached.');
+										break;
+									default:
+										alert('ERROR: Something went wrong!\n'+e.statusText);
+										break;
+								}
 							}
-						}).fail((jqXHR, textStatus, errorThrown) => {
-							switch(jqXHR.status) {
-								case 400:
-									alert('ERROR: Not logged in?');
-									break;
-								case 429:
-									alert('ERROR: Rate limit reached.');
-									break;
-								default:
-									alert('ERROR: Something went wrong!\n'+errorThrown);
-									break;
+						});
+					});
+					apiDiv.on('click', '#restore-api-key', function() {
+						GM_xmlhttpRequest({
+							url     : main_site + '/ajax/get_apikey/restore',
+							method  : 'GET',
+							onload  : function(e) {
+								let data = e.responseText,
+								    json = JSON.parse(data);
+
+								if(json['api-key']) {
+									if(json['api-key'] !== '') {
+										$('#api-key').text(json['api-key']);
+
+										if(location.hostname === 'dev.trackr.moe') {
+											config['api-key-dev'] = json['api-key'];
+										} else {
+											config['api-key']     = json['api-key'];
+										}
+										GM_setValue('config', JSON.stringify(config));
+									} else {
+										alert('API Key hasn\'t been set before. Use generate API key instead.')
+									}
+								} else {
+									alert('ERROR: Something went wrong!\nJSON missing API key?');
+								}
+							},
+							onerror : function(e) {
+								switch(e.status) {
+									case 400:
+										alert('ERROR: Not logged in?');
+										break;
+									case 429:
+										alert('ERROR: Rate limit reached.');
+										break;
+									default:
+										alert('ERROR: Something went wrong!\n'+e.statusText);
+										break;
+								}
 							}
 						});
 					});

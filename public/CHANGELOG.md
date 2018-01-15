@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-15]
+### Changed
+- Moved all userscript trackr.moe requests over to GM_xmlHttpRequest.  
+  - This "should" prevent Privacy Badger from auto-detecting trackr.moe as a tracker (even though we are, just not in the sense they mean).
+
 ## [2018-01-13]
 ### Added
 - Support for Riceballicious.
