@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Moved all userscript trackr.moe requests over to GM_xmlHttpRequest.  
   - This "should" prevent Privacy Badger from auto-detecting trackr.moe as a tracker (even though we are, just not in the sense they mean).
+- "Report Bug" system has been renamed to "Report Issue" as to be a bit more broad of what you can report.
+- Userscript "Report Issue" option now opens a new tab with the report issue page rather than giving you a prompt.
 
 ## [2018-01-13]
 ### Added

@@ -66,34 +66,6 @@ class Userscript extends AJAX_Controller {
 	}
 
 	/**
-	 * Report an Issue via userscript.
-	 *
-	 * REQ_PARAMS: api-key, issue[url], issue[text]
-	 * METHOD:     POST
-	 * URL:        /ajax/userscript/report_issue
-	 */
-	public function report_issue() : void {
-		$this->load->library('user_agent');
-		if($this->output->is_custom_header_set()) { $this->output->reset_status_header(); return; }
-		$this->form_validation->set_rules('issue[url]',  'issue [URL]',  'required');
-		$this->form_validation->set_rules('issue[text]', 'issue [Text]', 'required');
-
-		if($this->form_validation->run() === TRUE) {
-			$issue = $this->input->post('issue');
-
-			//Preferably, I'd like to validate this in some way, but it's a bit too easy to bypass
-			$success = $this->Tracker->issue->report($issue['text'], NULL, $issue['url']);
-			if($success) {
-				$this->output->set_status_header('200'); //Success!
-			} else {
-				$this->output->set_status_header('400', 'Unable to report issue?');
-			}
-		} else {
-			$this->output->set_status_header('400', 'Missing/invalid parameters.');
-		}
-	}
-
-	/**
 	 * Favourite a chapter via the userscript.
 	 *
 	 * REQ_PARAMS: api-key, manga[site], manga[title], manga[chapter]

@@ -68,7 +68,7 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-16
-// @version      1.8.45
+// @version      1.8.46
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -279,7 +279,8 @@ let base_site = {
 					).append(
 						next
 					).append(
-						$('<i/>', {id: 'report-issue', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'})
+						$('<a/>', {href: main_site + '/report_issue?url='+encodeURIComponent(location.href), target: '_blank'}).append(
+							$('<i/>', {id: 'report-issue', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'}))
 					).append(
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
@@ -321,12 +322,6 @@ let base_site = {
 
 				_this.trackChapter(true);
 				// $(this).css('color', '#00b232');
-			});
-			//Setup issue report event.
-			$(topbar).on('click', '#report-issue', function(e) {
-				e.preventDefault();
-
-				_this.reportIssue();
 			});
 			//Setup search.
 			$(topbar).on('click', '#trackerSearch', function(e) {
@@ -859,57 +854,6 @@ let base_site = {
 				$(v).click();
 			}, _this.delay + (_this.delay !== 0 ? (i * _this.delay) : 0));
 		});
-	},
-
-	/**
-	 * Used to report issues.
-	 *
-	 * @function
-	 * @alias sites.*.reportIssue
-	 * @name base_site.reportIssue
-	 *
-	 * @final
-	 */
-	reportIssue : function() {
-		let issueText = prompt('Describe the issue. Please give as much detail as possible.');
-		if(issueText) {
-			if(issueText !== '') {
-				let params = {
-					'api-key' : config['api-key'],
-					'issue'     : {
-						url  : location.href,
-						text : 'APIKEY:'+config['api-key']+' ||| '+issueText
-					}
-				};
-
-				GM_xmlhttpRequest({
-					url     : main_site + '/ajax/userscript/report_issue',
-					method  : 'POST',
-					data    : $.param(params),
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					onload  : function(/*e*/) {
-						alert('Issue successfully submitted');
-					},
-					onerror : function(e) {
-						switch(e.status) {
-							case 400:
-								alert('ERROR: ' + e.statusText);
-								break;
-							case 429:
-								alert('ERROR: Rate limit reached.');
-								break;
-							default:
-								alert('ERROR: Something went wrong!\n'+e.statusText);
-								break;
-						}
-					}
-				});
-			} else {
-				alert('Issue text cannot be blank.');
-			}
-		}
 	},
 
 	/**
