@@ -67,7 +67,7 @@
 // @include      /^http:\/\/atelierdunoir\.org\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-15
+// @updated      2018-01-16
 // @version      1.8.45
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
@@ -279,7 +279,7 @@ let base_site = {
 					).append(
 						next
 					).append(
-						$('<i/>', {id: 'report-bug', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'})
+						$('<i/>', {id: 'report-issue', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'})
 					).append(
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
@@ -322,11 +322,11 @@ let base_site = {
 				_this.trackChapter(true);
 				// $(this).css('color', '#00b232');
 			});
-			//Setup bug report event.
-			$(topbar).on('click', '#report-bug', function(e) {
+			//Setup issue report event.
+			$(topbar).on('click', '#report-issue', function(e) {
 				e.preventDefault();
 
-				_this.reportBug();
+				_this.reportIssue();
 			});
 			//Setup search.
 			$(topbar).on('click', '#trackerSearch', function(e) {
@@ -862,23 +862,23 @@ let base_site = {
 	},
 
 	/**
-	 * Used to report bugs. Shows a prompt.
+	 * Used to report issues.
 	 *
 	 * @function
-	 * @alias sites.*.reportBug
-	 * @name base_site.reportBug
+	 * @alias sites.*.reportIssue
+	 * @name base_site.reportIssue
 	 *
 	 * @final
 	 */
-	reportBug : function() {
-		let bugText = prompt('Describe the bug. Please give as much detail as possible.');
-		if(bugText) {
-			if(bugText !== '') {
+	reportIssue : function() {
+		let issueText = prompt('Describe the issue. Please give as much detail as possible.');
+		if(issueText) {
+			if(issueText !== '') {
 				let params = {
 					'api-key' : config['api-key'],
-					'bug'     : {
+					'issue'     : {
 						url  : location.href,
-						text : 'APIKEY:'+config['api-key']+' ||| '+bugText
+						text : 'APIKEY:'+config['api-key']+' ||| '+issueText
 					}
 				};
 
@@ -890,7 +890,7 @@ let base_site = {
 						"Content-Type": "application/x-www-form-urlencoded"
 					},
 					onload  : function(/*e*/) {
-						alert('Bug successfully submitted');
+						alert('Issue successfully submitted');
 					},
 					onerror : function(e) {
 						switch(e.status) {
@@ -907,7 +907,7 @@ let base_site = {
 					}
 				});
 			} else {
-				alert('Bug text cannot be blank.');
+				alert('Issue text cannot be blank.');
 			}
 		}
 	},
