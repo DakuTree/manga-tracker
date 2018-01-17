@@ -214,16 +214,16 @@
         },
         {
             "name": "codeigniter/framework",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "7e4f63cd4b792e7dc2dc4b8b0183a6072a3f9462"
+                "reference": "02a0518e1c56ba3506f370362ac5ebdb8a138312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/7e4f63cd4b792e7dc2dc4b8b0183a6072a3f9462",
-                "reference": "7e4f63cd4b792e7dc2dc4b8b0183a6072a3f9462",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/02a0518e1c56ba3506f370362ac5ebdb8a138312",
+                "reference": "02a0518e1c56ba3506f370362ac5ebdb8a138312",
                 "shasum": ""
             },
             "require": {
@@ -243,7 +243,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2017-09-25T16:43:58+00:00"
+            "time": "2018-01-13T11:57:11+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1239,16 +1239,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "b11c729f95109b56a0fe9650c6a63a0fcd8c439f"
+                "reference": "11c07feade1d65453e06df3b3b90171d6d982087"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/b11c729f95109b56a0fe9650c6a63a0fcd8c439f",
-                "reference": "b11c729f95109b56a0fe9650c6a63a0fcd8c439f",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/11c07feade1d65453e06df3b3b90171d6d982087",
+                "reference": "11c07feade1d65453e06df3b3b90171d6d982087",
                 "shasum": ""
             },
             "require": {
@@ -1299,7 +1299,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-12-22T14:50:35+00:00"
+            "time": "2018-01-12T06:34:42+00:00"
         },
         {
             "name": "sebastian/diff",

@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - ViolentMonkey is now supported.
   - Please make an issue with any bugs!
 
+### Changed
+- `[Backend]` Updated CodeIgniter to 3.1.7.
+
 ### Fixed
 - Tracking should work properly again if you have MAL syncing enabled.
 
