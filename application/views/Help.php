@@ -2,7 +2,7 @@
 <div>
 	<ol>
 		<li>Install <a href="https://tampermonkey.net/">TamperMonkey</a> (Chrome) or <a href="https://addons.mozilla.org/en-GB/firefox/addon/tampermonkey/">TamperMonkey</a> (Firefox). (GreaseMonkey is currently not supported.)</li>
-		<li>Install the trackr.moe <a href="<?=base_url('userscripts/manga-tracker.user.js')?>">userscript</a>. Make sure this is installed to Tampermonkey, and not directly to your browser.</li>
+		<li>Install the trackr.moe <a href="<?=base_url('userscripts/manga-tracker.user.js')?>">userscript</a>. Make sure this is installed to Tampermonkey, and not directly to your browser. (Alternatively you can also use ViolentMonkey)</li>
 		<li><a href="<?=base_url('user/login')?>">Login</a> to the site.</li>
 		<li>While logged in, visit <a href="<?=base_url('user/options')?>">user/options</a> and click "Generate/Reset". A new key should be shown. Refresh to verify the same API key appears again.</li>
 		<li>Visit any manga on one of the supported sites and click the book icon to start tracking the series.</li>

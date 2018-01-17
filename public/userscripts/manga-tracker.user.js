@@ -67,8 +67,8 @@
 // @include      /^http:\/\/atelierdunoir\.org\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-16
-// @version      1.8.46
+// @updated      2018-01-17
+// @version      1.8.47
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -106,6 +106,40 @@ function hasEmptyValues(o) {
 		return o[x]===''||o[x]===null;  // or just "return o[x];" for falsy values
 	});
 }
+function addStyleFromResource(resourceName) {
+	//Userscript extensions don't seem to handle GM_getResourceURL the same, so we need to fix that.
+	let GM_blob = GM_getResourceURL(resourceName);
+
+	let cssEle = null;
+	if(GM_blob.substr(0, 5) === 'blob:') {
+		//ViolentMonkey
+		//This is kind of a hack, but these blob: URLs don't work with css containing // includes, which means we need to convert it to base64 somehow.
+
+		let xhr = new XMLHttpRequest();
+			xhr.open('GET', GM_blob, true);
+			xhr.responseType = 'arraybuffer';
+			xhr.onload = function(e) {
+			if (this.status == 200) {
+				let uInt8Array   = new Uint8Array(this.response),
+				    i            = uInt8Array.length,
+				    binaryString = new Array(i);
+
+				while (i--) {
+					binaryString[i] = String.fromCharCode(uInt8Array[i]);
+				}
+
+				let data   = binaryString.join('');
+				cssEle = $('<style/>', {type: 'text/css', text: data});
+				$('head').append(cssEle);
+			}
+		};
+		xhr.send();
+	} else {
+		//Other
+		cssEle = $('<style/>', {type: 'text/css', text: atob(GM_blob.substr(21))});
+		$('head').append(cssEle);
+	}
+}
 
 /***********************************************************************************************************/
 
@@ -125,8 +159,7 @@ let base_site = {
 	init : function() {
 		let _this = this;
 
-		let faStyle = $('<style/>', {type: 'text/css', text: atob(GM_getResourceURL('fontAwesome').substr(21))});
-		$('head').append(faStyle);
+		addStyleFromResource('fontAwesome');
 
 		this.preInit(function() {
 			_this.setObjVars();
@@ -259,8 +292,7 @@ let base_site = {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
-			let usStyle = $('<style/>', {type: 'text/css', text: atob(GM_getResourceURL('userscriptCSS').substr(21))});
-			$('head').append(usStyle);
+			addStyleFromResource('userscriptCSS');
 
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
