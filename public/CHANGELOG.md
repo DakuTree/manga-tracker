@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - ViolentMonkey is now supported.
   - Please make an issue with any bugs!
 
+### Fixed
+- Tracking should work properly again if you have MAL syncing enabled.
+
 ## [2018-01-15]
 ### Changed
 - Moved all userscript trackr.moe requests over to GM_xmlHttpRequest.  

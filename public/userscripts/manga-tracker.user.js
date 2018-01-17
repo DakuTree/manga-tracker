@@ -68,7 +68,7 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-17
-// @version      1.8.47
+// @version      1.8.48
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -421,7 +421,7 @@ let base_site = {
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
 							onload  : function(e) {
-								this.attemptingTrack = false;
+								_this.attemptingTrack = false;
 
 								let data = e.responseText,
 								    json = JSON.parse(data);
