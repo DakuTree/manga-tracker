@@ -68,3 +68,4 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * AtelierDuNoir
 * Lolitannia
 * Riceballicious
+* MangaDex

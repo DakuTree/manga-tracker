@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-18]
+### Added
+- Support for MangaDex.
+
 ## [2018-01-17]
 ### Added
 - ViolentMonkey is now supported.

@@ -132,5 +132,6 @@
 		<li>AtelierDuNoir</li>
 		<li>Lolitannia</li>
 		<li>Riceballicious</li>
+		<li>MangaDex</li>
 	</ul> <!--ENDOFSITES-->
 </div>
