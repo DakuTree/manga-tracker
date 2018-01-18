@@ -120,7 +120,7 @@ function addStyleFromResource(resourceName) {
 			xhr.open('GET', GM_blob, true);
 			xhr.responseType = 'arraybuffer';
 			xhr.onload = function(e) {
-			if (this.status == 200) {
+			if (this.status === 200) {
 				let uInt8Array   = new Uint8Array(this.response),
 				    i            = uInt8Array.length,
 				    binaryString = new Array(i);
@@ -424,41 +424,45 @@ let base_site = {
 							onload  : function(e) {
 								_this.attemptingTrack = false;
 
-								let data = e.responseText,
-								    json = JSON.parse(data);
+								if(e.status === 200) {
+									let data = e.responseText,
+									    json = JSON.parse(data);
 
-								/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
+									/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-								GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
+									GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
 
-								//TODO: We should really output this somewhere other than the topbar..
-								status.text('Attempting update...');
+									//TODO: We should really output this somewhere other than the topbar..
+									status.text('Attempting update...');
 
-								switch(json.mal_sync) {
-									case 'disabled':
-										status.text('Updated');
-										break;
+									switch(json.mal_sync) {
+										case 'disabled':
+											status.text('Updated');
+											break;
 
-									case 'csrf':
-										if(json.mal_id) {
-											if(json.mal_id !== 'none') {
-												status.text('Updated (Found MAL ID, attempting update...)');
-												_this.syncMALCSRF(json.mal_id, json.chapter);
+										case 'csrf':
+											if(json.mal_id) {
+												if(json.mal_id !== 'none') {
+													status.text('Updated (Found MAL ID, attempting update...)');
+													_this.syncMALCSRF(json.mal_id, json.chapter);
+												} else {
+													status.text('Updated (Not on MAL)');
+												}
 											} else {
-												status.text('Updated (Not on MAL)');
+												status.text('Updated (No MAL ID set)');
 											}
-										} else {
-											status.text('Updated (No MAL ID set)');
-										}
 
-										break;
+											break;
 
-									case 'api':
-										//TODO: Not implemented yet.
-										break;
+										case 'api':
+											//TODO: Not implemented yet.
+											break;
 
-									default:
-										break;
+										default:
+											break;
+									}
+								} else {
+									this.onerror(e);
 								}
 							},
 							onerror : function(e) {
@@ -938,7 +942,11 @@ let base_site = {
 					"Content-Type": "application/x-www-form-urlencoded"
 				},
 				onload  : function(e) {
-					$('#TrackerStatus').text(e.statusText);
+					if(e.status === 200) {
+						$('#TrackerStatus').text(e.statusText);
+					} else {
+						this.onerror(e);
+					}
 				},
 				onerror : function(e) {
 					switch(e.status) {
@@ -3218,20 +3226,24 @@ let sites = {
 							url     : main_site + '/ajax/get_apikey',
 							method  : 'GET',
 							onload  : function(e) {
-								let data = e.responseText,
-								    json = JSON.parse(data);
+								if(e.status === 200) {
+									let data = e.responseText,
+									    json = JSON.parse(data);
 
-								if(json['api-key']) {
-									$('#api-key').text(json['api-key']);
+									if(json['api-key']) {
+										$('#api-key').text(json['api-key']);
 
-									if(location.hostname === 'dev.trackr.moe') {
-										config['api-key-dev'] = json['api-key'];
+										if(location.hostname === 'dev.trackr.moe') {
+											config['api-key-dev'] = json['api-key'];
+										} else {
+											config['api-key']     = json['api-key'];
+										}
+										GM_setValue('config', JSON.stringify(config));
 									} else {
-										config['api-key']     = json['api-key'];
+										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
-									GM_setValue('config', JSON.stringify(config));
 								} else {
-									alert('ERROR: Something went wrong!\nJSON missing API key?');
+									this.onerror(e);
 								}
 							},
 							onerror : function(e) {
@@ -3254,24 +3266,28 @@ let sites = {
 							url     : main_site + '/ajax/get_apikey/restore',
 							method  : 'GET',
 							onload  : function(e) {
-								let data = e.responseText,
-								    json = JSON.parse(data);
+								if(e.status === 200) {
+									let data = e.responseText,
+									    json = JSON.parse(data);
 
-								if(json['api-key']) {
-									if(json['api-key'] !== '') {
-										$('#api-key').text(json['api-key']);
+									if(json['api-key']) {
+										if(json['api-key'] !== '') {
+											$('#api-key').text(json['api-key']);
 
-										if(location.hostname === 'dev.trackr.moe') {
-											config['api-key-dev'] = json['api-key'];
+											if(location.hostname === 'dev.trackr.moe') {
+												config['api-key-dev'] = json['api-key'];
+											} else {
+												config['api-key'] = json['api-key'];
+											}
+											GM_setValue('config', JSON.stringify(config));
 										} else {
-											config['api-key']     = json['api-key'];
+											alert('API Key hasn\'t been set before. Use generate API key instead.')
 										}
-										GM_setValue('config', JSON.stringify(config));
 									} else {
-										alert('API Key hasn\'t been set before. Use generate API key instead.')
+										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
 								} else {
-									alert('ERROR: Something went wrong!\nJSON missing API key?');
+									this.onerror(e);
 								}
 							},
 							onerror : function(e) {
