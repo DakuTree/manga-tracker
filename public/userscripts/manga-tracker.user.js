@@ -69,7 +69,7 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-18
-// @version      1.8.49
+// @version      1.8.51
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -462,7 +462,17 @@ let base_site = {
 											break;
 									}
 								} else {
-									this.onerror(e);
+									switch(e.status) {
+										case 400:
+											alert('ERROR: ' + e.statusText);
+											break;
+										case 429:
+											alert('ERROR: Rate limit reached.');
+											break;
+										default:
+											alert('ERROR: Something went wrong!\n'+e.statusText);
+											break;
+									}
 								}
 							},
 							onerror : function(e) {
@@ -945,7 +955,17 @@ let base_site = {
 					if(e.status === 200) {
 						$('#TrackerStatus').text(e.statusText);
 					} else {
-						this.onerror(e);
+						switch(e.status) {
+							case 400:
+								alert('ERROR: ' + e.statusText);
+								break;
+							case 429:
+								alert('ERROR: Rate limit reached.');
+								break;
+							default:
+								alert('ERROR: Something went wrong!\n'+e.statusText);
+								break;
+						}
 					}
 				},
 				onerror : function(e) {
@@ -3243,7 +3263,17 @@ let sites = {
 										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
 								} else {
-									this.onerror(e);
+									switch(e.status) {
+										case 400:
+											alert('ERROR: Not logged in?');
+											break;
+										case 429:
+											alert('ERROR: Rate limit reached.');
+											break;
+										default:
+											alert('ERROR: Something went wrong!\n'+e.statusText);
+											break;
+									}
 								}
 							},
 							onerror : function(e) {
@@ -3287,7 +3317,17 @@ let sites = {
 										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
 								} else {
-									this.onerror(e);
+									switch(e.status) {
+										case 400:
+											alert('ERROR: Not logged in?');
+											break;
+										case 429:
+											alert('ERROR: Rate limit reached.');
+											break;
+										default:
+											alert('ERROR: Something went wrong!\n'+e.statusText);
+											break;
+									}
 								}
 							},
 							onerror : function(e) {
