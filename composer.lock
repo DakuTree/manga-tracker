@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ff623088bbbc1256a727f0d4b6f1d74",
+    "content-hash": "9adc7c7452fcb7d46e7fd72acd5ac7c7",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -296,7 +296,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "96cb4976804b28cc80b319684cfe2d898c3223b2"
+                "reference": "52e2133d20f2ed92a788a4ac4700d1f4f14ab20f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/52e2133d20f2ed92a788a4ac4700d1f4f14ab20f",
+                "reference": "52e2133d20f2ed92a788a4ac4700d1f4f14ab20f",
+                "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^2.1|^3.0",
@@ -308,6 +314,7 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -326,10 +333,7 @@
                 "test",
                 "unit testing"
             ],
-            "support": {
-                "forum": "http://forum.codeigniter.com/thread-61725.html"
-            },
-            "time": "2017-11-26 10:20:44"
+            "time": "2018-01-14 11:55:42"
         },
         {
             "name": "nikic/php-parser",
