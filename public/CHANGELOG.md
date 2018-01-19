@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2018-01-19]
+### Fixed
+- MangaDex works again.
+  - This may continue to break as the site gets updated, hopefully they'll avoid major HTML changes...
+
 ## [2018-01-18]
 ### Added
 - Support for MangaDex.

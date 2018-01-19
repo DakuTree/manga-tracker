@@ -2,7 +2,7 @@
 
 class MangaDex extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+$/';
-	public $chapterFormat = '/^[0-9]+:--:v[0-9]+\/c[0-9\.]+$/';
+	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangadex.com/manga/{$title_url}";
@@ -29,8 +29,8 @@ class MangaDex extends Base_Site_Model {
 			$title_url,
 			"//h3[contains(@class, 'panel-title')]/text()",
 			"//div[contains(@id, 'torrents')]/div/table/tbody/tr[.//*[@alt='English']][1]", //FIXME: This forces English for now.
-			"td[8]",
-			"td[2]/a",
+			"td[7]",
+			"td[1]/a",
 			"Warning: Manga #"
 		);
 		if($data) {
