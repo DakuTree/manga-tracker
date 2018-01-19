@@ -33,6 +33,7 @@ application/config/*/recaptcha.php
 application/config/*/email.php
 application/config/*/database_password.php
 application/config/*/sites.php
+application/config/*/mailgun.php
 
 #Codeception
 application/tests_codeception/_output
