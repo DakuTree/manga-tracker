@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 ## [2018-01-19]
 ### Changed
 - Moved from Zoho to Mailgun for our email provider.
+- `[Backend]` Change DB collation to utf8mb4_unicode_ci.
+- `[Backend]` Issue reports are now sent to a specific bug address.
 
 ### Fixed
 - MangaDex works again.

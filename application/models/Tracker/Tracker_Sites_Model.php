@@ -208,7 +208,7 @@ abstract class Base_Site_Model extends CI_Model {
 	final private function handleCloudFlare(string $url, string $body) : bool {
 		$refresh = FALSE;
 
-		if(strpos($body, 'DDoS protection by Cloudflare') !== false) {
+		if((strpos($body, 'DDoS protection by Cloudflare') !== FALSE) || (strpos($body, '<input type="hidden" id="jschl-answer" name="jschl_answer"/>') !== FALSE)) {
 			//print "Cloudflare detected? Grabbing Cookies.\n";
 			if(!$this->hasCloudFlare) {
 				//TODO: Site appears to have enabled CloudFlare, disable it and contact admin.

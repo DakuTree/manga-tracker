@@ -15,6 +15,7 @@ class KissManga extends Base_Site_Model {
 
 	public $titleFormat   = '/^[A-Za-z0-9-]+$/';
 	public $chapterFormat = '/^.*?:--:[0-9]+$/';
+	public $hasCloudFlare = TRUE;
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://kissmanga.com/Manga/{$title_url}";
@@ -33,46 +34,26 @@ class KissManga extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		//Check if cookiejar is a day old (so we can know if something went wrong)
-		$cookiejar_path = str_replace("public/", "_scripts/cookiejar", FCPATH);
-		$cookie_last_updated = filemtime($cookiejar_path);
-		if($cookie_last_updated && ((time() - 86400) < $cookie_last_updated)) {
+		$fullURL = $this->getFullTitleURL($title_url);
+		$content = $this->get_content($fullURL);
 
-			$fullURL = $this->getFullTitleURL($title_url);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			$title_url,
+			"//a[@class='bigChar']",
+			"//table[@class='listing']/tr[3]",
+			"td[2]",
+			"td[1]/a",
+			"Not found. Please recheck the link or try search box above."
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
 
-			$content = $this->get_content($fullURL, '', $cookiejar_path);
-			$data = $content['body'];
-			if(strpos($data, 'containerRoot') !== FALSE) {
-				//FIXME: For whatever reason, we can't grab the entire div without simplexml shouting at us
-				$data = preg_replace('/^[\S\s]*(<div id="leftside">[\S\s]*)<div id="rightside">[\S\s]*$/', '$1', $data);
+			$link = (string) (string) $data['nodes_chapter']->getAttribute('href');
+			$chapterURLSegments = explode('/', preg_replace('/\?.*$/', '', $link));
+			$titleData['latest_chapter'] = $chapterURLSegments[3] . ':--:' . preg_replace('/.*?([0-9]+)$/', '$1', $link);
 
-				$dom = new DOMDocument();
-				libxml_use_internal_errors(true);
-				$dom->loadHTML($data);
-				libxml_use_internal_errors(false);
-
-				$xpath = new DOMXPath($dom);
-
-				$nodes_title = $xpath->query("//a[@class='bigChar']");
-				$nodes_row   = $xpath->query("//table[@class='listing']/tr[3]");
-				if($nodes_title->length === 1 && $nodes_row->length === 1) {
-					$titleData['title'] = $nodes_title->item(0)->textContent;
-
-					$firstRow      = $nodes_row->item(0);
-					$nodes_latest  = $xpath->query("td[2]",   $firstRow);
-					$nodes_chapter = $xpath->query("td[1]/a", $firstRow);
-
-					$link = (string) $nodes_chapter->item(0)->getAttribute('href');
-					$chapterURLSegments = explode('/', preg_replace('/\?.*$/', '', $link));
-					$titleData['latest_chapter'] = $chapterURLSegments[3] . ':--:' . preg_replace('/.*?([0-9]+)$/', '$1', $link);
-					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $nodes_latest->item(0)->textContent));
-				}
-			} else {
-				//TODO: Throw ERRORS;
-			}
-		} else {
-			//Do nothing, wait until next update.
-			//TODO: NAG ADMIN??
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
