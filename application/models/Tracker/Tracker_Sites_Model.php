@@ -651,14 +651,14 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//dl/dd");
+			$nodes_rows = $xpath->query("//dl/dd | //div[@class='mangalist']/div[@class='manga-item']");
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
 
-					$nodes_title   = $xpath->query("div[@class='events ']/div[@class='events-body']/h3[@class='events-heading']/a", $row);
-					$nodes_chapter = $xpath->query("div[@class='events '][1]/div[@class='events-body'][1]/h6[@class='events-subtitle'][1]/a[1]", $row);
-					$nodes_latest  = $xpath->query("div[@class='time']", $row);
+					$nodes_title   = $xpath->query("div[@class='events ']/div[@class='events-body']/h3[@class='events-heading']/a | h3/a", $row);
+					$nodes_chapter = $xpath->query("(div[@class='events '][1]/div[@class='events-body'][1] | div[@class='manga-chapter'])/h6[@class='events-subtitle'][1]/a[1]", $row);
+					$nodes_latest  = $xpath->query("div[@class='time'] | small", $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title = $nodes_title->item(0);

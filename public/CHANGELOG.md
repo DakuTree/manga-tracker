@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 - `[Backend]` Issue reports are now sent to a specific bug address.
 
 ### Fixed
+- Fixed custom updater on various myMangaReaderCMS sites.
+
+### Fixed
 - MangaDex works again.
   - This may continue to break as the site gets updated, hopefully they'll avoid major HTML changes...
 
