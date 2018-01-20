@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - More MangaDex tweaking.
+- WebToons should fail properly if RSS doesn't exist.
 
 ## [2018-01-19]
 ### Changed

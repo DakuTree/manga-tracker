@@ -45,7 +45,8 @@ class WebToons extends Base_Site_Model {
 
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
-		if($data !== 'Can\'t find the manga series.') { //FIXME: We should check for he proper error here.
+
+		if(!((strpos($data, 'Can\'t find the manga series.') !== FALSE) || (strpos($data, 'Sorry! We couldn\'t connect to the webtoon service.') !== FALSE))) { //FIXME: We should check for he proper error here.
 			$xml = simplexml_load_string($data);
 			if($xml) {
 				if(isset($xml->{'channel'}->item[0])) {
