@@ -84,9 +84,9 @@
 			"php _scripts/chmod_config.php"
 		],
 		"setup-databases" : [
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_production  CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_testing     CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot",
-			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_development CHARACTER SET utf8 COLLATE utf8_unicode_ci;\" -uroot"
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_production  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_testing     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" -uroot",
+			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_development CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" -uroot"
 		]
 	}
 }
