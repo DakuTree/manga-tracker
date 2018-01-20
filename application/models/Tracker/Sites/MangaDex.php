@@ -2,7 +2,7 @@
 
 class MangaDex extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+$/';
-	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.]+$/';
+	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.v]+$/';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangadex.com/manga/{$title_url}";
@@ -34,10 +34,11 @@ class MangaDex extends Base_Site_Model {
 			"Warning: Manga #"
 		);
 		if($data) {
-			$titleData['title'] = trim($data['nodes_title']->textContent);
+			$titleData['title'] = preg_replace('/\(Batoto .*?$/','', trim($data['nodes_title']->textContent));
 
 			$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];
-			$chapterNumber = preg_replace('/^Vol\. ([0-9]+) Ch\. ([0-9\.]+).*?$/', 'v$1/c$2', (string) $data['nodes_chapter']->textContent);
+			$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $data['nodes_chapter']->textContent)));
+
 			$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
 			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));

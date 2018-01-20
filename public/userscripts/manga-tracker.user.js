@@ -68,8 +68,8 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
-// @updated      2018-01-19
-// @version      1.8.54
+// @updated      2018-01-20
+// @version      1.8.55
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -3093,7 +3093,7 @@ let sites = {
 
 			this.title       = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
 			let chapter      = this.segments[2];
-			this.chapter     = chapter + ':--:' + $('#jump_chapter > option:selected').text().replace(/^(?:Volume ([0-9\.]+)?.*?)?Chapter ([0-9\.]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
+			this.chapter     = chapter + ':--:' + $('#jump_chapter > option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
 
 			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;

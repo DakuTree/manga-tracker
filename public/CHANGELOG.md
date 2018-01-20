@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [2018-01-19]
+- We've moved to a new server for trackr.moe (so we are no longer sharing with my other sites). This should bring some various improvements...
+
+### Fixed
+- More MangaDex tweaking.
+
+## [2018-01-19]
 ### Changed
 - Moved from Zoho to Mailgun for our email provider.
 
