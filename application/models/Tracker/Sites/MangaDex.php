@@ -11,7 +11,7 @@ class MangaDex extends Base_Site_Model {
 	public function getChapterData(string $title_url, string $chapter) : array {
 		$chapter_parts = explode(':--:', $chapter);
 		return [
-			'url'    => "https://mangadex.com/chapter/${$chapter_parts[0]}",
+			'url'    => "https://mangadex.com/chapter/{$chapter_parts[0]}",
 			'number' => $chapter_parts[1]
 		];
 	}
