@@ -159,12 +159,11 @@
 
 const debug = false; //TODO: Move to a userscript option.
 
-// Testing grounds for sites! Use this to test new sites, as well updates for existing sites.
-/*
+// Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
 (function(sites) {
-	sites['example.com'] = {};
+	//sites['example.com'] = {};
 })(window.trackerSites = (window.trackerSites || {}));
-*/
+
 
 /* * * * * * * * * * Site Functions * * * * * * * * * */
 function main() {
