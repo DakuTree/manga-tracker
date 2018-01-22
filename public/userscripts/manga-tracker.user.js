@@ -69,10 +69,11 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-22
-// @version      1.9.0
+// @version      1.9.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
+// @require      https://trackr.moe/userscripts/sites/_trackr.moe.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.js
@@ -156,59 +157,40 @@
 /* global $, jQuery, GM_addStyle, GM_getResourceURL, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
-jQuery.fn.reverseObj = function() {
-	return $(this.get().reverse());
-};
+const debug = false; //TODO: Move to a userscript option.
 
-function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
+// Testing grounds for sites! Use this to test new sites, as well updates for existing sites.
+/*
+(function(sites) {
+	sites['example.com'] = {};
+})(window.trackerSites = (window.trackerSites || {}));
+*/
 
-function hasEmptyValues(o) {
-	return Object.keys(o).some(function(x) {
-		return o[x]===''||o[x]===null;  // or just "return o[x];" for falsy values
-	});
-}
+/* * * * * * * * * * Site Functions * * * * * * * * * */
+function main() {
+	if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
+		//Config exists OR site is trackr.moe.
+		if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') { config['api-key'] = config['api-key-dev']; } //Use dev API-key if using dev site
+		if(!config.options) { config.options = {}; } //We can't use the 'in' operator on this if options doesn't exist.
 
-function addStyleFromResource(resourceName) {
-	//Userscript extensions don't seem to handle GM_getResourceURL the same, so we need to fix that.
-	let GM_blob = GM_getResourceURL(resourceName);
-
-	let cssEle = null;
-	if(GM_blob.substr(0, 5) === 'blob:') {
-		//ViolentMonkey
-		//This is kind of a hack, but these blob: URLs don't work with css containing // includes, which means we need to convert it to base64 somehow.
-
-		let xhr = new XMLHttpRequest();
-			xhr.open('GET', GM_blob, true);
-			xhr.responseType = 'arraybuffer';
-			xhr.onload = function(e) {
-			if (this.status === 200) {
-				let uInt8Array   = new Uint8Array(this.response),
-				    i            = uInt8Array.length,
-				    binaryString = new Array(i);
-
-				while (i--) {
-					binaryString[i] = String.fromCharCode(uInt8Array[i]);
-				}
-
-				let data   = binaryString.join('');
-				cssEle = $('<style/>', {type: 'text/css', text: data});
-				$('head').append(cssEle);
-			}
-		};
-		xhr.send();
+		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
+		if(sites[hostname]) {
+			$(function () {
+				sites[hostname].init();
+			});
+		} else {
+			console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
+		}
 	} else {
-		//Other
-		cssEle = $('<style/>', {type: 'text/css', text: atob(GM_blob.substr(21))});
-		$('head').append(cssEle);
+		alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
 	}
 }
 
-/***********************************************************************************************************/
 /**
  * Base container model for relevant functions and variables.
  * @namespace
  */
-let base_site = {
+const base_site = {
 	/**
 	 * This is the first thing that runs, and also calls also all relevant functions.
 	 * This should never be overridden (with the exception of trackr.moe). Use other methods instead!
@@ -641,20 +623,20 @@ let base_site = {
 						} else {
 							status.text('Updated (MAL missing from list, attempting to add...)');
 							GM_xmlhttpRequest({
-								method: 'POST',
-								url: 'https://myanimelist.net/ownlist/manga/add.json',
-								data: JSON.stringify(json),
-								onload: function(response) {
-									if(response.responseText !== '{"errors":[{"message":"The manga is already in your list."}]}') {
-										status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
-									} else {
-										status.text('Updated (Adding to MAL failed?)');
-									}
-								},
-								onerror: function() {
-									status.text('Updated (MAL Sync failed)');
-								}
-							});
+								          method: 'POST',
+								          url: 'https://myanimelist.net/ownlist/manga/add.json',
+								          data: JSON.stringify(json),
+								          onload: function(response) {
+									          if(response.responseText !== '{"errors":[{"message":"The manga is already in your list."}]}') {
+										          status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
+									          } else {
+										          status.text('Updated (Adding to MAL failed?)');
+									          }
+								          },
+								          onerror: function() {
+									          status.text('Updated (MAL Sync failed)');
+								          }
+							          });
 						}
 					},
 					onerror: function() {
@@ -787,27 +769,27 @@ let base_site = {
 				}
 
 				$.ajax({
-					url    : url,
-					type   : 'GET',
-					page   : pageN,
-					// async: useASync,
-					success: function (data) {
-						if(data.length > 0) {
-							data = data.replace(_this.viewerRegex, '$1');
-							data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
+					       url    : url,
+					       type   : 'GET',
+					       page   : pageN,
+					       // async: useASync,
+					       success: function (data) {
+						       if(data.length > 0) {
+							       data = data.replace(_this.viewerRegex, '$1');
+							       data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
 
-							let original_image = $(data).find('img:first').addBack('img:first');
-							_this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
-						} else {
-							_this.setupViewerContainerError(url, this.page, false);
-						}
-						promiseResolve();
-					},
-					error: function () {
-						_this.setupViewerContainerError(url, this.page, false);
-						promiseResolve(); // we probably should use promiseReject() here
-					}
-				});
+							       let original_image = $(data).find('img:first').addBack('img:first');
+							       _this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
+						       } else {
+							       _this.setupViewerContainerError(url, this.page, false);
+						       }
+						       promiseResolve();
+					       },
+					       error: function () {
+						       _this.setupViewerContainerError(url, this.page, false);
+						       promiseResolve(); // we probably should use promiseReject() here
+					       }
+				       });
 			}
 			function addToContainerCustom(pageN, promiseResolve, promiseReject) {
 				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
@@ -873,19 +855,19 @@ let base_site = {
 				if(!imgLoadFailed) {
 					//Page load failed
 					$.ajax({
-						url    : pageURL,
-						type   : 'GET',
-						page   : pageN,
-						// async: useASync,
-						success: function (data) {
-							let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-							_this.setupViewerContainer($(original_image).attr('src'), this.page);
-						},
-						error: function () {
-							alert('Failed to load image again. Something may be wrong with the site.');
-							_this.setupViewerContainerError(pageURL, this.page, false);
-						}
-					});
+						       url    : pageURL,
+						       type   : 'GET',
+						       page   : pageN,
+						       // async: useASync,
+						       success: function (data) {
+							       let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+							       _this.setupViewerContainer($(original_image).attr('src'), this.page);
+						       },
+						       error: function () {
+							       alert('Failed to load image again. Something may be wrong with the site.');
+							       _this.setupViewerContainerError(pageURL, this.page, false);
+						       }
+					       });
 				} else {
 					//Image load failed
 					_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
@@ -1073,8 +1055,8 @@ let base_site = {
 			let page_ele = $(`#trackr-page-${pageN}`);
 			if(page_ele.length) {
 				$('html, body').animate({
-					scrollTop: page_ele.offset().top
-				}, 2000);
+					      scrollTop: page_ele.offset().top
+				      }, 2000);
 			}
 		}
 	},
@@ -1396,273 +1378,71 @@ function generateChapterList(target, attrURL) {
 	return chapterList;
 }
 
-/**
- * List of Sites
- * @namespace
- */
-let sites = {
-	//Tracking site
-	//FIXME: We <probably> shouldn't have this here, but whatever.
-	'trackr.moe' : extendSite({
-		init : function() {
-			let _this = this;
+function initializeSites() {
+	let siteKeys = Object.keys(window.trackerSites);
+	for (let i = 0, l = siteKeys.length; i < l; i++) {
+		let domain = siteKeys[i],
+		    siteC  = window.trackerSites[domain];
+		if(!sites[domain]) sites[domain] = extendSite(siteC); //Don't add if in testing area.
+	}
+}
 
-			switch(location.pathname) {
-				case '/':
-					//Dashboard / Front Page
-					if($('#page[data-page=dashboard]').length) {
-						//TODO: Is there a better way to do this?
-						$('.update-read').click(function() {
-							let row             = $(this).closest('tr'),
-							    latest_chapter  = $(row).find('.latest');
+/* * * * * * * * * * General Functions * * * * * * * * * */
 
-							//get mal_sync option
-							switch(mal_sync) {
-								case 'disabled':
-									//do nothing
-									break;
+function addStyleFromResource(resourceName) {
+	//Userscript extensions don't seem to handle GM_getResourceURL the same, so we need to fix that.
+	let GM_blob = GM_getResourceURL(resourceName);
 
-								case 'csrf':
-									let tag_list   = $(row).find('.tag-list').text();
-									let mal_id_arr = tag_list.match(/^(?:.*?,)?(mal:[0-9]+)(?:,.*?)?$/) || [];
+	let cssEle = null;
+	if(GM_blob.substr(0, 5) === 'blob:') {
+		//ViolentMonkey
+		//This is kind of a hack, but these blob: URLs don't work with css containing // includes, which means we need to convert it to base64 somehow.
 
-									if(mal_id_arr.length > 0) {
-										let mal_id = parseInt(mal_id_arr[1].split(':')[1]);
-										_this.syncMALCSRF(mal_id, latest_chapter.text());
-									}
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', GM_blob, true);
+		xhr.responseType = 'arraybuffer';
+		xhr.onload = function(e) {
+			if (this.status === 200) {
+				let uInt8Array   = new Uint8Array(this.response),
+				    i            = uInt8Array.length,
+				    binaryString = new Array(i);
 
-									break;
+				while (i--) {
+					binaryString[i] = String.fromCharCode(uInt8Array[i]);
+				}
 
-								case 'api':
-									//TODO: Not implemented yet.
-									break;
-
-								default:
-									break;
-							}
-						});
-
-						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
-							//TODO: Move as much of this as possible to using the actual site functions.
-
-							let data    = JSON.parse(new_value),
-							    site    = data.manga.site,
-							    title   = data.manga.title,
-							    chapter = data.manga.chapter,
-							    chapterNumber = data.chapterNumber,
-							    url     = data.url;
-
-							let row = $(`i[title="${site}"]`) //Find everything using site
-								.closest('tr')
-								.find(`[data-title="${title}"]`) //Find title
-								.closest('tr');
-							if(row.length) {
-								let current_chapter = $(row).find('.current'),
-								    latest_chapter  = $(row).find('.latest'),
-								    update_ele      = unsafeWindow.$(row).find('.update-read');
-
-								$(current_chapter)
-									.attr('href', url);
-								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
-									$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
-									update_ele.trigger('click', {isUserscript: true, isLatest: true});
-								} else {
-									//Chapter isn't latest.
-									$(current_chapter).text(chapterNumber);
-									update_ele.trigger('click', {isUserscript: true, isLatest: false});
-								}
-							}
-						});
-					}
-					break;
-
-				case '/user/options':
-					/* TODO:
-					 Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
-					 If userscript IS loaded, then insert data.
-					 Separate API key from general options. Always set API config when generate is clicked.
-					 */
-
-					let form = $('#userscript-form');
-
-					this.enableForm(form); //Enable the form
-
-					//CHECK: Is there a better way to mass-set form values from an object/array?
-					$(form).find('input[name=auto_track]').attr(    'checked', ('auto_track' in config.options));
-					$(form).find('input[name=disable_viewer]').attr('checked', ('disable_viewer' in config.options));
-
-					$(form).submit(function(e) {
-						let data = {};
-						data.options = $(this).serializeArray().reduce(function(m,o){
-							m[o.name] = (typeof o.value !== 'undefined' ? true : o.value);
-							return m;
-						}, {});
-						/** @namespace data.csrf_token */
-						delete data.csrf_token;
-						if(config['api-key']) {
-							config = $.extend(config, data);
-
-							GM_setValue('config', JSON.stringify(config));
-							$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
-						} else {
-							$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
-						}
-
-						e.preventDefault();
-					});
-
-					if(location.hostname === 'dev.trackr.moe') {
-						$('#api-key').text(config['api-key-dev'] || 'not set');
-					} else {
-						$('#api-key').text(config['api-key'] || 'not set');
-					}
-					let apiDiv = $('#api-key-div');
-					apiDiv.on('click', '#generate-api-key', function() {
-						GM_xmlhttpRequest({
-							url     : main_site + '/ajax/get_apikey',
-							method  : 'GET',
-							onload  : function(e) {
-								if(e.status === 200) {
-									let data = e.responseText,
-									    json = JSON.parse(data);
-
-									if(json['api-key']) {
-										$('#api-key').text(json['api-key']);
-
-										if(location.hostname === 'dev.trackr.moe') {
-											config['api-key-dev'] = json['api-key'];
-										} else {
-											config['api-key']     = json['api-key'];
-										}
-										GM_setValue('config', JSON.stringify(config));
-									} else {
-										alert('ERROR: Something went wrong!\nJSON missing API key?');
-									}
-								} else {
-									switch(e.status) {
-										case 400:
-											alert('ERROR: Not logged in?');
-											break;
-										case 429:
-											alert('ERROR: Rate limit reached.');
-											break;
-										default:
-											alert('ERROR: Something went wrong!\n'+e.statusText);
-											break;
-									}
-								}
-							},
-							onerror : function(e) {
-								switch(e.status) {
-									case 400:
-										alert('ERROR: Not logged in?');
-										break;
-									case 429:
-										alert('ERROR: Rate limit reached.');
-										break;
-									default:
-										alert('ERROR: Something went wrong!\n'+e.statusText);
-										break;
-								}
-							}
-						});
-					});
-					apiDiv.on('click', '#restore-api-key', function() {
-						GM_xmlhttpRequest({
-							url     : main_site + '/ajax/get_apikey/restore',
-							method  : 'GET',
-							onload  : function(e) {
-								if(e.status === 200) {
-									let data = e.responseText,
-									    json = JSON.parse(data);
-
-									if(json['api-key']) {
-										if(json['api-key'] !== '') {
-											$('#api-key').text(json['api-key']);
-
-											if(location.hostname === 'dev.trackr.moe') {
-												config['api-key-dev'] = json['api-key'];
-											} else {
-												config['api-key'] = json['api-key'];
-											}
-											GM_setValue('config', JSON.stringify(config));
-										} else {
-											alert('API Key hasn\'t been set before. Use generate API key instead.')
-										}
-									} else {
-										alert('ERROR: Something went wrong!\nJSON missing API key?');
-									}
-								} else {
-									switch(e.status) {
-										case 400:
-											alert('ERROR: Not logged in?');
-											break;
-										case 429:
-											alert('ERROR: Rate limit reached.');
-											break;
-										default:
-											alert('ERROR: Something went wrong!\n'+e.statusText);
-											break;
-									}
-								}
-							},
-							onerror : function(e) {
-								switch(e.status) {
-									case 400:
-										alert('ERROR: Not logged in?');
-										break;
-									case 429:
-										alert('ERROR: Rate limit reached.');
-										break;
-									default:
-										alert('ERROR: Something went wrong!\n'+e.statusText);
-										break;
-								}
-							}
-						});
-					});
-
-					break;
+				let data   = binaryString.join('');
+				cssEle = $('<style/>', {type: 'text/css', text: data});
+				$('head').append(cssEle);
 			}
-		},
-		enableForm : function(form) {
-			$('#userscript-check')
-				.text('Userscript is enabled!')
-				.removeClass('alert-danger')
-				.addClass('alert-success');
-			$(form).find('fieldset').removeAttr('disabled');
-			$(form).find('input[type=submit]').removeAttr('onclick');
-		}
-	})
+		};
+		xhr.send();
+	} else {
+		//Other
+		cssEle = $('<style/>', {type: 'text/css', text: atob(GM_blob.substr(21))});
+		$('head').append(cssEle);
+	}
+}
+
+function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
+
+function hasEmptyValues(o) {
+	return Object.keys(o).some(function(x) {
+		return o[x]===''||o[x]===null;  // or just "return o[x];" for falsy values
+	});
+}
+
+jQuery.fn.reverseObj = function() {
+	return $(this.get().reverse());
 };
 
-//Initialize rest of the sites.
-let siteKeys = Object.keys(window.trackerSites);
-for (let i = 0, l = siteKeys.length; i < l; i++) {
-	let domain = siteKeys[i],
-	    siteC  = window.trackerSites[domain];
-	sites[domain] = extendSite(siteC);
-}
+/* * * * * * * * * * Main Script * * * * * * * * * */
+let sites = {};
+initializeSites();
 
-/********************** SCRIPT *********************/
 const main_site = 'https://trackr.moe';
+const hostname  = location.hostname.replace(/^(?:dev)\./, '');
 let   config    = JSON.parse(GM_getValue('config') || '{}');
-console.log(config); //This is useful for debugging.
+if(debug) { console.log(config); }
 
-const hostname = location.hostname.replace(/^(?:dev)\./, '');
-if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
-	//Config exists OR site is trackr.moe.
-	if(main_site === 'https://dev.trackr.moe' && hostname !== 'trackr.moe') { config['api-key'] = config['api-key-dev']; } //Use dev API-key if using dev site
-	if(!config.options) { config.options = {}; } //We can't use the 'in' operator on this if options doesn't exist.
-
-	//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
-	if(sites[hostname]) {
-		$(function () {
-			sites[hostname].init();
-		});
-	} else {
-		console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
-	}
-} else {
-	alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
-}
+main();
