@@ -23,10 +23,10 @@
 
 			let pageSegments = $('#current_page').attr('src').split('/'),
 			    imageHash    = pageSegments[2],
-				imageExt     = pageSegments[3].split('.').pop();
-			this.viewerCustomImageList = $('#jump_page').find('> option').map(function(i, e) {
-				let pageN = $(e).attr('value');
-				return `${_this.https}://mangadex.com/data/${imageHash}/${pageN}.${imageExt}`;
+			    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
+			    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
+			this.viewerCustomImageList = pages.map(function(filename, i) {
+				return `${_this.https}://mangadex.com/data/${imageHash}/${filename}`;
 			});
 			this.page_count = this.viewerCustomImageList.length;
 		},
