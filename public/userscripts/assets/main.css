@@ -167,3 +167,13 @@
 
 	border-collapse: collapse;
 }
+#viewer.webtoon > .read_img img {
+	display: block;
+
+	margin: 0 auto;
+
+	border: 0 !important;
+}
+#viewer.webtoon > .read_img .pageNumber {
+	display: none;
+}

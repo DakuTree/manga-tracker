@@ -68,13 +68,13 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
-// @updated      2018-01-20
-// @version      1.8.55
+// @updated      2018-01-21
+// @version      1.8.57
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.3.css
+// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.5.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
@@ -317,6 +317,8 @@ let base_site = {
 					).append(
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
+						$('<i/>', {id: 'toggleWebtoon', class: 'fa fa-file-image-o', 'aria-hidden': 'true', title: 'Toggle Webtoon Mode'})
+					).append(
 						$('<i/>', {id: 'favouriteChapter', class: 'fa fa-star', 'aria-hidden': 'true', title: 'Click to favourite this chapter (Requires series to be tracked first!)'})
 					).append(
 						$('<i/>', {id: 'trackCurrentChapter',  class: 'fa fa-book', 'aria-hidden': 'true', style: 'color: maroon', title: 'Mark this chapter as latest chapter read'})
@@ -361,6 +363,12 @@ let base_site = {
 				e.preventDefault();
 
 				_this.search();
+			});
+			//Setup favourite event.
+			$(topbar).on('click', '#toggleWebtoon', function(e) {
+				e.preventDefault();
+
+				$('#viewer').toggleClass('webtoon');
 			});
 			//Setup favourite event.
 			$(topbar).on('click', '#favouriteChapter', function(e) {
@@ -623,6 +631,9 @@ let base_site = {
 			useCustomImageList = (typeof useCustomImageList !== 'undefined' ? useCustomImageList : false);
 
 			let viewer = $('#viewer');
+			if(_this.isWebtoon) {
+				viewer.addClass('webtoon');
+			}
 
 			//Setup viewer header if enabled
 			if(!useCustomHeader) {
@@ -1054,6 +1065,8 @@ let base_site = {
 			if((sPage !== -1) && this.segments[sPage + 1]) {
 				this.currentPage = parseInt(this.segments[sPage + 1]);
 			}
+
+			this.isWebtoon = ($('#page').find('a img').length > 1);
 		};
 
 		this.postSetupTopBar = function(callback) {
@@ -1194,6 +1207,12 @@ let base_site = {
 	 * @type {Number}
 	 */
 	page_count : 0,
+
+	/**
+	 * Marks if the viewer is a webtoon and handles it appropriately.
+	 * @type {Boolean}
+	 */
+	isWebtoon : false,
 
 	//Used for custom viewer header (if requested)
 
@@ -1736,7 +1755,7 @@ let sites = {
 
 			this.page_count     = $('#page_select:first').find('> option').length;
 			let web_toon_check  = $('a[href$=_1_t]');
-			this.is_web_toon    = ($(web_toon_check).length ? ($(web_toon_check).text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
+			this.isWebtoon    = ($(web_toon_check).length ? ($(web_toon_check).text() === 'Want to see this chapter per page instead?' ? 1 : 2) : 0); //0 = no, 1 = yes & long strip, 2 = yes & chapter per page
 
 			this.chapter_hash   = location.hash.substr(1).split('_')[0];
 			this.chapterNumber = (chapterNParts[1] ? 'v'+chapterNParts[1]+'/' : '') + 'c'+chapterNParts[2] + (chapterNParts[3] ? '-'+chapterNParts[3] : '');
@@ -1775,7 +1794,7 @@ let sites = {
 
 			reader.replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			if(this.is_web_toon !== 1) {
+			if(this.isWebtoon !== 1) {
 				console.log('trackr - bato.to chapter is not webtoon');
 				callback();
 			} else {
