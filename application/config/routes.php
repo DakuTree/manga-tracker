@@ -101,9 +101,6 @@ $route['export_list']                 = 'Ajax/TrackerInline/export';
 
 $route['import_amr']                  = 'Import_AMR';
 
-$route['ajax/userscript/update']['post']     = 'Ajax/Userscript/update';
-$route['ajax/userscript/favourite']['post']  = 'Ajax/Userscript/favourite';
-
 $route['report_issue']      = 'ReportIssue';
 
 $route['stats']       = 'Stats';
@@ -117,6 +114,12 @@ $route['admin_panel/update/normal'] = 'AdminPanel/update_normal';
 $route['admin_panel/update/custom'] = 'AdminPanel/update_custom';
 $route['admin_panel/update/titles'] = 'AdminPanel/update_titles';
 $route['admin_panel/update_mal_id'] = 'AdminPanel/update_mal_id';
+
+/*** USERSCRIPT ROUTING ***/
+$route['ajax/userscript/update']['post']     = 'Ajax/Userscript/update';
+$route['ajax/userscript/favourite']['post']  = 'Ajax/Userscript/favourite';
+
+$route['userscripts/sites/.*\.js']           = 'Ajax/Userscript/site_fallback';
 
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {

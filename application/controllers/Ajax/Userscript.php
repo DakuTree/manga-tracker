@@ -96,4 +96,10 @@ class Userscript extends AJAX_Controller {
 			}
 		}
 	}
+
+	public function site_fallback() : void {
+		$this->output
+			->set_content_type('js') // You could also use ".jpeg" which will have the full stop removed before looking in config/mimes.php
+			->set_output('console.log('.json_encode('@require site missing? - '.current_url()).');');
+	}
 }
