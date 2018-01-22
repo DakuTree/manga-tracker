@@ -9,6 +9,15 @@ services:
 sudo: false
 
 addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - libmysqlclient-dev
+      - libmysqlclient20
+      - mysql-community-client
+      - mysql-common
+      - mysql-community-server
 #  ssh_known_hosts: trackr.moe:22
 
 env:
