@@ -46,7 +46,7 @@
 			<br>Examples:
 			<ul>
 				<li><code>site:mangafox.me</code> - Returns everything that followed on <b>MangaFox</b>.</li>
-				<li><code>site:bato.to</code> - Returns everything that followed on <b>Batoto</b>.</li>
+				<li><code>site:mangadex.com</code> - Returns everything that followed on <b>MangaDex</b>.</li>
 			</ul>
 		</li>
 		<br>
@@ -74,7 +74,7 @@
 <div>
 	<ul>
 		<li>MangaFox</li>
-		<li>Bato.to (with multi-lang support)</li>
+		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
 		<li>DynastyScans (beta)</li>
 		<li>MangaHere</li>
 		<li>MangaStream</li>

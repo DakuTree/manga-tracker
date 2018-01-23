@@ -32,7 +32,7 @@
 			<div class="pull-right">
 				<div id="update-timer-container">
 					Next update in: <a id="update-timer" href="<?=base_url('update_status')?>"><?=$this->Tracker->admin->getNextUpdateTime()?></a>
-					<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Each series is updated at different times, but only once every 14 hours.<br>This is to avoid bombarding the sites with 100s of requests all at once.<br>MangaFox, Batoto and FoolSlide sites are exceptions to this and are updated hourly as they use a different (and more efficient) update method."></i>
+					<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Each series is updated at different times, but only once every 14 hours.<br>This is to avoid bombarding the sites with 100s of requests all at once.<br>Sites that use FoolSlide, as well as various popular aggregators updated hourly as they use a different (and more efficient) update method."></i>
 				</div>
 			</div>
 		</nav>

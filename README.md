@@ -10,7 +10,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 
 ## Sites supported
 * MangaFox
-* Bato.to (with multi-lang support) (Requires login)
+* ~~Bato.to (with multi-lang support) (Requires login)~~ - Batoto is closed as of 2018/01/23
 * MangaHere
 * MangaStream
 * MangaPanda

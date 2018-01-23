@@ -5,6 +5,8 @@
 	 */
 	sites['bato.to'] = {
 		preInit : function(callback) {
+			return; //RIP Batoto - 2018/01/23
+
 			//Bato.to loads the image page AFTER page load via AJAX. We need to wait for this to load.
 			let dfd = $.Deferred();
 			let checkSelector = setInterval(function () {
