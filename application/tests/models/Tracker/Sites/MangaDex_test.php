@@ -3,7 +3,7 @@
 /**
  * @coversDefaultClass MangaDex
  */
-class MangaCow_test extends SiteTestCase {
+class MangaDex_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
 			'164' => 'Gisou Honey Trap',
