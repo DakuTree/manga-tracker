@@ -69,7 +69,7 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-23
-// @version      1.9.4
+// @version      1.9.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1436,12 +1436,14 @@ jQuery.fn.reverseObj = function() {
 };
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
+//FIXME: ViolentMonkey is require with @require scripts and needs us to use window to allow global variables...
+//       We should really look into tweaking/rewriting this stuff..
+window.main_site = 'https://trackr.moe';
+window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
+window.config    = JSON.parse(GM_getValue('config') || '{}');
+if(debug) { console.log(config); }
+
 let sites = {};
 initializeSites();
-
-const main_site = 'https://trackr.moe';
-const hostname  = location.hostname.replace(/^(?:dev)\./, '');
-let   config    = JSON.parse(GM_getValue('config') || '{}');
-if(debug) { console.log(config); }
 
 main();
