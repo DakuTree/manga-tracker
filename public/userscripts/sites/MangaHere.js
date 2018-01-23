@@ -11,7 +11,6 @@
 			this.preSetupTopBar  = ms.preSetupTopBar;
 			this.postSetupTopBar = ms.postSetupTopBar;
 			this.preSetupViewer  = ms.preSetupViewer;
-			this.setupViewerContainer = ms.setupViewerContainer;
 
 			this.site = 'www.mangahere.co';
 

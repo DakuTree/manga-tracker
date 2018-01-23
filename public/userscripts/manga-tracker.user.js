@@ -68,8 +68,8 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
-// @updated      2018-01-22
-// @version      1.9.3
+// @updated      2018-01-23
+// @version      1.9.4
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -105,7 +105,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaCow.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.js
-// @require      https://trackr.moe/userscripts/sites/MangaHere.js
+// @require      https://trackr.moe/userscripts/sites/MangaHere.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.js
@@ -1382,7 +1382,7 @@ function initializeSites() {
 	for (let i = 0, l = siteKeys.length; i < l; i++) {
 		let domain = siteKeys[i],
 		    siteC  = window.trackerSites[domain];
-		if(!sites[domain]) sites[domain] = extendSite(siteC); //Don't add if in testing area.
+		if(!sites[domain]) { sites[domain] = extendSite(siteC); } //Don't add if in testing area.
 	}
 }
 
