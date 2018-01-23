@@ -14,17 +14,17 @@
 							    latest_chapter  = $(row).find('.latest');
 
 							//get mal_sync option
+							//NOTE: This variable is set on the page, not through the userscript.
 							switch(mal_sync) {
 								case 'disabled':
 									//do nothing
 									break;
 
 								case 'csrf':
-									let tag_list   = $(row).find('.tag-list').text();
-									let mal_id_arr = tag_list.match(/^(?:.*?,)?(mal:[0-9]+)(?:,.*?)?$/) || [];
+									let mal_arr   = $(row).find('.sprite-myanimelist-net');
 
-									if(mal_id_arr.length > 0) {
-										let mal_id = parseInt(mal_id_arr[1].split(':')[1]);
+									if(mal_arr.length > 0) {
+										let mal_id = parseInt(mal_arr.attr('title'));
 										_this.syncMALCSRF(mal_id, latest_chapter.text());
 									}
 
