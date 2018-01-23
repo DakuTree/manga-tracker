@@ -1,5 +1,16 @@
 (function(sites) {
 	/**
+	 * ReadMangaToday (www)
+	 * @type {SiteObject}
+	 */
+	sites['www.whitecloudpavilion.com'] = {
+		preInit : function() {
+			//Auto-redirect to non-www.
+			location.href = location.href.replace('www.whitecloudpavilion.com', 'whitecloudpavilion.com');
+		}
+	};
+
+	/**
 	 * White Cloud Pavillion
 	 * @type {SiteObject}
 	 */

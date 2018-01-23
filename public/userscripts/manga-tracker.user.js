@@ -35,7 +35,7 @@
 // @include      /^https?:\/\/manga\.fascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^http?:\/\/mangaichiscans\.mokkori\.fr\/fs\/read\/.*?\/[a-z]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.lhtranslation\.com\/read-(.*?)-chapter-[0-9\.]+(?:-page-[0-9]+)?\.html$/
-// @include      /^https?:\/\/whitecloudpavilion\.com\/manga\/free\/manga\/.*?\/[0-9\.]+(\/.*)?$/
+// @include      /^https?:\/\/(?:www\.)?whitecloudpavilion\.com\/manga\/free\/manga\/.*?\/[0-9\.]+(\/.*)?$/
 // @include      /^http:\/\/www\.slide\.world-three\.org\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/hotchocolatescans\.com\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/mangazuki\.co\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
@@ -69,7 +69,7 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-23
-// @version      1.9.6
+// @version      1.9.7
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -130,7 +130,7 @@
 // @require      https://trackr.moe/userscripts/sites/TwistedHelScans.js
 // @require      https://trackr.moe/userscripts/sites/VortexScans.js
 // @require      https://trackr.moe/userscripts/sites/WebToons.js
-// @require      https://trackr.moe/userscripts/sites/WhiteCloudPavillion.js
+// @require      https://trackr.moe/userscripts/sites/WhiteCloudPavillion.2.js
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
