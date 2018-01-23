@@ -1,3 +1,4 @@
+/* global generateChapterList */
 (function(sites) {
 	/**
 	 * MangaDex
@@ -9,7 +10,7 @@
 
 			this.title       = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
 			let chapter      = this.segments[2];
-			this.chapter     = chapter + ':--:' + $('#jump_chapter > option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
+			this.chapter     = chapter + ':--:' + $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
 
 			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;

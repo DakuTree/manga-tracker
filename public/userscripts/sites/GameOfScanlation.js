@@ -1,3 +1,4 @@
+/* global generateChapterList */
 (function(sites) {
 	/**
 	 * Game of Scanlation

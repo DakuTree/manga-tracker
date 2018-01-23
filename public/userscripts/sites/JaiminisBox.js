@@ -1,3 +1,4 @@
+/* global unsafeWindow */
 (function(sites) {
 	/**
 	 * Jaimini's Box (FoolSlide)

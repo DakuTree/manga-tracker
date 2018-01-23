@@ -115,7 +115,7 @@
 
 							callback();
 						},
-						error: function(jqXHR, textStatus, errorThrown) {
+						error: function(/*jqXHR, textStatus, errorThrown*/) {
 							callback();
 						}
 					});
