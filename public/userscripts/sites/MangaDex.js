@@ -23,11 +23,15 @@
 			this.chapterListCurrent = this.chapter_url;
 
 			let pageSegments = $('#current_page').attr('src').split('/'),
-			    imageHash    = pageSegments[2],
+			    imageHash    = $('script:contains("dataurl =")').text().match(/dataurl = '(.*?)'/),
 			    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
+          server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
 			    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
 			this.viewerCustomImageList = pages.map(function(filename, i) {
-				return `${_this.https}://mangadex.com/data/${imageHash}/${filename}`;
+					if(server == '/data/')
+						return `${_this.https}://mangadex.com/data/${imageHash[1]}/${filename}`;
+					else
+						return `${server[1]}${imageHash[1]}/${filename}`;
 			});
 			this.page_count = this.viewerCustomImageList.length;
 		},
@@ -35,8 +39,7 @@
 			$('.info-top-chapter, .option_wrap').remove();
 		},
 		preSetupViewer : function(callback) {
-			//FIX: I'd like to replace 'content instead, but I kinda like the header here...
-			$('#current_page').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			$('#content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(true, true);
 		}
