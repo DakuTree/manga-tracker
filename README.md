@@ -4,68 +4,68 @@
 A cross-site manga tracker. Inspired by [AllMangasReader](https://github.com/AllMangasReader-dev/AMR) and [NovelUpdates](http://www.novelupdates.com/).  
 This site is intended to be used alongside a [userscript](https://github.com/DakuTree/manga-tracker/raw/master/public/userscripts/manga-tracker.user.js).
 
-A full CHANGELOG of what is currently implemented can be found [here](https://github.com/DakuTree/manga-tracker/blob/master/public/CHANGELOG.md).
+A full CHANGELOG of what is currently implemented can be found [here](https://github.com/DakuTree/manga-tracker/wiki/Changelog).
 
 Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 
 ## Sites supported
-* MangaFox
-* ~~Bato.to (with multi-lang support) (Requires login)~~ - Batoto is closed as of 2018/01/23
-* MangaHere
-* MangaStream
-* MangaPanda
-* WebToons.com
-* ~~KissManga.com~~ Server got IP banned, meaning tracking is no longer possible.
-* KireiCake
-* DynastyScans (beta)
-* Game of Scanlation
-* MangaCow
-* SeaOtterScans
-* HelveticaScans
-* SenseScans
-* JaiminisBox
-* Doki Fansubs
-* ~~Demonic Scanlations~~ Domain has been disabled.
-* Death Toll Scans
-* Easy Going Scans
-* Whiteout Scans
-* One Time Scans!
-* S2Scans
-* ReadMangaToday
-* MerakiScans
-* FallenAngelsScans
-* Mangaichi Scanlation Division
-* LHtranslation
-* White Cloud Pavilion
-* World Three
-* Hot Chocolate Scans
-* Mangazuki
-* Yummy Gummy Scans
+* AtelierDuNoir
+* Bangaqua
+* CatScans
 * Champion Scans
+* Chibi Manga
+* DKThiasScans
+* DamnFeels
+* Death Toll Scans
+* Doki Fansubs
+* Dokusha
+* DynastyScans (beta)
+* Easy Going Scans
+* ElPsyCongroo
+* EvilFlowers
+* FallenAngelsScans
+* ForgottenScans
+* Game of Scanlation
+* HatigarmScans
+* HelveticaScans
+* Hot Chocolate Scans
+* JaiminisBox
+* KireiCake
+* LHtranslation
+* LOLScans
+* Lolitannia
+* MangaCow
+* MangaDex
+* MangaFox
+* MangaHere
+* MangaKakalot
+* MangaPanda
+* MangaRock
+* MangaStream
+* MangaTopia
+* Mangaichi Scanlation Division
+* Mangazuki
+* MerakiScans
+* One Time Scans!
+* PhoenixSerenade
+* Psycho Play
 * Pure Mashiro Scans
 * Ravens Scans
-* CatScans
-* HatigarmScans
-* PhoenixSerenade
-* LOLScans
-* MangaRock
-* EvilFlowers
-* ShoujoHearts
-* TwistedHelScans
-* Chibi Manga
-* Psycho Play
-* MangaKakalot
-* DKThiasScans
-* ForgottenScans
-* SaikoScans
-* ShoujoSense
-* MangaTopia
-* VortexScans
-* Dokusha
-* ElPsyCongroo
-* Bangaqua
-* DamnFeels
-* AtelierDuNoir
-* Lolitannia
+* ReadMangaToday
 * Riceballicious
-* MangaDex
+* S2Scans
+* SaikoScans
+* SeaOtterScans
+* SenseScans
+* ShoujoHearts
+* ShoujoSense
+* TwistedHelScans
+* VortexScans
+* WebToons.com
+* White Cloud Pavilion
+* Whiteout Scans
+* World Three
+* Yummy Gummy Scans
+* ~~Bato.to (with multi-lang support) (Requires login)~~ - Batoto is closed as of 2018/01/23
+* ~~Demonic Scanlations~~ Domain has been disabled.
+* ~~KissManga.com~~ Server got IP banned, meaning tracking is no longer possible.

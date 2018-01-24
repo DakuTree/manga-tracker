@@ -73,65 +73,65 @@
 <h1 id="supportedsites">Supported Sites</h1>
 <div>
 	<ul>
-		<li>MangaFox</li>
-		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
-		<li>DynastyScans (beta)</li>
-		<li>MangaHere</li>
-		<li>MangaStream</li>
-		<li>MangaPanda</li>
-		<li>WebToons.com</li>
-		<li><del>KissManga.com</del> - KissManga has been temporarily disabled due to IP block. No ETA on fix.</li>
-		<li>KireiCake.com</li>
-		<li>GameOfScanlation.moe</li>
-		<li>MangaCow</li>
-		<li>SeaOtterScans</li>
-		<li>HelveticaScans</li>
-		<li>SenseScans</li>
-		<li>JaiminisBox</li>
-		<li>Doki Fansubs</li>
-		<li><del>Demonic Scanlations</del> - Domain has been disabled.</li>
-		<li>Death Toll Scans</li>
-		<li>Easy Going Scans</li>
-		<li>Whiteout Scans</li>
-		<li>One Time Scans!</li>
-		<li>S2Scans</li>
-		<li>ReadMangaToday</li>
-		<li>MerakiScans</li>
-		<li>FallenAngelsScans</li>
-		<li>Mangaichi Scanlation Division</li>
-		<li>LHtranslation</li>
-		<li>White Cloud Pavilion</li>
-		<li>World Three</li>
-		<li>Hot Chocolate Scans</li>
-		<li>Mangazuki</li>
-		<li>Yummy Gummy Scans</li>
+		<li>AtelierDuNoir</li>
+		<li>Bangaqua</li>
+		<li>Cat Scans</li>
 		<li>Champion Scans</li>
+		<li>Chibi Manga</li>
+		<li>DKThiasScans</li>
+		<li>DamnFeels</li>
+		<li>Death Toll Scans</li>
+		<li>Doki Fansubs</li>
+		<li>Dokusha</li>
+		<li>DynastyScans (beta)</li>
+		<li>Easy Going Scans</li>
+		<li>ElPsyCongroo</li>
+		<li>EvilFlowers</li>
+		<li>FallenAngelsScans</li>
+		<li>ForgottenScans</li>
+		<li>GameOfScanlation.moe</li>
+		<li>HatigarmScans</li>
+		<li>HelveticaScans</li>
+		<li>Hot Chocolate Scans</li>
+		<li>JaiminisBox</li>
+		<li>KireiCake.com</li>
+		<li>LHtranslation</li>
+		<li>LOLScans</li>
+		<li>Lolitannia</li>
+		<li>MangaCow</li>
+		<li>MangaDex</li>
+		<li>MangaFox</li>
+		<li>MangaHere</li>
+		<li>MangaKakalot</li>
+		<li>MangaPanda</li>
+		<li>MangaRock</li>
+		<li>MangaStream</li>
+		<li>MangaTopia</li>
+		<li>Mangaichi Scanlation Division</li>
+		<li>Mangazuki</li>
+		<li>MerakiScans</li>
+		<li>One Time Scans!</li>
+		<li>Phoenix Serenade</li>
+		<li>Psycho Play</li>
 		<li>Pure Mashiro Scans</li>
 		<li>Ravens Scans</li>
-		<li>Cat Scans</li>
-		<li>HatigarmScans</li>
-		<li>Phoenix Serenade</li>
-		<li>LOLScans</li>
-		<li>MangaRock</li>
-		<li>EvilFlowers</li>
-		<li>ShoujoHearts</li>
-		<li>TwistedHelScans</li>
-		<li>Chibi Manga</li>
-		<li>Psycho Play</li>
-		<li>MangaKakalot</li>
-		<li>DKThiasScans</li>
-		<li>ForgottenScans</li>
-		<li>SaikoScans</li>
-		<li>ShoujoSense</li>
-		<li>MangaTopia</li>
-		<li>VortexScans</li>
-		<li>Dokusha</li>
-		<li>ElPsyCongroo</li>
-		<li>Bangaqua</li>
-		<li>DamnFeels</li>
-		<li>AtelierDuNoir</li>
-		<li>Lolitannia</li>
+		<li>ReadMangaToday</li>
 		<li>Riceballicious</li>
-		<li>MangaDex</li>
+		<li>S2Scans</li>
+		<li>SaikoScans</li>
+		<li>SeaOtterScans</li>
+		<li>SenseScans</li>
+		<li>ShoujoHearts</li>
+		<li>ShoujoSense</li>
+		<li>TwistedHelScans</li>
+		<li>VortexScans</li>
+		<li>WebToons.com</li>
+		<li>White Cloud Pavilion</li>
+		<li>Whiteout Scans</li>
+		<li>World Three</li>
+		<li>Yummy Gummy Scans</li>
+		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
+		<li><del>Demonic Scanlations</del> - Domain has been disabled.</li>
+		<li><del>KissManga.com</del> - KissManga has been temporarily disabled due to IP block. No ETA on fix.</li>
 	</ul> <!--ENDOFSITES-->
 </div>
