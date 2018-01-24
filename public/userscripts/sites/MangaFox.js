@@ -71,7 +71,7 @@
 			//The inline chapter list is cached. This causes new chapters to not properly show on the list. (Why the cache isn't reset when a new chapter is added is beyond me)
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
-			GM_xmlhttpRequest({
+			GM.xmlHttpRequest({
 				url     : _this.title_url.replace('mangafox.la', 'm.mangafox.la'),
 				method  : 'GET',
 				onload  : function(response) {
@@ -147,7 +147,7 @@
 			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
-			GM_xmlhttpRequest({
+			GM.xmlHttpRequest({
 				url     : 'http:'+_this.chapter_url.replace('mangafox.la/manga', 'm.mangafox.la/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {

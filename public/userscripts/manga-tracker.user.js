@@ -69,11 +69,12 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-24
-// @version      1.9.9
+// @version      1.9.10
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
-// @require      https://trackr.moe/userscripts/sites/_trackr.moe.2.js
+// @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
+// @require      https://trackr.moe/userscripts/sites/_trackr.moe.3.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.2.js
@@ -104,8 +105,8 @@
 // @require      https://trackr.moe/userscripts/sites/LOLScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.2.js
-// @require      https://trackr.moe/userscripts/sites/MangaFox.js
-// @require      https://trackr.moe/userscripts/sites/MangaHere.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaFox.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.js
@@ -139,10 +140,15 @@
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
+// @grant        GM.getResourceUrl
 // @grant        GM_getValue
+// @grant        GM.getValue
 // @grant        GM_setValue
+// @grant        GM.setValue
 // @grant        GM_addValueChangeListener
+// @grant        GM.addValueChangeListener
 // @grant        GM_xmlhttpRequest
+// @grant        GM.xmlHttpRequest
 // @grant        unsafeWindow
 // @noframes
 // @connect      trackr.moe
@@ -154,7 +160,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
-/* global $, jQuery, GM_addStyle, GM_getResourceURL, GM_getValue, GM_setValue, GM_xmlhttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
+/* global $, jQuery, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
 const debug = false; //TODO: Move to a userscript option.
@@ -173,9 +179,9 @@ function main() {
 		if(!config.options) { config.options = {}; } //We can't use the 'in' operator on this if options doesn't exist.
 
 		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
-		if(sites[hostname]) {
+		if(window.sites[hostname]) {
 			$(function () {
-				sites[hostname].init();
+				window.sites[hostname].init();
 			});
 		} else {
 			console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
@@ -463,12 +469,12 @@ const base_site = {
 					if(!hasEmptyValues(params.manga)) {
 						let status = $('#TrackerStatus');
 
-						GM_xmlhttpRequest({
-							url      :main_site + '/ajax/userscript/update',
+						GM.xmlHttpRequest({
+							url     : main_site + '/ajax/userscript/update',
 							method  : 'POST',
 							data    : $.param(params),
 							headers: {
-								"Content-Type": "application/x-www-form-urlencoded"
+								'Content-Type' : 'application/x-www-form-urlencoded'
 							},
 							onload  : function(e) {
 								_this.attemptingTrack = false;
@@ -479,7 +485,7 @@ const base_site = {
 
 									/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-									GM_setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
+									GM.setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
 
 									//TODO: We should really output this somewhere other than the topbar..
 									status.text('Attempting update...');
@@ -566,7 +572,7 @@ const base_site = {
 	 */
 	syncMALCSRF : function(malID, chapter) {
 		let _this = this;
-		GM_xmlhttpRequest({
+		GM.xmlHttpRequest({
 			method: 'GET',
 			url: 'https://myanimelist.net/panel.php?go=export',
 			onload: function(response) {
@@ -612,7 +618,7 @@ const base_site = {
 			if(chapterN < 1000) {
 				let status = $('#TrackerStatus');
 
-				GM_xmlhttpRequest({
+				GM.xmlHttpRequest({
 					method: 'POST',
 					url: 'https://myanimelist.net/ownlist/manga/edit.json',
 					data: JSON.stringify(json),
@@ -621,21 +627,21 @@ const base_site = {
 							status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
 						} else {
 							status.text('Updated (MAL missing from list, attempting to add...)');
-							GM_xmlhttpRequest({
-								          method: 'POST',
-								          url: 'https://myanimelist.net/ownlist/manga/add.json',
-								          data: JSON.stringify(json),
-								          onload: function(response) {
-									          if(response.responseText !== '{"errors":[{"message":"The manga is already in your list."}]}') {
-										          status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
-									          } else {
-										          status.text('Updated (Adding to MAL failed?)');
-									          }
-								          },
-								          onerror: function() {
-									          status.text('Updated (MAL Sync failed)');
-								          }
-							          });
+							GM.xmlHttpRequest({
+								method: 'POST',
+								url: 'https://myanimelist.net/ownlist/manga/add.json',
+								data: JSON.stringify(json),
+								onload: function(response) {
+									if(response.responseText !== '{"errors":[{"message":"The manga is already in your list."}]}') {
+										status.html(`Updated & <a href="https://myanimelist.net/manga/${malIDI}" class="mal-link">MAL Synced</a> (c${chapterN})`);
+									} else {
+										status.text('Updated (Adding to MAL failed?)');
+									}
+								},
+								onerror: function() {
+									status.text('Updated (MAL Sync failed)');
+								}
+							});
 						}
 					},
 					onerror: function() {
@@ -844,35 +850,37 @@ const base_site = {
 	 *
 	 * @final
 	 */
-	setupViewerContainerError : function(pageURL, pageN, imgLoadFailed) {
+	setupViewerContainerError : async function(pageURL, pageN, imgLoadFailed) {
 		let _this = this;
 		_this.updatePagesLoaded(false);
 
+		let reloadUrl = await GM.getResourceUrl('reload');
+
 		console.error('setupViewerContainerError called');
 		let image_container = $('<div/>', {class: 'read_img', id: 'trackr-page-'+pageN}).append(
-			$('<img/>', {style: 'cursor: pointer', src: GM_getResourceURL('reload')}).click(function() {
-				if(!imgLoadFailed) {
-					//Page load failed
-					$.ajax({
-						       url    : pageURL,
-						       type   : 'GET',
-						       page   : pageN,
-						       // async: useASync,
-						       success: function (data) {
-							       let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-							       _this.setupViewerContainer($(original_image).attr('src'), this.page);
-						       },
-						       error: function () {
-							       alert('Failed to load image again. Something may be wrong with the site.');
-							       _this.setupViewerContainerError(pageURL, this.page, false);
-						       }
-					       });
-				} else {
-					//Image load failed
-					_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
-				}
-			})
-		).append(
+			$('<img/>', {style: 'cursor: pointer', src: reloadUrl}).click(function() {
+			if(!imgLoadFailed) {
+				//Page load failed
+				$.ajax({
+					       url    : pageURL,
+					       type   : 'GET',
+					       page   : pageN,
+					       // async: useASync,
+					       success: function (data) {
+						       let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+						       _this.setupViewerContainer($(original_image).attr('src'), this.page);
+					       },
+					       error: function () {
+						       alert('Failed to load image again. Something may be wrong with the site.');
+						       _this.setupViewerContainerError(pageURL, this.page, false);
+					       }
+				       });
+			} else {
+				//Image load failed
+				_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
+			}
+		})
+	).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
 				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
@@ -996,7 +1004,7 @@ const base_site = {
 				}
 			};
 
-			GM_xmlhttpRequest({
+			GM.xmlHttpRequest({
 				url     : main_site + '/ajax/userscript/favourite',
 				method  : 'POST',
 				data    : $.param(params),
@@ -1382,23 +1390,23 @@ function initializeSites() {
 	for (let i = 0, l = siteKeys.length; i < l; i++) {
 		let domain = siteKeys[i],
 		    siteC  = window.trackerSites[domain];
-		if(!sites[domain]) { sites[domain] = extendSite(siteC); } //Don't add if in testing area.
+		if(!window.sites[domain]) { window.sites[domain] = extendSite(siteC); } //Don't add if in testing area.
 	}
 }
 
 /* * * * * * * * * * General Functions * * * * * * * * * */
 
-function addStyleFromResource(resourceName) {
-	//Userscript extensions don't seem to handle GM_getResourceURL the same, so we need to fix that.
-	let GM_blob = GM_getResourceURL(resourceName);
+async function addStyleFromResource(resourceName) {
+	//Userscript extensions don't seem to handle GM_getResourceUrl the same, so we need to fix that.
+	let GMblob = await GM.getResourceUrl(resourceName);
 
 	let cssEle = null;
-	if(GM_blob.substr(0, 5) === 'blob:') {
+	if(GMblob.substr(0, 5) === 'blob:') {
 		//ViolentMonkey
 		//This is kind of a hack, but these blob: URLs don't work with css containing // includes, which means we need to convert it to base64 somehow.
 
 		let xhr = new XMLHttpRequest();
-		xhr.open('GET', GM_blob, true);
+		xhr.open('GET', GMblob, true);
 		xhr.responseType = 'arraybuffer';
 		xhr.onload = function(e) {
 			if (this.status === 200) {
@@ -1418,7 +1426,7 @@ function addStyleFromResource(resourceName) {
 		xhr.send();
 	} else {
 		//Other
-		cssEle = $('<style/>', {type: 'text/css', text: atob(GM_blob.substr(21))});
+		cssEle = $('<style/>', {type: 'text/css', text: atob(GMblob.substr(21))});
 		$('head').append(cssEle);
 	}
 }
@@ -1436,14 +1444,20 @@ jQuery.fn.reverseObj = function() {
 };
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
-//FIXME: ViolentMonkey is require with @require scripts and needs us to use window to allow global variables...
-//       We should really look into tweaking/rewriting this stuff..
-window.main_site = 'https://trackr.moe';
-window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
-window.config    = JSON.parse(GM_getValue('config') || '{}');
-if(debug) { console.log(config); }
+/* jshint ignore:start*/
+(async function() {
+	//FIXME: ViolentMonkey is require with @require scripts and needs us to use window to allow global variables...
+	//       We should really look into tweaking/rewriting this stuff..
+	window.main_site = 'https://trackr.moe';
+	window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
+	let pConfig = await GM.getValue('config');
+	window.config    = JSON.parse(pConfig || '{}');
+	if(debug) { console.log(window.config); }
 
-let sites = {};
-initializeSites();
+	window.sites = {};
+	initializeSites();
 
-main();
+	console.log('Sites initialized???');
+	main();
+})();
+/* jshint ignore:end*/

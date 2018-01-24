@@ -39,37 +39,40 @@
 							}
 						});
 
-						GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
-							//TODO: Move as much of this as possible to using the actual site functions.
+						//NOTE: GM_addValueChangeListener is TamperMonkey only, but come to others eventually: https://github.com/greasemonkey/greasemonkey/issues/2646
+						if (typeof GM_addValueChangeListener === 'undefined') {
+							GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
+								//TODO: Move as much of this as possible to using the actual site functions.
 
-							let data    = JSON.parse(new_value),
-							    site    = data.manga.site,
-							    title   = data.manga.title,
-							    chapter = data.manga.chapter,
-							    chapterNumber = data.chapterNumber,
-							    url     = data.url;
+								let data          = JSON.parse(new_value),
+								    site          = data.manga.site,
+								    title         = data.manga.title,
+								    chapter       = data.manga.chapter,
+								    chapterNumber = data.chapterNumber,
+								    url           = data.url;
 
-							let row = $(`i[title="${site}"]`) //Find everything using site
-								.closest('tr')
-								.find(`[data-title="${title}"]`) //Find title
-								.closest('tr');
-							if(row.length) {
-								let current_chapter = $(row).find('.current'),
-								    latest_chapter  = $(row).find('.latest'),
-								    update_ele      = unsafeWindow.$(row).find('.update-read');
+								let row = $(`i[title="${site}"]`) //Find everything using site
+									.closest('tr')
+									.find(`[data-title="${title}"]`) //Find title
+									.closest('tr');
+								if(row.length) {
+									let current_chapter = $(row).find('.current'),
+									    latest_chapter  = $(row).find('.latest'),
+									    update_ele      = unsafeWindow.$(row).find('.update-read');
 
-								$(current_chapter)
-									.attr('href', url);
-								if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
-									$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
-									update_ele.trigger('click', {isUserscript: true, isLatest: true});
-								} else {
-									//Chapter isn't latest.
-									$(current_chapter).text(chapterNumber);
-									update_ele.trigger('click', {isUserscript: true, isLatest: false});
+									$(current_chapter)
+										.attr('href', url);
+									if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
+										$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
+										update_ele.trigger('click', {isUserscript: true, isLatest: true});
+									} else {
+										//Chapter isn't latest.
+										$(current_chapter).text(chapterNumber);
+										update_ele.trigger('click', {isUserscript: true, isLatest: false});
+									}
 								}
-							}
-						});
+							});
+						}
 					}
 					break;
 
@@ -99,7 +102,7 @@
 						if(config['api-key']) {
 							config = $.extend(config, data);
 
-							GM_setValue('config', JSON.stringify(config));
+							GM.setValue('config', JSON.stringify(config));
 							$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
 						} else {
 							$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
@@ -115,7 +118,7 @@
 					}
 					let apiDiv = $('#api-key-div');
 					apiDiv.on('click', '#generate-api-key', function() {
-						GM_xmlhttpRequest({
+						GM.xmlHttpRequest({
 							url     : main_site + '/ajax/get_apikey',
 							method  : 'GET',
 							onload  : function(e) {
@@ -131,7 +134,7 @@
 										} else {
 											config['api-key']     = json['api-key'];
 										}
-										GM_setValue('config', JSON.stringify(config));
+										GM.setValue('config', JSON.stringify(config));
 									} else {
 										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
@@ -165,7 +168,7 @@
 						});
 					});
 					apiDiv.on('click', '#restore-api-key', function() {
-						GM_xmlhttpRequest({
+						GM.xmlHttpRequest({
 							url     : main_site + '/ajax/get_apikey/restore',
 							method  : 'GET',
 							onload  : function(e) {
@@ -182,7 +185,7 @@
 											} else {
 												config['api-key'] = json['api-key'];
 											}
-											GM_setValue('config', JSON.stringify(config));
+											GM.setValue('config', JSON.stringify(config));
 										} else {
 											alert('API Key hasn\'t been set before. Use generate API key instead.')
 										}

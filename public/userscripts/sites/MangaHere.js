@@ -75,7 +75,7 @@
 			let _this = this;
 
 			//Much like MangaFox, the inline chapter list is cached so we need to grab the proper list via AJAX.
-			GM_xmlhttpRequest({
+			GM.xmlHttpRequest({
 				url     : _this.title_url.replace('http://www.mangahere.cc', 'https://m.mangahere.co'),
 				method  : 'GET',
 				onload  : function(response) {
@@ -145,7 +145,7 @@
 			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
-			GM_xmlhttpRequest({
+			GM.xmlHttpRequest({
 				url     : 'https:'+_this.chapter_url.replace('www.mangahere.cc/manga', 'm.mangahere.co/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
