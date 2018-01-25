@@ -1457,7 +1457,6 @@ jQuery.fn.reverseObj = function() {
 	window.sites = {};
 	initializeSites();
 
-	console.log('Sites initialized???');
 	main();
 })();
 /* jshint ignore:end*/
