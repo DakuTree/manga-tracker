@@ -29,6 +29,7 @@ class Tracker_Stats_Model extends Tracker_Base_Model {
 				->from('tracker_chapters')
 				->join('tracker_titles', 'tracker_titles.id = tracker_chapters.title_id', 'left')
 				->join('tracker_sites','tracker_titles.site_id = tracker_sites.id', 'left')
+				->where('tracker_sites.status', 'enabled')
 				->group_by('tracker_chapters.title_id')
 				->having('count > 1')
 				->order_by('count DESC')
@@ -49,6 +50,7 @@ class Tracker_Stats_Model extends Tracker_Base_Model {
 				->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
 				->join('tracker_chapters', 'tracker_titles.id = tracker_chapters.title_id', 'left')
 				->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
+				->where('tracker_sites.status', 'enabled')
 				->get();
 			$stats = array_merge($stats, $queryTitles->result_array()[0]);
 
@@ -59,6 +61,7 @@ class Tracker_Stats_Model extends Tracker_Base_Model {
 				], FALSE)
 				->from('tracker_titles')
 				->join('tracker_sites', 'tracker_sites.id = tracker_titles.site_id', 'left')
+				->where('tracker_sites.status', 'enabled')
 				->group_by('tracker_titles.site_id')
 				->order_by('count DESC')
 				->limit(3)
