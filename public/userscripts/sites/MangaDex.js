@@ -41,7 +41,17 @@
 			$('.info-top-chapter, .option_wrap').remove();
 		},
 		preSetupViewer : function(callback) {
-			$('#content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			let newViewer = $('<div/>', {id: 'viewer'});
+
+			//Add a notice about adblock.
+			newViewer.prepend(
+				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
+					There are a few manga, ones that were uploaded very early on, that were stored on the original server, but have since been removed. This means that those images will not load at all until someone reuploads them.
+					If this still occurs with new chapters, try disabling the script and verifying the image will display, and if it does, please submit a report.
+				`})
+			);
+
+			$('#content').replaceWith(newViewer); //Set base viewer div
 
 			callback(false, true);
 		}
