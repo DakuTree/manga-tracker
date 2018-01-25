@@ -34,6 +34,8 @@
 						return `${server[1]}${imageHash[1]}/${filename}`;
 			});
 			this.page_count = this.viewerCustomImageList.length;
+			this.viewerChapterName      = this.chapter.split(':')[2];
+			this.viewerTitle            = $('span[title="Title"] + a').text();
 		},
 		stylize : function() {
 			$('.info-top-chapter, .option_wrap').remove();
@@ -41,7 +43,7 @@
 		preSetupViewer : function(callback) {
 			$('#content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			callback(true, true);
+			callback(false, true);
 		}
 	};
 })(window.trackerSites = (window.trackerSites || {}));
