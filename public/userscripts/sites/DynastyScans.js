@@ -1,4 +1,4 @@
-/* global generateChapterList */
+/* global window.generateChapterList */
 (function(sites) {	/**
 	 * Dynasty Scans
 	 * @type {SiteObject}
@@ -61,7 +61,7 @@
 						response = response.replace(/^[\S\s]*(<dl class="chapter-list">[\S\s]*<\/dl>)[\S\s]*$/, '$1');
 						let div = $('<div/>').append($(response));
 
-						_this.chapterList = generateChapterList($('.chapter-list > dd > a.name', div), 'href');
+						_this.chapterList = window.generateChapterList($('.chapter-list > dd > a.name', div), 'href');
 
 						callback();
 					}

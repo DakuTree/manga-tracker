@@ -1,4 +1,4 @@
-/* global generateChapterList */
+/* global window.generateChapterList */
 (function(sites) {
 	/**
 	 * Game of Scanlation
@@ -20,7 +20,7 @@
 			this.title_url   = 'https://gameofscanlation.moe/forums/'+this.title+'/';
 			this.chapter_url = 'https://gameofscanlation.moe/projects/'+this.title.replace(/\.[0-9]+$/, '')+'/'+this.chapter+'/';
 
-			let tempList = generateChapterList($('select[name=chapter_list] > option'), 'data-chapterurl');
+			let tempList = window.generateChapterList($('select[name=chapter_list] > option'), 'data-chapterurl');
 			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
 				let segments = key.split('/');
 				result[`projects/${_this.title.replace(/\.[0-9]+$/, '')}/${segments[2]}/`] = tempList[key];

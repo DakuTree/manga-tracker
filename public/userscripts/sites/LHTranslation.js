@@ -6,7 +6,7 @@
 	sites['read.lhtranslation.com'] = {
 		preInit : function(callback) {
 			//Force webtoon mode.
-			if(getCookie('read_type') === '1') {
+			if(window.getCookie('read_type') === '1') {
 				callback();
 			} else {
 				document.cookie = 'read_type=1; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
@@ -22,7 +22,7 @@
 			this.chapter_url = this.https + `://read.lhtranslation.com/read-${this.title}-chapter-${this.chapter}.html`;
 
 			this.chapterListCurrent = `read-${this.title}-chapter-${this.chapter}.html`;
-			this.chapterList        = generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
+			this.chapterList        = window.generateChapterList($('.chapter-before:eq(0) .select-chapter > select > option').reverseObj(), 'value');
 
 			let imgList = $('img.chapter-img');
 			this.viewerCustomImageList  = imgList.map(function(i, e) {

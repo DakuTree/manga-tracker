@@ -49,7 +49,7 @@
 					$(e).val(value.replace(/^http/, 'https'));
 				});
 			}
-			this.chapterList            = generateChapterList(chapterListOptions.reverseObj(), 'value');
+			this.chapterList            = window.generateChapterList(chapterListOptions.reverseObj(), 'value');
 
 			this.viewerChapterName      = this.chapterNumber;
 			this.viewerTitle            = document.title.replace(/ - (?:vol|ch) [0-9]+.*/, '').replace(/&#(\d{1,4});/, function(fullStr, code) { return String.fromCharCode(code); });

@@ -34,7 +34,7 @@
 				success: function(response) {
 					let $container = $(response).wrap('<div />').parent();
 					$container.find('.text-muted, .media-left, .media-right').remove();
-					_this.chapterList = generateChapterList($('.media-list > li > a', $container).reverseObj(), 'href');
+					_this.chapterList = window.generateChapterList($('.media-list > li > a', $container).reverseObj(), 'href');
 
 					callback();
 				}

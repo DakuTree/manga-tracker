@@ -25,7 +25,7 @@
 			option.each(function(i, e) {
 				$(e).val(_this.title_url + $(e).val() + '/');
 			});
-			this.chapterList        = generateChapterList(option, 'value');
+			this.chapterList        = window.generateChapterList(option, 'value');
 			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerCustomImageList = $('script:contains("img_url.push(")').html().match(/url\.push\('(.*?')/g).filter(function(value, index, self) {

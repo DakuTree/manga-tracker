@@ -1,4 +1,4 @@
-/* global generateChapterList */
+/* global window.generateChapterList */
 (function(sites) {
 	/**
 	 * MangaDex
@@ -15,7 +15,7 @@
 			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;
 
-			let tempList     = generateChapterList($('#jump_chapter').find('> option'), 'value');
+			let tempList     = window.generateChapterList($('#jump_chapter').find('> option'), 'value');
 			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
 				result[`${_this.https}://mangadex.com/chapter/${key}`] = tempList[key];
 				return result;
@@ -25,7 +25,7 @@
 			let pageSegments = $('#current_page').attr('src').split('/'),
 			    imageHash    = $('script:contains("dataurl =")').text().match(/dataurl = '(.*?)'/),
 			    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
-          server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
+			    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
 			    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
 			this.viewerCustomImageList = pages.map(function(filename, i) {
 					if(server == '/data/')

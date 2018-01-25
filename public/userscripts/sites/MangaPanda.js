@@ -53,7 +53,7 @@
 				if(option.length) {
 					clearInterval(checkExist);
 
-					_this.chapterList = generateChapterList(option, 'value');
+					_this.chapterList = window.generateChapterList(option, 'value');
 					callback();
 				}
 

@@ -19,7 +19,7 @@
 			pageNav.find('select:first > option').each(function(i, e) {
 				$(e).val(_this.title_url + $(e).val() + '/');
 			});
-			this.chapterList        = generateChapterList(pageNav.find('select:first > option').reverseObj(), 'value');
+			this.chapterList        = window.generateChapterList(pageNav.find('select:first > option').reverseObj(), 'value');
 			this.chapterListCurrent = this.chapter_url;
 
 			this.viewerCustomImageList = $('#longWrap').html().match(/(http:\/\/merakiscans\.com\/wp-content\/manga\/[^"]+)/g).filter(function(value, index, self) {

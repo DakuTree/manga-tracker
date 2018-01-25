@@ -10,7 +10,7 @@
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
 			if($('.cf-browser-verification').length === 0) {
 				//Kissmanga has a built-in method to show all pages on the same page. Check if the cookie is correct, otherwise change and refresh.
-				if(getCookie('vns_readType1') !== '0') {
+				if(window.getCookie('vns_readType1') !== '0') {
 					callback();
 				} else {
 					document.cookie = 'vns_readType1=1; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
@@ -27,7 +27,7 @@
 			this.title_url   = 'http://kissmanga.com/Manga/'+this.title;
 			this.chapter_url = this.title_url+'/'+this.segments[3]+'?id='+chapter_id;
 
-			this.chapterList        = generateChapterList($('.selectChapter:first > option'), 'value');
+			this.chapterList        = window.generateChapterList($('.selectChapter:first > option'), 'value');
 			this.chapterListCurrent = decodeURI(this.segments[3])+'?id='+chapter_id;
 
 			this.viewerChapterName     = $('.selectChapter:first > option:selected').text().trim();

@@ -69,7 +69,7 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-25
-// @version      1.9.12
+// @version      1.9.13
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -77,7 +77,7 @@
 // @require      https://trackr.moe/userscripts/sites/_trackr.moe.3.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
-// @require      https://trackr.moe/userscripts/sites/Batoto.2.js
+// @require      https://trackr.moe/userscripts/sites/Batoto.3.js
 // @require      https://trackr.moe/userscripts/sites/CatScans.js
 // @require      https://trackr.moe/userscripts/sites/ChampionScans.js
 // @require      https://trackr.moe/userscripts/sites/ChibiManga.js
@@ -87,40 +87,40 @@
 // @require      https://trackr.moe/userscripts/sites/DKThiasScans.js
 // @require      https://trackr.moe/userscripts/sites/DokiFansubs.js
 // @require      https://trackr.moe/userscripts/sites/Dokusha.js
-// @require      https://trackr.moe/userscripts/sites/DynastyScans.2.js
-// @require      https://trackr.moe/userscripts/sites/EGScans.js
+// @require      https://trackr.moe/userscripts/sites/DynastyScans.3.js
+// @require      https://trackr.moe/userscripts/sites/EGScans.2.js
 // @require      https://trackr.moe/userscripts/sites/ElPsyCongroo.js
 // @require      https://trackr.moe/userscripts/sites/EvilFlowers.js
 // @require      https://trackr.moe/userscripts/sites/FallenAngelsScans.js
 // @require      https://trackr.moe/userscripts/sites/ForgottenScans.js
-// @require      https://trackr.moe/userscripts/sites/GameOfScanlation.js
+// @require      https://trackr.moe/userscripts/sites/GameOfScanlation.2.js
 // @require      https://trackr.moe/userscripts/sites/HatigarmScans.js
 // @require      https://trackr.moe/userscripts/sites/HelveticaScans.js
 // @require      https://trackr.moe/userscripts/sites/HotChocolateScans.js
 // @require      https://trackr.moe/userscripts/sites/JaiminisBox.js
 // @require      https://trackr.moe/userscripts/sites/KireiCake.js
-// @require      https://trackr.moe/userscripts/sites/KissManga.js
-// @require      https://trackr.moe/userscripts/sites/LHTranslation.js
+// @require      https://trackr.moe/userscripts/sites/KissManga.2.js
+// @require      https://trackr.moe/userscripts/sites/LHTranslation.2.js
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.js
-// @require      https://trackr.moe/userscripts/sites/MangaCow.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.3.js
+// @require      https://trackr.moe/userscripts/sites/MangaCow.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
-// @require      https://trackr.moe/userscripts/sites/MangaKakalot.js
-// @require      https://trackr.moe/userscripts/sites/MangaPanda.js
-// @require      https://trackr.moe/userscripts/sites/MangaRock.js
-// @require      https://trackr.moe/userscripts/sites/MangaStream.js
+// @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaPanda.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaRock.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaStream.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js
-// @require      https://trackr.moe/userscripts/sites/MerakiScans.js
+// @require      https://trackr.moe/userscripts/sites/MerakiScans.2.js
 // @require      https://trackr.moe/userscripts/sites/OneTimeScans.js
 // @require      https://trackr.moe/userscripts/sites/PhoenixSerenade.js
-// @require      https://trackr.moe/userscripts/sites/PsychoPlay.js
+// @require      https://trackr.moe/userscripts/sites/PsychoPlay.2.js
 // @require      https://trackr.moe/userscripts/sites/PureMashiroScans.js
 // @require      https://trackr.moe/userscripts/sites/RavensScans.js
-// @require      https://trackr.moe/userscripts/sites/ReadMangaToday.js
+// @require      https://trackr.moe/userscripts/sites/ReadMangaToday.2.js
 // @require      https://trackr.moe/userscripts/sites/Riceballicious.js
 // @require      https://trackr.moe/userscripts/sites/S2Scans.js
 // @require      https://trackr.moe/userscripts/sites/SaikoScans.js
@@ -130,7 +130,7 @@
 // @require      https://trackr.moe/userscripts/sites/ShoujoSense.js
 // @require      https://trackr.moe/userscripts/sites/TwistedHelScans.js
 // @require      https://trackr.moe/userscripts/sites/VortexScans.js
-// @require      https://trackr.moe/userscripts/sites/WebToons.js
+// @require      https://trackr.moe/userscripts/sites/WebToons.2.js
 // @require      https://trackr.moe/userscripts/sites/WhiteCloudPavillion.2.js
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
@@ -1373,7 +1373,7 @@ function extendSite(o) { return Object.assign({}, base_site, o); }
  * @param  {string} attrURL The inner tag containing each chapter URL.
  * @return {Object}         Contains URL and names.
  */
-function generateChapterList(target, attrURL) {
+window.generateChapterList = function(target, attrURL) {
 	let chapterList = {};
 	if(target instanceof jQuery) {
 		$(target).each(function() {
@@ -1383,7 +1383,7 @@ function generateChapterList(target, attrURL) {
 		//TODO: Throw error
 	}
 	return chapterList;
-}
+};
 
 function initializeSites() {
 	let siteKeys = Object.keys(window.trackerSites);
@@ -1431,7 +1431,7 @@ async function addStyleFromResource(resourceName) {
 	}
 }
 
-function getCookie(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];}
+window.getCookie = function(k){return(document.cookie.match(new RegExp('(^|; )'+k+'=([^;]*)'))||0)[2];};
 
 function hasEmptyValues(o) {
 	return Object.keys(o).some(function(x) {

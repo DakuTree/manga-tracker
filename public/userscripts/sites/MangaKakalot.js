@@ -6,7 +6,7 @@
 	sites['mangakakalot.com'] = {
 		preInit : function(callback) {
 			//Force all images on one page mode.
-			if(getCookie('loadimg') === 'yes') {
+			if(window.getCookie('loadimg') === 'yes') {
 				callback();
 			} else {
 				document.cookie = 'loadimg=yes; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
@@ -22,7 +22,7 @@
 			this.title_url   = this.https+'://mangakakalot.com/manga/'+this.title;
 			this.chapter_url = this.https+'://mangakakalot.com/chapter/'+this.title+'/chapter_'+this.chapter;
 
-			let tempList = generateChapterList($('#c_chapter').find('> option').reverseObj(), 'value');
+			let tempList = window.generateChapterList($('#c_chapter').find('> option').reverseObj(), 'value');
 			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
 				result[`${_this.https}://mangakakalot.com/chapter/${_this.title}/chapter_${key}`] = tempList[key];
 				return result;

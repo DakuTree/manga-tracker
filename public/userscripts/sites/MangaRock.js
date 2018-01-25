@@ -30,7 +30,7 @@
 			this.title_url   = `${this.https}://mangarock.com/manga/mrs-serie-${this.title}`;
 			this.chapter_url = `${this.title_url}/chapter/mrs-chapter-${chapterID}`;
 
-			let tempList = generateChapterList($('._3Oahl.ll5Bk > select:first > option'), 'value');
+			let tempList = window.generateChapterList($('._3Oahl.ll5Bk > select:first > option'), 'value');
 			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
 				result[`${_this.title_url}/chapter/${key}`] = tempList[key];
 				return result;

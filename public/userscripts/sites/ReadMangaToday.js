@@ -41,7 +41,7 @@
 
 			//Might be easier to keep chapter_url different.
 			this.chapterListCurrent = this.chapter_url.slice(0,-1);
-			this.chapterList        = generateChapterList($('.jump-menu[name=chapter_list] > option:gt(0)').reverseObj(), 'value');
+			this.chapterList        = window.generateChapterList($('.jump-menu[name=chapter_list] > option:gt(0)').reverseObj(), 'value');
 
 			//this.viewerTitle            = $('.readpage_top > .title > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
