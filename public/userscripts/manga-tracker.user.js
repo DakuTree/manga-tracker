@@ -69,7 +69,7 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @updated      2018-01-25
-// @version      1.9.11
+// @version      1.9.12
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -87,7 +87,7 @@
 // @require      https://trackr.moe/userscripts/sites/DKThiasScans.js
 // @require      https://trackr.moe/userscripts/sites/DokiFansubs.js
 // @require      https://trackr.moe/userscripts/sites/Dokusha.js
-// @require      https://trackr.moe/userscripts/sites/DynastyScans.js
+// @require      https://trackr.moe/userscripts/sites/DynastyScans.2.js
 // @require      https://trackr.moe/userscripts/sites/EGScans.js
 // @require      https://trackr.moe/userscripts/sites/ElPsyCongroo.js
 // @require      https://trackr.moe/userscripts/sites/EvilFlowers.js

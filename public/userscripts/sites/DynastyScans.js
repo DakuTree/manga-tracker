@@ -1,80 +1,81 @@
 /* global generateChapterList */
-(function(sites) {
-	/**
-	 * MangaPanda
+(function(sites) {	/**
+	 * Dynasty Scans
 	 * @type {SiteObject}
 	 */
-	sites['www.mangapanda.com'] = {
-		preInit : function(callback) {
-			//MangaPanda is tricky. For whatever stupid reason, it decided to not use a URL format which actually separates its manga URLs from every other page on the site.
-			//I've went and already filtered a bunch of URLs out in the include regex, but since it may not match everything, we have to do an additional check here.
-			if($('#topchapter, #chapterMenu, #bottomchapter').length === 3) {
-				//MangaPanda is another site which uses the MangaFox layout. Is this just another thing like FoolSlide?
+	sites['dynasty-scans.com'] = {
+		setObjVars    : function() {
+			let title_ele = $('#chapter-title').find('> b > a');
+
+			this.is_one_shot = !title_ele.length;
+
+			if(!this.is_one_shot) {
+				this.title_url = title_ele.attr('href').replace(/.*\/(.*)$/, '$1');
+				this.chapter_url = location.pathname.split(this.title_url + '_').pop(); //There is really no other valid way to get the chapter_url :|
+			} else {
+				this.title_url = location.pathname.substr(10);
+				this.chapter_url = 'oneshot'; //This is labeled oneshot so it's properly handled in the backend.
+			}
+
+			this.title = this.title_url + ':--:' + (+this.is_one_shot);
+			this.chapter = this.chapter_url;
+
+			this.chapterListCurrent = location.pathname;
+			this.chapterList = {}; //This is set in preSetupTopBar
+
+			this.viewerTitle = $('#chapter-title > b > a, #chapter-title > b').get(0).innerText; //FIXME: This doesn't prepend series names (if exists)
+			this.viewerCustomImageList = $('script:contains("/system/releases/")').html().match(/"(\/system[^"]+)"/g).map(function(e) {
+				return e.replace(/^"|"$/g, '');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+
+			this.searchURLFormat = 'https://dynasty-scans.com/search?q={%SEARCH%}';
+
+			if(location.hash) {
+				this.currentPage = parseInt(location.hash.substring(1));
+			}
+		},
+		stylize: function() {
+			//These buttons aren't needed since we have our own viewer.
+			$('#chapter-actions > div > .btn-group:last, #download_page').remove();
+			$('#reader').addClass('noresize');
+
+			//Topbar covers a bunch of nav buttons.
+			GM_addStyle(`
+				#content > .navbar > .navbar-inner { padding-top: 42px; }
+			`);
+		},
+		preSetupTopBar: function(callback) {
+			let _this = this;
+
+			if(!_this.is_one_shot) {
+				//Sadly, we don't have any form of inline chapterlist. We need to AJAX the title page for this one.
+				$.ajax({
+					url: 'https://dynasty-scans.com/series/' + _this.title_url,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+						xhr.setRequestHeader('Pragma', 'no-cache');
+					},
+					cache     : false,
+					success   : function(response) {
+						response = response.replace(/^[\S\s]*(<dl class="chapter-list">[\S\s]*<\/dl>)[\S\s]*$/, '$1');
+						let div = $('<div/>').append($(response));
+
+						_this.chapterList = generateChapterList($('.chapter-list > dd > a.name', div), 'href');
+
+						callback();
+					}
+				});
+			} else {
+				_this.chapterList[location.pathname] = 'Oneshot';
 
 				callback();
 			}
 		},
-		setObjVars : function() {
-			this.page_count     = parseInt($('#topchapter').find('#selectpage select > option:last').text());
-			this.title          = this.segments[1];
-			this.chapter        = this.segments[2];
+		preSetupViewer: function(callback) {
+			$('#reader').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
-			this.chapterListCurrent = '/'+this.title+'/'+this.chapter;
-			// this.chapterList = {}, //This is set via preSetupTopBar.
-
-			this.title_url      = 'http://www.mangapanda.com/'+this.title+'/';
-			this.chapter_url    = 'http://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
-
-			// this.viewerChapterName      = '';
-			this.viewerTitle            = $('#mangainfo').find('> div[style*=float] > h2').text().slice(0, -6);
-			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
-			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
-
-			this.searchURLFormat = 'http://www.mangapanda.com/search/?w={%SEARCH%}';
-
-			if(this.segments[3]) {
-				this.currentPage = parseInt(this.segments[3]);
-			}
-		},
-		stylize : function() {
-			let mangaInfo = $('#mangainfo').find('> div');
-			//Remove page count from the header, since all pages are loaded at once now.
-			mangaInfo.find(':first .c1').remove();
-
-			//Float title in the header to the right. This just looks nicer and is a bit easier to read.
-			mangaInfo.find('+ div:not(.clear)').css('float', 'right');
-		},
-		preSetupTopBar : function(callback) {
-			let _this = this;
-
-			//MangaPanda is tricky here. The chapter list is loaded via AJAX, and not a <script> tag. As far as I can tell, we can't watch for this to load without watching the actual element.
-			let attempts = 0;
-			let checkExist = setInterval(function() {
-				let option     = $('#topchapter').find('> #selectmanga > select > option');
-				if(option.length) {
-					clearInterval(checkExist);
-
-					_this.chapterList = generateChapterList(option, 'value');
-					callback();
-				}
-
-				if(attempts === 25) {
-					alert('ERROR: Having issues loading the chapter list.\nTry reloading the page.');
-					clearInterval(checkExist);
-				}
-				attempts++;
-			}, 500);
-		},
-		postSetupTopBar : function(callback) {
-			//Remove MangaFox's chapter navigation since we now have our own. Also remove leftover whitespace.
-			$('#topchapter > #mangainfo ~ div, #bottomchapter > #mangainfo ~ div').remove();
-
-			callback();
-		},
-		preSetupViewer : function(callback) {
-			$('.episode-table').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-
-			callback(true);
+			callback(true, true);
 		}
 	};
 })(window.trackerSites = (window.trackerSites || {}));
