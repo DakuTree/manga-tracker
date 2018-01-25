@@ -29,7 +29,7 @@ class FoolSlideGenerator {
 
 		$this->updateDocs();
 
-		$domain =  preg_replace('#^https?://(.*?)/.*?$#', '$1', $this->baseURL);
+		$domain =  preg_replace('#^https?://(.*?)(?:/.*?)?$#', '$1', $this->baseURL);
 		say("\nAdmin SQL:");
 		say("INSERT INTO `mangatracker_development`.`tracker_sites` (`id`, `site`, `site_class`, `status`, `use_custom`) VALUES (NULL, '{$domain}', '{$this->className}', 'enabled', 'Y');");
 		say("INSERT INTO `mangatracker_production`.`tracker_sites` (`id`, `site`, `site_class`, `status`, `use_custom`) VALUES (NULL, '{$domain}', '{$this->className}', 'enabled', 'Y');");
@@ -104,22 +104,13 @@ class FoolSlideGenerator {
 		$newVersion = "{$currentVersion[0]}.{$currentVersion[1]}.". (((int) $currentVersion[2]) + 1);
 		$baseFile = str_replace("@version      {$matches[2]}","@version      {$newVersion}", $baseFile);
 
-		//Add site
-		$siteData = <<<EOT
-	/**
-	 * {$this->className} (FoolSlide)
-	 * @type {SiteObject}
-	 */
-	'{$parse['host']}' : extendSite({
-		preInit : function(callback) {
-			this.setupFoolSlide();
-			callback();
-		}
-	}),
-
-	//Tracking site
+		//Add @require
+		// @resource     fontAwesome
+		$require = <<<EOT
+	// @require      https://trackr.moe/userscripts/sites/{$this->className}.1.js
+	// @resource     fontAwesome
 EOT;
-		$baseFile = str_replace('	//Tracking site', $siteData, $baseFile);
+		$baseFile = str_replace('	// @resource     fontAwesome', $require, $baseFile);
 
 		file_put_contents('./public/userscripts/manga-tracker.user.js', $baseFile);
 
@@ -127,6 +118,26 @@ EOT;
 		$baseFileMeta = file_get_contents('./public/userscripts/manga-tracker.meta.js');
 		$baseFileMeta = str_replace("// @version      {$matches[2]}", "// @version      {$newVersion}", $baseFileMeta);
 		file_put_contents('./public/userscripts/manga-tracker.meta.js', $baseFileMeta);
+
+
+		// Create site js
+		$siteData = <<<EOT
+(function(sites) {
+	/**
+	 * {$this->className} (FoolSlide)
+	 * @type {SiteObject}
+	 */
+	sites['{$parse['host']}'] = {
+		preInit : function(callback) {
+			this.setupFoolSlide();
+			callback();
+		}
+	};
+})(window.trackerSites = (window.trackerSites || {}));
+
+EOT;
+
+		file_put_contents("./public/userscripts/sites/{$this->className}.js", $siteData);
 	}
 
 	public function updateDocs() : void {
@@ -136,26 +147,7 @@ EOT;
 		$helpFile = file_get_contents('./application/views/Help.php');
 		file_put_contents('./application/views/Help.php', preg_replace('/(\r\n\t<\/ul> <!--ENDOFSITES-->)/', "\r\n\t\t<li>{$this->className}</li>$1", $helpFile));
 
-		$changelogFile = file_get_contents('./public/CHANGELOG.md');
-		$date = date("Y-m-d", time());
-		if(strpos($changelogFile, $date) !== FALSE) {
-			//Log already exists for current date.
-			if(strpos($changelogFile, "[$date]\r\n### Added") !== FALSE) {
-				$changelogFile = str_replace("[$date]\r\n### Added", "[$date]\r\n### Added\r\n- Support for {$this->className}.", $changelogFile);
-			} else {
-				$changelogFile = str_replace("[$date]\r\n", "[$date]\r\n### Added\r\n- Support for {$this->className}.\r\n\r\n", $changelogFile);
-			}
-		} else {
-			//Log doesn't exist.
-			$log = <<<EOT
-## [{$date}]
-### Added
-- Support for {$this->className}.
-EOT;
-			$changelogFile = str_replace('All notable changes to this project will be documented in this file.', "All notable changes to this project will be documented in this file.\r\n\r\n{$log}", $changelogFile);
-		}
-
-		file_put_contents('./public/CHANGELOG.md', $changelogFile);
+		say("\nCHANGELOG must be edited manually as it now exists on the wiki!");
 	}
 
 	private function testURL() : bool {
