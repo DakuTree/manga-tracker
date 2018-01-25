@@ -70,7 +70,7 @@
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-01-25
-// @version      1.9.16
+// @version      1.9.17
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -129,6 +129,7 @@
 // @require      https://trackr.moe/userscripts/sites/SenseScans.js
 // @require      https://trackr.moe/userscripts/sites/ShoujoHearts.js
 // @require      https://trackr.moe/userscripts/sites/ShoujoSense.js
+// @require      https://trackr.moe/userscripts/sites/TukiScans.1.js
 // @require      https://trackr.moe/userscripts/sites/TwistedHelScans.js
 // @require      https://trackr.moe/userscripts/sites/VortexScans.js
 // @require      https://trackr.moe/userscripts/sites/WebToons.2.js
