@@ -107,10 +107,10 @@ class FoolSlideGenerator {
 		//Add @require
 		// @resource     fontAwesome
 		$require = <<<EOT
-	// @require      https://trackr.moe/userscripts/sites/{$this->className}.1.js
-	// @resource     fontAwesome
+// @require      https://trackr.moe/userscripts/sites/{$this->className}.1.js
+// @resource     fontAwesome
 EOT;
-		$baseFile = str_replace('	// @resource     fontAwesome', $require, $baseFile);
+		$baseFile = str_replace('// @resource     fontAwesome', $require, $baseFile);
 
 		file_put_contents('./public/userscripts/manga-tracker.user.js', $baseFile);
 
