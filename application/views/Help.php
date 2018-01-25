@@ -123,6 +123,7 @@
 		<li>SenseScans</li>
 		<li>ShoujoHearts</li>
 		<li>ShoujoSense</li>
+		<li>TukiScans</li>
 		<li>TwistedHelScans</li>
 		<li>VortexScans</li>
 		<li>WebToons.com</li>

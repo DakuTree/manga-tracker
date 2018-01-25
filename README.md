@@ -59,6 +59,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * SenseScans
 * ShoujoHearts
 * ShoujoSense
+* TukiScans
 * TwistedHelScans
 * VortexScans
 * WebToons.com
