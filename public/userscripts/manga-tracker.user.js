@@ -68,8 +68,8 @@
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
-// @updated      2018-01-24
-// @version      1.9.10
+// @updated      2018-01-25
+// @version      1.9.11
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -104,7 +104,7 @@
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
