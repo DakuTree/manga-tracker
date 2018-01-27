@@ -33,8 +33,8 @@
 
 	<span id="fb-check" class="fa sr-only cc-grower" style="display: none">&nbsp;</span>
 	<!-- JAVASCRIPT BELOW -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-3.2.1.min.js"><\/script>')</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="<?=asset_url()?>vendor/js/jquery-3.3.1.min.js"><\/script>')</script>
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
@@ -51,7 +51,7 @@
 		});
 	</script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.15/js/jquery.tablesorter.combined.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.4/js/jquery.tablesorter.combined.min.js"></script>
 	<script>$.fn.tablesorter  || document.write('<script src="<?=asset_url()?>vendor/js/jquery.tablesorter.combined.min.js"><\/script>')</script>
 
 	<script>
