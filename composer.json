@@ -13,11 +13,9 @@
 
 		"bower-asset/jquery"            : "3.2.1",
 		"bower-asset/jquery-validation" : "1.17.0",
-		"bower-asset/html5shiv"         : "3.7.*",
 		"bower-asset/normalize.css"     : "7.0.0",
 		"bower-asset/bootstrap"         : "3.3.7",
 		"bower-asset/font-awesome"      : "4.7.0",
-		"bower-asset/respond"           : "1.4.2",
 		"bower-asset/cookieconsent"     : "3.0.4",
 		"bower-asset/jquery.simplePagination" : "0.0.3.0",
 		"bower-asset/jquery.tablesorter" : "2.29.2"
@@ -33,8 +31,6 @@
 	],
 	"vendor-copy": {
 		"vendor/bower-asset/normalize.css/normalize.css"                             : "public/assets/vendor/css/normalize.css",
-		"vendor/bower-asset/html5shiv/dist/html5shiv.js"                             : "public/assets/vendor/js/html5shiv.js",
-		"vendor/bower-asset/html5shiv/dist/html5shiv.min.js"                         : "public/assets/vendor/js/html5shiv.min.js",
 		"vendor/bower-asset/jquery/dist/jquery.js"                                   : "public/assets/vendor/js/jquery-3.2.1.js",
 		"vendor/bower-asset/jquery/dist/jquery.min.js"                               : "public/assets/vendor/js/jquery-3.2.1.min.js",
 		"vendor/bower-asset/jquery/dist/jquery.min.map"                              : "public/assets/vendor/js/jquery-3.2.1.min.map",
@@ -65,7 +61,6 @@
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.ttf"              : "public/assets/vendor/fonts/fontawesome-webfont.ttf",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff"             : "public/assets/vendor/fonts/fontawesome-webfont.woff",
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2",
-		"vendor/bower-asset/respond/dest/respond.min.js"                             : "public/assets/vendor/js/respond.min.js",
 		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.js"                : "public/assets/vendor/js/cookieconsent.min.js",
 		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.css"               : "public/assets/vendor/css/cookieconsent.min.css",
 		"vendor/bower-asset/jquery.simplePagination/jquery.simplePagination.js"      : "public/assets/vendor/js/jquery.simplePagination.js",
