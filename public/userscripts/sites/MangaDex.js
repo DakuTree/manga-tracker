@@ -15,11 +15,11 @@
 			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;
 
-			let tempList     = window.generateChapterList($('#jump_chapter').find('> option'), 'value');
-			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
-				result[`${_this.https}://mangadex.com/chapter/${key}`] = tempList[key];
-				return result;
-			}, {});
+			let tempList = {}
+			$('#jump_chapter').find('> option').each(function(){
+		                tempList[`https://mangadex.com/chapter/`+ '' + $(this).attr('value')] = $(this).text();
+            		});
+            		this.chapterList = tempList;
 			this.chapterListCurrent = this.chapter_url;
 
 			let pageSegments = $('#current_page').attr('src').split('/'),
