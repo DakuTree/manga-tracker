@@ -33,7 +33,7 @@ class MangaRock extends Base_Site_Model {
 				log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
 			} else {
 				$json = json_decode($content['body'], TRUE);
-				if($json['data'] !== 'Unknown serie') {
+				if($json['data'] !== 'Unknown serie' && !empty($json['data']['chapters'])) {
 					$titleData['title'] = $json['data']['name'];
 
 					$latestChapter = end($json['data']['chapters']);
