@@ -1,5 +1,25 @@
 (function(sites) {
 	/**
+	 * MangaFox (New Domain 2.0)
+	 * @type {SiteObject}
+	 */
+	sites['fanfox.net'] = {
+		preInit : function(callback) {
+			let ms = sites['mangafox.me'];
+			this.setObjVars      = ms.setObjVars;
+			this.stylize         = ms.stylize;
+			this.preSetupTopBar  = ms.preSetupTopBar;
+			this.postSetupTopBar = ms.postSetupTopBar;
+			this.preSetupViewer  = ms.preSetupViewer;
+			this.setupViewerContainer = ms.setupViewerContainer;
+
+			this.site = 'mangafox.me';
+
+			callback();
+		}
+	};
+
+	/**
 	 * MangaFox (New Domain)
 	 * @type {SiteObject}
 	 */
@@ -32,8 +52,8 @@
 
 			this.page_count  = $('#top_bar').find('.prev_page + div').text().trim().replace(/^[\s\S]*of ([0-9]+)$/, '$1');
 
-			this.title_url   = 'http://mangafox.la/manga/'+this.title+'/';
-			this.chapter_url = '//mangafox.la/manga/'+this.title+'/'+this.chapter+'/';
+			this.title_url   = 'http://fanfox.net/manga/'+this.title+'/';
+			this.chapter_url = '//fanfox.net/manga/'+this.title+'/'+this.chapter+'/';
 
 			this.chapterListCurrent = this.chapter_url+'1.html';
 			this.chapterList        = {}; //This is set via preSetupTopbar
@@ -43,7 +63,7 @@
 			this.viewerRegex            = /^[\s\S]*(<div class="read_img">[\s\S]*<\/div>)[\s\S]*<\/div>[\s\S]*<div id="shares"[\s\S]*$/;
 			// this.viewerCustomImageList  = []; //This is (possibly) set below.
 
-			this.searchURLFormat = 'http://mangafox.la/search.php?advopts=1&name={%SEARCH%}';
+			this.searchURLFormat = 'http://fanfox.net/search.php?advopts=1&name={%SEARCH%}';
 
 			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
 
@@ -72,7 +92,7 @@
 			//Because of this, we can't use the inline chapter list as a source, and instead we need to check the manga page.
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM.xmlHttpRequest({
-				url     : _this.title_url.replace('mangafox.la', 'm.mangafox.la'),
+				url     : _this.title_url.replace('fanfox.net', 'm.fanfox.net'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText;
@@ -84,7 +104,7 @@
 						let chapterTitle     = $('+ span.title', this).text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						url = url.replace('m.mangafox.la/manga/', 'mangafox.la/manga/');
+						url = url.replace('m.fanfox.net/manga/', 'fanfox.net/manga/');
 						_this.chapterList[url+'1.html'] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
 							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
@@ -148,7 +168,7 @@
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM.xmlHttpRequest({
-				url     : 'http:'+_this.chapter_url.replace('mangafox.la/manga', 'm.mangafox.la/roll_manga'),
+				url     : 'http:'+_this.chapter_url.replace('fanfox.net/manga', 'm.fanfox.net/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data      = response.responseText,

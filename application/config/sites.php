@@ -14,6 +14,7 @@ $config['webtoons_cookie'] = '';
 $config['site_aliases'] = [
 	'readms.net'       => 'mangastream.com',
 	'mangafox.la'      => 'mangafox.me',
+	'fanfox.net'       => 'mangafox.me',
 	'www.readmng.com'  => 'www.readmanga.today',
 	'www.mangahere.co' => 'www.mangahere.cc'
 ];

@@ -6,12 +6,12 @@ class MangaFox extends Base_Site_Model {
 	public $customType    = 1;
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://mangafox.la/manga/{$title_url}/";
+		return "http://fanfox.net/manga/{$title_url}/";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "http://mangafox.la/manga/{$title_url}/{$chapter}/1.html",
+			'url'    => "http://fanfox.net/manga/{$title_url}/{$chapter}/1.html",
 			'number' => $chapter
 		];
 	}
@@ -60,7 +60,7 @@ class MangaFox extends Base_Site_Model {
 			"mfvb_password={$this->config->item('mangafox_password')}",
 			"bmsort=last_chapter"
 		];
-		$content = $this->get_content('http://mangafox.la/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
+		$content = $this->get_content('http://fanfox.net/ajax/bookmark.php', implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
 		$callback($content, $matches['id'], function($body) {
 			return $body == 'true';
@@ -75,7 +75,7 @@ class MangaFox extends Base_Site_Model {
 			"bmsort=last_chapter",
 			"bmorder=za"
 		];
-		$content = $this->get_content('http://mangafox.la/bookmark/?status=currentreading&sort=last_chapter&order=za', implode("; ", $cookies), "", TRUE);
+		$content = $this->get_content('http://fanfox.net/bookmark/?status=currentreading&sort=last_chapter&order=za', implode("; ", $cookies), "", TRUE);
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} /bookmark | Failed to grab URL (See above curl error)");

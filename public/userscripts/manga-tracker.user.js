@@ -7,7 +7,7 @@
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
 // @icon         https://trackr.moe/favicon.production.png
 // @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
-// @include      /^https?:\/\/mangafox\.(?:me|la)\/manga\/.+\/(?:.*\/)?.*\/.*$/
+// @include      /^https?:\/\/fanfox\.net\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^https?:\/\/(?:www\.)?mangahere\.c[o|c]\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
 // @include      /^https:/\/dynasty-scans\.com\/chapters\/.+$/
@@ -69,8 +69,8 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-28
-// @version      1.9.18
+// @updated      2018-01-29
+// @version      1.9.19
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -106,7 +106,7 @@
 // @require      https://trackr.moe/userscripts/sites/LOLScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.7.js
-// @require      https://trackr.moe/userscripts/sites/MangaFox.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
@@ -157,6 +157,7 @@
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
 // @connect      m.mangafox.la
+// @connect      m.fanfox.net
 // @connect      m.mangahere.co
 // @connect      m.mangahere.cc
 // @run-at       document-start
