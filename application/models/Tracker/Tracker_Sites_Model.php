@@ -388,10 +388,18 @@ abstract class Base_Site_Model extends CI_Model {
 	 * This calls doCustomCheckCompare which handles the majority of the checking.
 	 * NOTE: Depending on the site, you may need to call getChapterData to get the chapter number to be used with this.
 	 *
-	 * @param string $oldChapter
-	 * @param string $newChapter
+	 * @param string $oldChapterString
+	 * @param string $newChapterString
+	 * @return bool
 	 */
-	public function doCustomCheck(string $oldChapter, string $newChapter) {}
+	public function doCustomCheck(string $oldChapterString, string $newChapterString) : bool {
+		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
+		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
+
+		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
+
+		return $status;
+	}
 
 	/**
 	 * Used by doCustomCheck to check if a chapter looks newer than the current one.
@@ -559,14 +567,6 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 		return $titleDataList;
 	}
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) {
-		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
-		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
-
-		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
-
-		return $status;
-	}
 
 	public function getJSONTitleURL(string $title_url) : string {
 		return "{$this->baseURL}/api/reader/comic/stub/{$title_url}/format/json";
@@ -693,13 +693,5 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 		}
 
 		return $titleDataList;
-	}
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) {
-		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
-		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
-
-		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
-
-		return $status;
 	}
 }
