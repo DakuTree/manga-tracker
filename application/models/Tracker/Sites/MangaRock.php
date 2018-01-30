@@ -49,4 +49,38 @@ class MangaRock extends Base_Site_Model {
 
 		return (!empty($titleData) ? $titleData : NULL);
 	}
+
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		$updateURL = "https://api.mangarockhd.com/query/web400/mrs_latest";
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+			$json = json_decode($content['body'], TRUE);
+			if(!empty($json['data'])) {
+				foreach($json['data'] as $row) {
+					$titleData = [];
+
+					$title_url = substr($row['oid'], 10);
+					if(!array_key_exists($title_url, $titleDataList)) {
+						$titleData['title'] = $row['name'];
+
+						$latestChapter = reset($row['new_chapters']);
+
+						preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Chapter (?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', $latestChapter['name'], $text);
+						preg_match('/^mrs-chapter-(?<id>[0-9]+)$/', $latestChapter['oid'], $matches_id);
+						$titleData['latest_chapter'] = $matches_id['id'].':--:'.((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));;
+						$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($latestChapter['updatedAt']));
+
+						$titleDataList[$title_url] = $titleData;
+					}
+				}
+			} else {
+				log_message('error', "{$this->site} | Custom | JSON is empty?");
+			}
+		} else {
+			log_message('error', "{$this->site} - Custom updating failed.");
+		}
+
+		return $titleDataList;
+	}
 }
