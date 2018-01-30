@@ -47,5 +47,61 @@ class MangaDex extends Base_Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-	//TODO: Custom updater support
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		$updateURL = "https://mangadex.com/1"; //English only.
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+			$data = $content['body'];
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(FALSE);
+
+			$xpath      = new DOMXPath($dom);
+			$nodes_rows = $xpath->query("//div[@class='col-sm-9']/div/table/tbody/tr[.//td[@rowspan]]");
+			if($nodes_rows->length > 0) {
+				foreach($nodes_rows as $row) {
+					$titleData = [];
+
+					$nodes_title   = $xpath->query("td[2]/a", $row);
+					$nodes_chapter = $xpath->query("following-sibling::tr[1]/td[1]/a", $row);
+					$nodes_latest  = $xpath->query("following-sibling::tr[1]/td[4]/time", $row);
+
+					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+						$title = $nodes_title->item(0);
+
+						preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
+						$title_url = $title_url_arr['url'];
+
+						if(!array_key_exists($title_url, $titleDataList)) {
+							$titleData['title'] = trim($title->textContent);
+
+							$chapter = $nodes_chapter->item(0);
+							$chapterID     = explode('/', (string) $chapter->getAttribute('href'))[2];
+							$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $chapter->textContent)));
+
+							$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
+
+
+
+							$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
+							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+
+							$titleDataList[$title_url] = $titleData;
+						}
+					} else {
+						log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
+					}
+				}
+			} else {
+				log_message('error', "{$this->site} | Following list is empty?");
+			}
+		} else {
+			log_message('error', "{$this->site} - Custom updating failed.");
+		}
+
+		return $titleDataList;
+	}
 }
