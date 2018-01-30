@@ -4,6 +4,8 @@ class MangaStream extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(.*?)\/[0-9]+$/';
 
+	public $customType    = 2;
+
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://readms.net/manga/{$title_url}/";
 	}
