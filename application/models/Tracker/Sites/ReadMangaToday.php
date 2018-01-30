@@ -62,7 +62,7 @@ class ReadMangaToday extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//div[@class='manga_updates']/dl");
+			$nodes_rows = $xpath->query("//div[@class='manga_updates']/dl[.//dd[1]/a]");
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
