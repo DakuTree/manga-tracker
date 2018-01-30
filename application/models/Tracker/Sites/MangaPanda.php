@@ -65,7 +65,7 @@ class MangaPanda extends Base_Site_Model {
 					$titleData = [];
 
 					$nodes_title   = $xpath->query("td[2]/a[1]", $row);
-					$nodes_chapter = $xpath->query("td[2]/a[2]", $row);
+					$nodes_chapter = $xpath->query("td[2]/a[@class='chaptersrec'][1]", $row);
 					$nodes_latest  = $xpath->query("td[3]", $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
