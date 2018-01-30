@@ -198,6 +198,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			$siteClass = $this->sites->{$site['site_class']};
 			if($titleDataList = $siteClass->doCustomUpdate()) {
 				foreach ($titleDataList as $titleURL => $titleData) {
+					$titleURL = (string) $titleURL; //Number only keys get converted to int for some reason, so we need to fix that.
 					print "> {$titleData['title']} <{$site['site_class']}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 					if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
 						if($dbTitleData = $this->Tracker->title->getID($titleURL, (int) $site['id'], FALSE, TRUE)) {

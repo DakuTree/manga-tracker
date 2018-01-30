@@ -14,7 +14,7 @@ class MangaRock extends Base_Site_Model {
 		$chapter_parts = explode(':--:', $chapter);
 		return [
 			'url'    => "https://mangarock.com/manga/mrs-serie-{$title_url}/chapter/mrs-chapter-{$chapter_parts[0]}",
-			'number' =>$chapter_parts[1]
+			'number' => $chapter_parts[1]
 		];
 	}
 
