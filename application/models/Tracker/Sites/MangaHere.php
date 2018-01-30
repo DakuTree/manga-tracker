@@ -51,8 +51,8 @@ class MangaHere extends Base_Site_Model {
 		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
 			$data = $content['body'];
 
-			$data = preg_replace('/^[\s\S]+<div class="manga_updates">/', '<dl>', $data);
-			$data = preg_replace('/<\/div>[\s\S]+$/', '</dl>', $data);
+			$data = preg_replace('/^[\s\S]+<div class="manga_updates">/', '<div class="manga_updates">', $data);
+			$data = preg_replace('/<\/div>[\s\S]+$/', '</div>', $data);
 
 			$dom = new DOMDocument();
 			libxml_use_internal_errors(TRUE);
