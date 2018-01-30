@@ -44,7 +44,6 @@ class MangaHere extends Base_Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
@@ -110,7 +109,7 @@ class MangaHere extends Base_Site_Model {
 				log_message('error', "{$this->site} | Following list is empty?");
 			}
 		} else {
-			log_message('error', "{$this->site} - Custom updating failed for {$this->baseURL}.");
+			log_message('error', "{$this->site} - Custom updating failed.");
 		}
 
 		return $titleDataList;
