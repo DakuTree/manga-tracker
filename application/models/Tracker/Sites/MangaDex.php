@@ -4,6 +4,8 @@ class MangaDex extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+$/';
 	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.v]+$/';
 
+	public $customType    = 2;
+
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangadex.com/manga/{$title_url}";
 	}
@@ -83,8 +85,6 @@ class MangaDex extends Base_Site_Model {
 							$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $chapter->textContent)));
 
 							$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
-
-
 
 							$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
 							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));

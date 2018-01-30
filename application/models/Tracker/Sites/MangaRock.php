@@ -4,6 +4,8 @@ class MangaRock extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+$/';
 	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.]+$/';
 
+	public $customType    = 2;
+
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangarock.com/manga/mrs-serie-{$title_url}/";
 	}
