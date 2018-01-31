@@ -69,8 +69,8 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-29
-// @version      1.9.19
+// @updated      2018-01-31
+// @version      1.9.20
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -104,7 +104,7 @@
 // @require      https://trackr.moe/userscripts/sites/LHTranslation.2.js
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.js
-// @require      https://trackr.moe/userscripts/sites/MangaCow.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.7.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
@@ -115,7 +115,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaStream.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js
-// @require      https://trackr.moe/userscripts/sites/MerakiScans.2.js
+// @require      https://trackr.moe/userscripts/sites/MerakiScans.3.js
 // @require      https://trackr.moe/userscripts/sites/OneTimeScans.js
 // @require      https://trackr.moe/userscripts/sites/PhoenixSerenade.js
 // @require      https://trackr.moe/userscripts/sites/PsychoPlay.2.js
@@ -777,27 +777,27 @@ const base_site = {
 				}
 
 				$.ajax({
-					       url    : url,
-					       type   : 'GET',
-					       page   : pageN,
-					       // async: useASync,
-					       success: function (data) {
-						       if(data.length > 0) {
-							       data = data.replace(_this.viewerRegex, '$1');
-							       data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
+					url    : url,
+					type   : 'GET',
+					page   : pageN,
+					// async: useASync,
+					success: function (data) {
+						if(data.length > 0) {
+							data = data.replace(_this.viewerRegex, '$1');
+							data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
 
-							       let original_image = $(data).find('img:first').addBack('img:first');
-							       _this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
-						       } else {
-							       _this.setupViewerContainerError(url, this.page, false);
-						       }
-						       promiseResolve();
-					       },
-					       error: function () {
-						       _this.setupViewerContainerError(url, this.page, false);
-						       promiseResolve(); // we probably should use promiseReject() here
-					       }
-				       });
+							let original_image = $(data).find('img:first').addBack('img:first');
+							_this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
+						} else {
+							_this.setupViewerContainerError(url, this.page, false);
+						}
+						promiseResolve();
+					},
+					error: function () {
+						_this.setupViewerContainerError(url, this.page, false);
+						promiseResolve(); // we probably should use promiseReject() here
+					}
+				});
 			}
 			function addToContainerCustom(pageN, promiseResolve, promiseReject) {
 				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
@@ -853,7 +853,7 @@ const base_site = {
 	 *
 	 * @final
 	 */
-	setupViewerContainerError : async function(pageURL, pageN, imgLoadFailed) {
+	setupViewerContainerError : async function(pageURL, pageN, imgLoadFailed) { // jshint ignore:line
 		let _this = this;
 		_this.updatePagesLoaded(false);
 
@@ -865,19 +865,19 @@ const base_site = {
 			if(!imgLoadFailed) {
 				//Page load failed
 				$.ajax({
-					       url    : pageURL,
-					       type   : 'GET',
-					       page   : pageN,
-					       // async: useASync,
-					       success: function (data) {
-						       let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-						       _this.setupViewerContainer($(original_image).attr('src'), this.page);
-					       },
-					       error: function () {
-						       alert('Failed to load image again. Something may be wrong with the site.');
-						       _this.setupViewerContainerError(pageURL, this.page, false);
-					       }
-				       });
+					url    : pageURL,
+					type   : 'GET',
+					page   : pageN,
+					// async: useASync,
+					success: function (data) {
+						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+					},
+					error: function () {
+						alert('Failed to load image again. Something may be wrong with the site.');
+						_this.setupViewerContainerError(pageURL, this.page, false);
+					}
+				});
 			} else {
 				//Image load failed
 				_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
@@ -1180,6 +1180,53 @@ const base_site = {
 		};
 	},
 
+	/**
+	 * Used to setup sites that using the GlossyBright WordPress theme.
+	 *
+	 * @function
+	 * @alias sites.*.setupGlossyBright
+	 * @name base_site.setupGlossyBright
+	 *
+	 * @final
+	 */
+	setupGlossyBright : function() {
+		this.setObjVars = function() {
+			let _this = this;
+
+			this.title       = this.segments[1];
+			this.chapter     = this.segments[2];
+
+			this.title_url   = `${this.baseURL}/${this.title}/`;
+			this.chapter_url = this.title_url +  this.chapter + '/';
+
+			let chapterSelect = $('.cbo_wpm_chp:first > option');
+			chapterSelect.each(function(i, e) {
+				$(e).val(_this.title_url + $(e).val() + '/');
+			});
+			this.chapterList        = window.generateChapterList(chapterSelect.reverseObj(), 'value');
+			this.chapterListCurrent = this.chapter_url;
+
+			this.viewerCustomImageList = $('script:contains("/wp-content/manga/"), #longWrap').last().html().match(/(https?:\/\/.*?\/wp-content\/manga\/[^"]+)/g).filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			});
+			this.page_count = this.viewerCustomImageList.length;
+
+			this.searchURLFormat = `${this.baseURL}/manga-list/search/{%SEARCH%}`;
+
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
+		};
+
+		this.preSetupViewer = function(callback) {
+			$('.wpm_nav, .wpm_ifo_box').remove();
+			$('#toHome, #toTop').remove();
+
+			$('#singleWrap').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		};
+	},
+
 	//Variables
 
 	/**
@@ -1345,6 +1392,8 @@ const base_site = {
 	 */
 	currentPage: 0,
 
+	baseURL : location.origin,
+
 	/**
 	 * URL pointing to base FoolSlide location. Used by setupFoolSlide.
 	 * Most of the time this is just location.origin, but sometimes it's also location.origin/foolslide and so on.
@@ -1449,7 +1498,7 @@ jQuery.fn.reverseObj = function() {
 /* * * * * * * * * * Main Script * * * * * * * * * */
 /* jshint ignore:start*/
 (async function() {
-	//FIXME: ViolentMonkey is require with @require scripts and needs us to use window to allow global variables...
+	//FIXME: ViolentMonkey is weird with @require scripts and needs us to use window to allow global variables...
 	//       We should really look into tweaking/rewriting this stuff..
 	window.main_site = 'https://trackr.moe';
 	window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
