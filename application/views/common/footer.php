@@ -51,7 +51,7 @@
 		});
 	</script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.4/js/jquery.tablesorter.combined.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.5/js/jquery.tablesorter.combined.min.js"></script>
 	<script>$.fn.tablesorter  || document.write('<script src="<?=asset_url()?>vendor/js/jquery.tablesorter.combined.min.js"><\/script>')</script>
 
 	<script>
