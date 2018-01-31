@@ -70,9 +70,6 @@ class LOLScans extends Base_Site_Model {
 						$title   = $nodes_title->item(0);
 						$chapter = $nodes_chapter->item(0);
 
-						//preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
-						//$title_url = $title_url_arr['url'];
-
 						preg_match('/(?:https:\/\/forums\.lolscans\.com\/book\/page2\.php\?([^"]+))/', $dom->saveHTML($chapter), $chapter_matches);
 						if(count($chapter_matches) == 2) {
 							parse_str(htmlspecialchars_decode($chapter_matches[1]), $url_args);
