@@ -35,8 +35,9 @@ $(function(){
 	 * @return {boolean|null}
 	 */
 	$.tablesorter.filter.types.FindMalId = function( config, data ) {
-		if(/^mal:(?:[0-9]+|any|none|notset)$/.test(data.iFilter)) {
-			let searchID  = data.iFilter.match(/^mal:([0-9]+|any|none|notset)$/)[1].toLowerCase();
+		if(/^mal:(?:[0-9]+|any|none|notset|duplicates?)$/.test(data.iFilter)) {
+			let searchID  = data.iFilter.match(/^mal:([0-9]+|any|none|notset|duplicates?)$/)[1].toLowerCase();
+			if(searchID === 'duplicates') { searchID = 'duplicate'; }
 
 			let status = false;
 			switch(searchID) {
@@ -50,6 +51,15 @@ $(function(){
 
 				case 'notset':
 					status = (data.$row.find('> td:eq(1) i[class*="sprite-myanimelist-net"]').length === 0);
+					break;
+
+				case 'duplicate':
+					if(data.$row.find('> td:eq(1) i.sprite-myanimelist-net').length > 0) {
+						let malID      = data.$row.find('> td:eq(1) i.sprite-myanimelist-net').attr('title'),
+						    $foundRows = data.$row.parent().find(`tr > td:nth-of-type(2) i.sprite-myanimelist-net[title=${malID}]`);
+
+						status = ($foundRows.length > 1);
+					}
 					break;
 
 				default:

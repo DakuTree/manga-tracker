@@ -31,13 +31,14 @@
 	<p>In addition to these filters, we also have our own custom filters which I have listed below:</p>
 	<ul>
 		<li>
-			<b>mal:<code>[ID]|any|none|notset</code></b>
+			<b>mal:<code>[ID]|any|none|notset|duplicate</code></b>
 			<br>Examples:
 			<ul>
 				<li><code>mal:123</code> - Returns everything that has <b>123</b> as the MAL ID.</li>
 				<li><code>mal:any</code> - Returns everything that has the MAL ID set.</li>
 				<li><code>mal:none</code> - Returns everything that has the MAL ID set as <b>none</b>.</li>
 				<li><code>mal:notset</code> - Returns everything that does not have the MAL ID set.</li>
+				<li><code>mal:duplicate</code> - Returns everything that has the same MAL ID set across more than one series.</li>
 			</ul>
 		</li>
 		<br>
