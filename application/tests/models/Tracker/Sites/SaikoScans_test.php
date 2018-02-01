@@ -10,8 +10,9 @@ class SaikoScans_test extends SiteTestCase {
 			'gentleman-devil'                   => 'Gentleman Devil',
 			'black-dreams'                      => 'Black Dreams',
 			'ramen-daisuki-koizumi-san'         => 'Ramen Daisuki Koizumi-san',
-			'mister-ajikko'                     => 'Mister Ajikko',
-			'boku-dake-shitteru-ichinomiya-san' => 'Boku Dake Shitteru Ichinomiya-san',
+			'strike-the-blood'                  => 'Strike The Blood',
+			'boku-dake-shitteru-ichinomiya-san' => 'Boku Dake Shitteru Ichinomiya-san',
+
 		];
 		$this->_testSiteSuccessRandom($testSeries);
 	}
