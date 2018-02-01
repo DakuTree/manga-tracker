@@ -743,6 +743,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
+		$baseURLRegex = str_replace('.', '\\.', parse_url($this->baseURL, PHP_URL_HOST));
 		if(($content = $this->get_content($this->baseURL)) && $content['status_code'] == 200) {
 			$data = $content['body'];
 
@@ -752,20 +753,20 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//*[@id='wpm_mng_lst']/tbody/tr/td | //*[@id='wpm_mng_lst']/li/div");
+			$nodes_rows = $xpath->query("//table[@id='wpm_mng_lst']/tr/td | //*[@id='wpm_mng_lst']/li/div");
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
 
 					$nodes_title   = $xpath->query("a[2]", $row);
 					$nodes_chapter = $xpath->query("a[2]", $row);
-					$nodes_latest  = $xpath->query("b", $row);
+					$nodes_latest  = $xpath->query("b | text()[last()]", $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title   = $nodes_title->item(0);
 						$chapter = $nodes_chapter->item(0);
 
-						preg_match('/mngcow\.co\/(?<url>.*?)\//', $title->getAttribute('href'), $title_url_arr);
+						preg_match('/'.$baseURLRegex.'\/(?<url>.*?)\//', $title->getAttribute('href'), $title_url_arr);
 						$title_url = $title_url_arr['url'];
 
 						if(!array_key_exists($title_url, $titleDataList)) {
