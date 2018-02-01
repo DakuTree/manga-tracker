@@ -51,3 +51,5 @@ public/assets/css/main.dark.css
 public/assets/js/compiled.min.js
 
 public/favicon.*.png
+
+public/userscripts/manga-tracker.dev.user.js
