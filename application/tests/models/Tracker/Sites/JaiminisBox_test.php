@@ -12,8 +12,7 @@ class JaiminisBox_test extends SiteTestCase {
 			'black_clover'          => 'Black Clover',
 			'one-piece-2'           => 'One Piece',
 			'hungry-marie'          => 'Hungry Marie',
-			're-monster'            => 're: monster',
-			'boku-no-hero-academia' => 'Boku no Hero Academia'
+			're-monster'            => 're: monster'
 		];
 		$this->_testSiteSuccessRandom($testSeries);
 	}
