@@ -21,4 +21,8 @@ class MangaStream_test extends SiteTestCase {
 
 		$this->_testSiteFailure('Bad Status Code (302)');
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }

@@ -27,4 +27,8 @@ class DynastyScans_test extends SiteTestCase {
 	public function test_failure() {
 		$this->markTestNotImplemented();
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }

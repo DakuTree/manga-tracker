@@ -18,9 +18,4 @@ class WebToons_test extends SiteTestCase {
 		$this->markTestSkipped('WebToons doesn\'t support parseTitleDataDOM yet, which makes failure testing not work'); //FIXME: See note
 		//$this->_testSiteFailure('WebToons', 'Bad Status Code (404)', '0:--:en:--:-:--:-');
 	}
-
-	public function test_custom() {
-		$this->skipTravis('We need login data to make this work properly which we can\'t provide to Travis');
-		$this->_testSiteCustom();
-	}
 }

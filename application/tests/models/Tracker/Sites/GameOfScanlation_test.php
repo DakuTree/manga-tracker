@@ -21,4 +21,8 @@ class GameOfScanlation_test extends SiteTestCase {
 
 		$this->_testSiteFailure('Bad Status Code (404)');
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }

@@ -2,6 +2,7 @@
 
 /**
  * @coversDefaultClass MerakiScans
+ * @group GlossyBright
  */
 class MerakiScans_test extends SiteTestCase {
 	public function test_success() {
@@ -16,5 +17,9 @@ class MerakiScans_test extends SiteTestCase {
 	}
 	public function test_failure() {
 		$this->_testSiteFailure('Bad Status Code (404)');
+	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
 	}
 }

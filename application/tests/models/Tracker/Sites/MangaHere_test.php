@@ -17,4 +17,8 @@ class MangaHere_test extends SiteTestCase {
 	public function test_failure() {
 		$this->_testSiteFailure('Failure string matched');
 	}
+
+	public function test_custom() {
+		$this->_testSiteCustom();
+	}
 }
