@@ -16,19 +16,9 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://trackr.moe/report_issue</loc>
-  <changefreq>weekly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
   <loc>https://trackr.moe/stats</loc>
   <changefreq>daily</changefreq>
   <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://trackr.moe/CHANGELOG.md</loc>
-  <changefreq>daily</changefreq>
-  <priority>0.80</priority>
 </url>
 <url>
   <loc>https://trackr.moe/about</loc>
