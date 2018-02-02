@@ -41,7 +41,8 @@ class MangaRock extends Base_Site_Model {
 					$latestChapter = end($json['data']['chapters']);
 
 					preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Chapter (?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', $latestChapter['name'], $text);
-					$titleData['latest_chapter'] = $latestChapter['cid'].':--:'.((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));;
+					preg_match('/^mrs-chapter-(?<id>[0-9]+)$/', $latestChapter['oid'], $matches_id);
+					$titleData['latest_chapter'] = $matches_id['id'].':--:'.((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));;
 					$titleData['last_updated'] = date("Y-m-d H:i:s", $latestChapter['updatedAt']);
 				} else {
 					log_message('error', "{$this->site} : {$title_url} | Failure string matched");
