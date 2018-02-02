@@ -69,8 +69,8 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-01-31
-// @version      1.9.20
+// @updated      2018-02-02
+// @version      1.9.21
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1224,6 +1224,59 @@ const base_site = {
 
 			$('#singleWrap').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 			callback(true, true);
+		};
+	},
+
+	/**
+	 * Used to setup sites that using Roku - https://github.com/OneAutumnLeaf/Roku
+	 *
+	 * @function
+	 * @alias sites.*.setupRoku
+	 * @name base_site.setupRoki
+	 *
+	 * @final
+	 */
+	setupRoku : function() {
+		this.setObjVars = function() {
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3];
+
+			this.title_url   = `${this.baseURL}/series/${this.title}`;
+			this.chapter_url = `${this.baseURL}/read/${this.title}/${this.chapter}`;
+
+			this.chapterListCurrent = this.chapter_url;
+
+			this.viewerChapterName      = `c${this.chapter}`;
+			this.viewerTitle            = $.trim(($('.content-wrapper > div:eq(1) > div > h1 > a').text()));
+			this.viewerCustomImageList  = $('.content-wrapper').find('img').map(function(i, e) {
+				return $(e).attr('src');
+			});
+			this.page_count = this.viewerCustomImageList.length;
+		};
+		this.preSetupTopBar = function(callback) {
+			let _this = this;
+
+			//We need to use AJAX as the chapter pages don't provide a full chapter list.
+			$.ajax({
+				url: _this.title_url,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+					xhr.setRequestHeader('Pragma', 'no-cache');
+				},
+				cache: false,
+				success: function(response) {
+					let $container = $(response).wrap('<div />').parent();
+					$container.find('.text-muted, .media-left, .media-right').remove();
+					_this.chapterList = window.generateChapterList($('.media-list > li > a', $container).reverseObj(), 'href');
+
+					callback();
+				}
+			});
+		};
+		this.preSetupViewer = function(callback) {
+			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+
+			callback(false, true);
 		};
 	},
 

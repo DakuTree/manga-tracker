@@ -12,7 +12,14 @@ class Tracker_Sites_Model extends CI_Model {
 		//TODO: Is this a good idea? There wasn't a good consensus on if this is good practice or not..
 		//      It's probably a minor speed reduction, but that isn't much of an issue.
 		//      An alternate solution would simply have a function which generates a PHP file with code to load each model. Similar to: https://github.com/shish/shimmie2/blob/834bc740a4eeef751f546979e6400fd089db64f8/core/util.inc.php#L1422
-		if(!class_exists($name) || !(in_array(get_parent_class($name), ['Base_Site_Model', 'Base_FoolSlide_Site_Model', 'Base_myMangaReaderCMS_Site_Model', 'Base_GlossyBright_Site_Model']))) {
+		$validClasses = [
+			'Base_Site_Model',
+			'Base_FoolSlide_Site_Model',
+			'Base_myMangaReaderCMS_Site_Model',
+			'Base_GlossyBright_Site_Model',
+			'Base_Roku_Site_Model'
+		];
+		if(!class_exists($name) || !(in_array(get_parent_class($name), $validClasses))) {
 			return get_instance()->{$name};
 		} else {
 			$this->loadSite($name);
@@ -31,6 +38,8 @@ abstract class Base_Site_Model extends CI_Model {
 	public $chapterFormat = '//';
 	public $hasCloudFlare = FALSE;
 	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36';
+
+	public $baseURL = '';
 
 	/**
 	 * 0: No custom updater.
@@ -468,8 +477,6 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public $chapterFormat = '/^(?:en(?:-us)?|pt|es)\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
 	public $customType    = 2;
 
-	public $baseURL = '';
-
 	public function getFullTitleURL(string $title_url) : string {
 		return "{$this->baseURL}/series/{$title_url}";
 	}
@@ -580,8 +587,6 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9\.]+)$/';
 	public $customType    = 2;
-
-	public $baseURL = '';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "{$this->baseURL}/manga/{$title_url}";
@@ -700,8 +705,6 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^[0-9\.]+$/';
 
-	public $baseURL = '';
-
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -789,6 +792,99 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 									//Do nothing
 									break;
 							}
+							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+
+							$titleDataList[$title_url] = $titleData;
+						}
+					} else {
+						log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
+					}
+				}
+			} else {
+				log_message('error', "{$this->site} | Following list is empty?");
+			}
+		} else {
+			log_message('error', "{$this->site} - Custom updating failed.");
+		}
+
+		return $titleDataList;
+	}
+}
+
+abstract class Base_Roku_Site_Model extends Base_Site_Model {
+	public $titleFormat   = '/^[a-zA-Z0-9-]+$/';
+	public $chapterFormat = '/^[0-9\.]+$/';
+
+	public $customType    = 2;
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "{$this->baseURL}/series/{$title_url}";
+	}
+	public function getChapterData(string $title_url, string $chapter) : array {
+		return [
+			'url'    => "{$this->baseURL}/read/{$title_url}/{$chapter}",
+			'number' => "c{$chapter}"
+		];
+	}
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
+		$titleData = [];
+		$fullURL = $this->getFullTitleURL($title_url);
+		$content = $this->get_content($fullURL);
+		$data = $this->parseTitleDataDOM(
+			$content,
+			$title_url,
+			"//div[@id='activity']/descendant::div[@class='media'][1]/descendant::div[@class='media-body']/h2/text()",
+			"//ul[contains(@class, 'media-list')]/li[@class='media'][1]/a",
+			"div[@class='media-body']/span[@class='text-muted']",
+			""
+		);
+		if($data) {
+			$titleData['title'] = trim(preg_replace('/ Added on .*$/','', $data['nodes_title']->textContent));
+			$titleData['latest_chapter'] = preg_replace('/^.*\/([0-9\.]+)$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
+
+			$dateString = preg_replace('/^Added (?:on )?/', '',$data['nodes_latest']->textContent);
+			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime($dateString));
+		}
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		$updateURL = "{$this->baseURL}/latest";
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+			$data = $content['body'];
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(FALSE);
+
+			$xpath      = new DOMXPath($dom);
+			$nodes_rows = $xpath->query("//div[@class='content-wrapper']/div[@class='row']/div/div");
+			if($nodes_rows->length > 0) {
+				foreach($nodes_rows as $row) {
+					$titleData = [];
+
+					$nodes_title   = $xpath->query("div[@class='caption']/h6/a", $row);
+					$nodes_chapter = $xpath->query("div[@class='panel-footer no-padding']/a", $row);
+					$nodes_latest  = $xpath->query("div[@class='caption']/text()", $row);
+
+					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+						$title = $nodes_title->item(0);
+
+						preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
+						$title_url = $title_url_arr['url'];
+
+						if(!array_key_exists($title_url, $titleDataList)) {
+							$titleData['title'] = trim($title->textContent);
+
+							$chapter = $nodes_chapter->item(0);
+							preg_match('/(?<chapter>[^\/]+(?=\/$|$))/', $chapter->getAttribute('href'), $chapter_arr);
+							$titleData['latest_chapter'] = $chapter_arr['chapter'];
+
+							$dateString = trim(str_replace('Added ', '', $nodes_latest->item(0)->textContent));
 							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
 
 							$titleDataList[$title_url] = $titleData;
