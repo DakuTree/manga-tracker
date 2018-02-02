@@ -118,6 +118,7 @@
 		<li>Ravens Scans</li>
 		<li>ReadMangaToday</li>
 		<li>Riceballicious</li>
+		<li>Roselia Scanlations</li>
 		<li>S2Scans</li>
 		<li>SaikoScans</li>
 		<li>SeaOtterScans</li>

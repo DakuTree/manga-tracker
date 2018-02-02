@@ -70,8 +70,9 @@
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-02
-// @version      1.9.22
+// @version      1.9.23
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -124,6 +125,7 @@
 // @require      https://trackr.moe/userscripts/sites/RavensScans.js
 // @require      https://trackr.moe/userscripts/sites/ReadMangaToday.2.js
 // @require      https://trackr.moe/userscripts/sites/Riceballicious.js
+// @require      https://trackr.moe/userscripts/sites/RoseliaScans.1.js
 // @require      https://trackr.moe/userscripts/sites/S2Scans.js
 // @require      https://trackr.moe/userscripts/sites/SaikoScans.js
 // @require      https://trackr.moe/userscripts/sites/SeaOtterScans.js

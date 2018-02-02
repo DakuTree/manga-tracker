@@ -53,6 +53,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Ravens Scans
 * ReadMangaToday
 * Riceballicious
+* Roselia Scanlations
 * S2Scans
 * SaikoScans
 * SeaOtterScans
