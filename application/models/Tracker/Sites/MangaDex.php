@@ -69,9 +69,9 @@ class MangaDex extends Base_Site_Model {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
 
-					$nodes_title   = $xpath->query("td[2]/a", $row);
-					$nodes_chapter = $xpath->query("following-sibling::tr[1]/td[1]/a", $row);
-					$nodes_latest  = $xpath->query("following-sibling::tr[1]/td[4]/time", $row);
+					$nodes_title   = $xpath->query("td[3]/a", $row);
+					$nodes_chapter = $xpath->query("following-sibling::tr[1]/td[2]/a", $row);
+					$nodes_latest  = $xpath->query("following-sibling::tr[1]/td[5]/time", $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title = $nodes_title->item(0);
