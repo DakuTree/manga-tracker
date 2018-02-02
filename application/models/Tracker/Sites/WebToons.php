@@ -46,7 +46,7 @@ class WebToons extends Base_Site_Model {
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
 
-		if(strpos($data, '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">') !== FALSE) {
+		if(strpos($data, 'xmlns:content="http://purl.org/rss/1.0/modules/content/"') !== FALSE) {
 			$xml = simplexml_load_string($data);
 			if($xml) {
 				if(isset($xml->{'channel'}->item[0])) {
