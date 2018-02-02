@@ -38,12 +38,16 @@ class FoolSlideGenerator {
 	public function generateIcon() : void {
 		$parse = parse_url($this->baseURL);
 
-		if($icon = file_get_contents('https://www.google.com/s2/favicons?domain='.$parse['scheme'].'://'.$parse['host'])) {
-			file_put_contents('./public/assets/img/site_icons/'.str_replace('.', '-', $parse['host']).'.png', $icon);
+		if(!file_exists('./public/assets/img/site_icons/'.str_replace('.', '-', $parse['host']).'.png')) {
+			if($icon = file_get_contents('https://www.google.com/s2/favicons?domain='.$parse['scheme'].'://'.$parse['host'])) {
+				file_put_contents('./public/assets/img/site_icons/'.str_replace('.', '-', $parse['host']).'.png', $icon);
 
-			system('php _scripts/generate_spritesheet.php'); //This is bad?
+				system('php _scripts/generate_spritesheet.php'); //This is bad?
+			} else {
+				die("No favicon found?");
+			}
 		} else {
-			die("No favicon found?");
+			print "Icon already exists?\n";
 		}
 	}
 
@@ -89,7 +93,7 @@ class FoolSlideGenerator {
 		$parse = parse_url($this->baseURL);
 		if(strpos($baseFile, $parse['host']) !== false) die("Domain already exists in userscript?");
 
-		preg_match('/\@updated      ([0-9\-]+)\r.*?\@version      ([0-9\.]+)/s', $baseFile, $matches);
+		preg_match('/\@updated      ([0-9\-]+)[\r\n]+.*?\@version      ([0-9\.]+)/s', $baseFile, $matches);
 
 		//Add @include
 		$include = '// @include      /^'.str_replace('https', 'https?', preg_replace('/([\/\.])/', '\\\\$1', $this->baseURL)).'\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/';
