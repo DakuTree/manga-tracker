@@ -124,6 +124,7 @@
 		<li>SenseScans</li>
 		<li>ShoujoHearts</li>
 		<li>ShoujoSense</li>
+		<li>Soda Scans</li>
 		<li>TukiScans</li>
 		<li>TwistedHelScans</li>
 		<li>VortexScans</li>
