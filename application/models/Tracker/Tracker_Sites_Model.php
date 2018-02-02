@@ -381,7 +381,12 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param string   $data
 	 * @param array    $extra
 	 */
-	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {}
+	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
+		if($this->customType === 2) {
+			$content = ['status_code' => 200];
+			$callback($content, $extra['id']);
+		}
+	}
 
 	/**
 	 * Used to check the sites following page for new updates (if supported).
@@ -521,12 +526,6 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-	//Since we're just checking the latest updates page and not a following page, we just need to simulate a follow.
-	//TODO: It would probably be better to have some kind of var which says that the custom update uses a following page..
-	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
-		$content = ['status_code' => 200];
-		$callback($content, $extra['id']);
-	}
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
@@ -633,13 +632,6 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 		return (!empty($titleData) ? $titleData : NULL);
 	}
 
-
-	//Since we're just checking the latest updates page and not a following page, we just need to simulate a follow.
-	//TODO: It would probably be better to have some kind of var which says that the custom update uses a following page..
-	public function handleCustomFollow(callable $callback, string $data = "", array $extra = []) {
-		$content = ['status_code' => 200];
-		$callback($content, $extra['id']);
-	}
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
