@@ -88,7 +88,14 @@ class FoolSlideGenerator {
 	}
 
 	public function updateUserscript() : void {
-		$baseFile = file_get_contents('./public/userscripts/manga-tracker.user.js');
+		$baseFileName = './public/userscripts/manga-tracker.user.js';
+		$baseDomain   = 'trackr.moe';
+		if(file_exists('./public/userscripts/manga-tracker.dev.user.js')) {
+			$baseFileName = './public/userscripts/manga-tracker.user.js';
+			$baseDomain   = 'dev.trackr.moe';
+		}
+
+		$baseFile = file_get_contents($baseFileName);
 
 		$parse = parse_url($this->baseURL);
 		if(strpos($baseFile, $parse['host']) !== false) die("Domain already exists in userscript?");
@@ -111,12 +118,12 @@ class FoolSlideGenerator {
 		//Add @require
 		// @resource     fontAwesome
 		$require = <<<EOT
-// @require      https://trackr.moe/userscripts/sites/{$this->className}.1.js
+// @require      https://{$baseDomain}/userscripts/sites/{$this->className}.1.js
 // @resource     fontAwesome
 EOT;
 		$baseFile = str_replace('// @resource     fontAwesome', $require, $baseFile);
 
-		file_put_contents('./public/userscripts/manga-tracker.user.js', $baseFile);
+		file_put_contents($baseFileName, $baseFile);
 
 		//Update .meta.js
 		$baseFileMeta = file_get_contents('./public/userscripts/manga-tracker.meta.js');
