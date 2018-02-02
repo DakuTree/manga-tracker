@@ -72,9 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-02
-// @version      1.9.25
+// @version      1.9.26
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -135,6 +134,7 @@
 // @require      https://trackr.moe/userscripts/sites/ShoujoHearts.js
 // @require      https://trackr.moe/userscripts/sites/ShoujoSense.js
 // @require      https://trackr.moe/userscripts/sites/SodaScans.1.js
+// @require      https://trackr.moe/userscripts/sites/TapTrans.1.js
 // @require      https://trackr.moe/userscripts/sites/TukiScans.1.js
 // @require      https://trackr.moe/userscripts/sites/TwistedHelScans.js
 // @require      https://trackr.moe/userscripts/sites/VortexScans.js
@@ -143,8 +143,6 @@
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
-// @require      https://trackr.moe/userscripts/sites/TapTrans.1.js
-// @require      https://dev.trackr.moe/userscripts/sites/TapTrans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.5.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
