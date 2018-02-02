@@ -46,7 +46,7 @@ class WebToons extends Base_Site_Model {
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
 
-		if(!((strpos($data, 'Can\'t find the manga series.') !== FALSE) || (strpos($data, 'Sorry! We couldn\'t connect to the webtoon service.') !== FALSE))) { //FIXME: We should check for he proper error here.
+		if(strpos($data, '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">') !== FALSE) {
 			$xml = simplexml_load_string($data);
 			if($xml) {
 				if(isset($xml->{'channel'}->item[0])) {
