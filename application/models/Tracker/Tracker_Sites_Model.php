@@ -713,7 +713,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => $this->getFullTitleURL($title_url).$chapter.'/',
+			'url'    => $this->getFullTitleURL($title_url).'/'.$chapter.'/',
 			'number' => "c{$chapter}"
 		];
 	}
