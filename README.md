@@ -61,6 +61,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * ShoujoHearts
 * ShoujoSense
 * Soda Scans
+* tap-trans
 * TukiScans
 * TwistedHelScans
 * VortexScans

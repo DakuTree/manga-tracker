@@ -71,8 +71,9 @@
 // @include      /^https:\/\/mangadex\.com\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
+// @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-02
-// @version      1.9.23
+// @version      1.9.24
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -141,6 +142,7 @@
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
+// @require      https://trackr.moe/userscripts/sites/TapTrans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.5.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
