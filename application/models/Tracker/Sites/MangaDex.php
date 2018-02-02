@@ -6,6 +6,8 @@ class MangaDex extends Base_Site_Model {
 
 	public $customType    = 2;
 
+	public $cookieString  = 'mangadex_h_toggle=1';
+
 	public function getFullTitleURL(string $title_url) : string {
 		return "https://mangadex.com/manga/{$title_url}";
 	}
@@ -24,7 +26,7 @@ class MangaDex extends Base_Site_Model {
 		//FIXME: There also seems to be RSS Feeds but they don't appear to work at the moment.
 		$fullURL = $this->getFullTitleURL($title_url);
 
-		$content = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL, $this->cookieString);
 
 		$data = $this->parseTitleDataDOM(
 			$content,
@@ -53,7 +55,7 @@ class MangaDex extends Base_Site_Model {
 		$titleDataList = [];
 
 		$updateURL = "https://mangadex.com/1"; //English only.
-		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+		if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
 			$data = $content['body'];
 
 			$dom = new DOMDocument();
