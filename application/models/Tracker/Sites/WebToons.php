@@ -45,20 +45,35 @@ class WebToons extends Base_Site_Model {
 
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
+		$data = preg_replace('/<description>[\s\S]+?<\/description>/', '', $data);
+		$data = str_replace(['<![CDATA[', ']]>'], '', $data);
 
 		if(strpos($data, 'xmlns:content="http://purl.org/rss/1.0/modules/content/"') !== FALSE) {
-			$xml = simplexml_load_string($data);
-			if($xml) {
-				if(isset($xml->{'channel'}->item[0])) {
-					$titleData['title'] = trim((string) $xml->{'channel'}->title);
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML('<?xml encoding="utf-8" ?>' . $data);
+			libxml_use_internal_errors(FALSE);
 
-					$chapterURLSegments = explode('/', ((string) $xml->{'channel'}->item[0]->link));
+			$xpath   = new DOMXPath($dom);
+			$channel = $xpath->query("//rss/channel[.//item[1]]");
+			if($channel->length) {
+				$channel = $channel->item(0);
+				$item = $xpath->query("item[1]", $channel)->item(0);
+
+				$nodes_title   = $xpath->query("title", $channel);
+				$nodes_chapter = $xpath->query("link", $item);
+				$nodes_latest  = $xpath->query("pubdate", $item);
+				if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+					$titleData['title'] = trim($nodes_title->item(0)->textContent);
+
+					//Chapter is weird because <link> always seems to return blank, so we need to grab it with regex..
+					preg_match('/(http.*)/', $item->textContent, $chapter_matches);
+					$chapterURLSegments = explode('/', $chapter_matches[1]);
 					$titleData['latest_chapter'] = preg_replace('/^.*?([0-9]+)$/', '$1', $chapterURLSegments[7]) . ':--:' . $chapterURLSegments[6];
-					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
 
-					if($firstGet) {
-						$titleData = array_merge($titleData, $this->doCustomFollow($content['body'], ['id' => $title_parts[0]]));
-					}
+					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime($nodes_latest->item(0)->textContent));
+				} else {
+					log_message('error', "{$this->site}/Normal | {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
 				}
 			} else {
 				log_message('error', "URL isn't valid XML/RSS? (WebToons): {$title_url}");
