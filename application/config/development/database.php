@@ -25,4 +25,4 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-require 'database_password.php';
+require_once 'database_password.php';
