@@ -48,6 +48,8 @@ abstract class Base_Site_Model extends CI_Model {
 	 */
 	public $customType = 0;
 
+	public $canHaveNoChapters = FALSE;
+
 	public function __construct() {
 		parent::__construct();
 
@@ -259,13 +261,14 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param string $node_latest_string
 	 * @param string $node_chapter_string
 	 * @param string $failure_string
+	 * @param string $no_chapters_string
 	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
 	final protected function parseTitleDataDOM(
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		string $failure_string = "") {
+		string $failure_string = "", string $no_chapters_string = "") {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -289,27 +292,35 @@ abstract class Base_Site_Model extends CI_Model {
 				$xpath = new DOMXPath($dom);
 				$nodes_title = $xpath->query($node_title_string);
 				$nodes_row   = $xpath->query($node_row_string);
-				if($nodes_title->length === 1 && $nodes_row->length === 1) {
-					$firstRow      = $nodes_row->item(0);
-					$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
+				if($nodes_title->length === 1) {
+					if($nodes_row->length === 1) {
+						$firstRow      = $nodes_row->item(0);
+						$nodes_latest  = $xpath->query($node_latest_string,  $firstRow);
 
-					if($node_chapter_string !== '') {
-						$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
-					} else {
-						$nodes_chapter = $nodes_row;
-					}
+						if($node_chapter_string !== '') {
+							$nodes_chapter = $xpath->query($node_chapter_string, $firstRow);
+						} else {
+							$nodes_chapter = $nodes_row;
+						}
 
-					if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
+						if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
+							return [
+								'nodes_title'   => $nodes_title->item(0),
+								'nodes_latest'  => $nodes_latest->item(0),
+								'nodes_chapter' => $nodes_chapter->item(0)
+							];
+						} else {
+							log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+						}
+					} elseif($this->canHaveNoChapters && !empty($no_chapters_string) && strpos($data, $no_chapters_string) !== FALSE) {
 						return [
-							'nodes_title'   => $nodes_title->item(0),
-							'nodes_latest'  => $nodes_latest->item(0),
-							'nodes_chapter' => $nodes_chapter->item(0)
+							'nodes_title' => $nodes_title->item(0)
 						];
 					} else {
-						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
+						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (ROW: {$nodes_row->length})");
 					}
 				} else {
-					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length} | ROW: {$nodes_row->length})");
+					log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (TITLE: {$nodes_title->length})");
 				}
 			}
 		}
