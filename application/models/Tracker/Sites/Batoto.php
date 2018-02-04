@@ -18,7 +18,7 @@ class Batoto extends Base_Site_Model {
 		//NOTE: This points to a generic URL which will redirect according to the ID.
 		//      It's possible the title of a series can change, essentially making it possible for us to have multiple versions of the same title. This stops that.
 		$title_parts = explode(':--:', $title_url);
-		return "https://bato.to/comic/_/comics/-r{$title_parts[0]}";
+		return "https://vatoto.com/comic/_/comics/-r{$title_parts[0]}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -26,7 +26,7 @@ class Batoto extends Base_Site_Model {
 
 		$chapter_parts = explode(':--:', $chapter);
 		return [
-			'url'    => "https://bato.to/reader#" . $chapter_parts[0],
+			'url'    => "https://vatoto.com/reader#" . $chapter_parts[0],
 			'number' => $chapter_parts[1]
 		];
 	}
@@ -112,7 +112,7 @@ class Batoto extends Base_Site_Model {
 			"member_id={$this->config->item('batoto_cookie_member_id')}",
 			"pass_hash={$this->config->item('batoto_cookie_pass_hash')}"
 		];
-		$content = $this->get_content('https://bato.to/forums/index.php?'.http_build_query($params), implode("; ", $cookies), "", TRUE, TRUE, $formData);
+		$content = $this->get_content('https://vatoto.com/forums/index.php?'.http_build_query($params), implode("; ", $cookies), "", TRUE, TRUE, $formData);
 
 		$callback($content, $extra['id'], function($body) {
 			return strpos($body, '>Unfollow<') !== FALSE;
@@ -126,7 +126,7 @@ class Batoto extends Base_Site_Model {
 			"member_id={$this->config->item('batoto_cookie_member_id')}",
 			"pass_hash={$this->config->item('batoto_cookie_pass_hash')}"
 		];
-		$content = $this->get_content("https://bato.to/myfollows", implode("; ", $cookies), "", TRUE);
+		$content = $this->get_content("https://vatoto.com/myfollows", implode("; ", $cookies), "", TRUE);
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} /myfollows | Failed to grab URL (See above curl error)");
 		} else {
