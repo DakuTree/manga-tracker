@@ -6,6 +6,8 @@ class MangaDex extends Base_Site_Model {
 
 	public $customType    = 2;
 
+	public $canHaveNoChapters = TRUE;
+
 	public $cookieString  = 'mangadex_h_toggle=1';
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -35,17 +37,20 @@ class MangaDex extends Base_Site_Model {
 			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='English']][1]", //FIXME: This forces English for now.
 			"td[7]",
 			"td[1]/a",
-			"Warning: Manga #"
+			"Warning: Manga #",
+			"<strong>Warning:</strong> No chapters."
 		);
 		if($data) {
 			$titleData['title'] = preg_replace('/\(Batoto .*?$/','', trim($data['nodes_title']->textContent));
 
-			$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];
-			$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $data['nodes_chapter']->textContent)));
+			if(!array_diff(['latest_chapter', 'last_updated'], $titleData)) {
+				$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];
+				$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $data['nodes_chapter']->textContent)));
 
-			$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
+				$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
-			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
+				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
+			}
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
