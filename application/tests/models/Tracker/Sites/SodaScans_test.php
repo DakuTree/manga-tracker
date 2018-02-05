@@ -4,7 +4,7 @@
  * @coversDefaultClass SodaScans
  * @group Roku
  */
-class PsychoPlay_test extends SiteTestCase {
+class SodaScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
 			'Lovely-Again-Today'             => 'Lovely Again Today',
