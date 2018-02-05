@@ -43,7 +43,7 @@ class MangaDex extends Base_Site_Model {
 		if($data) {
 			$titleData['title'] = preg_replace('/\(Batoto .*?$/','', trim($data['nodes_title']->textContent));
 
-			if(!array_diff(['latest_chapter', 'last_updated'], $titleData)) {
+			if(isset($data['nodes_latest']) && isset($data['nodes_chapter'])) {
 				$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];
 				$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $data['nodes_chapter']->textContent)));
 
