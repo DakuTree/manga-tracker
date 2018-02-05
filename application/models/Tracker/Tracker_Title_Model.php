@@ -84,7 +84,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 			$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 			$titleID = $this->db->insert_id();
 
-			$this->History->updateTitleHistory((int) $titleID, NULL, $titleData['latest_chapter'], $titleData['last_updated']);
+			$this->History->updateTitleHistory((int) $titleID, NULL, $titleData['latest_chapter'] ?? NULL, $titleData['last_updated'] ?? date("Y-m-d H:i:s", now()));
 		} else {
 			log_message('error', "getTitleData failed for: {$query->row()->site_class} | {$titleURL}");
 		}
