@@ -40,7 +40,7 @@
 						});
 
 						//NOTE: GM_addValueChangeListener is TamperMonkey only, but come to others eventually: https://github.com/greasemonkey/greasemonkey/issues/2646
-						if (typeof GM_addValueChangeListener === 'undefined') {
+						if(typeof GM_addValueChangeListener !== 'undefined') {
 							GM_addValueChangeListener('lastUpdatedSeries', function(name, old_value, new_value/*, remote*/) {
 								//TODO: Move as much of this as possible to using the actual site functions.
 
