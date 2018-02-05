@@ -9,9 +9,9 @@
 
 	<h3>What the site is built on</h3>
 	<p>
-		The site is built using: PHP7.1, MySQL5.7 and CodeIgniter 3. Behind the scenes we also use: TravisCI, ScrutinizerCI, Composer.
+		The site is built using: PHP7.2, MySQL5.7 and CodeIgniter 3. Behind the scenes we also use: TravisCI, ScrutinizerCI, Composer.
 		<br>
-		A more complete list can be found in our <a href="<?=base_url('humans.txt')?>">humans.txt</a>.
+		A more complete list can be found in our <a href="<?=base_url('humans.txt')?>">humans.txt</a>, or by having a look at our <a href="https://github.com/DakuTree/manga-tracker/blob/master/composer.json">composer.json.
 	</p>
 
 	<h3>Special Thanks</h3>
