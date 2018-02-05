@@ -10,12 +10,13 @@
 
 			this.title       = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
 			let chapter      = this.segments[2];
-			this.chapter     = chapter + ':--:' + $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
+			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
+			this.chapter     = chapter + ':--:' + this.chapterNumber;
 
 			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;
 
-			let tempList = {}
+			let tempList = {};
 			$('#jump_chapter').find('> option').each(function(){
 		                tempList[`https://mangadex.com/chapter/`+ '' + $(this).attr('value')] = $(this).text();
             		});
@@ -28,12 +29,13 @@
 			    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
 			    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
 			this.viewerCustomImageList = pages.map(function(filename, i) {
-					if(server == '/data/')
+					if(server === '/data/') {
 						return `${_this.https}://mangadex.com/data/${imageHash[1]}/${filename}`;
-					else
+					} else {
 						return `${server[1]}${imageHash[1]}/${filename}`;
+					}
 			});
-			this.page_count = this.viewerCustomImageList.length;
+			this.page_count             = this.viewerCustomImageList.length;
 			this.viewerChapterName      = this.chapter.split(':')[2];
 			this.viewerTitle            = $('span[title="Title"] + a').text();
 		},
