@@ -34,12 +34,12 @@ class Tracker_List_Model extends Tracker_Base_Model {
 		}
 		if($result->num_rows() > 0) {
 			foreach ($result->result() as $row) {
-				$is_unread = intval(($row->latest_chapter == $row->ignore_chapter) || ($row->latest_chapter == $row->current_chapter) ? '1' : '0');
+				$is_unread = intval((is_null($row->latest_chapter)) || ($row->latest_chapter == $row->ignore_chapter) || ($row->latest_chapter == $row->current_chapter) ? '1' : '0');
 				$arr['series'][$row->category]['unread_count'] = (($arr['series'][$row->category]['unread_count'] ?? 0) + !$is_unread);
 				$data = [
 					'id' => $row->id,
 					'generated_current_data' => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->current_chapter),
-					'generated_latest_data'  => $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter),
+					'generated_latest_data'  => !is_null($row->latest_chapter) ? $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->latest_chapter) : ['url' => '#', 'number' => 'No chapters found'] ,
 					'generated_ignore_data'  => ($row->ignore_chapter ? $this->sites->{$row->site_class}->getChapterData($row->title_url, $row->ignore_chapter) : NULL),
 
 					'full_title_url'        => $this->sites->{$row->site_class}->getFullTitleURL($row->title_url),

@@ -164,7 +164,11 @@
 				<?php if(!is_null($row['title_data']['ignore_chapter'])) { ?><span class='hidden-chapter' title='The latest chapter was marked as ignored.'><?=$row['generated_ignore_data']['number']?></span><?php } ?>
 			</td>
 			<td>
+				<?php if($row['generated_latest_data']['number'] !== 'No chapters found') { ?>
 				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>" target="_blank"><?=htmlentities($row['generated_latest_data']['number'])?></a>
+				<?php } else { ?>
+				<i title="Title page still appears to exist, but chapters have been removed. This is usually due to DMCA.">No chapters found</i>
+				<?php } ?>
 			</td>
 			<td>
 				<?=($row['site_data']['status'] == 'disabled' ? '<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red" title="This is not being tracked as tracking ('.$row['site_data']['site'].') is disabled"></i>' : '')?>

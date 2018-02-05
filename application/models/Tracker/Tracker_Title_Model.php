@@ -94,11 +94,11 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 
 	/**
 	 * @param int    $titleID
-	 * @param string $latestChapter
+	 * @param string? $latestChapter
 	 *
 	 * @return bool
 	 */
-	public function updateByID(int $titleID, string $latestChapter) : bool {
+	public function updateByID(int $titleID, ?string $latestChapter) : bool {
 		//FIXME: Really not too happy with how we're doing history stuff here, it just feels messy.
 		$query = $this->db->select('latest_chapter AS current_chapter')
 		                  ->from('tracker_titles')
