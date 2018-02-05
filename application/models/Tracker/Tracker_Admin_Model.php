@@ -78,7 +78,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			foreach ($query->result() as $row) {
 				print "> {$row->title} <{$row->site_class} - {$row->title_url}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
-				if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
+				if(is_array($titleData) && (!is_null($titleData['latest_chapter']) || $this->sites->{$row->site_class}->canHaveNoChapters)) {
 					if(count($titleData) === 3) {
 						// Normal update.
 
