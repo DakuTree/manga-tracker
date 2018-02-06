@@ -10,6 +10,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 	 * This is ran every 4 hours via a cron job.
 	 */
 	public function updateLatestChapters() {
+		// region $query = Get all titles ready to update;
 		// @formatter:off
 		$query = $this->db
 			->select('
@@ -70,55 +71,13 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->having('tracker_chapters.active', 'Y')
 			//AND if they have been active in the last 120 hours (5 days)
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
-			->order_by('tracker_titles.title', 'ASC')
-			->get();
-		// @formatter:on
+			->order_by('tracker_titles.title', 'ASC');
+		// endregion
+		$query = $query->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				print "> {$row->title} <{$row->site_class} - {$row->title_url}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
-				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
-				if(is_array($titleData) && (!is_null($titleData['latest_chapter']) || $this->sites->{$row->site_class}->canHaveNoChapters)) {
-					if(count($titleData) === 3) {
-						// Normal update.
-
-						//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
-						//       Should we even use this? Y/N
-						if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
-							//Make sure last_checked is always updated on successful run.
-							//CHECK: Is there a reason we aren't just doing this in updateByID?
-							$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-							         ->where('id', $row->title_id)
-							         ->update('tracker_titles');
-
-							print " - ({$titleData['latest_chapter']})\n";
-						} else {
-							log_message('error', "{$row->title} failed to update successfully");
-
-							print " - Something went wrong?\n";
-						}
-					} else {
-						// No chapters were returned, but site allows this.
-						if($this->Tracker->title->updateByID((int) $row->title_id, NULL)) {
-							//Make sure last_checked is always updated on successful run.
-							//CHECK: Is there a reason we aren't just doing this in updateByID?
-							$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-							         ->where('id', $row->title_id)
-							         ->update('tracker_titles');
-
-							print " - (No chapters found?)\n";
-						} else {
-							log_message('error', "{$row->title} failed to update successfully");
-
-							print " - Something went wrong?\n";
-						}
-					}
-				} else {
-					log_message('error', "{$row->title} failed to update successfully");
-					$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
-
-					print " - FAILED TO PARSE\n";
-				}
+				$this->handleUpdate($row);
 			}
 		}
 	}
@@ -130,6 +89,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 	 * @param null|string $last_checked
 	 */
 	public function updateAllTitlesBySite(string $site, ?string $last_checked = NULL) {
+		// region $query = Get all titles by $site;
 		// @formatter:off
 		$query = $this->db
 			->select('
@@ -169,35 +129,59 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		if(!is_null($last_checked)) {
 			$query = $query->where('tracker_titles.last_checked >', $last_checked);
 		}
+		// endregion
 		$query = $query->get();
 
 		if($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-				print "> {$row->title} <{$row->site_class} - {$row->title_url}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
-				$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
-				if(is_array($titleData) && !is_null($titleData['latest_chapter'])) {
-					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
-					//       Should we even use this? Y/N
-					if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
-						//Make sure last_checked is always updated on successful run.
-						//CHECK: Is there a reason we aren't just doing this in updateByID?
-						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-						         ->where('id', $row->title_id)
-						         ->update('tracker_titles');
+				$this->handleUpdate($row);
+			}
+		}
+	}
 
-						print " - ({$titleData['latest_chapter']})\n";
-					} else {
-						log_message('error', "{$row->title} failed to update successfully");
+	private function handleUpdate(object $row) : void{
+		print "> {$row->title} <{$row->site_class} - {$row->title_url}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
+		$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
+		if(is_array($titleData) && (!is_null($titleData['latest_chapter']) || $this->sites->{$row->site_class}->canHaveNoChapters)) {
+			if(count($titleData) === 3) {
+				// Normal update.
 
-						print " - Something went wrong?\n";
-					}
+				//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
+				//       Should we even use this? Y/N
+				if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
+					//Make sure last_checked is always updated on successful run.
+					//CHECK: Is there a reason we aren't just doing this in updateByID?
+					$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+					         ->where('id', $row->title_id)
+					         ->update('tracker_titles');
+
+					print " - ({$titleData['latest_chapter']})\n";
 				} else {
 					log_message('error', "{$row->title} failed to update successfully");
-					$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
 
-					print " - FAILED TO PARSE\n";
+					print " - Something went wrong?\n";
+				}
+			} else {
+				// No chapters were returned, but site allows this.
+				if($this->Tracker->title->updateByID((int) $row->title_id, NULL)) {
+					//Make sure last_checked is always updated on successful run.
+					//CHECK: Is there a reason we aren't just doing this in updateByID?
+					$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+					         ->where('id', $row->title_id)
+					         ->update('tracker_titles');
+
+					print " - (No chapters found?)\n";
+				} else {
+					log_message('error', "{$row->title} failed to update successfully");
+
+					print " - Something went wrong?\n";
 				}
 			}
+		} else {
+			log_message('error', "{$row->title} failed to update successfully");
+			$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
+
+			print " - FAILED TO PARSE\n";
 		}
 	}
 
