@@ -1,5 +1,4 @@
-<?php if (!defined('BASEPATH')) { exit('No direct script access allowed');
-}
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
  * CodeIgniter Monolog Plus
@@ -28,46 +27,43 @@ use Monolog\Processor\IntrospectionProcessor;
  *  see https://github.com/stevethomas/codeigniter-monolog & https://github.com/Seldaek/monolog
  *
  */
-class CI_Log
-{
+class MY_Log extends CI_Log {
 	// CI log levels
 	protected $_levels = array(
-				'OFF' => '0',
-				'ERROR' => '1',
-				'DEBUG' => '2',
-				'INFO' => '3',
-				'ALL' => '4'
+		'OFF' => '0',
+		'ERROR' => '1',
+		'DEBUG' => '2',
+		'INFO' => '3',
+		'ALL' => '4'
 	);
 
 	// config placeholder
 	protected $config = array();
 
+	private $log;
 
 	/**
 	 * prepare logging environment with configuration variables
 	 */
-	public function __construct()
-	{
-		// copied functionality from system/core/Common.php, as the whole CI infrastructure is not available yet
-		if (!defined('ENVIRONMENT') OR !file_exists($file_path = APPPATH . 'config/' . ENVIRONMENT . '/monolog.php'))
-		{
-		    $file_path = APPPATH . 'config/monolog.php';
+	public function __construct() {
+		$file_path = APPPATH.'config/monolog.php';
+		$found = FALSE;
+		if (file_exists($file_path)) {
+			$found = TRUE;
+			require($file_path);
 		}
 
-		// Fetch the config file
-		if (file_exists($file_path))
-		{
-		    require($file_path);
-		}
-		else
-		{
-		    exit('monolog.php config does not exist');
+		// Is the config file in the environment folder?
+		if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/monolog.php')) {
+			require($file_path);
+		} elseif (!$found) {
+			exit('monolog.php config does not exist');
 		}
 
 		// make $config from config/monolog.php accessible to $this->write_log()
 		$this->config = $config;
 
-		$this->log = new Logger($this->config['channel']);
+		$this->log = new Logger($config['channel']);
 		// detect and register all PHP errors in this log hence forth
 		ErrorHandler::register($this->log);
 
@@ -80,7 +76,7 @@ class CI_Log
 		}
 
 		// decide which handler(s) to use
-  	foreach ($this->config['handlers'] as $value)
+		foreach ($this->config['handlers'] as $value)
 		{
 			switch ($value)
 			{
@@ -118,6 +114,12 @@ class CI_Log
 					$handler = new SyslogUdpHandler($this->config['papertrail_host'], $this->config['papertrail_port']);
 					$formatter = new LineFormatter("%channel%.%level_name%: %message% %extra%", null, $config['papertrail_multiline']);
 					$handler->setFormatter($formatter);
+					break;
+
+				case 'cli':
+					if(is_cli()) {
+						$handler = new StreamHandler('php://stdout');
+					}
 					break;
 
 				default:
@@ -184,4 +186,4 @@ class CI_Log
 		return true;
 	}
 
-} //end class
+}
