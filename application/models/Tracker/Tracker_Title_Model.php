@@ -26,8 +26,9 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 
 			//This updates inactive series if they are newly added, as noted in https://github.com/DakuTree/manga-tracker/issues/5#issuecomment-247480804
 			if(((int) $query->row('active')) === 0 && $query->row('status') === 0) {
-				$titleData = $this->sites->{$query->row('site_class')}->getTitleData($query->row('title_url'));
-				if(!is_null($titleData['latest_chapter'])) {
+				$siteClass = $query->row('site_class');
+				$titleData = $this->sites->{$siteClass}->getTitleData($query->row('title_url'));
+				if(!is_null($titleData['latest_chapter']) || $this->sites->{$siteClass}->canHaveNoChapters) {
 					if($this->updateByID((int) $id, $titleData['latest_chapter'])) {
 						//Make sure last_checked is always updated on successful run.
 						//CHECK: Is there a reason we aren't just doing this in updateTitleById?
@@ -36,7 +37,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 						         ->update('tracker_titles');
 					}
 				} else {
-					log_message('error', "{$query->row('title')} failed to update successfully");
+					log_message('error', "{$siteClass} | {$query->row('title')} ({$query->row('title_url')}) | Failed to update.");
 				}
 			}
 

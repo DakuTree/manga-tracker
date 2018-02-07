@@ -139,7 +139,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		}
 	}
 
-	private function handleUpdate(object $row) : void{
+	protected function handleUpdate(object $row) : void {
 		print "> {$row->title} <{$row->site_class} - {$row->title_url}> | <{$row->title_id}>"; //Print this prior to doing anything so we can more easily find out if something went wrong
 		$titleData = $this->sites->{$row->site_class}->getTitleData($row->title_url);
 		if(is_array($titleData) && (!is_null($titleData['latest_chapter']) || $this->sites->{$row->site_class}->canHaveNoChapters)) {
@@ -157,7 +157,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 					print " - ({$titleData['latest_chapter']})\n";
 				} else {
-					log_message('error', "{$row->title} failed to update successfully");
+					log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
 
 					print " - Something went wrong?\n";
 				}
@@ -172,13 +172,13 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 
 					print " - (No chapters found?)\n";
 				} else {
-					log_message('error', "{$row->title} failed to update successfully");
+					log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
 
 					print " - Something went wrong?\n";
 				}
 			}
 		} else {
-			log_message('error', "{$row->title} failed to update successfully");
+			log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
 			$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
 
 			print " - FAILED TO PARSE\n";
