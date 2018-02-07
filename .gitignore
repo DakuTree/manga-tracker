@@ -27,7 +27,6 @@ application/cache/
 application/config/production/
 !application/config/production/database.php
 !application/config/production/database_password.php.sample
-!application/config/monolog_secure.php.sample
 
 #Other config stuff
 application/config/*/recaptcha.php
@@ -35,7 +34,8 @@ application/config/*/email.php
 application/config/*/database_password.php
 application/config/*/sites.php
 application/config/*/mailgun.php
-application/config/monolog_secure.php
+application/config/*/monolog_secure.php
+!application/config/*/monolog_secure.php.sample
 
 #Codeception
 application/tests_codeception/_output
