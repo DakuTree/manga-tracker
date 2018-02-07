@@ -766,7 +766,11 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 
 					$nodes_title   = $xpath->query("a[2]", $row);
 					$nodes_chapter = $xpath->query("a[2]", $row);
-					$nodes_latest  = $xpath->query("b | text()[last()]", $row);
+					$nodes_latest  = $xpath->query("b", $row);
+
+					if($nodes_latest->length === 0) {
+						$nodes_latest = $xpath->query('text()[last()]', $row);
+					}
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title   = $nodes_title->item(0);
