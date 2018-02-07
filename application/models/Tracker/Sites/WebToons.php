@@ -166,5 +166,5 @@ class WebToons extends Base_Site_Model {
 		}
 		return $titleDataList;*/
 	}
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) : bool {}
+	public function doCustomCheck(?string $oldChapterString, string $newChapterString) : bool {}
 }

@@ -112,7 +112,7 @@ class MangaFox extends Base_Site_Model {
 
 		return $titleDataList;
 	}
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) : bool {
+	public function doCustomCheck(?string $oldChapterString, string $newChapterString) : bool {
 		$oldChapterSegments = explode('/', $oldChapterString);
 		$newChapterSegments = explode('/', $newChapterString);
 

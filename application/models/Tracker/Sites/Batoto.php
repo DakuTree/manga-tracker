@@ -194,7 +194,7 @@ class Batoto extends Base_Site_Model {
 		}
 		return $titleDataList;
 	}
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) : bool {
+	public function doCustomCheck(?string $oldChapterString, string $newChapterString) : bool {
 		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
 		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
 

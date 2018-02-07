@@ -192,7 +192,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 	public function updateCustom() {
 		$query = $this->db->select('*')
 		                  ->from('tracker_sites')
-		                  ->where('status', 'enabled')
+		                  ->where('tracker_sites.status', 'enabled')
 		                  ->where('tracker_sites.use_custom', 'Y')
 		                  ->get();
 

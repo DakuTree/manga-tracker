@@ -417,11 +417,15 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param string $newChapterString
 	 * @return bool
 	 */
-	public function doCustomCheck(string $oldChapterString, string $newChapterString) : bool {
-		$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
-		$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
+	public function doCustomCheck(?string $oldChapterString, string $newChapterString) : bool {
+		if(!is_null($oldChapterString)) {
+			$oldChapterSegments = explode('/', $this->getChapterData('', $oldChapterString)['number']);
+			$newChapterSegments = explode('/', $this->getChapterData('', $newChapterString)['number']);
 
-		$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
+			$status = $this->doCustomCheckCompare($oldChapterSegments, $newChapterSegments);
+		} else {
+			$status = TRUE;
+		}
 
 		return $status;
 	}
