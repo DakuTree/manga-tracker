@@ -134,6 +134,21 @@ $config['subclass_prefix'] = 'MY_';
 //$config['composer_autoload'] = realpath(APPPATH . '../vendor/autoload.php');
 $config['composer_autoload'] = FALSE;
 
+//NOTE: This doesn't work in autoload.php as it is loaded after we need it.
+spl_autoload_register(function ($class) {
+	$fileMono = APPPATH . '../vendor/monolog/monolog/src/'.strtr($class, '\\', '/').'.php';
+	$filePsr  = APPPATH . '../vendor/psr/log/'.strtr($class, '\\', '/').'.php';
+	if(file_exists($fileMono)) {
+		require $fileMono;
+		return TRUE;
+	} elseif(file_exists($filePsr)) {
+		require $filePsr;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+});
+
 /*
 |--------------------------------------------------------------------------
 | Allowed URL Characters
