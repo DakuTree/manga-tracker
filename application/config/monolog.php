@@ -11,7 +11,7 @@
 
 
 /* GENERAL OPTIONS */
-$config['handlers'] = array('file'/*, 'papertrail'*/); // valid handlers are ci_file | file | new_relic | hipchat | stderr | papertrail
+$config['handlers'] = array('file', 'papertrail'); // valid handlers are ci_file | file | new_relic | hipchat | stderr | papertrail
 $config['channel'] = ENVIRONMENT; // channel name which appears on each line of log
 $config['threshold'] = '1'; // 'ERROR' => '1', 'DEBUG' => '2',  'INFO' => '3', 'ALL' => '4'
 $config['introspection_processor'] = TRUE; // add some meta data such as controller and line number to log messages
@@ -47,3 +47,5 @@ $config['papertrail_multiline'] = TRUE; //add newlines to the output
 
 // exclusion list for pesky messages which you may wish to temporarily suppress with strpos() match
 $config['exclusion_list'] = array();
+
+require 'monolog_secure.php';
