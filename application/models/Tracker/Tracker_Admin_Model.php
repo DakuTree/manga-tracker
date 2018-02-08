@@ -37,9 +37,9 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 					//AND matches one of where queries below
 					->group_start()
 						//Then check if it's NULL (only occurs for new series)
-						->where('latest_chapter', NULL)
+						//->where('latest_chapter', NULL) //NOTE: This isn't needed anymore??
 						//OR if it hasn't updated within the past 12 hours AND isn't a custom update site
-						->or_group_start()
+						->group_start()
 							->where('tracker_sites.use_custom', 'N')
 							->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
 						->group_end()
