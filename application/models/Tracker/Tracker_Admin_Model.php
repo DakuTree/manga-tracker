@@ -31,37 +31,38 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->join('auth_users', 'tracker_chapters.user_id = auth_users.id', 'left')
 			->where('tracker_sites.status', 'enabled')
 			->group_start()
-				//Check if title is marked as on-going...
-				->where('tracker_titles.status', 0)
-				//AND matches one of where queries below
 				->group_start()
-					//Then check if it's NULL (only occurs for new series)
-					->where('latest_chapter', NULL)
-					//OR if it hasn't updated within the past 12 hours AND isn't a custom update site
-					->or_group_start()
-						->where('tracker_sites.use_custom', 'N')
-						->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
+					//Check if title is marked as on-going...
+					->where('tracker_titles.status', 0)
+					//AND matches one of where queries below
+					->group_start()
+						//Then check if it's NULL (only occurs for new series)
+						->where('latest_chapter', NULL)
+						//OR if it hasn't updated within the past 12 hours AND isn't a custom update site
+						->or_group_start()
+							->where('tracker_sites.use_custom', 'N')
+							->where('last_checked < DATE_SUB(NOW(), INTERVAL 12 HOUR)')
+						->group_end()
+						//OR it is a custom update site, has more than one follower and hasn't updated within the past 72 hours.
+						->or_group_start()
+							->where('tracker_titles.id IN (
+								SELECT title_id
+								FROM tracker_chapters
+								GROUP BY title_id
+								HAVING COUNT(title_id) > 1
+							)', NULL, FALSE)
+							->where('last_checked < DATE_SUB(NOW(), INTERVAL 72 HOUR)')
+						->group_end()
+						//OR it is a custom update site and hasn't updated within the past 120 hours (5 days)
+						->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 					->group_end()
-					//OR it is a custom update site, has more than one follower and hasn't updated within the past 72 hours.
-					->or_group_start()
-						->where('tracker_titles.id IN (
-							SELECT title_id
-							FROM tracker_chapters
-							GROUP BY title_id
-							HAVING COUNT(title_id) > 1
-						)', NULL, FALSE)
-
-						->where('last_checked < DATE_SUB(NOW(), INTERVAL 72 HOUR)')
-					->group_end()
-					//OR it is a custom update site and hasn't updated within the past 120 hours (5 days)
-					->or_where('last_checked < DATE_SUB(NOW(), INTERVAL 120 HOUR)')
 				->group_end()
-			->group_end()
-			->or_group_start()
-				//Check if title is marked as complete...
-				->where('tracker_titles.status', 1)
-				//Then check if it hasn't updated within the past week
-				->where('last_checked < DATE_SUB(NOW(), INTERVAL 1 WEEK)')
+				->or_group_start()
+					//Check if title is marked as complete...
+					->where('tracker_titles.status', 1)
+					//Then check if it hasn't updated within the past week
+					->where('last_checked < DATE_SUB(NOW(), INTERVAL 1 WEEK)')
+				->group_end()
 			->group_end()
 			//Status 2 (One-shot) & 255 (Ignore) are both not updated intentionally.
 			->group_by('tracker_titles.id, tracker_chapters.active')
