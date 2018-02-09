@@ -65,7 +65,6 @@ $(function(){
 			);
 		}
 
-
-		console.log(series);
+		console.debug(series);
 	}
 });
