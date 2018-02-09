@@ -72,14 +72,14 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-02-07
-// @version      1.9.29
+// @updated      2018-02-09
+// @version      1.9.30
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @require      https://trackr.moe/userscripts/sites/_trackr.moe.4.js
-// @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.js
+// @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.3.js
 // @require      https://trackr.moe/userscripts/sites/CatScans.js
@@ -1103,7 +1103,7 @@ const base_site = {
 
 			//FIXME: The chapterList isn't properly ordered for series that have chapters in and outside volumes.
 			//       SEE: - https://reader.seaotterscans.com/series/sss/
-			this.chapterList        = generateChapterList($('.topbar_left > .tbtitle:eq(2) > ul > li > a').reverseObj(), 'href');
+			this.chapterList        = generateChapterList($('.topbar_left > div:has([class^=dropdown]):eq(1) > ul > li > a').reverseObj(), 'href');
 			this.chapterListCurrent = this.chapter_url+'/';
 
 			this.viewerTitle = $('.topbar_left > .dropdown_parent > .text a').text();
