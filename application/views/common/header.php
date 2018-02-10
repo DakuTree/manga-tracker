@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content='width=device-width, initial-scale=1' />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<title>Manga Tracker<?=($title !== 'Index' ? " - ".$title : '')?></title>
 	<meta name="description" content="A site for tracking manga across multiple sites.">
@@ -12,10 +12,9 @@
 
 	<link rel="shortcut icon" href="<?=base_url('favicon.ico')?>">
 
-	<link rel="stylesheet" href="<?=asset_url()?>vendor/css/normalize.css">
-	<link rel="stylesheet" href="<?=asset_url()?>vendor/css/boilerplate.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="<?=asset_url()?>vendor/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.5/css/theme.bootstrap_3.min.css" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.4/cookieconsent.min.css" />
 
@@ -31,56 +30,41 @@
 <body>
 
 <?php if($show_header) { ?>
-<header id="site-header">
-	<!-- Fixed navbar -->
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="<?=base_url()?>">Manga Tracker<?=(ENVIRONMENT === 'development' ? ' (DEV)' : '')?></a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right" id="header-nav-user">
-					<?php if(!$this->User->logged_in()) { ?>
-					<li><a href="<?=base_url('user/login')?>">Login</a></li>
-					<li><a href="<?=base_url('user/signup')?>">Register</a></li>
-					<?php } else { ?>
-					<li class="dropdown">
-						<img src="<?=$this->User->get_gravatar_url()?>" class="profile-image" />
-
-						<a href="<?=base_url('/')?>">
-							<?=$username?>
-							<span class="caret"></span>
-						</a>
-
-						<ul class="dropdown-menu">
-							<?php if($this->ion_auth->is_admin()) { ?>
-							<li><a href="<?=base_url('admin_panel')?>">Admin Panel</a></li>
-							<li class="divider"></li>
-							<?php } ?>
-							<li><a href="<?=base_url('user/favourites')?>">Favourites</a></li>
-							<li class="divider"></li>
-							<li><a href="<?=base_url('user/history')?>">History</a></li>
-							<li class="divider"></li>
-							<li><a href="<?=base_url('user/options')?>">Options</a></li>
-							<li class="divider"></li>
-							<li><a href="<?=base_url('user/logout')?>">Logout</a></li>
-						</ul>
-					</li>
+<header id="site-header" class="navbar navbar-expand-lg navbar-light bg-faded">
+	<a class="navbar-brand" href="<?=base_url()?>">Manga Tracker<?=(ENVIRONMENT === 'development' ? ' (DEV)' : '')?></a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div id="navbarNavDropdown" class="navbar-collapse collapse">
+		<ul class="navbar-nav ml-auto">
+			<?php if(!$this->User->logged_in()) { ?>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/login')?>">Login</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/signup')?>">Register</a></li>
+			<?php } else { ?>
+			<li class="nav-item dropdown p-0">
+				<a class="nav-link dropdown-toggle px-1 py-0" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img src="<?=$this->User->get_gravatar_url()?>" class="profile-image" />
+					<?=$username?>
+				</a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+					<?php if($this->ion_auth->is_admin()) { ?>
+						<a class="dropdown-item" href="<?=base_url('admin_panel')?>">Admin Panel</a>
+						<div class="dropdown-divider"></div>
 					<?php } ?>
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
-	</nav>
+					<a class="dropdown-item" href="<?=base_url('user/favourites')?>">Favourites</a>
+					<a class="dropdown-item" href="<?=base_url('user/history')?>">History</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="<?=base_url('user/options')?>">Options</a>
+					<a class="dropdown-item" href="<?=base_url('user/logout')?>">Logout</a>
+				</div>
+			</li>
+			<?php } ?>
+		</ul>
+	</div>
 </header>
 <?php } ?>
 <!--------------------------------------------------------------------------------------------------------------------->
 
-<div id="page-wrap">
+<main id="page-wrap" class="m-2">
 	<div id="page-holder">
 		<div id="page" data-page="<?=$page?>">

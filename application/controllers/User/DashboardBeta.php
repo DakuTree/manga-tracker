@@ -11,14 +11,6 @@ class DashboardBeta extends Auth_Controller {
 
 		$this->body_data['siteAliases'] = str_replace('-', '.', json_encode($this->config->item('site_aliases')));
 
-		//TEMP: We're loading manually as we need to test Bootstrap 4.
-		$this->footer_data['page'] = $this->header_data['page'];
-
-		$this->header_data['show_header'] = (array_key_exists('show_header', $this->header_data) ? $this->header_data['show_header'] : TRUE);
-		$this->footer_data['show_footer'] = (array_key_exists('show_footer', $this->footer_data) ? $this->footer_data['show_footer'] : TRUE);
-
-		$this->load->view('common/headerBeta', ($this->global_data + $this->header_data));
-		$this->load->view('User/DashboardBeta', ($this->global_data + $this->body_data));
-		$this->load->view('common/footerBeta', ($this->global_data + $this->footer_data));
+		$this->_render_page("User/DashboardBeta");
 	}
 }

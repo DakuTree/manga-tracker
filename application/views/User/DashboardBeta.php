@@ -7,7 +7,7 @@
 	<!-- TODO: We should link to the bug-report with some pre-filled info if possible -->
 
 	<p><button id="inactive-display" type="button" class="btn btn-info">Display inactive series</button></p>
-	<div id="inactive-list-container" class="hidden">
+	<div id="inactive-list-container" hidden>
 		<p>Inactive series:</p>
 		<ul></ul>
 	</div>

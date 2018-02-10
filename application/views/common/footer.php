@@ -1,30 +1,31 @@
 			<div class="push"></div>
 		</div>
 	</div>
-</div>
+</main>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <?php if($show_header) { ?>
-<footer id="site-footer">
-	<div class="container">
-		<div class="pull-left">
-			<p class="text-muted" id="footer-left">
+<footer id="site-footer" class="navbar navbar-expand-lg navbar-light bg-faded">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div id="navbarNavDropdown" class="navbar-collapse collapse">
+		<ul class="navbar-nav mr-auto">
+			<li id="footer-left" class="nav-item text-muted">
 				<span class="footer-copyright">©2018 trackr.moe</span>
 				<span class="footer-debug"><?="Page rendered in <strong>{elapsed_time}</strong> seconds and used {memory_usage} of RAM. CodeIgniter Version <strong>".CI_VERSION."</strong>."?></span>
-			</p>
-		</div>
-		<div class="pull-right">
-			<ul class="list-inline">
-				<li><a href="https://github.com/DakuTree/manga-tracker"><i class="fa fa-github-alt" aria-hidden="true"></i> Github</a></li>
-				<li><a href="https://twitter.com/trackr_dev"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
-				<li><a href="<?=base_url('report_issue')?>">Report an Issue</a></li>
-				<li><a href="<?=base_url('stats')?>">Site Stats</a></li>
-				<li><a href="https://github.com/DakuTree/manga-tracker/wiki/Changelog">Changelog</a></li>
-				<li><a href="<?=base_url('about/terms')?>">Terms</a></li>
-				<li><a href="<?=base_url('about')?>">About</a></li>
-			</ul>
-		</div>
+			</li>
+		</ul>
+		<ul class="navbar-nav">
+			<li class="nav-item"><a class="nav-link" href="https://github.com/DakuTree/manga-tracker"><i class="fa fa-github-alt" aria-hidden="true"></i> Github</a></li>
+			<li class="nav-item"><a class="nav-link" href="https://twitter.com/trackr_dev"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('report_issue')?>">Report an Issue</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('stats')?>">Site Stats</a></li>
+			<li class="nav-item"><a class="nav-link" href="https://github.com/DakuTree/manga-tracker/wiki/Changelog">Changelog</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('about/terms')?>">Terms</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?=base_url('about')?>">About</a></li>
+		</ul>
 	</div>
 </footer>
 <?php } ?>
@@ -41,14 +42,16 @@
 	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate-1.17.0.min.js"><\/script>')</script>
 	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate.additional-methods-1.17.0.min.js"><\/script>')</script>
 
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script>$.fn.modal || document.write('<script src="<?=asset_url()?>vendor/js/bootstrap.min.js"><\/script>')</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" integrity="sha384-feJI7QwhOS+hwpX2zkaeJQjeiwlhOP+SdQDqhgvvo1DsjtiSQByFdThsxO669S2D" crossorigin="anonymous"></script>
+	<script>if(typeof($.fn.modal) === 'undefined') {document.write('<script src="<?=asset_url()?>vendor/css/bootstrap.bundle.min.js"><\/script>')}</script>
+
 	<script>
-		$(document).ready(function() {
-			let check = $('#fb-check');
-			if(check.css('width') !== '1px' && check.css('height') !== '1px') {
-				$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/bootstrap.min.css">');
-			}
-		});
+	$(document).ready(function() {
+		let check = $('#fb-check');
+		if(check.css('width') !== '1px' && check.css('height') !== '1px') {
+			$("head").prepend('<link rel="stylesheet" href="<?=asset_url()?>vendor/css/bootstrap.min.css">');
+		}
+	});
 	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.5/js/jquery.tablesorter.combined.min.js"></script>

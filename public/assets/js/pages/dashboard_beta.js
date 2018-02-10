@@ -39,16 +39,16 @@ $(function(){
 				}
 			}
 
-			$inactiveContainer.removeClass('hidden');
+			$inactiveContainer.removeAttr('hidden');
 		} else {
-			$inactiveContainer.addClass('hidden');
+			$inactiveContainer.attr('hidden');
 
 			$inactiveList.find('> li').empty();
 		}
 
 		$('#inactive-display').on('click', function() {
 			$(this).hide();
-			$inactiveListContainer.removeClass('hidden');
+			$inactiveListContainer.removeAttr('hidden');
 		});
 	}
 
