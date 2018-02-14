@@ -35,7 +35,7 @@ class MangaDex extends Base_Site_Model {
 			$title_url,
 			"//h3[contains(@class, 'panel-title')]/text()[1]",
 			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='English']][1]", //FIXME: This forces English for now.
-			"td[7]",
+			"td[6]",
 			"td[1]/a",
 			"Warning: Manga #",
 			"<strong>Warning:</strong> No chapters."
