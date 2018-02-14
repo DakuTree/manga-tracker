@@ -1,4 +1,4 @@
-<div id="inactive-container" class="alert alert-warning hidden" role="alert">
+<div id="inactive-container" class="alert alert-warning" hidden role="alert">
 	<p>
 		Some of the series on your list have been marked as inactive and have not been updated due to either: no active users or having trouble updating.<br>
 		These <i>should</i> be updated during the next update (Within the next 4 hours or so).

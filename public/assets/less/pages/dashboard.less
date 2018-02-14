@@ -18,7 +18,7 @@
 		//.fixed-header is added by JS when the list nav is scrolled out of view
 		&.fixed-header {
 			position: fixed;
-			top: 25px;
+			top: 0px;
 
 			max-width: 1000px;
 			width: 100%;
@@ -35,6 +35,8 @@
 		#category-nav {
 			& ul {
 				& > li {
+					padding-left:  15px;
+					padding-right: 15px;
 					&.active {
 						background-color: @backgroundSecondary;
 

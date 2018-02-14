@@ -5,110 +5,146 @@
 		<div id="options-site">
 			<h3>Site Options</h3>
 			<?=form_open('', ['method' => 'POST'])?>
+				<div id="options-theme">
+					<div class="form-group">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Site Theme</span>
+								</div>
+								<?=form_dropdown('theme', $theme_option, $theme_option_selected, ['class' => 'custom-select'])?>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<br/>
+
 				<div id="options-custom-categories">
 					<div class="form-group">
 						<div class="input-group">
-							<span class="input-group-addon">
-								<?=form_checkbox('category_custom_1', 'enabled', $category_custom_1, ['data-has-series' => $category_custom_1_has_series, 'style' => 'vertical-align: bottom;'])?>
-								Custom Category 1:
-							</span>
-							<input type="text" name="category_custom_1_text" id="category_custom_1_text" class="form-control" style="width: auto" maxlength="16" value="<?=$category_custom_1_text?>">
-						</div><!-- /input-group -->
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<?=form_checkbox('category_custom_1', 'enabled', $category_custom_1, ['data-has-series' => $category_custom_1_has_series, 'style' => 'vertical-align: bottom; margin-right: 4px;'])?>
+									Custom Category 1:
+								</span>
+							</div>
+							<input type="text" class="form-control" id="category_custom_1_text" placeholder="Custom 1" name="category_custom_1_text" style="width: auto" maxlength="16" value="<?=$category_custom_1_text?>">
+						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<span class="input-group-addon">
-								<?=form_checkbox('category_custom 2', 'enabled', $category_custom_2, ['data-has-series' => $category_custom_2_has_series, 'style' => 'vertical-align: bottom;'])?>
-								Custom Category 2:
-							</span>
-							<input type="text" name="category_custom_2_text" id="category_custom_2_text" class="form-control" style="width: auto" maxlength="16" value="<?=$category_custom_2_text?>">
-						</div><!-- /input-group -->
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<?=form_checkbox('category_custom_2', 'enabled', $category_custom_2, ['data-has-series' => $category_custom_2_has_series, 'style' => 'vertical-align: bottom; margin-right: 4px;'])?>
+									Custom Category 2:
+								</span>
+							</div>
+							<input type="text" class="form-control" id="category_custom_2_text" placeholder="Custom 2" name="category_custom_2_text" style="width: auto" maxlength="16" value="<?=$category_custom_2_text?>">
+						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<span class="input-group-addon">
-								<?=form_checkbox('category_custom_3', 'enabled', $category_custom_3, ['data-has-series' => $category_custom_3_has_series, 'style' => 'vertical-align: bottom;'])?>
-								Custom Category 3:
-							</span>
-							<input type="text" name="category_custom_3_text" id="category_custom_3_text" class="form-control" style="width: auto" maxlength="16" value="<?=$category_custom_3_text?>">
-						</div><!-- /input-group -->
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<?=form_checkbox('category_custom_3', 'enabled', $category_custom_3, ['data-has-series' => $category_custom_3_has_series, 'style' => 'vertical-align: bottom; margin-right: 4px;'])?>
+									Custom Category 3:
+								</span>
+							</div>
+							<input type="text" class="form-control" id="category_custom_3_text" placeholder="Custom 3" name="category_custom_3_text" style="width: auto" maxlength="16" value="<?=$category_custom_3_text?>">
+						</div>
 					</div>
 				</div>
 
 				<div id="options-default-category">
 					<div class="form-group">
-						<?=form_label('Default Series Category', 'default_series_category')?>
-						<?=form_dropdown('default_series_category', $default_series_category, $default_series_category_selected)?>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Default Series Category</span>
+							</div>
+							<?=form_dropdown('default_series_category', $default_series_category, $default_series_category_selected, ['class' => 'custom-select'])?>
+						</div>
 					</div>
 				</div>
 
+				<br />
+
 				<div id="options-countdown-timer">
 					<div class="form-group">
-						<?=form_label('Live Countdown Timer', 'enable_live_countdown_timer')?> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background."></i>
-						<div class="btn-group" data-toggle="buttons">
-							<label class="btn btn-primary <?=(isset($enable_live_countdown_timer_enabled['checked']) ? 'active' : '')?>">
-								<?=form_radio($enable_live_countdown_timer_enabled)?>
-								<span>Enabled</span>
-							</label>
-							<label class="btn btn-primary <?=(isset($enable_live_countdown_timer_disabled['checked']) ? 'active' : '')?>">
-								<?=form_radio($enable_live_countdown_timer_disabled)?>
-								<span>Disabled</span>
-							</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Live Countdown Timer <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background."></i></span>
+							</div>
+							<div class="input-group-append">
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<label class="btn btn-primary <?=(isset($enable_live_countdown_timer_enabled['checked']) ? 'active' : '')?>">
+										<?=form_radio($enable_live_countdown_timer_enabled)?> Enabled
+									</label>
+									<label class="btn btn-primary <?=(isset($enable_live_countdown_timer_disabled['checked']) ? 'active' : '')?>">
+										<?=form_radio($enable_live_countdown_timer_disabled)?> Disabled
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<div id="options-list-sort">
 					<div class="form-group">
-						<?=form_label('List Sort Order', 'list_sort')?>
-						<div class="btn-group" data-toggle="buttons">
-							<?=form_dropdown('list_sort_type', $list_sort_type, $list_sort_type_selected)?>
-							<?=form_dropdown('list_sort_order', $list_sort_order, $list_sort_order_selected)?>
-						</div>
-					</div>
-				</div>
-
-				<div id="options-theme">
-					<div class="form-group">
-						<?=form_label('Site Theme', 'theme')?>
-						<div class="btn-group" data-toggle="buttons">
-							<?=form_dropdown('theme', $theme_option, $theme_option_selected)?>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">List Sort Order</span>
+							</div>
+							<?=form_dropdown('list_sort_type', $list_sort_type, $list_sort_type_selected, ['class' => 'custom-select'])?>
+							<?=form_dropdown('list_sort_order', $list_sort_order, $list_sort_order_selected, ['class' => 'custom-select'])?>
 						</div>
 					</div>
 				</div>
 
 				<div id="options-public-list">
 					<div class="form-group">
-						<?=form_label('Enable Public List (<a href="'.base_url("list/{$username}.html").'">HTML</a> | <a href="'.base_url("list/{$username}.json").'">JSON</a>)', 'enable_public_list')?>
-						<div class="btn-group" data-toggle="buttons">
-							<label class="btn btn-primary <?=(isset($enable_public_list_enabled['checked']) ? 'active' : '')?>">
-								<?=form_radio($enable_public_list_enabled)?>
-								<span>Enabled</span>
-							</label>
-							<label class="btn btn-primary <?=(isset($enable_public_list_disabled['checked']) ? 'active' : '')?>">
-								<?=form_radio($enable_public_list_disabled)?>
-								<span>Disabled</span>
-							</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Enable Public List (<a href="<?=base_url("list/{$username}.html")?>">HTML</a> | <a href="<?=base_url("list/{$username}.json")?>">JSON</a>)</span>
+							</div>
+							<div class="input-group-append">
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<label class="btn btn-primary <?=(isset($enable_public_list_enabled['checked']) ? 'active' : '')?>">
+										<?=form_radio($enable_public_list_enabled)?>
+										<span>Enabled</span>
+									</label>
+									<label class="btn btn-primary <?=(isset($enable_public_list_disabled['checked']) ? 'active' : '')?>">
+										<?=form_radio($enable_public_list_disabled)?>
+										<span>Disabled</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<div id="options-mal-sync">
 					<div class="form-group">
-						<?=form_label('Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> set the MAL id for syncing to work for that series.<br>In some cases we already have the MAL id set on the backend (and will be noted as such).<br><br>Only chapter number will be set."></i>', 'mal_sync')?>
-						<div class="btn-group" data-toggle="buttons">
-							<label class="btn btn-primary <?=(isset($mal_sync_disabled['checked']) ? 'active' : '')?>">
-								<?=form_radio($mal_sync_disabled)?>
-								<span>Disabled</span>
-							</label>
-							<label class="btn btn-primary <?=(isset($mal_sync_csrf['checked']) ? 'active' : '')?>">
-								<?=form_radio($mal_sync_csrf)?>
-								<span>CSRF <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses CSRF (Cross Site Request Forgery) to allow us to use MAL's internal API to update.<br>It requires the user to be logged into MAL for it to work properly."></i></span>
-							</label>
-							<label class="btn btn-primary <?=(isset($mal_sync_api['checked']) ? 'active' : '')?> disabled" >
-								<!--<?=form_radio($mal_sync_api)?>-->
-								<span>API <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses the MAL API to update.<br>This requires us to store your MAL details <i>in your browser</i> in <b>plain text</b>, but it does mean you don't have to be logged in on MAL."></i></span>
-							</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> set the MAL id for syncing to work for that series.<br>In some cases we already have the MAL id set on the backend (and will be noted as such).<br><br>Only chapter number will be set."></i></span>
+							</div>
+							<div class="input-group-append">
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<label class="btn btn-primary <?=(isset($mal_sync_disabled['checked']) ? 'active' : '')?>">
+										<?=form_radio($mal_sync_disabled)?>
+										<span>Disabled</span>
+									</label>
+									<label class="btn btn-primary <?=(isset($mal_sync_csrf['checked']) ? 'active' : '')?>">
+										<?=form_radio($mal_sync_csrf)?>
+										<span>CSRF <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses CSRF (Cross Site Request Forgery) to allow us to use MAL's internal API to update.<br>It requires the user to be logged into MAL for it to work properly."></i></span>
+									</label>
+									<label class="btn btn-primary <?=(isset($mal_sync_api['checked']) ? 'active' : '')?> disabled" >
+										<!--<?=form_radio($mal_sync_api)?>-->
+										<span>API <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This uses the MAL API to update.<br>This requires us to store your MAL details <i>in your browser</i> in <b>plain text</b>, but it does mean you don't have to be logged in on MAL."></i></span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

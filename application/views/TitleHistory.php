@@ -8,9 +8,9 @@
 <table class="table table-striped table-bordered tablesorter">
 	<thead>
 		<tr>
-			<th class="col-md-2">Updated at</th>
-			<th class="col-md-5">New Chapter</th>
-			<th class="col-md-5">New Chapter (Without parsing)</th>
+			<th>Updated at</th>
+			<th class="w-50">New Chapter</th>
+			<th>New Chapter (Without parsing)</th>
 		</tr>
 	</thead>
 

@@ -194,7 +194,7 @@ class Signup extends No_Auth_Controller {
 				'id'           => 'terms',
 				'type'         => 'checkbox',
 
-				'class'        => 'hidden',
+				'hidden'       => TRUE,
 				'tagindex'     => '4',
 				'title'        => 'You must click to accept TOS.',
 

@@ -1,10 +1,10 @@
-<div class="row">
+<div class="row justify-content-center">
 	<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 		<!-- TODO: Username/password requirements should be listed somewhere, maybe as popup when :focus -->
 		<form action="<?=base_url("user/signup/{$verificationCode}")?>" method="post" accept-charset="utf-8" role="form" autocomplete="off">
 			<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">
 
-			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
+			<h2>Please Sign Up</h2>
 
 			<hr class="colorgraph">
 

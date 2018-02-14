@@ -32,7 +32,7 @@
 	<table class="tablesorter tablesorter-bootstrap table-striped tracker-table" data-list="<?=$trackerDataTypeKey?>" style="<?=($trackerDataTypeKey !== 'reading' ? 'display:none' : '')?>">
 		<thead>
 		<tr>
-			<th class="header read headerSortDown hidden"></th>
+			<th class="header read headerSortDown" hidden></th>
 			<th class="header read"><div class="tablesorter-header-inner">Series<?=($trackerDataType['unread_count'] > 0 ? ' ('.$trackerDataType['unread_count'].' unread)' : '')?></div></th>
 			<th class="header read"><div class="tablesorter-header-inner">My Status</div></th>
 			<th class="header read"><div class="tablesorter-header-inner">Latest Release</div></th>
@@ -41,8 +41,8 @@
 		<tbody>
 		<?php foreach($trackerDataType['manga'] as $row) { ?>
 			<tr data-id="<?=$row['id']?>" <?=($row['site_data']['status'] == 'disabled' ? 'class="bg-danger"' : '')?>>
-				<td class="hidden">
-					<span class="hidden"><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
+				<td hidden>
+					<span hidden><?=$row['new_chapter_exists']?> - <?=htmlentities($row['title_data']['title'])?></span>
 				</td>
 				<td>
 					<i class="sprite-time <?=get_time_class($row['title_data']['last_updated'])?>" title="<?=$row['title_data']['last_updated']?>"></i>

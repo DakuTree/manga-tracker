@@ -13,7 +13,14 @@ $(function(){
 
 		selectOnClick  : false,
 
+		cssStyle       : '',
+
 		prevText       : '&laquo;',
-		nextText       : '&raquo;'
+		nextText       : '&raquo;',
+
+		onInit         : function() {
+			$('.pagination li').addClass('page-item'); //This is removed by the plugin
+			$('.pagination .current').addClass('page-link');
+		}
 	});
 });

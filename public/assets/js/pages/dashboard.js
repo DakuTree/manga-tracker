@@ -527,7 +527,7 @@ $(function(){
 	function setupStickyListHeader() {
 		let $window    = $(window),
 		    nav        = $('#list-nav'),
-		    offset     = nav.offset().top - nav.find('ul').height() - 21,
+		    offset     = nav.offset().top - nav.find('ul').height()/* - 21*/,
 		    list_table = $('table[data-list]');
 		if(offset > 10) {
 			//normal load

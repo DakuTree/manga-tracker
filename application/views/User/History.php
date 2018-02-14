@@ -15,9 +15,9 @@
 <table class="table table-striped table-bordered tablesorter">
 	<thead>
 		<tr>
-			<th class="col-md-2">Updated at</th>
-			<th class="col-md-5">Title</th>
-			<th class="col-md-5">What changed</th>
+			<th>Updated at</th>
+			<th class="w-50">Title</th>
+			<th>What changed</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -59,7 +59,7 @@
 </nav>
 
 
-<script src="<?=asset_url()?>vendor/js/jquery.simplePagination.js" defer></script>
+<!--<script src="--><?//=asset_url()?><!--vendor/js/jquery.simplePagination.js" defer></script>-->
 <script>
 	const currentPagination = parseInt("<?=$currentPage?>");
 	const totalPagination   = parseInt("<?=$totalPages?>");

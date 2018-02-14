@@ -12,14 +12,16 @@
 	<div class="clearfix"></div>
 </div>
 
-<table class="table table-striped table-bordered">
-	<tbody>
+<table class="table table-striped table-bordered tablesorter">
+	<thead>
 		<tr>
 			<!-- TODO: We should have a delete button here -->
-			<th class="col-md-2">Favourited at</th>
-			<th class="col-md-8">Title</th>
-			<th class="col-md-2">Chapter</th>
-		</tr>
+			<th>Favourited at</th>
+			<th class="w-50">Title</th>
+			<th>Chapter</th>
+		<tr>
+	</thead>
+	<tbody>
 		<?php foreach($favouriteData as $row) { ?>
 		<tr>
 			<td><?=$row['updated_at']?></td>

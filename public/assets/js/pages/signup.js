@@ -46,11 +46,11 @@ $(function() {
 		    $checkbox = $widget.find('input:checkbox'),
 		    color = $button.attr('data-color'),
 		    settings = {
-			    on: {
-				    icon: 'glyphicon glyphicon-check'
+			    on : {
+				    icon: 'fa fa-check-square-o'
 			    },
 			    off: {
-				    icon: 'glyphicon glyphicon-unchecked'
+				    icon: 'fa fa-square-o'
 			    }
 		    };
 

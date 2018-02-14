@@ -108,7 +108,7 @@ class Login extends No_Auth_Controller {
 				'id'      => 'remember',
 				'type'    => 'checkbox',
 
-				'class'   => 'hidden',
+				'hidden'  => TRUE,
 
 				'checked' => 'checked',
 				'value'   => 'remember' //CI is stupid, so we need to pass a value so CI can see it's checked :\
