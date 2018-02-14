@@ -14,6 +14,11 @@ class ReportIssue extends MY_Controller {
 		$this->form_validation->set_rules('issue_description', 'Description', 'required|max_length[255]');
 		$this->form_validation->set_rules('issue_url',         'URL',         'valid_url');
 
+		if(!empty($this->input->post('website'))) {
+			log_message('warning',"Bot attempting to spam report issue form!");
+			die();
+		}
+
 		$this->body_data['issue_submitted'] = FALSE;
 		if($isValid = $this->form_validation->run() === TRUE) {
 			//send report

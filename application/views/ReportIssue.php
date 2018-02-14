@@ -10,6 +10,8 @@
 		<?=form_input($form_url)?>
 	</div>
 
+	<?=form_input('website','', ['id' => 'website'])?>
+
 	<?=validation_errors()?><?=($issue_submitted ? "Issue successfully submitted" : "")?>
 	<button type="submit" class="btn btn-primary">Submit</button> | Alternatively, post an issue on our <?=anchor('https://github.com/DakuTree/manga-tracker/issues/new', 'Github page')?>.
 <?=form_close()?>
