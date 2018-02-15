@@ -40,7 +40,13 @@ class MangaDex extends Base_Site_Model {
 			"td[6]",
 			"td[1]/a",
 			"Warning: Manga #",
-			"<strong>Warning:</strong> No chapters."
+			"<strong>Warning:</strong> No chapters.",
+			function($xpath, &$returnData) {
+				$nodes_mal = $xpath->query('//th[contains(text(), "Links:")]/following-sibling::td[1]/a[contains(@href,"myanimelist.net")]');
+				if($nodes_mal->length === 1) {
+					$returnData['nodes_mal'] = $nodes_mal->item(0);
+				}
+			}
 		);
 		if($data) {
 			$titleData['title'] = preg_replace('/\(Batoto .*?$/','', trim($data['nodes_title']->textContent));
@@ -52,6 +58,10 @@ class MangaDex extends Base_Site_Model {
 				$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
+
+				if(isset($data['nodes_mal'])) {
+					$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+				}
 			}
 		}
 

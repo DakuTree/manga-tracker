@@ -268,7 +268,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		string $failure_string = "", string $no_chapters_string = "") {
+		string $failure_string = "", string $no_chapters_string = "", callable $extraCall = NULL) {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -304,11 +304,15 @@ abstract class Base_Site_Model extends CI_Model {
 						}
 
 						if($nodes_latest->length === 1 && $nodes_chapter->length === 1) {
-							return [
+							$returnData = [
 								'nodes_title'   => $nodes_title->item(0),
 								'nodes_latest'  => $nodes_latest->item(0),
 								'nodes_chapter' => $nodes_chapter->item(0)
 							];
+
+							$extraCall($xpath, $returnData);
+
+							return $returnData;
 						} else {
 							log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
 						}
