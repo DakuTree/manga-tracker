@@ -8,12 +8,14 @@
 		setObjVars : function() {
 			let _this = this;
 
-			this.title       = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
+			let language     = $('[data-id=jump_group] img[title]').attr('title'),
+			    titleID      = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
+			this.title       = titleID + ':--:' + language;
 			let chapter      = this.segments[2];
 			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
 			this.chapter     = chapter + ':--:' + this.chapterNumber;
 
-			this.title_url   = `${this.https}://mangadex.com/manga/${this.title}`;
+			this.title_url   = `${this.https}://mangadex.com/manga/${titleID}`;
 			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;
 
 			let tempList = {};

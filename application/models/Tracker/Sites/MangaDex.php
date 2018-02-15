@@ -1,7 +1,7 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MangaDex extends Base_Site_Model {
-	public $titleFormat   = '/^[0-9]+$/';
+	public $titleFormat   = '/^[0-9]+:--:(English|Polish|Italian|Russian|German|Hungarian|French|Vietnamese|Spanish \(Spain\)|Portuguese \(Brazil\)|Swedish|Turkish|Indonesian|Spanish \(LATAM\)|Catalan)$/';
 	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.v]+$/';
 
 	public $customType    = 2;
@@ -11,7 +11,8 @@ class MangaDex extends Base_Site_Model {
 	public $cookieString  = 'mangadex_h_toggle=1';
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://mangadex.com/manga/{$title_url}";
+		$title_parts = explode(':--:', $title_url);
+		return "https://mangadex.com/manga/{$title_parts[0]}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -30,11 +31,12 @@ class MangaDex extends Base_Site_Model {
 
 		$content = $this->get_content($fullURL, $this->cookieString);
 
+		$title_parts = explode(':--:', $title_url);
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
 			"//h3[contains(@class, 'panel-title')]/text()[1]",
-			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='English']][1]", //FIXME: This forces English for now.
+			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]", //FIXME: This forces English for now.
 			"td[6]",
 			"td[1]/a",
 			"Warning: Manga #",
