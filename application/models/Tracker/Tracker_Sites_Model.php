@@ -254,15 +254,15 @@ abstract class Base_Site_Model extends CI_Model {
 	 *
 	 * All $node_* params must be XPath to the requested node, and must only return 1 result. Anything else will throw a failure.
 	 *
-	 * @param array         $content
-	 * @param string        $title_url
-	 * @param string        $node_title_string
-	 * @param string        $node_row_string
-	 * @param string        $node_latest_string
-	 * @param string        $node_chapter_string
-	 * @param string        $failure_string
-	 * @param string        $no_chapters_string
-	 * @param callable|null $extraCall
+	 * @param array   $content
+	 * @param string  $title_url
+	 * @param string  $node_title_string
+	 * @param string  $node_row_string
+	 * @param string  $node_latest_string
+	 * @param string  $node_chapter_string
+	 * @param string  $failure_string
+	 * @param string  $no_chapters_string
+	 * @param closure $extraCall
 	 *
 	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
@@ -270,7 +270,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		string $failure_string = "", string $no_chapters_string = "", callable $extraCall = NULL) {
+		string $failure_string = "", string $no_chapters_string = "", closure $extraCall = NULL) {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -312,7 +312,7 @@ abstract class Base_Site_Model extends CI_Model {
 								'nodes_chapter' => $nodes_chapter->item(0)
 							];
 
-							$extraCall($xpath, $returnData);
+							if(is_callable($extraCall)) $extraCall($xpath, $returnData);
 
 							return $returnData;
 						} else {

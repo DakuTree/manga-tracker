@@ -49,7 +49,7 @@ class MangaDex extends Base_Site_Model {
 			}
 		);
 		if($data) {
-			$titleData['title'] = preg_replace('/\(Manga\) MangaDex .*?$/','', trim($data['nodes_title']->textContent));
+			$titleData['title'] = preg_replace('/\(Manga\)( -)? MangaDex.*?$/','', trim($data['nodes_title']->textContent));
 
 			if(isset($data['nodes_latest']) && isset($data['nodes_chapter'])) {
 				$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];

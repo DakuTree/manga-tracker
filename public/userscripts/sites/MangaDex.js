@@ -16,7 +16,6 @@
 
 			let titleID      = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
 			this.title       = titleID + ':--:' + language;
-			console.log(this.title);
 
 			let chapter      = this.segments[2];
 			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
