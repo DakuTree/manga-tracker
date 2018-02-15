@@ -8,9 +8,13 @@
 		setObjVars : function() {
 			let _this = this;
 
-			let language     = $('[data-id=jump_group] img[title]').attr('title'),
+			if($('[data-id=jump_group] [data-content]').length) {
+				let tmp_language = $('<div>'+$('[data-id=jump_group] select:selected').attr('data-content')+'</div>').find('img').attr('title');
+			}
+			let language     = (typeof tmp_language !== 'undefined') ? tmp_language  : $('[data-id=jump_group] img[title]').attr('title'),
 			    titleID      = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
 			this.title       = titleID + ':--:' + language;
+
 			let chapter      = this.segments[2];
 			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
 			this.chapter     = chapter + ':--:' + this.chapterNumber;
