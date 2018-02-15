@@ -35,7 +35,7 @@ class MangaDex extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//h3[contains(@class, 'panel-title')]/text()[1]",
+			"//title",
 			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
 			"td[6]",
 			"td[1]/a",
@@ -49,7 +49,7 @@ class MangaDex extends Base_Site_Model {
 			}
 		);
 		if($data) {
-			$titleData['title'] = preg_replace('/\(Batoto .*?$/','', trim($data['nodes_title']->textContent));
+			$titleData['title'] = preg_replace('/\(Manga\) MangaDex .*?$/','', trim($data['nodes_title']->textContent));
 
 			if(isset($data['nodes_latest']) && isset($data['nodes_chapter'])) {
 				$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];

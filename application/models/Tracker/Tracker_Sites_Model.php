@@ -254,14 +254,16 @@ abstract class Base_Site_Model extends CI_Model {
 	 *
 	 * All $node_* params must be XPath to the requested node, and must only return 1 result. Anything else will throw a failure.
 	 *
-	 * @param array  $content
-	 * @param string $title_url
-	 * @param string $node_title_string
-	 * @param string $node_row_string
-	 * @param string $node_latest_string
-	 * @param string $node_chapter_string
-	 * @param string $failure_string
-	 * @param string $no_chapters_string
+	 * @param array         $content
+	 * @param string        $title_url
+	 * @param string        $node_title_string
+	 * @param string        $node_row_string
+	 * @param string        $node_latest_string
+	 * @param string        $node_chapter_string
+	 * @param string        $failure_string
+	 * @param string        $no_chapters_string
+	 * @param callable|null $extraCall
+	 *
 	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
 	final protected function parseTitleDataDOM(
