@@ -73,11 +73,12 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-16
-// @version      1.9.35
+// @version      1.10.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
+// @require      https://cdn.rawgit.com/flaviusmatis/easyModal.js/48cdbdfe/jquery.easyModal.js
 // @require      https://trackr.moe/userscripts/sites/_trackr.moe.4.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
@@ -172,7 +173,8 @@
 /* global $, jQuery, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
-const debug = false; //TODO: Move to a userscript option.
+const debug   = false; //TODO: Move to a userscript option.
+const userscriptVersion = GM.info.script.version;
 
 // Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
 (function(sites) {
@@ -483,10 +485,13 @@ const base_site = {
 							method  : 'POST',
 							data    : $.param(params),
 							headers: {
-								'Content-Type' : 'application/x-www-form-urlencoded'
+								'Content-Type'         : 'application/x-www-form-urlencoded',
+								'X-Userscript-Version' : userscriptVersion
 							},
 							onload  : function(e) {
 								_this.attemptingTrack = false;
+
+								handleUserscriptUpdate(e.responseHeaders);
 
 								if(e.status === 200) {
 									let data = e.responseText,
@@ -1018,9 +1023,12 @@ const base_site = {
 				method  : 'POST',
 				data    : $.param(params),
 				headers: {
-					"Content-Type": "application/x-www-form-urlencoded"
+					'Content-Type'         : 'application/x-www-form-urlencoded',
+					'X-Userscript-Version' : userscriptVersion
 				},
 				onload  : function(e) {
+					handleUserscriptUpdate(e.responseHeaders);
+
 					if(e.status === 200) {
 						$('#TrackerStatus').text(e.statusText);
 					} else {
@@ -1553,6 +1561,61 @@ function hasEmptyValues(o) {
 jQuery.fn.reverseObj = function() {
 	return $(this.get().reverse());
 };
+
+// https://gist.github.com/mmazer/5404301
+function parseResponseHeaders(headerStr) {
+	let headers = {};
+	if (!headerStr) return headers;
+
+	let headerPairs = headerStr.split('\u000d\u000a');
+	for (let i = 0, len = headerPairs.length; i < len; i++) {
+		let headerPair = headerPairs[i],
+		    index = headerPair.indexOf('\u003a\u0020');
+		if (index > 0) {
+			let key = headerPair.substring(0, index),
+			    val = headerPair.substring(index + 2);
+			headers[key] = val;
+		}
+	}
+	return headers;
+}
+
+function handleUserscriptUpdate(headers) {
+	let updateAvailable = parseInt(parseResponseHeaders(headers)['x-userscript-update-available']);
+	if(updateAvailable) {
+		if($('#modal-userscript').length > 0) {
+			$('#modal-userscript').trigger('openModal');
+		} else {
+			let style = $('<style/>', {
+				type: 'text/css', text: `
+					#modal-userscript {
+						background: #FF5722;
+						text-align: center;
+						width: 600px;
+						padding: 5px 0;
+						color: #FFF;
+						text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+						box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+						font-weight: 600;
+					}
+				`
+			});
+			$('head').append(style);
+
+			let modal = $('<div/>', {id: 'modal-userscript', style: 'display: none'});
+			modal.html(`Userscript version is behind the version reported by the server.<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
+			modal.appendTo('body');
+
+			$('#modal-userscript').easyModal(
+				{
+					autoOpen      : true,
+					overlayOpacity: 0.3,
+					overlayColor  : "#333"
+				}
+			);
+		}
+	}
+}
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
 /* jshint ignore:start*/

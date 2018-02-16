@@ -24,6 +24,16 @@ class Userscript extends AJAX_Controller {
 		} else {
 			$this->output->set_status_header('400', 'Missing/invalid parameters.');
 		}
+
+		$updateAvailable = TRUE;
+		// TODO: We should record this for analytics purposes.
+		if($userUserscriptVersion = $this->input->get_request_header('X-Userscript-Version')) {
+			print $userUserscriptVersion."\n".USERSCRIPT_VERSION;
+			$updateAvailable = version_compare($userUserscriptVersion, USERSCRIPT_VERSION, '<');
+		} else {
+
+		}
+		$this->output->set_header('X-Userscript-Update-Available: '.((int) $updateAvailable));
 	}
 
 	/**

@@ -15,7 +15,7 @@ use warnings;
 
 if($> != 0) { die("Script must be run as root!"); }
 
-my $trackrLocation = dirname(abs_path(__FILE__)) =~ s/\/_scripts$//r;
+my $trackrLocation = dirname(abs_path(__FILE__)) =~ s/[\\|\/]_scripts$//r;
 
 my $userscriptDev  = read_file($trackrLocation."/public/userscripts/manga-tracker.dev.user.js");
 my $userscriptProd = ($userscriptDev =~ s/dev\.trackr\.moe/trackr\.moe/rg);
