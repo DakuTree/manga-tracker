@@ -28,7 +28,6 @@ class Userscript extends AJAX_Controller {
 		$updateAvailable = TRUE;
 		// TODO: We should record this for analytics purposes.
 		if($userUserscriptVersion = $this->input->get_request_header('X-Userscript-Version')) {
-			print $userUserscriptVersion."\n".USERSCRIPT_VERSION;
 			$updateAvailable = version_compare($userUserscriptVersion, USERSCRIPT_VERSION, '<');
 		} else {
 
