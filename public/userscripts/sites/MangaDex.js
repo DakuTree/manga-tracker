@@ -26,24 +26,34 @@
 
 			let tempList = {};
 			$('#jump_chapter').find('> option').each(function(){
-		                tempList[`https://mangadex.com/chapter/`+ '' + $(this).attr('value')] = $(this).text();
-            		});
-            		this.chapterList = tempList;
+				tempList[`https://mangadex.com/chapter/`+ '' + $(this).attr('value')] = $(this).text();
+			});
+			this.chapterList = tempList;
 			this.chapterListCurrent = this.chapter_url;
 
-			let pageSegments = $('#current_page').attr('src').split('/'),
-			    imageHash    = $('script:contains("dataurl =")').text().match(/dataurl = '(.*?)'/),
-			    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
-			    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
-			    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
-			this.viewerCustomImageList = pages.map(function(filename, i) {
+
+
+			if($('.webtoon').length) {
+				this.isWebtoon = true;
+
+				this.viewerCustomImageList = $('.webtoon').map(function(/*filename, i*/) {
+					return $(this).attr('src');
+				}).toArray();
+			} else {
+				let imageHash    = $('script:contains("dataurl =")').text().match(/dataurl = '(.*?)'/),
+				    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
+				    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
+				    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
+				this.viewerCustomImageList = pages.map(function(filename, i) {
 					if(server === '/data/') {
 						return `${_this.https}://mangadex.com/data/${imageHash[1]}/${filename}`;
 					} else {
 						return `${server[1]}${imageHash[1]}/${filename}`;
 					}
-			});
+				});
+			}
 			this.page_count             = this.viewerCustomImageList.length;
+
 			this.viewerChapterName      = this.chapter.split(':')[2];
 			this.viewerTitle            = $('span[title="Title"] + a').text();
 		},
