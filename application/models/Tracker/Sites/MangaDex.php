@@ -40,7 +40,7 @@ class MangaDex extends Base_Site_Model {
 			"td[6]",
 			"td[1]/a",
 			"Warning: Manga #",
-			"<strong>Warning:</strong> No chapters.",
+			"<strong>Warning:</strong> No chapters",
 			function($xpath, &$returnData) {
 				$nodes_mal = $xpath->query('//th[contains(text(), "Links:")]/following-sibling::td[1]/a[contains(@href,"myanimelist.net")]');
 				if($nodes_mal->length === 1) {
