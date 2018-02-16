@@ -2,7 +2,7 @@
 
 class MangaDex extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+:--:(English|Polish|Italian|Russian|German|Hungarian|French|Vietnamese|Spanish \(Spain\)|Portuguese \(Brazil\)|Swedish|Turkish|Indonesian|Spanish \(LATAM\)|Catalan)$/';
-	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.v]+$/';
+	public $chapterFormat = '/^[0-9]+:--:(?:(?:v[0-9]+\/)?c[0-9\.v]+|Oneshot)$/';
 
 	public $customType    = 2;
 
