@@ -60,7 +60,10 @@ class MangaDex extends Base_Site_Model {
 				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
 
 				if(isset($data['nodes_mal'])) {
-					$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+					$mal_id = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+					if($mal_id !== "0") {
+						$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+					}
 				}
 			}
 		}
