@@ -9,33 +9,36 @@
 					//Dashboard / Front Page
 					if($('#page[data-page=dashboard]').length) {
 						//TODO: Is there a better way to do this?
-						$('.update-read').click(function() {
+						$('.update-read').on('click', function(e, data) {
 							let row             = $(this).closest('tr'),
 							    latest_chapter  = $(row).find('.latest');
 
 							//get mal_sync option
 							//NOTE: This variable is set on the page, not through the userscript.
-							switch(mal_sync) {
-								case 'disabled':
-									//do nothing
-									break;
+							if($(e.target).attr('class') === 'list-icon update-read') {
+								switch(mal_sync) {
+									case 'disabled':
+										//do nothing
+										break;
 
-								case 'csrf':
-									let mal_arr   = $(row).find('.sprite-myanimelist-net');
+									case 'csrf':
+										let mal_arr   = $(row).find('.sprite-myanimelist-net');
 
-									if(mal_arr.length > 0) {
-										let mal_id = parseInt(mal_arr.attr('title'));
-										_this.syncMALCSRF(mal_id, latest_chapter.text());
-									}
+										if(mal_arr.length > 0) {
+											let mal_id = parseInt(mal_arr.attr('title'));
+											_this.syncMALCSRF(mal_id, latest_chapter.text());
+										}
 
-									break;
+										break;
 
-								case 'api':
-									//TODO: Not implemented yet.
-									break;
+									case 'api':
+										//TODO: Not implemented yet.
+										break;
 
-								default:
-									break;
+									default:
+										break;
+								}
+
 							}
 						});
 
@@ -51,7 +54,7 @@
 								    chapterNumber = data.chapterNumber,
 								    url           = data.url;
 
-								let row = $(`i[title="${site}"]`) //Find everything using site
+								let row = unsafeWindow.$(`i[title="${site}"]`) //Find everything using site
 									.closest('tr')
 									.find(`[data-title="${title}"]`) //Find title
 									.closest('tr');
