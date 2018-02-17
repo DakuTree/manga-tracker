@@ -31,10 +31,12 @@
 			this.title_url   = location.origin+'/manga/'+this.title;
 			this.chapter_url = location.origin+'/r/'+this.title+'/'+this.chapter;
 
+			this.chapterNumber = 'c'+this.chapter.split('/')[0];
+
 			// this.chapterList     = {}; //This is set via preSetupTopBar.
 			this.chapterListCurrent = '/r/'+this.title+'/'+this.chapter+'/1'; //FIXME: MS only seems to use http urls, even if you are on https
 
-			this.viewerChapterName      = 'c'+this.chapter.split('/')[0];
+			this.viewerChapterName      = this.chapterNumber;
 			this.viewerTitle            = $('.btn-reader-chapter > a > span:first').text();
 			this.viewerChapterURLFormat = this.chapter_url + '/' + '%pageN%';
 			this.viewerRegex            = /^[\S\s]*(<div class="page">[\S\s]*?(?=<\/div>)<\/div>)[\S\s]*$/;
