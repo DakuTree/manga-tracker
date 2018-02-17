@@ -7,12 +7,12 @@ class LOLScans extends Base_Site_Model {
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "https://forums.lolscans.com/book/browseChapters.php?p={$title_url}&t=manga&pF=projectFolderName";
+		return "https://forums.lolscans.com/book/browseChapters.php?p={$title_url}&t=webcomic&pF=projectFolderName";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "https://forums.lolscans.com/book/page2.php?c={$chapter}&p={$title_url}&t=manga&pF=projectFolderName",
+			'url'    => "https://forums.lolscans.com/book/page2.php?c={$chapter}&p={$title_url}&t=webcomic&pF=projectFolderName",
 			'number' => urldecode($chapter)
 		];
 	}
