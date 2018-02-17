@@ -43,6 +43,8 @@
 			this.viewerRegex            = /^[\s\S]*<section class="read_img" id="viewer">[\s\S]*(<img src[\s\S]*\/>)[\s\S]*<\/section>[\s\S]*<section class="readpage_footer[\s\S]*$/;
 
 			this.currentPage = parseInt(this.segments.slice(-1)[0].replace(/^([0-9]+).*/, '$1'));
+
+			this.delay = 1000;
 		},
 		stylize : function() {
 			GM_addStyle(`
@@ -87,7 +89,7 @@
 						let chapterTitle     = $(this).parent().clone().children().remove().end().text().trim(),
 						    url              = $(this).attr('href').replace(/^(.*\/)(?:[0-9]+\.html)?$/, '$1'); //Remove trailing page number
 
-						url = url.replace('m.mangahere.co/manga/', 'www.mangahere.cc/manga/');
+						url = url.replace('m.mangahere.cc/manga/', 'www.mangahere.cc/manga/');
 						_this.chapterList[url] = url.replace(/^.*\/manga\/[^/]+\/(?:v(.*?)\/)?c(.*?)\/$/, 'Vol.$1 Ch.$2')
 							.replace(/^Vol\. /, '') + (chapterTitle !== '' ? ': ' + chapterTitle : '');
 					});
@@ -146,7 +148,7 @@
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM.xmlHttpRequest({
-				url     : 'https:'+_this.chapter_url.replace('www.mangahere.cc/manga', 'm.mangahere.co/roll_manga'),
+				url     : 'https:'+_this.chapter_url.replace('www.mangahere.cc/manga', 'm.mangahere.cc/roll_manga'),
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText,

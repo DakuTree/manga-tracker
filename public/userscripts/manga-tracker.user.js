@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-02-16
-// @version      1.10.1
+// @updated      2018-02-17
+// @version      1.10.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -111,7 +111,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.13.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaHere.3.js
+// @require      https://trackr.moe/userscripts/sites/MangaHere.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.2.js
