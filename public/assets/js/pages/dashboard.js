@@ -201,7 +201,7 @@ $(function(){
 			$(this).text('More info');
 
 			//Hide input when hiding info
-			$(this).closest('tr').find('.tag-edit').addClass('hidden');
+			$(this).closest('tr').find('.tag-edit').attr('hidden', true);
 		}
 	});
 
@@ -702,8 +702,8 @@ $(function(){
 		$('.edit-tags').on('click', function(e) {
 			e.preventDefault();
 			let editorEle = $(this).parent().find('.tag-edit');
-			editorEle.toggleClass('hidden');
-			if(!editorEle.hasClass('hidden')) {
+			editorEle.attr('hidden', function(_, attr){ return !attr});
+			if(!editorEle[0].hasAttribute('hidden')) {
 				//NOTE: setTimeout is required here due to a chrome bug.
 				setTimeout(function(){
 					let input = editorEle.find('> input');
@@ -757,7 +757,7 @@ $(function(){
 
 					table.trigger('updateCell', [td[0], false, null]);
 
-					$(_this).closest('.tag-edit').toggleClass('hidden');
+					$(_this).closest('.tag-edit').attr('hidden', function(_, attr){ return !attr});
 				}).fail((jqXHR, textStatus, errorThrown) => {
 					_handleAjaxError(jqXHR, textStatus, errorThrown);
 				});
