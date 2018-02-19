@@ -254,15 +254,15 @@ abstract class Base_Site_Model extends CI_Model {
 	 *
 	 * All $node_* params must be XPath to the requested node, and must only return 1 result. Anything else will throw a failure.
 	 *
-	 * @param array   $content
-	 * @param string  $title_url
-	 * @param string  $node_title_string
-	 * @param string  $node_row_string
-	 * @param string  $node_latest_string
-	 * @param string  $node_chapter_string
-	 * @param string  $failure_string
-	 * @param string  $no_chapters_string
-	 * @param closure $extraCall
+	 * @param array        $content
+	 * @param string       $title_url
+	 * @param string       $node_title_string
+	 * @param string       $node_row_string
+	 * @param string       $node_latest_string
+	 * @param string       $node_chapter_string
+	 * @param string       $failure_string
+	 * @param closure|null $noChaptersCall
+	 * @param closure|null $extraCall
 	 *
 	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
@@ -270,7 +270,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		string $failure_string = "", string $no_chapters_string = "", closure $extraCall = NULL) {
+		string $failure_string = "", closure $noChaptersCall = NULL, closure $extraCall = NULL) {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -318,16 +318,20 @@ abstract class Base_Site_Model extends CI_Model {
 						} else {
 							log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
 						}
-					} elseif($this->canHaveNoChapters && !empty($no_chapters_string) && strpos($data, $no_chapters_string) !== FALSE) {
+					} elseif($this->canHaveNoChapters && !is_null($noChaptersCall) && is_callable($noChaptersCall)) {
 						$returnData = [
 							'nodes_title'   => $nodes_title->item(0)
 						];
 
-						if(is_callable($extraCall)) $extraCall($xpath, $returnData);
+						$noChaptersCall($data, $xpath, $returnData);
 
-						return [
-							'nodes_title' => $nodes_title->item(0)
-						];
+						if(is_array($returnData)) {
+							if(is_callable($extraCall) && is_array($returnData)) $extraCall($xpath, $returnData);
+						} else {
+							log_message('error', "{$this->site} : {$title_url} | canHaveNoChapters set, but doesn't match possible checks! XPath is probably broken.");
+						}
+
+						return $returnData;
 					} else {
 						log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (ROW: {$nodes_row->length})");
 					}

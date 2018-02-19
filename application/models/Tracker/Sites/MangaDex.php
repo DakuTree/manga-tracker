@@ -40,7 +40,20 @@ class MangaDex extends Base_Site_Model {
 			"td[6]",
 			"td[1]/a",
 			"Warning: Manga #",
-			"<strong>Warning:</strong> No chapters",
+			function($data, $xpath, &$returnData) {
+				if(strpos($data, "<strong>Warning:</strong> No chapters") !== FALSE) {
+					// No chapters exist at all.
+				} else {
+					$nodes_row = $xpath->query("//div[@id='chapters']/div/table/tbody/tr[.//*[@alt]][1]");
+					if($nodes_row->length === 1) {
+						// Chapters exist, but not in the language we're looking for.
+					} else {
+						// No chapters exist, failure string wasn't matched and xpath failed?
+						// Mostly likely an HTML change.
+						$returnData = FALSE;
+					}
+				}
+			},
 			function($xpath, &$returnData) {
 				$nodes_mal = $xpath->query('//th[contains(text(), "Links:")]/following-sibling::td[1]/a[contains(@href,"myanimelist.net")]');
 				if($nodes_mal->length === 1) {
