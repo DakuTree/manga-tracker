@@ -35,16 +35,11 @@
 		#category-nav {
 			& ul {
 				& > li {
-					padding-left:  15px;
-					padding-right: 15px;
-					&.active {
+					&.active, &:hover {
 						background-color: @backgroundSecondary;
-
-						a &:active, a &:focus  { background-color: @backgroundSecondary; }
 					}
 					a {
-						padding-top:    5px;
-						padding-bottom: 5px;
+						padding: 5px 15px;
 
 						&:hover, &:focus { background-color: @backgroundSecondary; }
 					}
