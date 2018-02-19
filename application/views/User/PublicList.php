@@ -17,7 +17,7 @@
 	</style>
 	<div id="list-nav">
 		<nav id="category-nav">
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav flex-row pull-left">
 				<?php $first = key($trackerData); ?>
 				<?php foreach($trackerData as $trackerDataTypeKey => $trackerDataType) { ?>
 					<li <?=($first == $trackerDataTypeKey ? 'class="active"' : '')?>>
@@ -75,3 +75,7 @@
 		</tbody>
 	</table>
 <?php } ?>
+<script>
+	const list_sort_type  = "unread";
+	const list_sort_order = "asc";
+</script>
