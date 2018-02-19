@@ -73,7 +73,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-19
-// @version      1.10.6
+// @version      1.10.7
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1178,7 +1178,11 @@ const base_site = {
 			this.page_count = this.viewerCustomImageList.length;
 		};
 
-		this.postSetupTopBar = function(callback) {
+		this.preSetupViewer = function(callback) {
+			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
+			callback(true, true);
+		};
+		this.postSetupViewer = function(callback) {
 			let viewer = $('.viewer-cnt');
 
 			//Remove extra unneeded elements.
@@ -1186,12 +1190,8 @@ const base_site = {
 			viewer.nextAll().remove();
 
 			callback();
-		};
 
-		this.preSetupViewer = function(callback) {
-			$('.viewer-cnt').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
-			callback(true, true);
-		};
+		}
 	},
 
 	/**
