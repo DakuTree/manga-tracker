@@ -278,7 +278,11 @@ abstract class Base_Site_Model extends CI_Model {
 			list('headers' => $headers, 'status_code' => $status_code, 'body' => $data) = $content;
 
 			if(!($status_code >= 200 && $status_code < 300)) {
-				log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
+				if($status_code === 502) {
+					// Site is overloaded, no need to log this.
+				} else {
+					log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
+				}
 			} else if(empty($data)) {
 				log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
 			} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
