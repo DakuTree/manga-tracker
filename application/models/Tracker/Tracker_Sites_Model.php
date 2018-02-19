@@ -319,6 +319,12 @@ abstract class Base_Site_Model extends CI_Model {
 							log_message('error', "{$this->site} : {$title_url} | Invalid amount of nodes (LATEST: {$nodes_latest->length} | CHAPTER: {$nodes_chapter->length})");
 						}
 					} elseif($this->canHaveNoChapters && !empty($no_chapters_string) && strpos($data, $no_chapters_string) !== FALSE) {
+						$returnData = [
+							'nodes_title'   => $nodes_title->item(0)
+						];
+
+						if(is_callable($extraCall)) $extraCall($xpath, $returnData);
+
 						return [
 							'nodes_title' => $nodes_title->item(0)
 						];
