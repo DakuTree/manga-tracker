@@ -73,7 +73,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-02-19
-// @version      1.10.7
+// @version      1.10.8
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -173,7 +173,7 @@
 /* global $, jQuery, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
-const debug   = false; //TODO: Move to a userscript option.
+const userscriptDebug   = false; //TODO: Move to a userscript option.
 const userscriptVersion = GM.info.script.version;
 
 // Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
@@ -1674,7 +1674,7 @@ function versionCompare(v1, v2, options) {
 	window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
 	let pConfig = await GM.getValue('config');
 	window.config    = JSON.parse(pConfig || '{}');
-	if(debug) { console.log(window.config); }
+	if(userscriptDebug) { console.log(window.config); }
 
 	window.sites = {};
 	initializeSites();
