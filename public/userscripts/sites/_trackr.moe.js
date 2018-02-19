@@ -1,3 +1,5 @@
+/* global config, main_site, userscriptVersion, versionCompare */
+
 (function(sites) {
 	//TODO: Plan is to move this to actual inline userscript options at some point.
 	sites['trackr.moe'] = {
@@ -229,10 +231,19 @@
 			}
 		},
 		enableForm : function(form) {
-			$('#userscript-check')
-				.text('Userscript is enabled!')
+			let check = $('#userscript-check');
+			check
+				.html('')
+				.append($('<span/>', {text: 'Userscript is enabled!'}))
 				.removeClass('alert-danger')
 				.addClass('alert-success');
+			if(versionCompare(check.attr('data-version'), userscriptVersion)) {
+				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
+				versionWarning.html(`Userscript version is behind the version reported by the server.<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
+
+				$(versionWarning).insertAfter(check);
+			}
+
 			$(form).find('fieldset').removeAttr('disabled');
 			$(form).find('input[type=submit]').removeAttr('onclick');
 		}

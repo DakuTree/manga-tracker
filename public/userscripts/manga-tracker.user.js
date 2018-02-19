@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-02-17
-// @version      1.10.5
+// @updated      2018-02-19
+// @version      1.10.6
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1615,6 +1615,54 @@ function handleUserscriptUpdate(headers) {
 			);
 		}
 	}
+}
+
+// https://stackoverflow.com/a/6832721
+function versionCompare(v1, v2, options) {
+	var lexicographical = options && options.lexicographical,
+	    zeroExtend = options && options.zeroExtend,
+	    v1parts = v1.split('.'),
+	    v2parts = v2.split('.');
+
+	function isValidPart(x) {
+		return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+	}
+
+	if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+		return NaN;
+	}
+
+	if (zeroExtend) {
+		while (v1parts.length < v2parts.length) v1parts.push("0");
+		while (v2parts.length < v1parts.length) v2parts.push("0");
+	}
+
+	if (!lexicographical) {
+		v1parts = v1parts.map(Number);
+		v2parts = v2parts.map(Number);
+	}
+
+	for (var i = 0; i < v1parts.length; ++i) {
+		if (v2parts.length == i) {
+			return 1;
+		}
+
+		if (v1parts[i] == v2parts[i]) {
+			continue;
+		}
+		else if (v1parts[i] > v2parts[i]) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
+	}
+
+	if (v1parts.length != v2parts.length) {
+		return -1;
+	}
+
+	return 0;
 }
 
 /* * * * * * * * * * Main Script * * * * * * * * * */

@@ -159,7 +159,7 @@
 			<h3>Userscript Options</h3>
 
 
-			<div id="userscript-check" class="alert alert-danger" role="alert">
+			<div id="userscript-check" class="alert alert-danger" role="alert" data-version="<?=USERSCRIPT_VERSION?>">
 				<p>Userscript is not enabled/installed!</p>
 				<p>Check the <a href="https://trackr.moe/help">help page</a> for how to get set up.</p>
 			</div>
