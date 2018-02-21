@@ -13,38 +13,18 @@
       <option name="outputFilters">
         <array>
           <FilterInfo>
-            <option name="description" value="lessc error format" />
-            <option name="name" value="lessc" />
+            <option name="description" value="" />
+            <option name="name" value="" />
             <option name="regExp" value="$MESSAGE$$FILE_PATH$?:$LINE$:$COLUMN$" />
           </FilterInfo>
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
+      <option name="program" value="lessc" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$/public/assets/less/" />
-      <envs />
-    </TaskOptions>
-    <TaskOptions isEnabled="true">
-      <option name="arguments" value="--compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
-      <option name="checkSyntaxErrors" value="true" />
-      <option name="description" />
-      <option name="exitCodeBehavior" value="ERROR" />
-      <option name="fileExtension" value="js" />
-      <option name="immediateSync" value="false" />
-      <option name="name" value="Closure Compiler" />
-      <option name="output" value="compiled.min.js" />
-      <option name="outputFilters">
-        <array />
-      </option>
-      <option name="outputFromStdout" value="true" />
-      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/node_modules/google-closure-compiler/compiler.jar" />
-      <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="JS" />
-      <option name="trackOnlyRoot" value="false" />
-      <option name="workingDir" value="$ProjectFileDir$/public/assets/js/" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
@@ -59,18 +39,38 @@
       <option name="outputFilters">
         <array>
           <FilterInfo>
-            <option name="description" value="lessc error format" />
-            <option name="name" value="lessc" />
+            <option name="description" value="" />
+            <option name="name" value="" />
             <option name="regExp" value="$MESSAGE$\Q in \E$FILE_PATH$\Q on line \E$LINE$\Q, column \E$COLUMN$" />
           </FilterInfo>
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
+      <option name="program" value="lessc" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$ProjectFileDir$/public/assets/less/" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="google-closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="js" />
+      <option name="immediateSync" value="true" />
+      <option name="name" value="Closure Compiler" />
+      <option name="output" value="compiled.min.js" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="true" />
+      <option name="program" value="npx" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="JS" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$ProjectFileDir$/public/assets/js/" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
@@ -140,7 +140,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="get-updateblock -u -d -i manga-tracker.user.js -o manga-tracker.meta.js" />
+      <option name="arguments" value="userscript-utils get-updateblock -u -d -i manga-tracker.user.js -o manga-tracker.meta.js" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -152,7 +152,7 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/userscript-utils.cmd" />
+      <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="Userscript" />
       <option name="trackOnlyRoot" value="false" />
