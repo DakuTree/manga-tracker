@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-02-20
-// @version      1.10.9
+// @updated      2018-02-21
+// @version      1.10.10
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -784,7 +784,7 @@ const base_site = {
 				//FIXME: (TEMP HACK) Due to MH being weird with https redirects, we need to do this.
 				//       When I get the time we should move this to the parent object so we can override it.
 				if(url.includes('mangahere.cc', 0)) {
-					url = url.replace('1.html', '');
+					url = url.replace('/1.html', '/');
 				}
 
 				$.ajax({
