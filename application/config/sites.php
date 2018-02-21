@@ -16,5 +16,6 @@ $config['site_aliases'] = [
 	'mangafox.la'      => 'mangafox.me',
 	'fanfox.net'       => 'mangafox.me',
 	'www.readmng.com'  => 'www.readmanga.today',
-	'www.mangahere.co' => 'www.mangahere.cc'
+	'www.mangahere.co' => 'www.mangahere.cc',
+	'vatoto.com'       => 'bato.to'
 ];
