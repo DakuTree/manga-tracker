@@ -10,8 +10,8 @@ $(function(){
 			return false; // return false so this parser is not auto detected
 		},
 
-		format: function(s, table, cell, cellIndex) {
-			return parseInt($(cell).attr('data-updated-at').replace(/[^0-9]+/g, ''));
+		format: function(s, table, cell/*, cellIndex*/) {
+			return parseInt($(cell).attr('data-updated-at').replace(/[^0-9]+/g, '').toString());
 		},
 
 		type: 'numeric'
@@ -24,8 +24,8 @@ $(function(){
 			return false; // return false so this parser is not auto detected
 		},
 
-		format: function(s, table, cell, cellIndex) {
-			return parseInt($(cell).closest('tr').find('td:eq(1) .sprite-time').attr('title').replace(/[^0-9]+/g, ''));
+		format: function(s, table, cell/*, cellIndex*/) {
+			return parseInt($(cell).closest('tr').find('td:eq(1) .sprite-time').attr('title').replace(/[^0-9]+/g, '').toString());
 		},
 
 		type: 'numeric'
@@ -322,7 +322,7 @@ $(function(){
 		    total_rows   = checked_rows.length;
 		if(total_rows > 0) {
 			let row_ids = $(checked_rows).map(function() {
-				return parseInt($(this).attr('data-id'));
+				return parseInt($(this).attr('data-id').toString());
 			}).toArray();
 
 			let postData = {
@@ -483,7 +483,7 @@ $(function(){
 			    total_rows   = checked_rows.length;
 			if(checked_rows.length > 0 && confirm(`Are you sure you want to move the ${total_rows} selected row(s) to the ${selected_name} category?`)) {
 				let row_ids = $(checked_rows).map(function() {
-					return parseInt($(this).attr('data-id'));
+					return parseInt($(this).attr('data-id').toString());
 				}).toArray();
 
 				window.onbeforeunload = null;
@@ -595,7 +595,7 @@ $(function(){
 			let type_ele  = $('select[name=list_sort_type]'),
 				order_ele = $('select[name=list_sort_order]'),
 				sortList = this.config.sortList,
-				sort = sortList.reduce(function(acc, cur, i) {
+				sort = sortList.reduce(function(acc, cur/*, i*/) {
 					acc[cur[0]] = cur[1];
 					return acc;
 				}, {});
@@ -725,7 +725,7 @@ $(function(){
 					if(!tag_list_new) {
 						$tag_list.text('none');
 					} else {
-						let tagArr = tag_list_new.split(',').map((e, i) => {
+						let tagArr = tag_list_new.split(',').map((e/*, i*/) => {
 							return $('<i/>', {class: 'tag', text: e});
 						});
 						$tag_list.html(tagArr);
@@ -733,7 +733,7 @@ $(function(){
 
 					table.trigger('updateCell', [td[0], false, null]);
 
-					$(_this).closest('.tag-edit').attr('hidden', function(_, attr){ return !attr});
+					$(_this).closest('.tag-edit').attr('hidden', function(_, attr){ return !attr; });
 				}).fail((jqXHR, textStatus, errorThrown) => {
 					_handleAjaxError(jqXHR, textStatus, errorThrown);
 				});
@@ -792,7 +792,7 @@ $(function(){
 	}
 
 	function updateFavicon() {
-		let unreadCount = $('table[data-list=reading]').attr('data-unread');
+		let unreadCount = $('table[data-list=reading]').attr('data-unread').toString();
 		unreadCount = parseInt(unreadCount) > 99 ? '99+' : unreadCount;
 
 		let favicon = $('link[rel="shortcut icon"]');
@@ -907,10 +907,9 @@ $(function(){
 		// Set categories
 		let enabledCategories = Object.keys(series).filter((n) => ['custom1', 'custom2', 'custom3'].includes(n));
 		for (let i = 0, len = enabledCategories.length; i < len; i++) {
-			let categoryStub = enabledCategories[i];
-			let categoryName = series[categoryStub].name;
+			let categoryStub = enabledCategories[i],
+			    categoryName = series[categoryStub].name;
 
-			console.log(categoryName);
 			$categoryNav.append(
 				$('<li/>').append(
 					$('<a/>', {href: '#', 'data-list': categoryStub, text: categoryName})
@@ -945,7 +944,198 @@ $(function(){
 			//Scroll to top of page
 			$('html, body').animate({ scrollTop: 0 }, 'slow');
 		});
-		// ...
-		console.debug(series);
+
+		// Generate Tables
+		for (let [seriesStub, seriesData] of Object.entries(series)) {
+			let mangaList = seriesData.manga,
+			    unreadCount = seriesData.unreadCount;
+
+			//region let table = ...;
+			let table = $('<table/>', {'class': 'tablesorter-bootstrap tracker-table', 'style': (seriesStub === 'reading') ? '' : 'display : none', 'data-list': seriesStub, 'data-unread': unreadCount}).append(
+				$('<thead/>').append(
+					$('<tr/>').append(
+						$('<th/>', {class: 'header read'})).append(
+						$('<th/>', {class: 'header read'}).append(
+							$('<div/>', {class: 'tablesorter-header-inner', text: 'Series '+(unreadCount > 0 ? `(${unreadCount})` : '')})
+						)).append(
+						$('<th/>', {class: 'header read'}).append(
+							$('<div/>', {class: 'tablesorter-header-inner', text: 'My Status'})
+						)).append(
+						$('<th/>', {class: 'header read'}).append(
+							$('<div/>', {class: 'tablesorter-header-inner', text: 'Latest Release'})
+						)).append(
+						$('<th/>', {'data-sorter': 'false'}).append(
+							$('<i/>', {class: 'fa fa-spinner fa-spin'})
+						)
+					)
+				)
+			);
+			//endregion
+
+			//FIXME: Closure compiler toggled off.
+
+			let $tbody = $('<tbody/>');
+
+			mangaList.forEach(manga => { // jshint ignore:line
+				let tr = generateRow(manga);
+				$tbody.append(tr);
+			});
+			table.append($tbody);
+
+			table.appendTo('#list-container');
+		}
+
+		/**
+		 * @param {Object}      manga
+		 * @param {String}      manga.id
+		 * @param {Object}      manga.generated_current_data
+		 * @param {Object}      manga.generated_current_data.url
+		 * @param {Object}      manga.generated_current_data.number
+		 * @param {Object}      manga.generated_latest_data
+		 * @param {Object}      manga.generated_latest_data.url
+		 * @param {Object}      manga.generated_latest_data.number
+		 * @param {Object|null} manga.generated_ignore_data
+		 * @param {Object|null} manga.generated_ignore_data.url
+		 * @param {Object|null} manga.generated_ignore_data.number
+		 * @param {String}      manga.full_title_url
+		 * @param {Number}      manga.new_chapter_exists
+		 * @param {String}      manga.tag_list
+		 * @param {Boolean}     manga.has_tags
+		 * @param {String}      manga.mal_id
+		 * @param {String}      manga.mal_type
+		 * @param {String}      manga.last_updated
+		 * @param {Object}      manga.title_data
+		 * @param {String}      manga.title_data.id
+		 * @param {String}      manga.title_data.title
+		 * @param {String}      manga.title_data.title_url
+		 * @param {String}      manga.title_data.latest_chapter
+		 * @param {String}      manga.title_data.current_chapter
+		 * @param {String|null} manga.title_data.ignore_chapter
+		 * @param {String}      manga.title_data.last_updated
+		 * @param {String}      manga.title_data.time_class
+		 * @param {Number}      manga.title_data.status
+		 * @param {Number}      manga.title_data.failed_checks
+		 * @param {Boolean}     manga.title_data.active
+		 * @param {Object}      manga.site_data
+		 * @param {String}      manga.site_data.id
+		 * @param {String}      manga.site_data.site
+		 * @param {String}      manga.site_data.status
+		 * @param {String}      manga.mal_icon
+		 */
+		function generateRow(manga) {
+			let $mal_node = null;
+			if(manga.mal_id && manga.mal_type === 'chapter') {
+				$mal_node = $('<span/>')
+					.append(document.createTextNode('('))
+					.append($('<small/>', {text: (manga.mal_id !== '0' ? manga.mal_id : 'none')}))
+					.append(document.createTextNode(')'));
+			}
+
+			//region let tr = ...;
+			let $tr = $('<tr/>', {'data-id': manga.id}).append(
+				$('<td/>')
+					.append($('<span/>', {hidden: true, text: manga.new_chapter_exists}))
+					.append($('<input/>', {type: 'checkbox', name: 'check'}))
+			).append(
+				$('<td/>')
+					.append(
+						$('<div/>', {class: 'row-icons'})
+							.append($('<i/>', {class: `sprite-time ${manga.title_data.time_class}`, title: manga.last_updated}))
+							.append($('<i/>', {class: `sprite-site sprite-${manga.site_data.site.replace(/\./g, '-')}`, title: manga.site_data.site}))
+							.append(manga.mal_icon)
+					)
+					.append($('<a/>', {href: manga.full_title_url, rel: 'nofollow', class: 'title', 'data-title': decodeEntities(manga.title_data.title_url), target: '_blank', text: decodeEntities(manga.title_data.title)}))
+
+					.append($('<small/>', {class: 'toggle-info pull-right text-muted', text: 'More info'}))
+					.append($('<div/>', {class: 'more-info'}).append(
+						$('<small/>')
+							.append($('<a/>', {href: `/history/${manga.title_data.id}`, text: 'History'}))
+							.append(document.createTextNode(' | '))
+							.append($('<a/>', {href: '#', class: 'set-mal-id', 'data-mal-id': manga.mal_id, 'data-mal-type': manga.mal_type, text: 'Set MAL ID'}))
+							.append($mal_node)
+
+							.append(document.createTextNode(' | Tags ('))
+							.append($('<a/>', {href: '#', class: 'edit-tags small', text: 'Edit'}))
+							.append(document.createTextNode('): '))
+							.append(
+								$('<span/>', {class: 'text-lowercase tag-list', })
+									.append(manga.has_tags ? (manga.tag_list.split(',').map((e) => { return $('<i/>', {class: 'tag', text: e}).get(0); })) : document.createTextNode('none')))
+
+							.append(
+								$('<div/>', {class: 'input-group tag-edit', hidden: true})
+									.append($('<input/>', {type: 'text', class: 'form-control', placeholder: 'tag1,tag2,tag3', maxlength: 255, pattern: '[a-z0-9-_,]{0,255}', value: manga.tag_list}))
+									.append(
+										$('<span/>', {class: 'input-group-btn'})
+											.append($('<button/>', {class: 'btn btn-default', type: 'button', text: 'Save'}))))))
+			).append(
+				$('<td/>', {'data-last-updated': manga.last_updated})
+					.append($('<a/>', {class: 'chp-release current', href: manga.generated_current_data.url, rel: 'nofollow', target: '_blank', text: decodeEntities(manga.generated_current_data.number)}))
+					.append(manga.title_data.ignore_chapter ? $('<span/>', {class: 'hidden-chapter', title: 'The latest chapter was marked as ignored.', text: manga.generated_ignore_data.number}) : null)
+			).append(
+				$('<td/>')
+					.append(
+						manga.generated_latest_data.number !== 'No chapters found' ?
+							$('<a/>', {class: 'chp-release latest', href: manga.generated_latest_data.url, rel: 'nofollow', 'data-chapter': manga.title_data.latest_chapter, target: '_blank', text: decodeEntities(manga.generated_latest_data.number)})
+							:
+							$('<i/>', {title: 'Title page still appears to exist, but chapters have been removed. This is usually due to DMCA.', text: 'No chapters found'})
+					)
+			).append(
+				$('<td/>')
+					.append(
+						manga.site_data.status === 'disabled' ?
+							$('<i/>', {class: 'fa fa-exclamation-triangle', 'aria-hidden': 'true', style: 'color: red', title: `Tracking has been disabled for this series as the site '${manga.site_data.site}' is disabled`})
+							:
+							null
+					)
+					.append(
+						manga.new_chapter_exists === 0 ?
+							$('<div/>', {class: 'row-icons'})
+								.append(
+									$('<span/>', {class: 'list-icon ignore-latest', title: 'Ignore latest chapter. Useful when latest chapter isn\'t actually the latest chapter.'})
+										.append($('<i/>', {class:' fa fa-bell-slash', 'aria-hidden': 'true'}))
+								)
+								.append(
+									$('<span/>', {class: 'list-icon update-read', title: 'I\'ve read the latest chapter!'})
+										.append($('<i/>', {class: 'fa fa-refresh', 'aria-hidden': 'true'}))
+								)
+							:
+							null
+					)
+			);
+			//endregion
+			if(manga.site_data.status === 'disabled') {
+				$tr.addClass('bg-danger');
+			} else if(manga.title_data.status === 255) {
+				$tr.addClass('bg-danger');
+				$tr.attr('title', 'This title is no longer being updated as it has been marked as deleted/ignored.');
+			} else if(manga.title_data.failed_checks >= 5) {
+				$tr.addClass('bg-danger');
+				$tr.attr('title', 'The last 5+ updates for this title have failed, as such it may not be completely up to date.');
+			} else if(manga.title_data.failed_checks > 0) {
+				$tr.addClass('bg-warning');
+				$tr.attr('title', 'The last update for this title failed, as such it may not be completely up to date.');
+			}
+			return $tr;
+		}
 	}
+
+	let decodeEntities = (function() {
+		// this prevents any overhead from creating the object each time
+		let element = document.createElement('div');
+
+		function decodeHTMLEntities (str) {
+			if(str && typeof str === 'string') {
+				// strip script/html tags
+				str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+				str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+				element.innerHTML = str;
+				str = element.textContent;
+				element.textContent = '';
+			}
+
+			return str;
+		}
+
+		return decodeHTMLEntities;
+	})();
 });

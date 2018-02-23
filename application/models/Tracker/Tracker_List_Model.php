@@ -62,6 +62,7 @@ class Tracker_List_Model extends Tracker_Base_Model {
 						'current_chapter' => $row->current_chapter,
 						'ignore_chapter'  => $row->ignore_chapter,
 						'last_updated'    => $row->title_last_updated,
+						'time_class'      => get_time_class($row->title_last_updated),
 						'status'          => (int) $row->title_status,
 						'failed_checks'   => (int) $row->title_failed_checks,
 						//NOTE: active is used to warn the user if a title hasn't updated (Maybe due to nobody active tracking it or other reasons).

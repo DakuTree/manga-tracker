@@ -158,6 +158,13 @@
 					background-color: darken(@backgroundQuaternary, 5%);
 				}
 
+				.row-icons {
+					display: inline;
+
+					margin-right: 3px;
+					& > *:not(:last-child) { margin-right: 3px; }
+				}
+
 				& > td:nth-of-type(1) {
 					width: 40px;
 					text-align: center;
@@ -170,6 +177,7 @@
 						height: 15px;
 						width:  15px;
 					}
+
 
 					.mal-link { text-decoration: none; }
 
@@ -216,15 +224,8 @@
 					padding: 0 5px;
 					white-space: nowrap;
 
-					.list-icon:not(:nth-last-child(1)) {
-						margin-right: 2px;
-					}
 
-					.update-read {
-						cursor: pointer;
-					}
-
-					.ignore-latest {
+					.update-read, .ignore-latest {
 						cursor: pointer;
 					}
 				}
