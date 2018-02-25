@@ -87,69 +87,88 @@ class MangaDex extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = "https://mangadex.com/0"; //All Languages
-		if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
-			$data = $content['body'];
+		$lastChapterID   = (int) ($this->cache->get("mangadex_lastchapterid") ?: 0);
+		$latestChapterID = 0;
 
-			$dom = new DOMDocument();
-			libxml_use_internal_errors(TRUE);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(FALSE);
+		$page = 0;
+		$getNextPage = TRUE;
+		while($getNextPage) {
+			$pageN = $page * 50;
+			if($page >= 5) break;
 
-			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//div[@class='col-sm-9']/div/table/tbody/tr[.//td[@rowspan]]");
-			if($nodes_rows->length > 0) {
-				$i = 0;
-				foreach($nodes_rows as $row) {
-					$i++;
-					$titleData = [];
+			$updateURL = "https://mangadex.com/0/{$pageN}"; //All Languages
+			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
+				$data = $content['body'];
 
-					$nodes_title         = $xpath->query("td[3]/a", $row);
-					$nodes_rows_chapters = $xpath->query("following-sibling::tr[.//td[@title] and count(preceding-sibling::tr[.//td[@rowspan]])=$i]", $row);
+				$dom = new DOMDocument();
+				libxml_use_internal_errors(TRUE);
+				$dom->loadHTML($data);
+				libxml_use_internal_errors(FALSE);
 
-					if($nodes_title->length === 1 && $nodes_rows_chapters->length >= 1) {
-						$title = $nodes_title->item(0);
+				$xpath      = new DOMXPath($dom);
+				$nodes_rows = $xpath->query("//div[@class='col-sm-9']/div/table/tbody/tr[.//td[@rowspan]]");
+				if($nodes_rows->length > 0) {
+					$i = 0;
+					foreach($nodes_rows as $row) {
+						$i++;
+						$titleData = [];
 
-						preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
-						$titleID = $title_url_arr['url'];
+						$nodes_title         = $xpath->query("td[3]/a", $row);
+						$nodes_rows_chapters = $xpath->query("following-sibling::tr[.//td[@title] and count(preceding-sibling::tr[.//td[@rowspan]])=$i]", $row);
 
-						foreach($nodes_rows_chapters as $rowC) {
-							$nodes_lang     = $xpath->query('td[3]/img', $rowC);
-							$nodes_chapter  = $xpath->query("td[2]/a", $rowC);
-							$nodes_latest   = $xpath->query("td[5]/time", $rowC);
+						if($nodes_title->length === 1 && $nodes_rows_chapters->length >= 1) {
+							$title = $nodes_title->item(0);
 
-							if($nodes_lang->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
-								$lang = $nodes_lang->item(0)->getAttribute('title');
+							preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
+							$titleID = $title_url_arr['url'];
 
-								$title_url = $titleID . ':--:'. $lang;
-								if(!array_key_exists($title_url, $titleDataList)) {
-									$titleData['title'] = trim($title->textContent);
+							foreach($nodes_rows_chapters as $rowC) {
+								$nodes_lang     = $xpath->query('td[3]/img', $rowC);
+								$nodes_chapter  = $xpath->query("td[2]/a", $rowC);
+								$nodes_latest   = $xpath->query("td[5]/time", $rowC);
 
-									$chapter = $nodes_chapter->item(0);
-									$chapterID     = explode('/', (string) $chapter->getAttribute('href'))[2];
-									$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $chapter->textContent)));
+								if($nodes_lang->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+									$lang = $nodes_lang->item(0)->getAttribute('title');
 
-									$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
+									$title_url = $titleID . ':--:'. $lang;
+									if(!array_key_exists($title_url, $titleDataList)) {
+										$titleData['title'] = trim($title->textContent);
 
-									$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
-									$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+										$chapter = $nodes_chapter->item(0);
+										$chapterID     = explode('/', (string) $chapter->getAttribute('href'))[2];
+										if($latestChapterID === 0) $latestChapterID = $chapterID;
+										$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $chapter->textContent)));
 
-									$titleDataList[$title_url] = $titleData;
+										$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
+
+										$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
+										$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+
+										if((int) $chapterID < $lastChapterID) {
+											$getNextPage = FALSE;
+										}
+										$titleDataList[$title_url] = $titleData;
+									}
+								} else {
+									log_message('error', "{$this->site}/Custom | Invalid amount of nodes (LANG: {$nodes_lang->length} | CHAPTER: {$nodes_chapter->length} | LATEST: {$nodes_latest->length})");
 								}
-							} else {
-								log_message('error', "{$this->site}/Custom | Invalid amount of nodes (LANG: {$nodes_lang->length} | CHAPTER: {$nodes_chapter->length} | LATEST: {$nodes_latest->length})");
 							}
+						} else {
+							log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTERS: {$nodes_rows_chapters->length})");
 						}
-					} else {
-						log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTERS: {$nodes_rows_chapters->length})");
 					}
+				} else {
+					log_message('error', "{$this->site} | Following list is empty?");
 				}
 			} else {
-				log_message('error', "{$this->site} | Following list is empty?");
+				log_message('error', "{$this->site} - Custom updating failed.");
 			}
-		} else {
-			log_message('error', "{$this->site} - Custom updating failed.");
+
+			if($lastChapterID === 0) break;
+			$page++;
 		}
+
+		$this->cache->save("mangadex_lastchapterid", $latestChapterID,  31536000 /* 1 year, or until we renew it */);
 
 		return $titleDataList;
 	}
