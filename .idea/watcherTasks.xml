@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--no-color --modify-var=themeLocation=common\themes\light --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\light --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -20,7 +20,7 @@
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="program" value="lessc" />
+      <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
       <option name="trackOnlyRoot" value="false" />
@@ -28,7 +28,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--no-color --modify-var=themeLocation=common\themes\dark --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\dark --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -46,7 +46,7 @@
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="program" value="lessc" />
+      <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
       <option name="trackOnlyRoot" value="false" />
@@ -54,7 +54,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="google-closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
+      <option name="arguments" value="-q google-closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -65,7 +65,7 @@
       <option name="outputFilters">
         <array />
       </option>
-      <option name="outputFromStdout" value="true" />
+      <option name="outputFromStdout" value="false" />
       <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="JS" />
@@ -114,7 +114,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--no-color --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="lessc -q --no-color --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -125,14 +125,14 @@
       <option name="outputFilters">
         <array>
           <FilterInfo>
-            <option name="description" value="lessc error format" />
-            <option name="name" value="lessc" />
+            <option name="description" value="" />
+            <option name="name" value="" />
             <option name="regExp" value="$MESSAGE$\Q in \E$FILE_PATH$\Q on line \E$LINE$\Q, column \E$COLUMN$" />
           </FilterInfo>
         </array>
       </option>
       <option name="outputFromStdout" value="true" />
-      <option name="program" value="$USER_HOME$/AppData/Roaming/npm/lessc.cmd" />
+      <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="Userscript LESS" />
       <option name="trackOnlyRoot" value="false" />
@@ -140,7 +140,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="userscript-utils get-updateblock -u -d -i manga-tracker.user.js -o manga-tracker.meta.js" />
+      <option name="arguments" value="-q userscript-utils get-updateblock -u -d -i manga-tracker.user.js -o manga-tracker.meta.js" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
