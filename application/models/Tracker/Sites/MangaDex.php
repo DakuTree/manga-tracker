@@ -41,7 +41,7 @@ class MangaDex extends Base_Site_Model {
 			"td[1]/a",
 			"<strong>Warning:</strong> Manga #",
 			function($data, $xpath, &$returnData) {
-				if(strpos($data, "<strong>Warning:</strong> No chapters") !== FALSE) {
+				if(strpos($data, "<strong>Notice:</strong> No chapters") !== FALSE) {
 					// No chapters exist at all.
 				} else {
 					$nodes_row = $xpath->query("//div[@id='chapters']/div/table/tbody/tr[.//*[@alt]][1]");
