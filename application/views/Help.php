@@ -47,7 +47,7 @@
 			<br>Examples:
 			<ul>
 				<li><code>site:mangafox.me</code> - Returns everything that followed on <b>MangaFox</b>.</li>
-				<li><code>site:mangadex.com</code> - Returns everything that followed on <b>MangaDex</b>.</li>
+				<li><code>site:mangadex.org</code> - Returns everything that followed on <b>MangaDex</b>.</li>
 			</ul>
 		</li>
 		<br>

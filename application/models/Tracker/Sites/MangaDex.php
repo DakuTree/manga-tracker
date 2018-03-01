@@ -12,13 +12,13 @@ class MangaDex extends Base_Site_Model {
 
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
-		return "https://mangadex.com/manga/{$title_parts[0]}";
+		return "https://mangadex.org/manga/{$title_parts[0]}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		$chapter_parts = explode(':--:', $chapter);
 		return [
-			'url'    => "https://mangadex.com/chapter/{$chapter_parts[0]}",
+			'url'    => "https://mangadex.org/chapter/{$chapter_parts[0]}",
 			'number' => $chapter_parts[1]
 		];
 	}
@@ -96,7 +96,7 @@ class MangaDex extends Base_Site_Model {
 			$pageN = $page * 50;
 			if($page >= 5) break;
 
-			$updateURL = "https://mangadex.com/0/{$pageN}"; //All Languages
+			$updateURL = "https://mangadex.org/0/{$pageN}"; //All Languages
 			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
 				$data = $content['body'];
 

@@ -4,7 +4,7 @@
 	 * MangaDex
 	 * @type {SiteObject}
 	 */
-	sites['mangadex.com'] = {
+	sites['mangadex.org'] = {
 		setObjVars : function() {
 			let _this = this;
 
@@ -21,12 +21,12 @@
 			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
 			this.chapter     = chapter + ':--:' + this.chapterNumber;
 
-			this.title_url   = `${this.https}://mangadex.com/manga/${titleID}`;
-			this.chapter_url = `${this.https}://mangadex.com/chapter/${chapter}`;
+			this.title_url   = `${this.https}://mangadex.org/manga/${titleID}`;
+			this.chapter_url = `${this.https}://mangadex.org/chapter/${chapter}`;
 
 			let tempList = {};
 			$('#jump_chapter').find('> option').each(function(){
-				tempList[`https://mangadex.com/chapter/`+ '' + $(this).attr('value')] = $(this).text();
+				tempList[`https://mangadex.org/chapter/`+ '' + $(this).attr('value')] = $(this).text();
 			});
 			this.chapterList = tempList;
 			this.chapterListCurrent = this.chapter_url;
@@ -46,7 +46,7 @@
 				    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
 				this.viewerCustomImageList = pages.map(function(filename, i) {
 					if(server === '/data/') {
-						return `${_this.https}://mangadex.com/data/${imageHash[1]}/${filename}`;
+						return `${_this.https}://mangadex.org/data/${imageHash[1]}/${filename}`;
 					} else {
 						return `${server[1]}${imageHash[1]}/${filename}`;
 					}
