@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\light --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\light main.less $ProjectFileDir$/public/assets/css/main.light.css" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -19,7 +19,7 @@
           </FilterInfo>
         </array>
       </option>
-      <option name="outputFromStdout" value="true" />
+      <option name="outputFromStdout" value="false" />
       <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
@@ -28,7 +28,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\dark --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="-q lessc --no-color --modify-var=themeLocation=common\themes\dark main.less $ProjectFileDir$/public/assets/css/main.dark.css" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -45,7 +45,7 @@
           </FilterInfo>
         </array>
       </option>
-      <option name="outputFromStdout" value="true" />
+      <option name="outputFromStdout" value="false" />
       <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="CORE LESS" />
