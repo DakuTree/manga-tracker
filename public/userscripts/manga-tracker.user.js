@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-03-01
-// @version      1.10.11
+// @updated      2018-03-03
+// @version      1.10.12
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1661,6 +1661,10 @@ function versionCompare(v1, v2, options) {
 
 	return 0;
 }
+
+
+unsafeWindow.userscriptVersion = userscriptVersion;
+unsafeWindow.versionCompare = versionCompare;
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
 /* jshint ignore:start*/
