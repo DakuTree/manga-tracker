@@ -11,7 +11,7 @@
 // @include      /^https?:\/\/(?:www\.)?mangahere\.c[o|c]\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
 // @include      /^https:/\/dynasty-scans\.com\/chapters\/.+$/
-// @include      /^http:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
+// @include      /^https:\/\/www\.mangapanda\.com\/(?!(?:search|privacy|latest|alphabetical|popular|random)).+\/.+$/
 // @include      /^https?:\/\/readms\.net\/r\/.+\/.+\/[0-9]+(?:\/[0-9]+)?(?:\?.+)?$/
 // @include      /^https?:\/\/mangastream\.com\/r(ead)?\/.+\/.+\/[0-9]+(?:\/[0-9]+)?(?:\?.+)?$/
 // @include      /^http:\/\/www\.webtoons\.com\/(?:en|zh-hant|zh-hans|th|id)\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/[a-z0-9A-Z-_]+\/viewer\?title_no=[0-9]+&episode_no=[0-9]+$/
@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-03-03
-// @version      1.10.12
+// @updated      2018-03-04
+// @version      1.10.13
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -114,7 +114,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaHere.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
-// @require      https://trackr.moe/userscripts/sites/MangaPanda.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaPanda.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaRock.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaStream.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js

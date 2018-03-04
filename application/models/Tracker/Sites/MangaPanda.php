@@ -8,12 +8,12 @@ class MangaPanda extends Base_Site_Model {
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://www.mangapanda.com/{$title_url}";
+		return "https://www.mangapanda.com/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "http://www.mangapanda.com/{$title_url}/{$chapter}/",
+			'url'    => "https://www.mangapanda.com/{$title_url}/{$chapter}/",
 			'number' => 'c'.$chapter
 		];
 	}
@@ -46,7 +46,7 @@ class MangaPanda extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = "http://www.mangapanda.com/latest";
+		$updateURL = "https://www.mangapanda.com/latest";
 		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
 			$data = $content['body'];
 

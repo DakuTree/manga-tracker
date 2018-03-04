@@ -21,15 +21,15 @@
 			this.chapterListCurrent = '/'+this.title+'/'+this.chapter;
 			// this.chapterList = {}, //This is set via preSetupTopBar.
 
-			this.title_url      = 'http://www.mangapanda.com/'+this.title+'/';
-			this.chapter_url    = 'http://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
+			this.title_url      = 'https://www.mangapanda.com/'+this.title+'/';
+			this.chapter_url    = 'https://www.mangapanda.com/'+this.title+'/'+this.chapter+'/';
 
 			// this.viewerChapterName      = '';
 			this.viewerTitle            = $('#mangainfo').find('> div[style*=float] > h2').text().slice(0, -6);
 			this.viewerChapterURLFormat = this.chapter_url + '%pageN%';
 			this.viewerRegex            = /^[\s\S]+(<img id="img".+?(?=>)>)[\s\S]+$/;
 
-			this.searchURLFormat = 'http://www.mangapanda.com/search/?w={%SEARCH%}';
+			this.searchURLFormat = 'https://www.mangapanda.com/search/?w={%SEARCH%}';
 
 			if(this.segments[3]) {
 				this.currentPage = parseInt(this.segments[3]);
