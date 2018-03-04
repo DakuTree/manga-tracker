@@ -92,13 +92,12 @@ class MangaDex extends Base_Site_Model {
 		$lastChapterID   = (int) ($this->cache->get("mangadex_lastchapterid") ?: 0);
 		$latestChapterID = 0;
 
-		$page = 0;
+		$page = 1;
 		$getNextPage = TRUE;
 		while($getNextPage) {
-			$pageN = $page * 50;
 			if($page >= 5) break;
 
-			$updateURL = "https://mangadex.org/0/{$pageN}"; //All Languages
+			$updateURL = "https://mangadex.org/0/{$page}"; //All Languages
 			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
 				$data = $content['body'];
 
