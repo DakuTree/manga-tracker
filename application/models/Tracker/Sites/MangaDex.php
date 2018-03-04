@@ -43,6 +43,8 @@ class MangaDex extends Base_Site_Model {
 			function($data, $xpath, &$returnData) {
 				if(strpos($data, "<strong>Notice:</strong> No chapters") !== FALSE) {
 					// No chapters exist at all.
+				} else if(strpos($data, "<strong>Notice:</strong> There are no chapters in your selected language(s).") !== FALSE) {
+					// No chapters exist at all.
 				} else {
 					$nodes_row = $xpath->query("//div[@id='chapters']/div/table/tbody/tr[.//*[@alt]][1]");
 					if($nodes_row->length === 1) {
