@@ -3,128 +3,6 @@ $(function(){
 	'use strict';
 	if(page !== 'dashboard_beta') { return false; }
 
-	//Set favicon to unread ver.
-	if(! /^\/list\//.test(location.pathname)) {
-		// updateFavicon();
-	}
-
-	//Click to hide notice
-	$('#update-notice').on('closed.bs.alert', function() {
-		$.post(base_url + 'ajax/hide_notice');
-	});
-
-	// setupStickyListHeader();
-
-	/** FUNCTIONS **/
-
-	function setupStickyListHeader() {
-		let $window    = $(window),
-		    nav        = $('#list-nav'),
-		    offset     = nav.offset().top - nav.find('ul').height()/* - 21*/,
-		    list_table = $('table[data-list]');
-		if(offset > 10) {
-			//normal load
-			$window.on('scroll', function() {
-				//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
-				//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
-				handleScroll();
-			});
-			handleScroll(); //Make sure we also trigger on page load.
-		} else {
-			//page was loaded via less but less hasn't parsed yet.
-			let existCondition = setInterval(function() {
-				if($('style[id="less:less-main"]').length) {
-					offset = nav.offset().top - nav.find('> ul').height() - 2; //reset offset
-
-					$window.on('scroll', function() {
-						handleScroll();
-					});
-					handleScroll(); //Make sure we also trigger on page load.
-
-					clearInterval(existCondition);
-				}
-			}, 500);
-		}
-
-		function handleScroll() {
-			if($window.scrollTop() >= offset) {
-				list_table.css('margin-top', '97px');
-				nav.addClass('fixed-header');
-				nav.css('width', $('#list-nav').parent().width() + 'px');
-			} else {
-				list_table.css('margin-top', '5px');
-				nav.removeClass('fixed-header');
-				nav.css('width', 'initial');
-			}
-		}
-	}
-
-	function updateUnread(table, row) {
-		let totalUnread  = table.find('tr .update-read:not([style])').length,
-		    unread_e     = row.find('> td:eq(0)'),
-		    chapter_e    = row.find('> td:eq(2)'),
-		    update_icons = row.find('.update-read, .ignore-latest');
-
-		//Hide update icons
-		update_icons.hide();
-
-		//Update updated-at time for sorting purposes.
-		chapter_e.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
-		table.trigger('updateCell', [chapter_e[0], false, null]);
-
-		//Update unread status for sorting purposes.
-		unread_e.find(' > span').text('1');
-		table.trigger('updateCell', [unread_e[0], false, null]);
-
-		//Update header text
-		let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');
-		table.find('thead > tr > th:eq(1) > div').text('Series'+unreadText);
-
-		//Update data attr
-		table.attr('data-unread', totalUnread);
-
-		//Update favicon
-		if(table.attr('data-list') === 'reading') {
-			updateFavicon();
-		}
-	}
-
-	function updateFavicon() {
-		let unreadCount = $('table[data-list=reading]').attr('data-unread').toString();
-		unreadCount = parseInt(unreadCount) > 99 ? '99+' : unreadCount;
-
-		let favicon = $('link[rel="shortcut icon"]');
-		if(parseInt(unreadCount) !== 0) {
-			let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0];
-			//Bug?: Unable to set this via jQuery for some reason..
-			canvas.width  = 32;
-			canvas.height = 32;
-
-			let context = canvas.getContext('2d');
-
-			let imageObj = new Image();
-			imageObj.onload = function(){
-				context.drawImage(imageObj, 0, 0, 32, 32);
-
-				context.font      = 'Bold 17px Helvetica';
-				context.textAlign = 'right';
-
-				context.lineWidth   = 3;
-				context.strokeStyle = 'white';
-				context.strokeText(unreadCount, 32, 30);
-
-				context.fillStyle = 'black';
-				context.fillText(unreadCount, 32, 30);
-
-				favicon.attr('href', canvas.toDataURL());
-			};
-			imageObj.src = `${base_url}favicon.ico`;
-		} else {
-			favicon.attr('href', `${base_url}favicon.ico`);
-		}
-	}
-
-
 	function _handleAjaxError(jqXHR, textStatus, errorThrown) {
 		switch(jqXHR.status) {
 			case 400:
@@ -140,44 +18,6 @@ $(function(){
 				alert('ERROR: Something went wrong!\n'+errorThrown);
 				break;
 		}
-	}
-
-	function handleInactive(inactive_titles) {
-		//TODO: The <ul> list should be hidden by default, and only shown if a button is clicked?
-
-		let $inactiveContainer     = $('#inactive-container'),
-		    $inactiveListContainer = $inactiveContainer.find('> #inactive-list-container'),
-		    $inactiveList          = $inactiveListContainer.find('> ul');
-
-		if(Object.keys(inactive_titles).length) {
-			for (let url in inactive_titles) {
-				if(inactive_titles.hasOwnProperty(url)) {
-					let domain      = url.split('/')[2],
-					    domainClass = domain;
-					if(site_aliases[domainClass]) {
-						domainClass = site_aliases[domainClass];
-					}
-					domainClass = domainClass.replace(/\./g, '-');
-
-					//FIXME: Don't append if already exists in list!
-					$('<li/>').append(
-						$('<i/>', {class: `sprite-site sprite-${domainClass}`, title: domain})).append(
-						$('<a/>', {text: ' '+inactive_titles[url], href: url})
-					).appendTo($inactiveList);
-				}
-			}
-
-			$inactiveContainer.removeAttr('hidden');
-		} else {
-			$inactiveContainer.attr('hidden');
-
-			$inactiveList.find('> li').empty();
-		}
-
-		$('#inactive-display').on('click', function() {
-			$(this).hide();
-			$inactiveListContainer.removeAttr('hidden');
-		});
 	}
 
 	let decodeEntities = (function() {
@@ -267,11 +107,125 @@ $(function(){
 		}
 
 		start() {
+			this.setupNotices();
+			this.handleInactive(this.data.extra_data.inactive_titles);
+
 			this.setupNav();
 
 			this.generateLists(this.data.series);
 			this.startTablesorter();
-			// handleInactive(json.extra_data.inactive_titles);
+			this.setupStickyListHeader();
+
+			this.updateFavicon();
+		}
+
+		updateFavicon() {
+			let unreadCount = $('table[data-list=reading]').attr('data-unread').toString();
+			unreadCount = parseInt(unreadCount) > 99 ? '99+' : unreadCount;
+
+			let $favicon = $('link[rel="shortcut icon"]');
+			if(parseInt(unreadCount) !== 0) {
+				let canvas  = $('<canvas/>', {id: 'faviconCanvas', style: '/*display: none*/'})[0];
+				//Bug?: Unable to set this via jQuery for some reason..
+				canvas.width  = 32;
+				canvas.height = 32;
+
+				let context = canvas.getContext('2d');
+
+				let imageObj = new Image();
+				imageObj.onload = function(){
+					context.drawImage(imageObj, 0, 0, 32, 32);
+
+					context.font      = 'Bold 17px Helvetica';
+					context.textAlign = 'right';
+
+					context.lineWidth   = 3;
+					context.strokeStyle = 'white';
+					context.strokeText(unreadCount, 32, 30);
+
+					context.fillStyle = 'black';
+					context.fillText(unreadCount, 32, 30);
+
+					$favicon.attr('href', canvas.toDataURL());
+				};
+				imageObj.src = `${base_url}favicon.ico`;
+			} else {
+				$favicon.attr('href', `${base_url}favicon.ico`);
+			}
+		}
+		updateUnread(table, row) {
+			let totalUnread  = table.find('tr .update-read:not([style])').length,
+			    unread_e     = row.find('> td:eq(0)'),
+			    chapter_e    = row.find('> td:eq(2)'),
+			    update_icons = row.find('.update-read, .ignore-latest');
+
+			//Hide update icons
+			update_icons.hide();
+
+			//Update updated-at time for sorting purposes.
+			chapter_e.attr('data-updated-at', (new Date()).toISOString().replace(/^([0-9]+-[0-9]+-[0-9]+)T([0-9]+:[0-9]+:[0-9]+)\.[0-9]+Z$/, '$1 $2'));
+			table.trigger('updateCell', [chapter_e[0], false, null]);
+
+			//Update unread status for sorting purposes.
+			unread_e.find(' > span').text('1');
+			table.trigger('updateCell', [unread_e[0], false, null]);
+
+			//Update header text
+			let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');
+			table.find('thead > tr > th:eq(1) > div').text('Series'+unreadText);
+
+			//Update data attr
+			table.attr('data-unread', totalUnread);
+
+			//Update favicon
+			if(table.attr('data-list') === 'reading') {
+				this.updateFavicon();
+			}
+		}
+
+		setupNotices() {
+			//Click to hide notice
+			$('#update-notice').on('closed.bs.alert', function() {
+				$.post(base_url + 'ajax/hide_notice');
+			});
+		}
+
+		handleInactive(inactive_titles) {
+			//TODO: The <ul> list should be hidden by default, and only shown if a button is clicked?
+
+			let $inactiveContainer     = $('#inactive-container'),
+			    $inactiveListContainer = $inactiveContainer.find('> #inactive-list-container'),
+			    $inactiveList          = $inactiveListContainer.find('> ul');
+
+			if(Object.keys(inactive_titles).length) {
+				for (let url in inactive_titles) {
+					if(inactive_titles.hasOwnProperty(url)) {
+						let domain      = url.split('/')[2],
+						    domainClass = domain;
+						if(site_aliases[domainClass]) {
+							domainClass = site_aliases[domainClass];
+						}
+						domainClass = domainClass.replace(/\./g, '-');
+
+						//FIXME: Don't append if already exists in list!
+						$('<li/>').append(
+							$('<i/>', {class: `sprite-site sprite-${domainClass}`, title: domain})).append(
+							$('<a/>', {text: ' '+inactive_titles[url], href: url})
+						).appendTo($inactiveList);
+					}
+				}
+
+				$inactiveContainer.removeAttr('hidden');
+			} else {
+				$inactiveContainer.attr('hidden');
+
+				$inactiveList.find('> li').empty();
+			}
+
+			$('#inactive-display').on('click', function() {
+				$(this).hide();
+				$inactiveListContainer.removeAttr('hidden');
+			});
 		}
 
 		setupNav() {
@@ -551,7 +505,7 @@ $(function(){
 			// FIXME: We should generate lists for activated categories, even if empty.
 			for (let [seriesStub, seriesData] of Object.entries(series)) {
 				let mangaList = seriesData.manga,
-				    unreadCount = seriesData.unreadCount;
+				    unreadCount = seriesData.unread_count;
 
 				//region let table = ...;
 				let $table = $('<table/>', {'class': 'tablesorter-bootstrap tracker-table', 'style': (seriesStub === 'reading') ? '' : 'display : none', 'data-list': seriesStub, 'data-unread': unreadCount}).append(
@@ -559,7 +513,7 @@ $(function(){
 						$('<tr/>').append(
 							$('<th/>', {class: 'header read'})).append(
 							$('<th/>', {class: 'header read'}).append(
-								$('<div/>', {class: 'tablesorter-header-inner', text: 'Series '+(unreadCount > 0 ? `(${unreadCount})` : '')})
+								$('<div/>', {class: 'tablesorter-header-inner', text: 'Series '+(unreadCount > 0 ? `(${unreadCount} unread)` : '')})
 							)).append(
 							$('<th/>', {class: 'header read'}).append(
 								$('<div/>', {class: 'tablesorter-header-inner', text: 'My Status'})
@@ -728,6 +682,7 @@ $(function(){
 			}
 		}
 		setupListEvents() {
+			let _class = this;
 			//This makes it easier to press the row checkbox.
 			this.$tables.find('> tbody > tr > td:nth-of-type(1)').on('click', function (e) {
 				if(!$(e.target).is('input')) {
@@ -890,7 +845,7 @@ $(function(){
 							$('<span/>', {class: 'hidden-chapter', title: 'This latest chapter was marked as ignored.', text: $(latest_chapter).text()})
 						);
 
-						updateUnread(table, row);
+						_class.updateUnread(table, row);
 					}).fail((jqXHR, textStatus, errorThrown) => {
 						_handleAjaxError(jqXHR, textStatus, errorThrown);
 					});
@@ -915,7 +870,7 @@ $(function(){
 							.attr('href', $(latest_chapter).attr('href'))
 							.text($(latest_chapter).text());
 
-						updateUnread(table, row);
+						_class.updateUnread(table, row);
 					}).fail((jqXHR, textStatus, errorThrown) => {
 						_handleAjaxError(jqXHR, textStatus, errorThrown);
 					});
@@ -925,7 +880,7 @@ $(function(){
 					//Userscript handles updating current_chapter url/text.
 
 					if(data.isLatest) {
-						updateUnread(table, row);
+						_class.updateUnread(table, row);
 					} else {
 						let chapter_e = current_chapter.parent();
 
@@ -1022,6 +977,48 @@ $(function(){
 			} else {
 				//Tag list is invalid.
 				alert('Tags can only contain: lowercase a-z, 0-9, -, :, & _. They can also only have one MAL metatag.');
+			}
+		}
+
+		setupStickyListHeader() {
+			let $window    = $(window),
+			    nav        = $('#list-nav'),
+			    offset     = nav.offset().top - nav.find('ul').height()/* - 21*/,
+			    list_table = $('table[data-list]');
+			if(offset > 10) {
+				//normal load
+				$window.on('scroll', function() {
+					//FIXME: Using .scroll for this seems really slow. Is there no pure CSS way of doing this?
+					//FIXME: The width of the nav doesn't auto-adjust to change window width (since we're calcing it in JS)..
+					handleScroll();
+				});
+				handleScroll(); //Make sure we also trigger on page load.
+			} else {
+				//page was loaded via less but less hasn't parsed yet.
+				let existCondition = setInterval(function() {
+					if($('style[id="less:less-main"]').length) {
+						offset = nav.offset().top - nav.find('> ul').height() - 2; //reset offset
+
+						$window.on('scroll', function() {
+							handleScroll();
+						});
+						handleScroll(); //Make sure we also trigger on page load.
+
+						clearInterval(existCondition);
+					}
+				}, 500);
+			}
+
+			function handleScroll() {
+				if($window.scrollTop() >= offset) {
+					list_table.css('margin-top', '97px');
+					nav.addClass('fixed-header');
+					nav.css('width', $('#list-nav').parent().width() + 'px');
+				} else {
+					list_table.css('margin-top', '5px');
+					nav.removeClass('fixed-header');
+					nav.css('width', 'initial');
+				}
 			}
 		}
 
@@ -1157,7 +1154,7 @@ $(function(){
 
 			this.$tables.tablesorter(this.tablesorterDefaults);
 		}
-		static getListSort(type, order) {
+		getListSort(type, order) {
 			let sortArr = [];
 
 			let sortOrder = (order === 'asc' ? 'a' : 'd');
