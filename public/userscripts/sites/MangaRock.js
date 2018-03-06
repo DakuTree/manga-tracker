@@ -25,7 +25,7 @@
 			//this.page_count    = $('.list-switcher-2 > li > select[name=category_type]').get(0).length;
 			this.title         = this.segments[2].substr(10);
 			let chapterID      = this.segments[4].substr(12);
-			this.chapter       = chapterID + ':--:' + $('._3Oahl.ll5Bk > select > option:selected').text().replace(/^(.*?):.*?$/, '$1').replace(/Chapter /g, 'c').replace(/Vol\.([0-9]+) /, 'v$1/');
+			this.chapter       = chapterID + ':--:' + $('._3Oahl.ll5Bk > select > option:selected').text().replace(/^(.*?):.*?$/, '$1').replace(/Chapter /g, 'c').replace(/Vol\.([0-9]+) /, 'v$1/').trim();
 
 			this.title_url   = `${this.https}://mangarock.com/manga/mrs-serie-${this.title}`;
 			this.chapter_url = `${this.title_url}/chapter/mrs-chapter-${chapterID}`;

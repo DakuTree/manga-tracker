@@ -73,7 +73,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-03-06
-// @version      1.10.15
+// @version      1.10.16
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -115,7 +115,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaRock.2.js
+// @require      https://trackr.moe/userscripts/sites/MangaRock.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaStream.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js
