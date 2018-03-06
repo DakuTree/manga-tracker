@@ -25,7 +25,7 @@
 // @include      /^http:\/\/mngcow\.co\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/kobato\.hologfx\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/merakiscans\.com\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/)?$/
+// @include      /^https?:\/\/merakiscans\.com\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/?)?$/
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+\/?(?:Chapter_[0-9]+(?:_extra)?(?:&display=(default|webtoon))?\/?)?$/
@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-03-04
-// @version      1.10.14
+// @updated      2018-03-06
+// @version      1.10.15
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
