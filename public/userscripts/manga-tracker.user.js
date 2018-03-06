@@ -73,7 +73,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-03-06
-// @version      1.10.16
+// @version      1.10.17
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -486,7 +486,8 @@ const base_site = {
 							data    : $.param(params),
 							headers: {
 								'Content-Type'         : 'application/x-www-form-urlencoded',
-								'X-Userscript-Version' : userscriptVersion
+								'X-Userscript-Version' : userscriptVersion,
+								'Referer'              : location.href
 							},
 							onload  : function(e) {
 								_this.attemptingTrack = false;
@@ -1024,7 +1025,8 @@ const base_site = {
 				data    : $.param(params),
 				headers: {
 					'Content-Type'         : 'application/x-www-form-urlencoded',
-					'X-Userscript-Version' : userscriptVersion
+					'X-Userscript-Version' : userscriptVersion,
+					'Referer'              : location.href
 				},
 				onload  : function(e) {
 					handleUserscriptUpdate(e.responseHeaders);
