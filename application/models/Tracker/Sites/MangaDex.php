@@ -37,8 +37,8 @@ class MangaDex extends Base_Site_Model {
 			$title_url,
 			"//title",
 			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
-			"td[6]",
-			"td[1]/a",
+			"td[7]",
+			"td[2]/a",
 			"<strong>Warning:</strong> Manga #",
 			function($data, $xpath, &$returnData) {
 				if(strpos($data, "Notice:</strong> No chapters") !== FALSE) {
