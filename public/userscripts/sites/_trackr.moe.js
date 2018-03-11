@@ -66,11 +66,11 @@
 										.attr('href', url);
 									if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
 										$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
-										unsafeWindow.updateLatestChapter(update_ele, null, {isUserscript: true, isLatest: true});
+										unsafeWindow.updateChapter(update_ele, true, true);
 									} else {
 										//Chapter isn't latest.
 										$(current_chapter).text(chapterNumber);
-										unsafeWindow.updateLatestChapter(update_ele, null, {isUserscript: true, isLatest: false});
+										unsafeWindow.updateChapter(update_ele, false, true);
 									}
 								}
 							});

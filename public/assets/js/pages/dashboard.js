@@ -276,17 +276,18 @@ $(function(){
 	/** Setup title handlers **/
 
 	//Update latest chapter (via "I've read the latest chapter")
-	$('.update-read').on('click', function(e, data) {
-		updateLatestChapter(this, e, data);
+	$('.update-read').on('click', function() {
+		updateChapter(this, true, false);
 	});
-	function updateLatestChapter(_this, e, data) {
+	function updateChapter(_this, isLatest, isUserscript) {
 		let row             = $(_this).closest('tr'),
 		    table           = $(_this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
 		    latest_chapter  = $(row).find('.latest');
 
-		if (!(data && data.isUserscript)) {
+		if(!isUserscript) {
+			console.log('Chapter is not userscript');
 			let postData = {
 				id     : chapter_id,
 				chapter: latest_chapter.attr('data-chapter')
@@ -305,7 +306,7 @@ $(function(){
 
 			//Userscript handles updating current_chapter url/text.
 
-			if(data.isLatest) {
+			if(isLatest) {
 				updateUnread(table, row);
 			} else {
 				let chapter_e = current_chapter.parent();
@@ -316,6 +317,7 @@ $(function(){
 			}
 		}
 	}
+	window.updateChapter = updateChapter;
 
 	//Ignore latest chapter
 	$('.ignore-latest').on('click', function() {
