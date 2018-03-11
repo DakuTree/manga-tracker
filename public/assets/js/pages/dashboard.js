@@ -277,8 +277,11 @@ $(function(){
 
 	//Update latest chapter (via "I've read the latest chapter")
 	$('.update-read').on('click', function(e, data) {
-		let row             = $(this).closest('tr'),
-		    table           = $(this).closest('table'),
+		updateLatestChapter(this, e, data);
+	});
+	function updateLatestChapter(_this, e, data) {
+		let row             = $(_this).closest('tr'),
+		    table           = $(_this).closest('table'),
 		    chapter_id      = $(row).attr('data-id'),
 		    current_chapter = $(row).find('.current'),
 		    latest_chapter  = $(row).find('.latest');
@@ -312,7 +315,7 @@ $(function(){
 				table.trigger('updateCell', [chapter_e[0], false, null]);
 			}
 		}
-	});
+	}
 
 	//Ignore latest chapter
 	$('.ignore-latest').on('click', function() {

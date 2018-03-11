@@ -11,38 +11,33 @@
 					//Dashboard / Front Page
 					if($('#page[data-page=dashboard]').length) {
 						//TODO: Is there a better way to do this?
-						$('.update-read').on('click', function(e, data) {
+						$('.update-read').on('click', function() {
 							let row             = $(this).closest('tr'),
 							    latest_chapter  = $(row).find('.latest');
 
-							if (!(data && data.isUserscript)) {
-								//get mal_sync option
-								//NOTE: This variable is set on the page, not through the userscript.
-								if($(e.target).attr('class') === 'list-icon update-read') {
-									switch (mal_sync) {
-										case 'disabled':
-											//do nothing
-											break;
+							//get mal_sync option
+							//NOTE: This variable is set on the page, not through the userscript.
+							switch (mal_sync) {
+								case 'disabled':
+									//do nothing
+									break;
 
-										case 'csrf':
-											let mal_arr = $(row).find('.sprite-myanimelist-net');
+								case 'csrf':
+									let mal_arr = $(row).find('.sprite-myanimelist-net');
 
-											if(mal_arr.length > 0) {
-												let mal_id = parseInt(mal_arr.attr('title'));
-												_this.syncMALCSRF(mal_id, latest_chapter.text());
-											}
-
-											break;
-
-										case 'api':
-											//TODO: Not implemented yet.
-											break;
-
-										default:
-											break;
+									if(mal_arr.length > 0) {
+										let mal_id = parseInt(mal_arr.attr('title'));
+										_this.syncMALCSRF(mal_id, latest_chapter.text());
 									}
 
-								}
+									break;
+
+								case 'api':
+									//TODO: Not implemented yet.
+									break;
+
+								default:
+									break;
 							}
 						});
 
@@ -71,11 +66,11 @@
 										.attr('href', url);
 									if(chapter.toString() === latest_chapter.attr('data-chapter').toString()) {
 										$(current_chapter).text(latest_chapter.text()); //This uses formatted chapter when possible
-										update_ele.trigger('click', {isUserscript: true, isLatest: true});
+										unsafeWindow.updateLatestChapter(update_ele, null, {isUserscript: true, isLatest: true});
 									} else {
 										//Chapter isn't latest.
 										$(current_chapter).text(chapterNumber);
-										update_ele.trigger('click', {isUserscript: true, isLatest: false});
+										unsafeWindow.updateLatestChapter(update_ele, null, {isUserscript: true, isLatest: false});
 									}
 								}
 							});
