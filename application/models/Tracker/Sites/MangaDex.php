@@ -145,7 +145,9 @@ class MangaDex extends Base_Site_Model {
 										$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
 										$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
 
-										if((int) $chapterID < $lastChapterID) {
+										//FIXME: We shouldn't have to check more than 3 pages at a time, but it's to fix possible bugs.
+										//       See https://github.com/DakuTree/manga-tracker/issues/329#issuecomment-372110502
+										if((int) $chapterID < $lastChapterID && $page >= 3) {
 											$getNextPage = FALSE;
 										}
 										$titleDataList[$title_url] = $titleData;
