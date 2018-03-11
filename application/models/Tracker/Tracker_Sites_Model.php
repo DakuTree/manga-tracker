@@ -783,7 +783,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//table[@id='wpm_mng_lst']/tr/td | //*[@id='wpm_mng_lst']/li/div");
+			$nodes_rows = $xpath->query("//div[@id='wpm_mng_lst']/div | //*[@id='wpm_mng_lst']/li/div");
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
