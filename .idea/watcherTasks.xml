@@ -54,7 +54,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="-q google-closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js" />
+      <option name="arguments" value="-q google-closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS --js $ProjectFileDir$/public/assets/js/main.js --js $ProjectFileDir$/public/assets/js/pages/*.js --js_output_file=$ProjectFileDir$/public/assets/js/compiled.min.js" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
