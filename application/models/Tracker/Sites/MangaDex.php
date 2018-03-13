@@ -120,8 +120,8 @@ class MangaDex extends Base_Site_Model {
 						if($nodes_title->length === 1 && $nodes_rows_chapters->length >= 1) {
 							$title = $nodes_title->item(0);
 
-							preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
-							$titleID = $title_url_arr['url'];
+							$title_url_arr = explode('/', $title->getAttribute('href'));
+							$titleID = $title_url_arr[4];
 
 							foreach($nodes_rows_chapters as $rowC) {
 								$nodes_lang     = $xpath->query('td[3]/img', $rowC);
@@ -145,9 +145,7 @@ class MangaDex extends Base_Site_Model {
 										$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
 										$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
 
-										//FIXME: We shouldn't have to check more than 3 pages at a time, but it's to fix possible bugs.
-										//       See https://github.com/DakuTree/manga-tracker/issues/329#issuecomment-372110502
-										if((int) $chapterID < $lastChapterID && $page >= 3) {
+										if((int) $chapterID < $lastChapterID) {
 											$getNextPage = FALSE;
 										}
 										$titleDataList[$title_url] = $titleData;
