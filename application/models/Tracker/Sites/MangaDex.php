@@ -121,7 +121,7 @@ class MangaDex extends Base_Site_Model {
 							$title = $nodes_title->item(0);
 
 							$title_url_arr = explode('/', $title->getAttribute('href'));
-							$titleID = $title_url_arr[4];
+							$titleID = $title_url_arr[2];
 
 							foreach($nodes_rows_chapters as $rowC) {
 								$nodes_lang     = $xpath->query('td[3]/img', $rowC);
