@@ -122,7 +122,7 @@ abstract class Base_Site_Model extends CI_Model {
 			'limited'   => FALSE,
 			'titleData' => NULL
 		];
-		if(($rateLimit = $this->_getSiteRateLimit()) >= $this->siteRateLimit) {
+		if(($rateLimit = $this->_getSiteRateLimit()) <= $this->siteRateLimit) {
 			$this->_setSiteRateLimit($rateLimit);
 
 			$return['titleData'] = $this->getTitleData($title_url);
