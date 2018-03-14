@@ -46,16 +46,6 @@ class AdminCLI extends CLI_Controller {
 		$this->Tracker->admin->updateCustom();
 	}
 
-	/**
-	 * Checks every series to see if title has changed, and update if so.
-	 * Called via: public/index.php admin/update_titles
-	 *
-	 * This is called via a cron job once a month.
-	 **/
-	public function updateTitles() {
-		$this->Tracker->admin->updateTitles();
-	}
-
 	public function refollowCustom() {
 		$this->Tracker->admin->refollowCustom();
 	}
