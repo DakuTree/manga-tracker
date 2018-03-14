@@ -10,6 +10,8 @@ class MangaDex extends Base_Site_Model {
 
 	public $cookieString  = 'mangadex_h_toggle=1';
 
+	public $siteRateLimit = 500; //MangaDex limit is 600 in 60s, but to avoid going over by mistake, we go a bit lower.
+
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
 		return "https://mangadex.org/manga/{$title_parts[0]}";

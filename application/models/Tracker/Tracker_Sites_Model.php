@@ -50,6 +50,8 @@ abstract class Base_Site_Model extends CI_Model {
 
 	public $canHaveNoChapters = FALSE;
 
+	public $siteRateLimit = 600;
+
 	public function __construct() {
 		parent::__construct();
 
@@ -114,6 +116,21 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @return array|null [title,latest_chapter,last_updated,followed?]
 	 */
 	abstract public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array;
+
+	public function handleBatchUpdate(string $title_url) : array {
+		$return = [
+			'limited'   => FALSE,
+			'titleData' => NULL
+		];
+		if(($rateLimit = $this->_getSiteRateLimit()) >= $this->siteRateLimit) {
+			$this->_setSiteRateLimit($rateLimit);
+
+			$return['titleData'] = $this->getTitleData($title_url);
+		} else {
+			$return['limited'] = TRUE;
+		}
+		return $return;
+	}
 
 	/**
 	 * Validates given $title_url against titleFormat.
@@ -509,6 +526,15 @@ abstract class Base_Site_Model extends CI_Model {
 		}
 
 		return $status;
+	}
+
+	final private function _getSiteRateLimit() : int {
+		return (int) ($this->cache->get("{$this->site}_ratelimit") ?: 0);
+	}
+	final private function _setSiteRateLimit(?int $rateLimit = NULL) : bool {
+		//We would just use increment(), but we can't set ttl with it...
+		$currentRateLimit = $rateLimit ?: $this->_getSiteRateLimit();
+		return $this->cache->save("{$this->site}_ratelimit", $currentRateLimit + 1,3600);
 	}
 }
 
