@@ -14,7 +14,7 @@
 			}
 			language = language || $('[data-id=jump_group] img[title]').attr('title');
 
-			let titleID      = $('span[title="Title"] + a').attr('href').replace(/.*?\/([0-9]+)$/, '$1');
+			let titleID      = $('span[title="Title"] + a').attr('href').split('/')[2];
 			this.title       = titleID + ':--:' + language;
 
 			let chapter      = this.segments[2];
