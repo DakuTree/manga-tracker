@@ -77,7 +77,7 @@ class LOLScans extends Base_Site_Model {
 
 							if(!array_key_exists($title_url, $titleDataList)) {
 								$title = trim($title->textContent);
-								$titleData['title'] = substr($title, 0, stripos($title, ' Chapter') ?: stripos($title, ' Ch.'));
+								$titleData['title'] = substr($title, 0, stripos($title, ' Chapter') ?: stripos($title, ' Ch.') ?: strpos($title, ' ch'));
 
 								$titleData['latest_chapter'] = $url_args['c'];
 
