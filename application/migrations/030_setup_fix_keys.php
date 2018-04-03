@@ -12,7 +12,7 @@ class Migration_Setup_Fix_Keys extends CI_Migration {
 		$this->db->query('ALTER TABLE `auth_users_groups` DROP FOREIGN KEY `FK_auth_users_groups_auth_groups`');
 		$this->db->query('ALTER TABLE `auth_users_groups` ADD CONSTRAINT `FK_auth_users_groups_auth_groups` FOREIGN KEY (`group_id`) REFERENCES `auth_groups`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE');
 		$this->db->query('ALTER TABLE `auth_users_groups` DROP FOREIGN KEY `FK_auth_users_groups_auth_users`');
-		$this->db->query('ALTER TABLE `auth_users_groups` ADD CONSTRAINT `FK_auth_users_groups_auth_users` FOREIGN KEY (`user_id`) REFERENCES `auth_users`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE');
+		$this->db->query('ALTER TABLE `auth_users_groups` ADD CONSTRAINT `FK_auth_users_groups_auth_users` FOREIGN KEY (`user_id`) REFERENCES `auth_users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE');
 		$this->db->trans_complete();
 
 		// tracker_chapters
