@@ -10,7 +10,7 @@ class DynastyScans extends Base_Site_Model {
 
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
-		$url_type = ($title_parts[1] == '0' ? 'series' : 'chapters');
+		$url_type = ($title_parts[1] === '0' ? 'series' : 'chapters');
 
 		return 'https://dynasty-scans.com/'.$url_type.'/'.$title_parts[0];
 	}
@@ -101,7 +101,7 @@ class DynastyScans extends Base_Site_Model {
 				$titleData['latest_chapter'] = 'oneshot'; //This will never change
 
 				preg_match('/<i class="icon-calendar"><\/i> (.*)<\/span>/', $data, $matches);
-				$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime($matches[1]));
+				$titleData['last_updated']   = date('Y-m-d H:i:s', strtotime($matches[1]));
 
 				//Oneshots are special, and really shouldn't need to be re-tracked
 				$titleData['status'] = '2';
@@ -117,8 +117,8 @@ class DynastyScans extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = "https://dynasty-scans.com/chapters/added";
-		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+		$updateURL = 'https://dynasty-scans.com/chapters/added';
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
 			$data = $content['body'];
 
 			$data = preg_replace('/^[\s\S]+<dl class="chapter-list">/', '<dl class="chapter-list">', $data);
@@ -130,31 +130,33 @@ class DynastyScans extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//dl[@class='chapter-list']/dt/following::dd[count(preceding::dt) = 1]");
+			$nodes_rows = $xpath->query("//dl[@class='chapter-list']/dd");
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
 
-					$nodes_title   = $xpath->query("a[1]", $row);
-					$nodes_chapter = $xpath->query("a[1]", $row);
-					$nodes_latest  = $xpath->query("small[last()]", $row);
+					$nodes_title   = $xpath->query('a[1]', $row);
+					$nodes_chapter = $xpath->query('a[1]', $row);
+					$nodes_latest  = $xpath->query('small[last()]', $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title = $nodes_title->item(0);
 
-						preg_match('/^\/chapters\/(?<url>.*?)(?:_(?<chapter>c[^_]+?))?$/', $title->getAttribute('href'), $title_url_arr);
+						preg_match('/^\/chapters\/(?<url>.*?)(?:_(?<chapter>(ch?|vol_)[\d]+.*?))?$/', $title->getAttribute('href'), $title_url_arr);
 						$title_url = $title_url_arr['url'] . ':--:' . ((int) empty($title_url_arr['chapter']));
 
 						if(!array_key_exists($title_url, $titleDataList)) {
 							$titleData['title'] = trim($title->textContent);
+							print $titleData['title']."\n";
+
 							if(!empty($title_url_arr['chapter'])) {
-								$titleData['title'] = substr($titleData['title'], 0, stripos($titleData['title'], ' '.$title_url_arr['chapter']));
+								$titleData['title'] = substr($titleData['title'], 0, stripos($titleData['title'], ' '.preg_replace('/_.*?$/', '', $title_url_arr['chapter'])));
 							}
 
 							$titleData['latest_chapter'] = $title_url_arr['chapter'] ?? 'oneshot';
 
 							$dateString = trim(str_replace('\'', '', str_replace('released ', '', $nodes_latest->item(0)->textContent)));
-							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+							$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($dateString));
 
 							$titleDataList[$title_url] = $titleData;
 						}
