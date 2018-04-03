@@ -779,10 +779,11 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 		$data    = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//rss/channel/image/title",
-			"//rss/channel/item[1]",
-			"pubdate",
-			"title"
+			'//rss/channel/image/title',
+			'//rss/channel/item[1]',
+			'pubdate',
+			'title',
+			'Sorry, the page your are trying to view cannot be found or it may have been removed'
 		);
 		if($data) {
 			$titleData['title'] = preg_replace('/^Recent chapters of (.*?) manga$/', '$1', trim($data['nodes_title']->textContent));
@@ -790,7 +791,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			//For whatever reason, DOMDocument breaks the <link> element we need to grab the chapter, so we have to grab it elsewhere.
 			$titleData['latest_chapter'] = preg_replace('/^.*? - ([0-9\.]+) - .*?$/', '$1', trim($data['nodes_chapter']->textContent));
 
-			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->textContent));
+			$titleData['last_updated'] =  date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->textContent));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
