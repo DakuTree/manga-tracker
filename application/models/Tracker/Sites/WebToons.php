@@ -21,7 +21,7 @@ class WebToons extends Base_Site_Model {
 
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
-		return "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/list?title_no={$title_parts[0]}";
+		return "https://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/list?title_no={$title_parts[0]}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -29,7 +29,7 @@ class WebToons extends Base_Site_Model {
 		$chapter_parts = explode(':--:', $chapter);
 
 		return [
-			'url'    => "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/{$chapter_parts[1]}/viewer?title_no={$title_parts[0]}&episode_no={$chapter_parts[0]}",
+			'url'    => "https://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/{$chapter_parts[1]}/viewer?title_no={$title_parts[0]}&episode_no={$chapter_parts[0]}",
 			'number' => $chapter_parts[1] //TODO: Possibly replace certain formats in here? Since webtoons doesn't have a standard chapter format
 		];
 	}
@@ -41,7 +41,7 @@ class WebToons extends Base_Site_Model {
 
 		//NOTE: getTitleData uses a different FullTitleURL due to it grabbing the rss ver. instead.
 		$title_parts = explode(':--:', $title_url);
-		$fullURL = "http://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/rss?title_no={$title_parts[0]}";
+		$fullURL = "https://www.webtoons.com/{$title_parts[1]}/{$title_parts[3]}/{$title_parts[2]}/rss?title_no={$title_parts[0]}";
 
 		$content = $this->get_content($fullURL);
 		$data = $content['body'];
@@ -96,7 +96,7 @@ class WebToons extends Base_Site_Model {
 		$cookies = [
 			"NEO_SES={$this->config->item('webtoons_cookie')}"
 		];
-		$content = $this->get_content('http://www.webtoons.com/setFavorite?'.http_build_query($formData), implode("; ", $cookies), "", TRUE);
+		$content = $this->get_content('https://www.webtoons.com/setFavorite?'.http_build_query($formData), implode("; ", $cookies), "", TRUE);
 
 		$callback($content, $extra['id'], function($body) {
 			return strpos($body, '"favorite":true') !== FALSE;
@@ -108,7 +108,7 @@ class WebToons extends Base_Site_Model {
 		$cookies = [
 			"NEO_SES={$this->config->item('webtoons_cookie')}"
 		];
-		$content = $this->get_content('http://www.webtoons.com/favorite', implode("; ", $cookies), "", TRUE);
+		$content = $this->get_content('https://www.webtoons.com/favorite', implode("; ", $cookies), "", TRUE);
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} /favorite | Failed to grab URL (See above curl error)");
