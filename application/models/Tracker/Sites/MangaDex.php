@@ -1,7 +1,8 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MangaDex extends Base_Site_Model {
-	public $titleFormat   = '/^[0-9]+:--:(English|Polish|Italian|Russian|German|Hungarian|French|Vietnamese|Spanish \(Spain\)|Portuguese \(Brazil\)|Swedish|Turkish|Indonesian|Spanish \(LATAM\)|Catalan)$/';
+	/* Update lang via: $(temp1).find('li img').map(function(i,e) { return $(e).attr('title').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); }).toArray().join('|'); */
+	public $titleFormat   = '/^[0-9]+:--:(Arabic|Bengali|Bulgarian|Catalan|Chinese \(Simp\)|Chinese \(Trad\)|Czech|Danish|Dutch|English|Filipino|Finnish|French|German|Greek|Hungarian|Indonesian|Italian|Japanese|Korean|Malaysian|Mongolian|Persian|Polish|Portuguese \(Br\)|Portuguese \(Pt\)|Romanian|Russian|Serbo\-Croatian|Spanish \(Es\)|Spanish \(LATAM\)|Swedish|Thai|Turkish|Vietnamese)$/';
 	public $chapterFormat = '/^[0-9]+:--:(?:(?:v[0-9]+\/)?c[0-9\.v]+|[0-9a-zA-Z \.]+)$/';
 
 	public $customType    = 2;
