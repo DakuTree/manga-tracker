@@ -67,7 +67,8 @@
 				success: function(response) {
 					let table = $(response.replace(/^[\S\s]*(<table[\S\s]*<\/table>)[\S\s]*$/, '$1').replace(/\?t=[0-9]+&(amp;)?f=[0-9]+&(amp;)?e=[0-9]+/g, ''));
 
-					_this.chapterList = window.generateChapterList($('tr:not(:first) a', table).reverseObj(), 'href');
+					let tmpList = window.generateChapterList($('tr:not(:first) a', table).reverseObj(), 'href');
+					_this.chapterList = Object.assign({}, ...Object.keys(tmpList).map(key => ({ [key.replace(/\?.*?$/, '')] : tmpList[key] })));
 
 					callback();
 				}
