@@ -30,7 +30,9 @@ class MangaHere extends Base_Site_Model {
 			"//body/section/article/div/div[@class='manga_detail']/div[@class='detail_list']/ul[1]/li[1]",
 			"span[@class='right']",
 			"span[@class='left']/a",
-			"<div class=\"error_text\">Sorry, the page you have requested can’t be found."
+			function($data) {
+				return strpos($data, '<div class="error_text">Sorry, the page you have requested can’t be found.') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = $data['nodes_title']->textContent;

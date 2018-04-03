@@ -28,9 +28,11 @@ class MangaStream extends Base_Site_Model {
 			$title_url,
 			"//div[contains(@class, 'content')]/div[1]/h1",
 			"//div[contains(@class, 'content')]/div[1]/table/tr[2]",
-			"td[2]",
-			"td[1]/a",
-			"<h1>Page Not Found</h1>"
+			'td[2]',
+			'td[1]/a',
+			function($data) {
+				return strpos($data, '<h1>Page Not Found</h1>') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = $data['nodes_title']->textContent;

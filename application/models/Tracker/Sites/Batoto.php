@@ -54,7 +54,9 @@ class Batoto extends Base_Site_Model {
 			"//table[contains(@class, 'chapters_list')]/tbody/tr[2]",
 			"td[last()]",
 			"td/a[contains(@href,'reader#')]",
-			">Register now<"
+			function($data) {
+				return strpos($data, ">Register now<") !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = html_entity_decode(trim($data['nodes_title']->textContent));

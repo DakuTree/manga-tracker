@@ -42,9 +42,11 @@ class KissManga extends Base_Site_Model {
 			$title_url,
 			"//a[@class='bigChar']",
 			"//table[@class='listing']/tr[3]",
-			"td[2]",
-			"td[1]/a",
-			"Not found. Please recheck the link or try search box above."
+			'td[2]',
+			'td[1]/a',
+			function($data) {
+				return strpos($data, 'Not found. Please recheck the link or try search box above.') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);

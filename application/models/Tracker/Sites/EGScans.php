@@ -28,9 +28,11 @@ class EGScans extends Base_Site_Model {
 			$title_url,
 			"//select[@name='manga']/option[@selected='selected']",
 			"//select[@name='chapter']/option[last()]",
-			"//html", //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
-			"",
-			"Select a manga title to get started!"
+			'//html', //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
+			'',
+			function($data) {
+				return strpos($data, 'Select a manga title to get started!') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = html_entity_decode($data['nodes_title']->textContent);

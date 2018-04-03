@@ -277,7 +277,7 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param string       $node_row_string
 	 * @param string       $node_latest_string
 	 * @param string       $node_chapter_string
-	 * @param string       $failure_string
+	 * @param closure|null $failureCall
 	 * @param closure|null $noChaptersCall
 	 * @param closure|null $extraCall
 	 *
@@ -287,7 +287,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		string $failure_string = "", closure $noChaptersCall = NULL, closure $extraCall = NULL) {
+		closure $failureCall = NULL, closure $noChaptersCall = NULL, closure $extraCall = NULL) {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -302,8 +302,8 @@ abstract class Base_Site_Model extends CI_Model {
 				}
 			} else if(empty($data)) {
 				log_message('error', "{$this->site} : {$title_url} | Data is empty? (Status code: {$status_code})");
-			} else if($failure_string !== "" && strpos($data, $failure_string) !== FALSE) {
-				log_message('error', "{$this->site} : {$title_url} | Failure string matched");
+			} else if(!is_null($failureCall) && is_callable($failureCall) && $failureCall($data)) {
+				log_message('error', "{$this->site} : {$title_url} | Failure call matched");
 			} else {
 				$data = $this->cleanTitleDataDOM($data); //This allows us to clean the DOM prior to parsing. It's faster to grab the only part we need THEN parse it.
 
@@ -783,7 +783,9 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			'//rss/channel/item[1]',
 			'pubdate',
 			'title',
-			'Sorry, the page your are trying to view cannot be found or it may have been removed'
+			function($data) {
+				return strpos($data, 'Sorry, the page your are trying to view cannot be found or it may have been removed') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = preg_replace('/^Recent chapters of (.*?) manga$/', '$1', trim($data['nodes_title']->textContent));

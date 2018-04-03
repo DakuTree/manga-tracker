@@ -26,11 +26,13 @@ class LOLScans extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//body/a[1]",
-			"//body/a[last()]",
-			"//html", //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
-			"",
-			"This project doesn't exist. Quitting."
+			'//body/a[1]',
+			'//body/a[last()]',
+			'//html', //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
+			'',
+			function($data) {
+				return strpos($data, 'This project doesn\'t exist. Quitting.') !== FALSE;
+			}
 		);
 		if($data) {
 			$title = explode(" - ", $data['nodes_title']->textContent, 2);

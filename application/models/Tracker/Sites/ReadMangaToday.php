@@ -31,8 +31,10 @@ class ReadMangaToday extends Base_Site_Model {
 			"//body/div[@class='content']/div/div/div/div/div/div/div/div/h1",
 			"//ul[contains(@class, 'chp_lst')]/li[1]/a[1]",
 			"span[@class='dte']",
-			"",
-			"404 Page Not Found"
+			'',
+			function($data) {
+				return strpos($data, '404 Page Not Found') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);

@@ -28,9 +28,11 @@ class MangaKakalot extends Base_Site_Model {
 			$title_url,
 			"//ul[@class='manga-info-text']/li[1]/h1[1]",
 			"//div[@class='chapter-list']/div[1]",
-			"span[3]",
-			"span[1]/a",
-			"Sorry, the page you have requested cannot be found."
+			'span[3]',
+			'span[1]/a',
+			function($data) {
+				return strpos($data, 'Sorry, the page you have requested cannot be found.') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = html_entity_decode($data['nodes_title']->textContent);
