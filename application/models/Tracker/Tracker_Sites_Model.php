@@ -784,7 +784,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			'pubdate',
 			'title',
 			function($data) {
-				return strpos($data, 'Sorry, the page your are trying to view cannot be found or it may have been removed') !== FALSE;
+				return strpos($data, '<image>') === FALSE;
 			}
 		);
 		if($data) {
