@@ -29,6 +29,8 @@ class MangaDex extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
+		$failureMatched = FALSE;
+
 		//FIXME: There also seems to be RSS Feeds but they don't appear to work at the moment.
 		$fullURL = $this->getFullTitleURL($title_url);
 
@@ -38,17 +40,19 @@ class MangaDex extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//title",
-			"//div[@id='chapters']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
-			"td[7]",
-			"td[2]/a",
-			function($data) {
-				return strpos($data, 'Warning:</strong> Manga #') !== FALSE;
+			'//title',
+			"//div[@class='edit tab-content']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
+			'td[7]',
+			'td[2]/a',
+			function($data) use (&$failureMatched) {
+				$failed = strpos($data, 'Warning:</strong> Manga #') !== FALSE;
+				if($failed) $failureMatched = TRUE;
+				return $failed;
 			},
 			function($data, $xpath, &$returnData) {
-				if(strpos($data, "Notice:</strong> No chapters") !== FALSE) {
+				if(strpos($data, 'Notice:</strong> No chapters') !== FALSE) {
 					// No chapters exist at all.
-				} else if(strpos($data, "Notice:</strong> There are no chapters in your selected language(s).") !== FALSE) {
+				} else if(strpos($data, 'Notice:</strong> There are no chapters in your selected language(s).') !== FALSE) {
 					// No chapters exist at all.
 				} else {
 					$nodes_row = $xpath->query("//div[@id='chapters']/div/table/tbody/tr[.//*[@alt]][1]");
@@ -88,7 +92,7 @@ class MangaDex extends Base_Site_Model {
 			}
 		}
 
-		return (!empty($titleData) ? $titleData : NULL);
+		return (!empty($titleData) ? $titleData : (!$failureMatched ? NULL : []));
 	}
 
 	public function doCustomUpdate() {

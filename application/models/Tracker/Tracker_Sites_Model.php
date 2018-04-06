@@ -677,7 +677,9 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 			"//ul[contains(@class, 'chapters')]/li[not(contains(@class, 'btn'))][1]",
 			"div[contains(@class, 'action')]/div[@class='date-chapter-title-rtl']",
 			"h5/a[1] | h3/a[1]",
-			"Whoops, looks like something went wrong."
+			function($data) {
+				return strpos($data, "Whoops, looks like something went wrong.") === FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
