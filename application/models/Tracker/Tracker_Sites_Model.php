@@ -676,16 +676,16 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 			"(//h2[@class='widget-title'])[1]",
 			"//ul[contains(@class, 'chapters')]/li[not(contains(@class, 'btn'))][1]",
 			"div[contains(@class, 'action')]/div[@class='date-chapter-title-rtl']",
-			"h5/a[1] | h3/a[1]",
+			'h5/a[1] | h3/a[1]',
 			function($data) {
-				return strpos($data, "Whoops, looks like something went wrong.") === FALSE;
+				return strpos($data, 'Whoops, looks like something went wrong.') !== FALSE;
 			}
 		);
 		if($data) {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
 			$segments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
-			$needle = array_search('manga', array_reverse($segments, TRUE)) + 2;
+			$needle = array_search('manga', array_reverse($segments, TRUE), TRUE) + 2;
 			$titleData['latest_chapter'] = $segments[$needle];
 
 			$dateString = $data['nodes_latest']->nodeValue;
@@ -786,7 +786,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			'pubdate',
 			'title',
 			function($data) {
-				return strpos($data, '<image>') === FALSE;
+				return strpos($data, '<image>') !== FALSE;
 			}
 		);
 		if($data) {
