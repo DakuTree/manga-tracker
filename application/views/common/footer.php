@@ -6,11 +6,11 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <?php if($show_header) { ?>
-<footer id="site-footer" class="navbar navbar-expand-lg navbar-light bg-faded">
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<footer id="site-footer" class="navbar navbar-expand-md navbar-light bg-faded">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdownFooter" aria-controls="navbarNavDropdownFooter" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-	<div id="navbarNavDropdown" class="navbar-collapse collapse">
+	<div id="navbarNavDropdownFooter" class="navbar-collapse collapse">
 		<ul class="navbar-nav mr-auto">
 			<li id="footer-left" class="nav-item text-muted">
 				<span class="footer-copyright">©2018 trackr.moe</span>

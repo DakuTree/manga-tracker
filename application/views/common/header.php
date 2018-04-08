@@ -30,7 +30,7 @@
 <body>
 
 <?php if($show_header) { ?>
-<header id="site-header" class="navbar navbar-expand-lg navbar-light bg-faded">
+<header id="site-header" class="navbar navbar-expand-sm navbar-light bg-faded">
 	<a class="navbar-brand" href="<?=base_url()?>">Manga Tracker<?=(ENVIRONMENT === 'development' ? ' (DEV)' : '')?></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
