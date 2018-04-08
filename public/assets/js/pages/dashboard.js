@@ -78,10 +78,12 @@ $(function(){
 	 */
 	$.tablesorter.filter.types.FindSite = function( config, data ) {
 		if(/^site:[\w-.]+$/.test(data.iFilter)) {
-			let searchSite  = data.iFilter.match(/^site:([\w-.]+)$/i)[1].replace(/\./g, '-').toLowerCase(),
-			    currentSite = data.$row.find('> td:eq(1) .sprite-site').attr('class').split(' ')[1].substr(7);
+			let searchSite           =  data.iFilter.match(/^site:([\w-.]+)$/i)[1].replace(/\./g, '-').toLowerCase(),
+			    searchSiteWithoutTLD  = searchSite.replace(/(.+)\-\w+$/, '$1'),
+			    currentSite           = data.$row.find('> td:eq(1) .sprite-site').attr('class').split(' ')[1].substr(7),
+			    currentSiteWithoutTLD = currentSite.replace(/(.+)\-\w+$/, '$1');
 
-			return searchSite === currentSite;
+			return searchSite === currentSite || searchSiteWithoutTLD === currentSiteWithoutTLD;
 		}
 		return null;
 	};
