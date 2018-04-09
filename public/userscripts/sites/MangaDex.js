@@ -14,7 +14,7 @@
 			}
 			language = language || $('[data-id=jump_group] img[title]').attr('title');
 
-			let titleID      = $('span[title="Title"] + a').attr('href').split('/')[2];
+			let titleID      = $('h3[class="panel-title"] > a[title]').attr('href').split('/')[2];
 			this.title       = titleID + ':--:' + language;
 
 			let chapter      = this.segments[2];
@@ -55,7 +55,7 @@
 			this.page_count             = this.viewerCustomImageList.length;
 
 			this.viewerChapterName      = this.chapter.split(':')[2];
-			this.viewerTitle            = $('span[title="Title"] + a').text();
+			this.viewerTitle            = $('h3[class="panel-title"] > a[title').text();
 		},
 		stylize : function() {
 			$('.info-top-chapter, .option_wrap').remove();
