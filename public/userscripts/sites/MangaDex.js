@@ -25,7 +25,7 @@
 			this.chapter_url = `${this.https}://mangadex.org/chapter/${chapter}`;
 
 			let tempList = {};
-			$('#jump_chapter').find('> option').each(function(){
+			$('#jump_chapter').find('> option').reverseObj().each(function(){
 				tempList[`https://mangadex.org/chapter/`+ '' + $(this).attr('value')] = $(this).text();
 			});
 			this.chapterList = tempList;
