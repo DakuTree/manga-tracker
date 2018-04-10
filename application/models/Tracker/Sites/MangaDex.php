@@ -42,7 +42,7 @@ class MangaDex extends Base_Site_Model {
 			$title_url,
 			'//title',
 			"//div[@class='edit tab-content']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
-			'td[7]',
+			'td[8]',
 			'td[2]/a',
 			function($data) use (&$failureMatched) {
 				$failed = strpos($data, 'Warning:</strong> Manga #') !== FALSE;
