@@ -109,7 +109,7 @@
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.16.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.17.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
