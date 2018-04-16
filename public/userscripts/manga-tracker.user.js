@@ -47,7 +47,7 @@
 // @include      /^https?:\/\/hatigarmscans\.eu\/hs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.serenade\.moe\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/forums\.lolscans\.com\/book\/page2\.php\?c=.*?&t=webcomic&pF=projectFolderName$/
-// @include      /^https?:\/\/mangarock\.com\/manga\/mrs-serie-[0-9]+\/chapter\/mrs-chapter-[0-9]+$/
+// @include      /^https?:\/\/mangarock\.com($|\/.*?$)/
 // @include      /^http:\/\/reader\.evilflowers\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/shoujohearts\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.twistedhelscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -73,7 +73,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-04-16
-// @version      1.10.24
+// @version      1.10.25
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -115,7 +115,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaRock.3.js
+// @require      https://trackr.moe/userscripts/sites/MangaRock.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaStream.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js

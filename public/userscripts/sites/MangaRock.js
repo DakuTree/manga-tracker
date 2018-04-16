@@ -5,6 +5,16 @@
 	 */
 	sites['mangarock.com'] = {
 		preInit : function(callback) {
+			let currentURL = location.pathname;
+			setInterval(function(){
+				if(currentURL !== location.pathname) {
+					currentURL = location.pathname;
+					if(/\/chapter\/mrs-chapter-/.test(currentURL)) {
+						location.reload();
+					}
+				}
+			}, 1000);
+
 			let dfd = $.Deferred();
 			let checkSelector = setInterval(function () {
 				if ($('._3Oahl').text() !== '') {

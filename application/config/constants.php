@@ -89,4 +89,4 @@ defined('TIMEAGO_MONTH') OR define('TIMEAGO_MONTH', strtotime('-1 month')); //1 
 defined('TIMEAGO_WEEK')  OR define('TIMEAGO_WEEK', strtotime('-1 week')); //1 week ago
 defined('TIMEAGO_3DAY')  OR define('TIMEAGO_3DAY', strtotime('-3 day')); //3 days ago
 
-defined('USERSCRIPT_VERSION') OR define('USERSCRIPT_VERSION', '1.10.24'); //This is automatically set by a PHPStorm File Watcher
+defined('USERSCRIPT_VERSION') OR define('USERSCRIPT_VERSION', '1.10.25'); //This is automatically set by a PHPStorm File Watcher
