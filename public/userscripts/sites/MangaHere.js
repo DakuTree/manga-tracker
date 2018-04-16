@@ -137,18 +137,18 @@
 			let newViewer = $('<div/>', {id: 'viewer'});
 
 			//Add a notice about adblock.
-			newViewer.prepend(
-				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
-					MangaHere has moved to using an image host which is blacklisted by some AdBlockers.
-					If you can't see any images, you will need to whitelist "mhcdn.secure.footprint.net".
-				`})
+			newViewer.prepend(`
+				<p style="background: white; border: 2px solid black;">
+					MangaHere has moved to using an image host which is blacklisted by some AdBlockers / request filters.<br/>
+					If you can't see any images, you will need to whitelist "*.secure.footprint.net".
+				</p>`
 			);
 
 			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM.xmlHttpRequest({
-				url     : 'https:'+_this.chapter_url.replace('www.mangahere.cc/manga', 'm.mangahere.cc/roll_manga'),
+				url     : 'https:'+_this.chapter_url,
 				method  : 'GET',
 				onload  : function(response) {
 					let data = response.responseText,

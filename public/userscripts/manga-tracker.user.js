@@ -72,8 +72,8 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-04-10
-// @version      1.10.23
+// @updated      2018-04-16
+// @version      1.10.24
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -111,7 +111,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaDex.17.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaHere.4.js
+// @require      https://trackr.moe/userscripts/sites/MangaHere.5.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
 // @require      https://trackr.moe/userscripts/sites/MangaKakalot.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaPanda.3.js
@@ -165,8 +165,7 @@
 // @connect      m.mangafox.me
 // @connect      m.mangafox.la
 // @connect      m.fanfox.net
-// @connect      m.mangahere.co
-// @connect      m.mangahere.cc
+// @connect      mangahere.cc
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
