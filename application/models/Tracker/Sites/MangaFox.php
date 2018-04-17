@@ -22,6 +22,7 @@ class MangaFox extends Base_Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
 
+		$content['body'] = preg_replace('/\/manga\/\<\!DOCTYPE html\>[\s\S]*class="downloadimage"/', "/manga/{$title_url}\" class=\"downloadimage\" ", $content['body']);
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
