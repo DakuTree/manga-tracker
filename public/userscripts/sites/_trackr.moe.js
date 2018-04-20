@@ -234,7 +234,14 @@
 				.append($('<span/>', {text: 'Userscript is enabled!'}))
 				.removeClass('alert-danger')
 				.addClass('alert-success');
-			if(versionCompare(check.attr('data-version'), userscriptVersion)) {
+			if(userscriptVersion === undefined) {
+				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
+				versionWarning.html(`Your userscript extension appears to be having issues loading required data. Try using another extension TamperMonkey (Chrome) or ViolentMonkey (FireFox).`);
+
+				$(versionWarning).insertAfter(check);
+
+			}
+			else if(versionCompare(check.attr('data-version'), userscriptVersion)) {
 				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
 				versionWarning.html(`Userscript version is behind the version reported by the server.<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
 
