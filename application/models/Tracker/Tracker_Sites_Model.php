@@ -37,7 +37,7 @@ abstract class Base_Site_Model extends CI_Model {
 	public $titleFormat   = '//';
 	public $chapterFormat = '//';
 	public $hasCloudFlare = FALSE;
-	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2824.0 Safari/537.36';
+	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36';
 
 	public $baseURL = '';
 
