@@ -55,6 +55,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Riceballicious
 * Roselia Scanlations
 * S2Scans
+* SAScans
 * SaikoScans
 * SeaOtterScans
 * SenseScans

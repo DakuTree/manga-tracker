@@ -52,6 +52,7 @@
 // @include      /^http:\/\/shoujohearts\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/www\.twistedhelscans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/www\.cmreader\.info\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
+// @include      /^https?:\/\/reader\.sascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^https?:\/\/sodascans\.me\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
@@ -73,7 +74,7 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-04-22
-// @version      1.10.27
+// @version      1.10.28
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -129,6 +130,7 @@
 // @require      https://trackr.moe/userscripts/sites/Riceballicious.js
 // @require      https://trackr.moe/userscripts/sites/RoseliaScans.1.js
 // @require      https://trackr.moe/userscripts/sites/S2Scans.js
+// @require      https://trackr.moe/userscripts/sites/SAScans.1.js
 // @require      https://trackr.moe/userscripts/sites/SaikoScans.js
 // @require      https://trackr.moe/userscripts/sites/SeaOtterScans.js
 // @require      https://trackr.moe/userscripts/sites/SenseScans.js

@@ -160,6 +160,12 @@ abstract class Base_Site_Model extends CI_Model {
 		return $success;
 	}
 
+
+
+	public function stripChapter(string $chapter) : string {
+		return $chapter;
+	}
+
 	/**
 	 * Used by getTitleData (& similar functions) to get the requested page data.
 	 *

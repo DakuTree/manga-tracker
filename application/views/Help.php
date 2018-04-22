@@ -120,6 +120,7 @@
 		<li>Riceballicious</li>
 		<li>Roselia Scanlations</li>
 		<li>S2Scans</li>
+		<li>SAScans</li>
 		<li>SaikoScans</li>
 		<li>SeaOtterScans</li>
 		<li>SenseScans</li>
