@@ -31,6 +31,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Hot Chocolate Scans
 * JaiminisBox
 * KireiCake
+* LetItGo Scans
 * LHtranslation
 * LOLScans
 * Lolitannia

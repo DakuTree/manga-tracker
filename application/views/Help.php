@@ -96,6 +96,7 @@
 		<li>Hot Chocolate Scans</li>
 		<li>JaiminisBox</li>
 		<li>KireiCake.com</li>
+		<li>LetItGo Scans</li>
 		<li>LHtranslation</li>
 		<li>LOLScans</li>
 		<li>Lolitannia</li>
