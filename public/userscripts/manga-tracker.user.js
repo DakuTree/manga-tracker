@@ -72,14 +72,14 @@
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-04-20
-// @version      1.10.26
+// @updated      2018-04-22
+// @version      1.10.27
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @require      https://cdn.rawgit.com/flaviusmatis/easyModal.js/48cdbdfe/jquery.easyModal.js
-// @require      https://trackr.moe/userscripts/sites/_trackr.moe.8.js
+// @require      https://trackr.moe/userscripts/sites/_trackr.moe..8.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.3.js
@@ -109,7 +109,7 @@
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.17.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.18.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.5.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
@@ -1664,9 +1664,7 @@ function versionCompare(v1, v2, options) {
 }
 
 
-window.userscriptVersion = userscriptVersion;
 unsafeWindow.userscriptVersion = userscriptVersion;
-window.versionCompare = versionCompare;
 unsafeWindow.versionCompare = versionCompare;
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
