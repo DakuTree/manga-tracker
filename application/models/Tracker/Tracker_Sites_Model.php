@@ -204,7 +204,7 @@ abstract class Base_Site_Model extends CI_Model {
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 
 			//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //FIXME: This isn't safe, but it allows us to grab SSL URLs
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 
