@@ -123,6 +123,7 @@
 						GM.xmlHttpRequest({
 							url     : main_site + '/ajax/get_apikey',
 							method  : 'GET',
+							withCredentials : true,
 							onload  : function(e) {
 								if(e.status === 200) {
 									let data = e.responseText,
