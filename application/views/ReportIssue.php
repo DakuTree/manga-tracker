@@ -2,7 +2,7 @@
 <?=form_open(base_url('report_issue'))?>
 	<div class="form-group">
 		<?=form_label('Description (*): ', 'issue_description')?>
-		<?=form_textarea('issue_description', '', ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Please describe your issue and provide as much info as possible.', 'required' => TRUE])?>
+		<?=form_textarea($form_description)?>
 	</div>
 
 	<div class="form-group">
