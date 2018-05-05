@@ -114,7 +114,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="lessc -q --no-color --csscomb=&quot;$ProjectFileDir$\.csscomb.json&quot; main.less" />
+      <option name="arguments" value="-q lessc --no-color main.less" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />

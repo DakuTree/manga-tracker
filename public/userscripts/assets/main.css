@@ -1,179 +1,149 @@
 #TrackerBar {
-	position: fixed    !important;
-	z-index: 10000000 !important;
-	top: 0        !important;
-
-	width: 100% !important;
-	height: 0;
-	margin: 0   !important;
-	padding: 0   !important;
-
-	text-align: center !important;
-
-	opacity: 0.9 !important;
-	color: black  !important;
-
-	font: 14px "Open Sans", Arial, Helvetica, sans-serif !important;
+  position: fixed    !important;
+  top: 0        !important;
+  z-index: 10000000 !important;
+  height: 0;
+  width: 100% !important;
+  opacity: 0.9 !important;
+  padding: 0   !important;
+  margin: 0   !important;
+  font: 14px 'Open Sans', Arial, Helvetica, sans-serif !important;
+  color: black  !important;
+  text-align: center !important;
 }
 #TrackerBar > * {
-	display: inline-block;
-
-	margin: 0               !important;
-	padding: 0 15px 2px 15px !important;
-
-	opacity: 1               !important;
-	border: 1px solid #CCCCCC !important;
-	border-top: 0              !important;
-	border-radius: 0 0 6px 6px    !important;
-	background-color: #FFFFFF !important;
+  display: inline-block;
+  opacity: 1               !important;
+  padding: 0 15px 2px 15px !important;
+  margin: 0               !important;
+  background-color: #FFF !important;
+  border: 1px solid #CCC !important;
+  border-top: 0              !important;
+  border-radius: 0 0 6px 6px    !important;
 }
 #TrackerBar * {
-	vertical-align: middle  !important;
+  vertical-align: middle  !important;
 }
 #TrackerBar a {
-	vertical-align: initial !important;
-
-	color: black   !important;
+  vertical-align: initial !important;
+  color: black   !important;
 }
 #TrackerBar a:visited {
-	color: black !important;
+  color: black !important;
 }
 /* #TrackerBar > */
 #TrackerBarIn .fa {
-	margin: auto 5px !important;
-
-	cursor: pointer !important;
-
-	font-size: 16px;
+  margin: auto 5px !important;
+  font-size: 16px;
+  cursor: pointer !important;
 }
 #TrackerBarIn select {
-	/* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
-	margin: 0 !important;
-
-	color: initial;
-	border: 1px solid #DDDDDD;
-	background-color: initial;
-
-	font: inherit;
+  /* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
+  display: inline-block !important;
+  width: initial !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: initial;
+  border: 1px solid #dddddd;
+  font: inherit;
+  color: initial;
+  -webkit-appearance: menulist !important;
 }
 #TrackerBarIn .mal-link {
-	text-decoration: underline;
-
-	color: initial !important;
-
-	font-size: inherit !important;
-	font-weight: normal !important;
+  color: initial !important;
+  font-weight: normal !important;
+  font-size: inherit !important;
+  text-decoration: underline;
 }
 /* #TrackerBar >  #TrackerBarIn > */
 #TrackerBarLayout {
-	margin: 0 !important;
-	padding: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 #TrackerBarLayout a.buttonTracker {
-	display: inline-block;
-
-	min-width: 100px;
-	margin: 5px;
-	padding: 2px;
-
-	cursor: pointer;
-	transition: all 0.4s ease-in-out;
-	text-align: center;
-	text-decoration: none;
-
-	color: black;
-	border: 1px solid #DDDDDD;
-	border-radius: 5px;
-	background: linear-gradient(0, #EEEEEE, #FFFFFF);
-
-	font-size: 13px;
-	font-weight: initial;
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px;
+  padding: 2px;
+  min-width: 100px;
+  background: linear-gradient(0, #EEE, #FFF);
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: initial;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.4s ease-in-out;
 }
 #TrackerBarLayout a.buttonTracker:hover {
-	text-decoration: none    !important;
-
-	color: #003C82 !important;
-	border-color: #3278BE;
-	background: linear-gradient(0, #FFFFFF, #EEEEEE);
+  background: linear-gradient(0, #ffffff, #eeeeee);
+  border-color: #3278BE;
+  color: #003C82 !important;
+  text-decoration: none    !important;
 }
 #TrackerBarLayout a.buttonTracker:active {
-	background: #4195DD;
-	/* For browsers that do not support gradients */
-	background: linear-gradient(90deg, #003C82, #4195DD);
+  background: #4195DD;
+  /* For browsers that do not support gradients */
+  background: linear-gradient(90deg, #003C82, #4195DD);
 }
 #viewer {
-	clear: both;
-
-	width: auto;
-	max-width: 95%;
-	margin: 0 auto !important;
-
-	text-align: center;
-
-	border: inherit;
-	background: inherit;
+  width: auto;
+  max-width: 95%;
+  margin: 0 auto !important;
+  text-align: center;
+  border: inherit;
+  background: inherit;
+  clear: both;
 }
 #viewer #viewer_header {
-	text-align: center;
-
-	font-weight: bolder;
+  font-weight: bolder;
+  text-align: center;
 }
 #viewer > .read_img {
-	background: none;
+  background: none;
 }
 #viewer > .read_img img {
-	width: auto;
-	max-width: 95%;
-	min-height: 300px;
-
-	border: 5px solid #A9A9A9;
+  width: auto;
+  max-width: 95%;
+  min-height: 300px;
+  border: 5px solid #a9a9a9;
 }
 #viewer > .read_img .pageNumber {
-	position: relative;
-	bottom: 11px;
-	/*height: 18px; */
-
-	width: 50px;
-	margin: 0 auto !important;
-	padding: 0 !important;
-
-	border-spacing: 0 !important;
-
-	text-align: center;
-
-	opacity: 0.75;
-	color: white;
-	border: 2px solid white;
-	border-collapse: collapse;
-	border-radius: 16px !important;
-	background-color: black;
-
-	font-family: Arial, Helvetica, sans-serif !important;
-	font-size: 12px;
-	font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+  bottom: 11px;
+  /*height: 18px; */
+  width: 50px;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border-spacing: 0 !important;
+  border-collapse: collapse;
+  text-align: center;
+  opacity: .75;
+  color: white;
+  border: 2px solid white;
+  border-radius: 16px !important;
+  background-color: black;
 }
 #viewer > .read_img .pageNumber .number {
-	display: table-cell;
-
-	width: 50px;
-	height: 18px;
-	margin: 0 !important;
-	padding: 0 !important;
-
-	border-spacing: 0 !important;
-
-	text-align: center;
-	vertical-align: middle;
-
-	border-collapse: collapse;
+  display: table-cell;
+  width: 50px;
+  height: 18px;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-spacing: 0 !important;
+  border-collapse: collapse;
+  text-align: center;
+  vertical-align: middle;
 }
 #viewer.webtoon > .read_img img {
-	display: block;
-
-	margin: 0 auto;
-
-	border: 0 !important;
+  display: block;
+  margin: 0 auto;
+  border: 0 !important;
 }
 #viewer.webtoon > .read_img .pageNumber {
-	display: none;
+  display: none;
 }

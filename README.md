@@ -72,6 +72,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * Whiteout Scans
 * World Three
 * Yummy Gummy Scans
+* ZeroScans
 * ~~Bato.to (with multi-lang support) (Requires login)~~ - Batoto is closed as of 2018/01/23
 * ~~Demonic Scanlations~~ Domain has been disabled.
 * ~~KissManga.com~~ Server got IP banned, meaning tracking is no longer possible.

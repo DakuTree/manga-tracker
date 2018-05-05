@@ -38,9 +38,12 @@ open STDERR, ">>", "/var/log/perl-error.log" or die "Can't open file for STDERR"
 my $test_output = `php -dxdebug.profiler_enable=off ${trackrLocation}/vendor/phpunit/phpunit/phpunit --bootstrap ${trackrLocation}/application/tests/Bootstrap.php --configuration ${trackrLocation}/application/tests/phpunit.xml Site_Model_test ${trackrLocation}/application/tests/models/Sites_Model_test.php`;
 
 if(index($test_output, "FAILURES") == -1) {
-	system("mailx -s 'Trackr.moe DailyTest: SUCCESS' < /dev/null '${testing_email}' &");
+	open MAIL, "| sendmail -t root";
+	print MAIL 'Subject: '.'Trackr.moe DailyTest: SUCCESS';
+	close MAIL;
 } else {
-	open MAIL, "| mailx -s 'Trackr.moe DailyTest: FAILURE' '${testing_email}'";
+	open MAIL, "| sendmail -t root";
+	print MAIL 'Subject: '.'Trackr.moe DailyTest: FAILURE';
 	print MAIL $test_output;
 	close MAIL;
 }

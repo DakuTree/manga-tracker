@@ -17,7 +17,8 @@ class Tracker_Sites_Model extends CI_Model {
 			'Base_FoolSlide_Site_Model',
 			'Base_myMangaReaderCMS_Site_Model',
 			'Base_GlossyBright_Site_Model',
-			'Base_Roku_Site_Model'
+			'Base_Roku_Site_Model',
+			'Base_WP_Manga_Site_Model'
 		];
 		if(!class_exists($name) || !(in_array(get_parent_class($name), $validClasses))) {
 			return get_instance()->{$name};
@@ -705,7 +706,7 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 		$titleDataList = [];
 
 		$updateURL = "{$this->baseURL}/latest-release";
-		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
 			$data = $content['body'];
 
 			$data = preg_replace('/^[\s\S]+<dl>/', '<dl>', $data);
@@ -966,6 +967,117 @@ abstract class Base_Roku_Site_Model extends Base_Site_Model {
 			}
 		} else {
 			log_message('error', "{$this->site} - Custom updating failed.");
+		}
+
+		return $titleDataList;
+	}
+}
+
+//CHECK: RSS might be better to use here?
+abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
+	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
+	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9\.]+)$/';
+
+	public $customType    = 2;
+
+	public function getFullTitleURL(string $title_url) : string {
+		return "{$this->baseURL}/manga/{$title_url}/";
+	}
+
+	public function getChapterData(string $title_url, string $chapter) : array {
+		$chapterN = (ctype_digit($chapter) ? "c${chapter}" : $chapter);
+		return [
+			'url'    => $this->getChapterURL($title_url, $chapter),
+			'number' => $chapterN
+		];
+	}
+
+	public function getChapterURL(string $title_url, string $chapter) : string {
+		return $this->getFullTitleURL($title_url).$chapter.'/';
+	}
+
+	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
+		$titleData = [];
+
+		$fullURL = $this->getFullTitleURL($title_url);
+		$content = $this->get_content($fullURL);
+
+		$data = $this->parseTitleDataDOM(
+			$content,
+			$title_url,
+			"(//div[@class='post-title'])/h3[1]",
+			"//ul[contains(@class, 'version-chap')]/li[1]",
+			"span[@class='chapter-release-date']/i[1]",
+			'a[1]',
+			function($data) {
+				return strpos($data, 'Whoops, looks like something went wrong.') !== FALSE;
+			}
+		);
+		if($data) {
+			$titleData['title'] = trim($data['nodes_title']->textContent);
+
+			$segments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
+			$needle = array_search('manga', array_reverse($segments, TRUE), TRUE) + 2;
+			$titleData['latest_chapter'] = $segments[$needle];
+
+			$dateString = $data['nodes_latest']->nodeValue;
+			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
+		}
+
+		return (!empty($titleData) ? $titleData : NULL);
+	}
+
+	public function doCustomUpdate() {
+		$titleDataList = [];
+
+		$updateURL = "{$this->baseURL}/page/1/?s&post_type=wp-manga";
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
+			$data = $content['body'];
+
+			$data = preg_replace('/^[\s\S]+<!-- container & no-sidebar-->/', '', $data);
+			$data = preg_replace('/<div class="ad c-ads custom-code body-bottom-ads">[\s\S]+$/', '', $data);
+
+			$dom = new DOMDocument();
+			libxml_use_internal_errors(TRUE);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(FALSE);
+
+			$xpath      = new DOMXPath($dom);
+			$nodes_rows = $xpath->query("//div[@class='tab-content-wrap']/div/div[@class='row']/div[@class='c-tabs-item__content']/div[@class='col-sm-10 col-md-10']");
+			if($nodes_rows->length > 0) {
+				foreach($nodes_rows as $row) {
+					$titleData = [];
+
+					$nodes_title   = $xpath->query("div[@class='tab-summary']/div[@class='post-title']/h4/a", $row);
+					$nodes_chapter = $xpath->query("div[@class='tab-meta']/div[@class='meta-item latest-chap']/span[@class='font-meta chapter']/a", $row);
+					$nodes_latest  = $xpath->query("div[@class='tab-meta']/div[@class='meta-item post-on']/span[@class='font-meta']", $row);
+
+					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
+						$title = $nodes_title->item(0);
+
+						preg_match('/(?<url>[^\/]+(?=\/$|$))/', $title->getAttribute('href'), $title_url_arr);
+						$title_url = $title_url_arr['url'];
+
+						if(!array_key_exists($title_url, $titleDataList)) {
+							$titleData['title'] = trim($title->textContent);
+
+							$chapter = $nodes_chapter->item(0);
+							preg_match('/(?<chapter>[^\/]+(?=\/$|$))/', $chapter->getAttribute('href'), $chapter_arr);
+							$titleData['latest_chapter'] = $chapter_arr['chapter'];
+
+							$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($nodes_latest->item(0)->nodeValue));
+
+							$titleDataList[$title_url] = $titleData;
+						}
+					} else {
+						log_message('error', "{$this->site}/Custom | Invalid amount of nodes (TITLE: {$nodes_title->length} | CHAPTER: {$nodes_chapter->length}) | LATEST: {$nodes_latest->length})");
+					}
+				}
+			} else {
+				log_message('error', "{$this->site} | Following list is empty?");
+			}
+		} else {
+			log_message('error', "{$this->site} - Custom updating failed for {$this->baseURL}.");
 		}
 
 		return $titleDataList;

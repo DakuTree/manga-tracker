@@ -137,6 +137,7 @@
 		<li>Whiteout Scans</li>
 		<li>World Three</li>
 		<li>Yummy Gummy Scans</li>
+		<li>ZeroScans</li>
 		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
 		<li><del>Demonic Scanlations</del> - Domain has been disabled.</li>
 		<li><del>KissManga.com</del> - KissManga has been temporarily disabled due to IP block. No ETA on fix.</li>

@@ -49,7 +49,12 @@
 	}
 	& select {
 		/* A lot of sites tend to overwrite the base <select> styles, so we need to revert */
+		display: inline-block !important;
+
+		width: initial !important;
+
 		margin: 0 !important;
+		padding: 0 !important;
 
 		background-color: initial;
 
@@ -57,6 +62,8 @@
 
 		font:  inherit;
 		color: initial;
+
+		-webkit-appearance: menulist !important;
 	}
 	& .mal-link {
 		color:           initial !important;

@@ -74,8 +74,9 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-04-22
-// @version      1.10.30
+// @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9\.]+)\/(?:$|\?.*?)$/
+// @updated      2018-05-05
+// @version      1.10.31
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -107,6 +108,7 @@
 // @require      https://trackr.moe/userscripts/sites/JaiminisBox.js
 // @require      https://trackr.moe/userscripts/sites/KireiCake.js
 // @require      https://trackr.moe/userscripts/sites/KissManga.2.js
+// @require      https://trackr.moe/userscripts/sites/LetItGoScans.1.js
 // @require      https://trackr.moe/userscripts/sites/LHTranslation.2.js
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.2.js
@@ -147,9 +149,9 @@
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
-// @require      https://trackr.moe/userscripts/sites/LetItGoScans.1.js
+// @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.5.css
+// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.6.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
