@@ -3,7 +3,7 @@
 	 * MangaCow (GlossyBright)
 	 * @type {SiteObject}
 	 */
-	sites['mngcow.co'] = {
+	sites['mangacow.ws'] = {
 		preInit : function(callback) {
 			this.setupGlossyBright();
 			callback();
