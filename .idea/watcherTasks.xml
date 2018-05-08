@@ -114,7 +114,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="-q lessc --no-color main.less" />
+      <option name="arguments" value="-q lessc --no-color main.less $ProjectFileDir$/public/userscripts/assets/main.css" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -131,7 +131,7 @@
           </FilterInfo>
         </array>
       </option>
-      <option name="outputFromStdout" value="true" />
+      <option name="outputFromStdout" value="false" />
       <option name="program" value="npx" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="Userscript LESS" />
