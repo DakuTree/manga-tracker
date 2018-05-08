@@ -68,6 +68,15 @@
 				<li><code>checked:no</code> - Returns everything that has not been checked.</li>
 			</ul>
 		</li>
+		<br>
+		<li>
+			<b>unread:<code>yes|no</code></b>
+			<br>Examples:
+			<ul>
+				<li><code>unread:yes</code> - Returns everything that is unread.</li>
+				<li><code>unread:no</code> - Returns everything that is not unread.</li>
+			</ul>
+		</li>
 	</ul>
 </div>
 

@@ -118,6 +118,21 @@ $(function(){
 		}
 		return null;
 	};
+	/**
+	 * @return {boolean|null}
+	 */
+	$.tablesorter.filter.types.FindUnread = function( config, data ) {
+		if(/^unread:(?:yes|no)$/.test(data.iFilter)) {
+			let unread = data.iFilter.match(/^unread:(yes|no)$/)[1].toLowerCase();
+
+			let status = data.$row.find('> td:eq(4)').children().length > 0;
+			if(unread === 'no') { status = !status; }
+
+			return status;
+		}
+		return null;
+	};
+	//td5 not empry
 
 	//The range filter uses "to" as a designator which can cause issues when searching. - SEE: #221
 	//FIXME: We should try and presserve the original filter and just remove to "to" designator. Same goes to the "and" designator for
