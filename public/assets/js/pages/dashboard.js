@@ -132,7 +132,6 @@ $(function(){
 		}
 		return null;
 	};
-	//td5 not empry
 
 	//The range filter uses "to" as a designator which can cause issues when searching. - SEE: #221
 	//FIXME: We should try and presserve the original filter and just remove to "to" designator. Same goes to the "and" designator for
