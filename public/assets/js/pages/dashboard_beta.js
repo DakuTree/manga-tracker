@@ -599,7 +599,7 @@ $(function(){
 					$('<td/>')
 						.append(
 							$('<div/>', {class: 'row-icons'})
-								.append($('<i/>', {class: `sprite-time ${manga.title_data.time_class}`, title: manga.last_updated}))
+								.append($('<i/>', {class: `sprite-time ${manga.title_data.time_class}`, title: manga.title_data.last_updated}))
 								.append($('<i/>', {class: `sprite-site sprite-${manga.site_data.site.replace(/\./g, '-')}`, title: manga.site_data.site}))
 								.append(manga.mal_icon)
 						)
