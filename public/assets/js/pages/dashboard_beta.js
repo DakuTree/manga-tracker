@@ -290,11 +290,12 @@ $(function(){
 				    timer_arr = $timer.text().split(':'),
 				    time_left = parseInt((timer_arr[0] * 60 * 60).toString(), 10) + parseInt((timer_arr[1] * 60).toString(), 10) + parseInt(timer_arr[2], 10);
 				let timer = setInterval(() => {
-					let hours   = parseInt((time_left / 60 / 60).toString(), 10),
-					    minutes = parseInt((time_left / 60 % 60).toString(), 10),
-					    seconds = parseInt((time_left % 60).toString(), 10);
+					let hours   = parseInt((time_left / 60 / 60).toString(), 10).toString(),
+					    minutes = parseInt((time_left / 60 % 60).toString(), 10).toString(),
+					    seconds = parseInt((time_left % 60).toString(), 10).toString();
 
 					if(hours.length === 1)   { hours   = '0' + hours;   }
+					else if(hours.length === 0)   { hours   = '00';   }
 					if(minutes.length === 1) { minutes = '0' + minutes; }
 					if(seconds.length === 1) { seconds = '0' + seconds; }
 
