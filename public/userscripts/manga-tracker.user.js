@@ -76,7 +76,7 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @updated      2018-05-19
-// @version      1.10.36
+// @version      1.10.37
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -635,7 +635,7 @@ const base_site = {
 				'num_read_chapters' : chapterN,
 				'csrf_token'        : csrfToken
 			};
-			if(chapterN < 1000) {
+			if(chapterN < 2500) { //Hopefully this will never need to be changed again...
 				let status = $('#TrackerStatus');
 
 				GM.xmlHttpRequest({
