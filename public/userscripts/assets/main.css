@@ -108,6 +108,7 @@
   max-width: 95%;
   min-height: 300px;
   border: 5px solid #a9a9a9;
+  border-image: none;
 }
 #viewer > .read_img .pageNumber {
   font-family: Arial, Helvetica, sans-serif !important;
