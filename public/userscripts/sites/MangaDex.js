@@ -1,6 +1,17 @@
 /* global window.generateChapterList */
 (function(sites) {
 	/**
+	 * MangaDex (www)
+	 * @type {SiteObject}
+	 */
+	sites['www.mangadex.org'] = {
+		preInit : function() {
+			//Auto-redirect to non-www version.
+			location.href = location.href.replace('www.mangadex.org', 'mangadex.org');
+		}
+	};
+
+	/**
 	 * MangaDex
 	 * @type {SiteObject}
 	 */
