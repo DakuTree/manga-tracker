@@ -1,12 +1,22 @@
 (function(sites) {
 	/**
-	 * HatigarmScans (FoolSlide)
+	 * HatigarmScans (www)
 	 * @type {SiteObject}
 	 */
-	sites['hatigarmscans.eu'] = {
+	sites['www.hatigarmscans.net'] = {
+		preInit : function() {
+			//Auto-redirect to non-www version.
+			location.href = location.href.replace('www.hatigarmscans.net', 'hatigarmscans.net');
+		}
+	};
+
+	/**
+	 * HatigarmScans (myMangaReaderCMS)
+	 * @type {SiteObject}
+	 */
+	sites['hatigarmscans.net'] = {
 		preInit : function(callback) {
-			this.foolSlideBaseURL = this.https+'://hatigarmscans.eu/hs';
-			this.setupFoolSlide();
+			this.setupMyMangaReaderCMS();
 			callback();
 		}
 	};
