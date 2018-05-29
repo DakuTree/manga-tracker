@@ -75,8 +75,9 @@
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
+// @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-05-29
-// @version      1.10.39
+// @version      1.10.40
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -150,6 +151,7 @@
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
+// @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.7.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png

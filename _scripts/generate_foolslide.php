@@ -58,7 +58,7 @@ class FoolSlideGenerator {
 		$baseFile = str_replace('class HelveticaScans', "class {$this->className}", $baseFile);
 
 		//Replace baseURL
-		$baseFile = str_replace('http://helveticascans.com/r', $this->baseURL, $baseFile);
+		$baseFile = str_replace('https://helveticascans.com/r', $this->baseURL, $baseFile);
 
 		file_put_contents("./application/models/Tracker/Sites/{$this->className}.php", $baseFile);
 	}
