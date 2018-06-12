@@ -19,7 +19,7 @@ services:
     # volumes are like shared folders
     # container will see your local code changes
     volumes:
-      - ./public:/app/public
+      - .:/app
 
     depends_on:
         - db
