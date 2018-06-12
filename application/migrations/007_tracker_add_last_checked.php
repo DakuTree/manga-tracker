@@ -25,12 +25,10 @@ class Migration_Tracker_add_last_checked extends CI_Migration {
 		");
 
 		$this->db->query("
-			DELIMITER ;;
 			CREATE TRIGGER `update_last_updated` BEFORE UPDATE ON `tracker_titles` FOR EACH ROW
 			IF NOT (NEW.latest_chapter <=> OLD.latest_chapter) THEN
 				SET NEW.last_updated = CURRENT_TIMESTAMP;
-			END IF;;
-			DELIMITER ;
+			END IF
 		");
 	}
 
