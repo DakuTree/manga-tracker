@@ -30,7 +30,7 @@ class Migration_Setup_Sessions extends CI_Migration {
 			),
 			'data' => array(
 				'type'       => 'TEXT',
-				'default'    => '',
+				// 'default'    => '',
 				'null'       => FALSE
 			)
 		));
