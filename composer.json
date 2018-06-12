@@ -70,7 +70,7 @@
 		"vendor/bower-asset/font-awesome/fonts/fontawesome-webfont.woff2"            : "public/assets/vendor/fonts/fontawesome-webfont.woff2",
 		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.js"                : "public/assets/vendor/js/cookieconsent.min.js",
 		"vendor/bower-asset/cookieconsent/build/cookieconsent.min.css"               : "public/assets/vendor/css/cookieconsent.min.css",
-		"vendor/bower-asset/jquery.simplePagination/jquery.simplePagination.js"      : "public/assets/vendor/js/jquery.simplePagination.js",
+		"vendor/bower-asset/jquery.simplepagination/jquery.simplePagination.js"      : "public/assets/vendor/js/jquery.simplePagination.js",
 		"vendor/bower-asset/jquery.tablesorter/js/jquery.tablesorter.combined.js"    : "public/assets/vendor/js/jquery.tablesorter.combined.js"
 	},
 
