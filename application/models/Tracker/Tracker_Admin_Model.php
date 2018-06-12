@@ -186,7 +186,10 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				}
 			}
 			else {
-				log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
+				//TODO: We should have some way to handle this in the site models.
+				if($row->site_class !== 'MangaKakarot') {
+					log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
+				}
 				$this->Tracker->title->updateFailedChecksByID((int) $row->title_id);
 
 				print " - FAILED TO PARSE\n";
