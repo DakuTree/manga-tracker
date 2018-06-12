@@ -9,9 +9,11 @@ RUN a2dissite 000-*
 RUN a2ensite 001-*
 
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends git zip
 RUN docker-php-ext-install pdo pdo_mysql mysqli sockets
 RUN a2enmod rewrite expires headers
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer global require hirak/prestissimo
 RUN composer install --no-interaction
