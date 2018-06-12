@@ -77,13 +77,11 @@
 	"scripts": {
 		"post-install-cmd" : [
 			"php vendor/kenjis/ci-phpunit-test/update.php",
-			"php -r \"include('_scripts/setup.php'); setup();\"",
-			"php _scripts/chmod_config.php"
+			"php -r \"include('_scripts/setup.php'); setup();\""
 		],
 		"post-update-cmd" : [
 			"php vendor/kenjis/ci-phpunit-test/update.php",
-			"php -r \"include('_scripts/setup.php'); setup();\"",
-			"php _scripts/chmod_config.php"
+			"php -r \"include('_scripts/setup.php'); setup();\""
 		],
 		"setup-databases" : [
 			"mysql -e \"CREATE DATABASE IF NOT EXISTS mangatracker_production  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" -uroot",
