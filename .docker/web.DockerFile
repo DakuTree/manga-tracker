@@ -3,7 +3,7 @@ FROM php:7.2-apache
 COPY . /app
 WORKDIR /app
 
-COPY ./.docker/vhost.conf /etc/apache2/sites-available/001-localhost.conf
+COPY ./.docker/vhost.conf        /etc/apache2/sites-available/001-localhost.conf
 COPY ./.docker/vhost-static.conf /etc/apache2/sites-available/001-static.localhost.conf
 RUN a2dissite 000-*
 RUN a2ensite 001-*
