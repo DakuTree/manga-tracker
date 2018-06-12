@@ -17,7 +17,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * DKThiasScans
 * DamnFeels
 * Death Toll Scans
-* Doki Fansubs
+* ~~Doki Fansubs~~
 * Dokusha
 * DynastyScans (beta)
 * Easy Going Scans
@@ -35,7 +35,7 @@ Screenshot: ![](http://i.imgur.com/UAjBySK.png)
 * LHtranslation
 * LOLScans
 * Lolitannia
-* MangaCow
+* ~~MangaCow~~
 * MangaDex
 * MangaFox
 * MangaHere
