@@ -1,0 +1,51 @@
+version: '3'
+services:
+  # we named our first service 'web'
+  web:
+    # pass a hostname to the container (optinal)
+    hostname: manga-tracker.local
+
+    # build a custom image
+    build:
+      context: .
+      dockerfile: .docker/web.DockerFile
+
+    command: bash -c '/app/.docker/wait-for-it.sh db:3306 -- php public/index.php admin/migrate && exec apache2-foreground'
+
+    # a name for easier reference
+    image: manga-tracker.local
+
+    # map host port 8080 to container port 80
+    ports:
+        - 8080:80
+
+    # volumes are like shared folders
+    # container will see your local code changes
+    volumes:
+      - .:/app
+
+    # first load the 'db' service
+    depends_on:
+        - db
+
+    # make 'db' a known service/host inside of 'web'
+    # use this to make a mysql connection to host 'db'
+    links:
+      - db
+
+    environment:
+      CI_ENV: development
+  db:
+    # use a default image
+    image: mysql:5.7
+
+    # again, port mapping
+    ports:
+      - 3306:3306
+
+    # the mysql image uses these to create database and users
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: mangatracker_development
+      MYSQL_USER: mt_dev
+      MYSQL_PASSWORD: dev-password

@@ -5,8 +5,8 @@
 | Base Site URL
 |--------------------------------------------------------------------------
 */
-$config['base_url']   = 'https://dev.trackr.moe';
-$config['static_url'] = 'https://static.dev.trackr.moe';
+$config['base_url']   = 'http://localhost:8080';
+$config['static_url'] = 'http://static.localhost:8080';
 
 /*
 |--------------------------------------------------------------------------

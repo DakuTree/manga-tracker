@@ -5,9 +5,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'          => '',
-	'hostname'     => 'localhost',
+	'hostname'     => 'db',
 	'username'     => 'mt_dev',
-	'password'     => '', //This is set is database_password.php
+	'password'     => 'dev-password',
 	'database'     => 'mangatracker_development',
 	'dbdriver'     => 'mysqli',
 	'dbprefix'     => '',
@@ -24,5 +24,3 @@ $db['default'] = array(
 	'failover'     => array(),
 	'save_queries' => TRUE
 );
-
-require 'database_password.php';
