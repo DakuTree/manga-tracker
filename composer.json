@@ -76,11 +76,11 @@
 
 	"scripts": {
 		"post-install-cmd" : [
-			"php vendor/kenjis/ci-phpunit-test/update.php",
+			"php vendor/kenjis/ci-phpunit-test/update.php -s",
 			"php -r \"include('_scripts/setup.php'); setup();\""
 		],
 		"post-update-cmd" : [
-			"php vendor/kenjis/ci-phpunit-test/update.php",
+			"php vendor/kenjis/ci-phpunit-test/update.php -s",
 			"php -r \"include('_scripts/setup.php'); setup();\""
 		],
 		"setup-databases" : [
