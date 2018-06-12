@@ -17,3 +17,6 @@ RUN a2enmod rewrite expires headers
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo
 RUN composer install --no-interaction
+
+# Required for init
+RUN chmod +x .docker/wait-for-it.sh
