@@ -15,8 +15,9 @@ composer.phar
 !/public/assets/vendor/css/boilerplate.css
 
 #Testing
+application/logs/*
+!application/logs/index.html
 application/tests/_ci_phpunit_test/
-application/logs/
 application/tests/build/
 
 #Caching
