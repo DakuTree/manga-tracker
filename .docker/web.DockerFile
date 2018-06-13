@@ -9,8 +9,9 @@ RUN a2dissite 000-*
 RUN a2ensite 001-*
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y --no-install-recommends git zip
-RUN docker-php-ext-install pdo pdo_mysql mysqli sockets
+
+RUN apt-get install -y --no-install-recommends git zlib1g-dev
+RUN docker-php-ext-install pdo pdo_mysql mysqli sockets zip
 RUN a2enmod rewrite expires headers
 
 # Composer
