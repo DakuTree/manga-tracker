@@ -1,5 +1,0 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-/* PAPER TRAIL OPTIONS */
-$config['papertrail_host'] = ''; //xxxx.papertrailapp.com
-$config['papertrail_port'] = ''; //port number
