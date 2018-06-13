@@ -652,7 +652,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 
 abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9\.]+)$/';
+	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[a-zA-Z0-9\._-]+)$/';
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
