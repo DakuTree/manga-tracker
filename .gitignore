@@ -1,29 +1,15 @@
-# phpStorm
-/.idea/*
-!/.idea/jsLinters
-!/.idea/codeStyleSettings.xml
-!/.idea/encodings.xml
-!/.idea/watcherTasks.xml
+# Vendor Directories
+/public/assets/vendor/**/
+!/public/assets/vendor/**/.gitkeep
 
-#Composer
-composer.phar
 /vendor/
 
-#Bower // Composer Asset Plugin
-/public/assets/vendor
-!/public/assets/vendor/**/.gitkeep
-!/public/assets/vendor/css/boilerplate.css
+# Generated Files
+public/assets/css/main,*.css
+public/assets/js/compiled.min.js
+public/userscripts/manga-tracker.dev.user.js
 
-#Testing
-application/logs/*
-!application/logs/index.html
-application/tests/_ci_phpunit_test/
-application/tests/build/
-
-#Caching
-application/cache/
-
-#Other config stuff
+# Configuration
 application/config/*/recaptcha.php
 application/config/*/email.php
 application/config/*/database_password.php
@@ -31,21 +17,34 @@ application/config/*/sites.php
 application/config/*/mailgun.php
 application/config/*/monolog_secure.php
 
-#Codeception
+# Development Files
+## phpStorm
+/.idea/*
+!/.idea/jsLinters
+!/.idea/codeStyleSettings.xml
+!/.idea/encodings.xml
+!/.idea/watcherTasks.xml
+
+## Testing
+application/tests/_ci_phpunit_test/
+application/tests/build/
+
+
 application/tests_codeception/_output
 application/tests_codeception/_support/_generated/*.php
 
+## Misc
 _scripts/config.ini
 _scripts/*.sh
 _scripts/geckodriver.log
 _scripts/userscript_testing/chromedriver.exe
 _scripts/userscript_testing/tampermonkey_*.crx
 
-#Compilied files
-public/assets/css/main.light.css
-public/assets/css/main.dark.css
-public/assets/js/compiled.min.js
+application/cache/*
+!application/cache/index.html
+!application/cache/.htaccess
+
+application/logs/*
+!application/logs/index.html
 
 public/favicon.*.png
-
-public/userscripts/manga-tracker.dev.user.js
