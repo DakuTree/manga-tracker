@@ -8,11 +8,23 @@ COPY ./.docker/vhost-static.conf /etc/apache2/sites-available/001-static.localho
 RUN a2dissite 000-*
 RUN a2ensite 001-*
 
-RUN apt-get update && apt-get upgrade -y
+# Note: We don't need upgrade here.
+RUN apt-get update --quiet \
+ && apt-get install --quiet --yes --no-install-recommends \
+  git \
+  zlib1g-dev
 
-RUN apt-get install -y --no-install-recommends git zlib1g-dev
-RUN docker-php-ext-install pdo pdo_mysql mysqli sockets zip
-RUN a2enmod rewrite expires headers
+RUN docker-php-ext-install \
+ pdo \
+ pdo_mysql \
+ mysqli \
+ sockets \
+ zip
+
+RUN a2enmod \
+ rewrite \
+ expires \
+ headers
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
