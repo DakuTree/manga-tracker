@@ -1,0 +1,53 @@
+# Ignore everything
+**
+
+# Allow required root files/directories
+!.docker/**
+!_scripts/**
+!application/**
+!public/**
+#vendor (this is required later via .gitkeep)
+!.csscomb.json
+!composer.json
+!composer.lock
+
+# Specific ignores
+
+_scripts/config.ini
+_scripts/geckodriver.log
+_scripts/userscript_testing/chromedriver.exe
+_scripts/userscript_testing/tampermonkey_*.crx
+
+application/cache
+
+application/config/*/recaptcha.php
+application/config/*/email.php
+application/config/*/database_password.php
+application/config/*/sites.php
+application/config/*/mailgun.php
+application/config/*/monolog_secure.php
+
+application/logs
+
+application/tests/build
+
+application/tests_codeception/_output
+application/tests_codeception/_support/_generated/*.php
+
+public/assets/css/main.light.css
+public/assets/css/main.dark.css
+public/assets/js/compiled.min.js
+
+public/assets/vendor
+
+public/favicon.*.png
+
+public/userscripts/manga-tracker.dev.user.js
+
+# Finalize by allowing all .gitkeep, .htaccess & index.html files (this makes sure directories we need still exist)
+!**/.gitkeep
+!**/.htaccess
+
+# Sadly since vendor may contain any of these files, we need to do a manual exclude there.
+vendor
+!vendor/.gitkeep
