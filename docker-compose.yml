@@ -19,9 +19,13 @@ services:
     # volumes are like shared folders
     # container will see your local code changes
     volumes:
-      - ./application:/app/application
-      - ./public:/app/public
-      - ./_scripts:/app/_scripts
+      - ./application/config:/app/application/config
+      - ./application/models/Tracker:/app/application/models/Tracker
+      - ./application/tests/models/Tracker/Sites:/app/application/tests/models/Tracker/Sites
+      - ./application/views:/app/application/views
+      - ./public/assets/img:/app/public/assets/img
+      - ./public/assets/less/modules:/app/public/assets/less/modules
+      - ./public/userscripts:/app/public/userscripts
 
     depends_on:
         - db
