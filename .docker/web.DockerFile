@@ -15,7 +15,6 @@ RUN docker-php-ext-install \
  sockets \
  zip
 
-
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo
 
@@ -24,6 +23,9 @@ COPY composer.lock /app
 RUN composer install --no-interaction --no-scripts
 
 COPY . /app
+
+# Dev-only hack.
+RUN chmod 777 /app/application/logs
 
 RUN composer run-script post-install-cmd
 
