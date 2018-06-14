@@ -14,7 +14,7 @@ services:
 
     # map host port 8080 to container port 80
     ports:
-        - 8080:80
+        - 20180:80
 
     # volumes are like shared folders
     # container will see your local code changes
@@ -39,7 +39,7 @@ services:
     image: mysql:5.7
 
     ports:
-      - 3306:3306
+      - 33306:3306
 
     # the mysql image uses these to create database and users
     environment:
