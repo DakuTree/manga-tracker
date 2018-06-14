@@ -20,14 +20,14 @@ $config['introspection_processor'] = TRUE; // add some meta data such as control
 * Log to default CI log directory (must be writable ie. chmod 757).
 * Filename will be encoded to current system date, ie. YYYY-MM-DD-ci.log
 */
-$config['ci_file_logfile'] = APPPATH.'/logs/log.php';
+$config['ci_file_logfile'] = APPPATH.'logs/log.php';
 $config['ci_file_multiline'] = TRUE; //add newlines to the output
 
 /* FILE HANDLER OPTIONS
  * Log to default CI log directory (must be writable ie. chmod 757).
  * Filename will be encoded to current system date, ie. YYYY-MM-DD-ci.log
 */
-$config['file_logfile'] = APPPATH.'/logs/ci.log';
+$config['file_logfile'] = APPPATH.'logs/ci.log';
 $config['file_multiline'] = TRUE; //add newlines to the output
 
 /* NEW RELIC OPTIONS */
