@@ -117,23 +117,6 @@ class Migration_Install_ion_auth extends CI_Migration {
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table('auth_users');
 
-		// Dumping data for table 'auth_users'
-		// NOTE: This "password" is just password, it's changed on production though so no worries here.
-		$data = array(
-			'id'                      => '1',
-			'ip_address'              => '127.0.0.1',
-			'username'                => 'administrator',
-			'password'                => '$2y$08$200Z6ZZbp3RAEXoaWcMA6uJOFicwNZaqk4oDhqTUiFXFe63MG.Daa',
-			'salt'                    => '',
-			'email'                   => 'admin@trackr.moe',
-			'activation_code'         => NULL,
-			'forgotten_password_code' => NULL,
-			'created_on'              => ''.time().'',
-			'last_login'              => ''.time().'',
-			'active'                  => '1'
-		);
-		$this->db->insert('auth_users', $data);
-
 		/** AUTH_USERS_GROUPS */
 		// Table structure for table 'auth_users_groups'
 		$this->dbforge->add_field(array(
@@ -163,20 +146,39 @@ class Migration_Install_ion_auth extends CI_Migration {
 			ADD CONSTRAINT FK_auth_users_groups_auth_groups FOREIGN KEY (group_id) REFERENCES auth_groups (id) ON UPDATE NO ACTION ON DELETE NO ACTION;'
 		);
 
-		// Dumping data for table 'auth_users_groups'
-		$data = array(
-			array(
-				'id'       => '1',
-				'user_id'  => '1',
-				'group_id' => '1',
-			),
-			array(
-				'id'       => '2',
-				'user_id'  => '1',
-				'group_id' => '2',
-			)
-		);
-		$this->db->insert_batch('auth_users_groups', $data);
+		if(ENVIRONMENT !== 'production') {
+			// Dumping data for table 'auth_users'
+			// NOTE: This "password" is just password, it's changed on production though so no worries here.
+			$data = array(
+				'id'                      => '1',
+				'ip_address'              => '127.0.0.1',
+				'username'                => 'administrator',
+				'password'                => '$2y$08$200Z6ZZbp3RAEXoaWcMA6uJOFicwNZaqk4oDhqTUiFXFe63MG.Daa',
+				'salt'                    => '',
+				'email'                   => 'admin@trackr.moe',
+				'activation_code'         => NULL,
+				'forgotten_password_code' => NULL,
+				'created_on'              => ''.time().'',
+				'last_login'              => ''.time().'',
+				'active'                  => '1'
+			);
+			$this->db->insert('auth_users', $data);
+
+			// Dumping data for table 'auth_users_groups'
+			$data = array(
+				array(
+					'id'       => '1',
+					'user_id'  => '1',
+					'group_id' => '1',
+				),
+				array(
+					'id'       => '2',
+					'user_id'  => '1',
+					'group_id' => '2',
+				)
+			);
+			$this->db->insert_batch('auth_users_groups', $data);
+		}
 
 
 		/** AUTH_LOGIN_ATTEMPTS **/
