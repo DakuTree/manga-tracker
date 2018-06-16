@@ -120,7 +120,6 @@ class CI_DB_Cache {
 		}
 
 		$this->db->cachedir = $path;
-
 		return TRUE;
 	}
 
@@ -146,14 +145,15 @@ class CI_DB_Cache {
 		if(is_array($this->CI->config->item('multi_level_cache_folders'))) {
 			$uri_md5  = md5($segment_one . '+' . $segment_two);
 			$layer    = $this->get_folder_layers($uri_md5);
-			$filepath = $this->db->cachedir . $segment_one.'/'.$segment_two . '/' . implode('/', $layer) . '/' . $uri_md5;
+			$filepath = $this->db->cachedir . $segment_one . '/' . $segment_two . '/' . trim(implode('/', $layer), '/') . '/' . $uri_md5;
 		} else {
-			$filepath = $this->db->cachedir . $segment_one.'/'. $segment_two . '/' . md5($sql);
+			$filepath = $this->db->cachedir . $segment_one . '/' . $segment_two . '/' . md5($sql);
 		}
 
 		// END --- modification for supporting multi-level cache folders
 
-		if(FALSE === ($cachedata = @file_get_contents($filepath))) {
+		$cachedata = FALSE;
+		if(file_exists($filepath) && FALSE === ($cachedata = @file_get_contents($filepath))) {
 			return FALSE;
 		}
 
@@ -180,7 +180,7 @@ class CI_DB_Cache {
 		if(is_array($this->CI->config->item('multi_level_cache_folders'))) {
 			$uri_md5  = md5($segment_one . '+' . $segment_two);
 			$layer    = $this->get_folder_layers($uri_md5);
-			$dir_path = $this->db->cachedir . $segment_one.'/'.$segment_two . '/' . implode('/', $layer) . '/';
+			$dir_path = $this->db->cachedir . $segment_one . '/' . $segment_two . '/' . trim(implode('/', $layer), '/') . '/';
 
 			if(!is_dir($dir_path)) {
 				$old = umask(0);
@@ -188,7 +188,7 @@ class CI_DB_Cache {
 				umask($old);
 			}
 		} else {
-			$dir_path = $this->db->cachedir . $segment_one.'/'. $segment_two . '/';
+			$dir_path = $this->db->cachedir . $segment_one . '/' . $segment_two . '/';
 		}
 
 		$filename = md5($sql);
@@ -200,7 +200,6 @@ class CI_DB_Cache {
 		}
 
 		chmod($dir_path . $filename, 0640);
-
 		return TRUE;
 	}
 
@@ -226,9 +225,9 @@ class CI_DB_Cache {
 		if(is_array($this->CI->config->item('multi_level_cache_folders'))) {
 			$uri_md5  = md5($segment_one . '+' . $segment_two);
 			$layer    = $this->get_folder_layers($uri_md5);
-			$dir_path = $this->db->cachedir . $segment_one.'/'.$segment_two . '/' . implode('/', $layer) . '/';
+			$dir_path = $this->db->cachedir . $segment_one . '/' . $segment_two . '/' . trim(implode('/', $layer), '/') . '/';
 		} else {
-			$dir_path = $this->db->cachedir . $segment_one.'/'. $segment_two . '/';
+			$dir_path = $this->db->cachedir . $segment_one . '/' . $segment_two . '/';
 		}
 		delete_files($dir_path, TRUE);
 	}
@@ -263,7 +262,6 @@ class CI_DB_Cache {
 			$last_key   = (int) $key;
 			$last_value = (int) $value;
 		}
-
 		return $layer;
 	}
 
