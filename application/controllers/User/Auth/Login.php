@@ -5,10 +5,8 @@ class Login extends No_Auth_Controller {
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters(
-			$this->config->item('error_start_delimiter', 'ion_auth'),
-			$this->config->item('error_end_delimiter', 'ion_auth')
-		);
+
+		$this->load->model('Auth_Model', 'Auth');
 	}
 
 	public function index() : void {
@@ -25,11 +23,11 @@ class Login extends No_Auth_Controller {
 			'max_length' => 'Invalid password.'
 		));
 
-		if ($isValid = $this->form_validation->run() === TRUE) {
+		if ($isValid = ($this->form_validation->run() === TRUE)) {
 			//form is valid
 
 			//check if identity is email, if not then attempt to use grab from DB
-			$identity = $this->User->find_email_from_identity($this->input->post('identity'));
+			$identity = $this->Auth->getEmailFromIdentity($this->input->post('identity'));
 
 			$remember = (bool) $this->input->post('remember');
 			if($remember) {
@@ -44,13 +42,12 @@ class Login extends No_Auth_Controller {
 					//login is successful
 					$this->session->set_flashdata('notices', 'Login Successful');
 
-
 					//redirect to main page, or previous URL
 					$this->session->keep_flashdata('referred_from');
 					if($prevURL = $this->session->flashdata('referred_from')) {
 						redirect($prevURL);
 					} else { //@codeCoverageIgnore
-						redirect('/'); //TODO (CHECK): Should this be refresh?
+						redirect(site_url('/'), 'refresh');
 					} //@codeCoverageIgnore
 				} else {
 					//login was unsuccessful

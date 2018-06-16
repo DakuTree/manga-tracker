@@ -41,11 +41,11 @@ class Signup extends No_Auth_Controller {
 			'is_unique_email' => 'Email already exists.'
 		));
 
-		if ($isValid = $this->form_validation->run() === TRUE) {
-			$email = $this->Auth->parse_email($this->input->post('email'));
+		if ($isValid = ($this->form_validation->run() === TRUE)) {
+			$email = $this->Auth->parseEmail($this->input->post('email'));
 
 			$this->body_data['email'] = $email;
-			if($this->Auth->verification_start($email)) {
+			if($this->Auth->verificationStart($email)) {
 				$this->_render_page('User/Signup_Verification');
 			} else {
 				$this->session->set_flashdata('notices', 'Signup failed?');
@@ -86,7 +86,7 @@ class Signup extends No_Auth_Controller {
 	//This continued signup occurs after the user clicks the verification link in their email.
 	private function _continue_signup($verificationCode) : void {
 		//check if validation is valid, if so return email, if not redirect to signup
-		if(!($email = $this->Auth->verification_check($verificationCode))) redirect('user/signup');
+		if(!($email = $this->Auth->verificationCheck($verificationCode))) redirect('user/signup');
 
 		//validation is valid, proceed as normal
 		$this->form_validation->set_rules('username',         'Username',           'required|min_length[4]|max_length[15]|valid_username|is_unique_username');
@@ -107,7 +107,7 @@ class Signup extends No_Auth_Controller {
 			if($this->ion_auth->register($username, $password, $email, $additional_data)) {
 				//Signup succeeded.
 
-				$this->Auth->verification_complete($email);
+				$this->Auth->verificationComplete($email);
 
 				redirect('help');
 			} else { //@codeCoverageIgnore

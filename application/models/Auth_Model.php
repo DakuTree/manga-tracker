@@ -9,12 +9,11 @@ class Auth_Model extends CI_Model {
 		$this->load->library('email');
 	}
 
-	/** SIGNUP verification **/
 	/**
 	 * @param string $email
 	 * @return bool
 	 */
-	public function verification_start(string $email) : bool {
+	public function verificationStart(string $email) : bool {
 		//user is trying to create an account, send them an email verification email
 		//at this point we know the email is valid and currently not used
 		//we need to add row to database, as well as send the user an email
@@ -32,7 +31,7 @@ class Auth_Model extends CI_Model {
 				), array('email' => $email))
 				) {
 					throw new Exception('Unable to insert email into database.');
-				};
+				}
 			} else {
 				if(!$this->db->insert('auth_signup_verification', array(
 						'email'                  => $email,
@@ -41,7 +40,7 @@ class Auth_Model extends CI_Model {
 				))
 				) {
 					throw new Exception('Unable to insert email into database.');
-				};
+				}
 			}
 			//send email to user to verify signup
 			$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_activate', 'ion_auth'), array(
@@ -74,7 +73,7 @@ class Auth_Model extends CI_Model {
 	 * @param string $verificationCode
 	 * @return mixed
 	 */
-	public function verification_check(string $verificationCode) {
+	public function verificationCheck(string $verificationCode) {
 		//user is trying to validate their email for signup, check if verification code is still valid/exists
 		$query = $this->db->select('email, verification_code_time')
 		                  ->from('auth_signup_verification')
@@ -88,7 +87,9 @@ class Auth_Model extends CI_Model {
 			if((time() - $result->verification_code_time) > 46400000) {
 				//expired, past the 24hr mark
 
-				//TODO: Remove from DB, send user error that verification expired.
+				$this->session->set_flashdata('errors', 'Verification code expired. Please re-submit signup.');
+				$this->db->delete('auth_signup_verification')
+				         ->where(array('verification_code' => $verificationCode));
 			} else {
 				//not expired, verification is valid, return email
 				$return =  $result->email;
@@ -101,13 +102,47 @@ class Auth_Model extends CI_Model {
 	 * @param string $email
 	 * @return bool
 	 */
-	public function verification_complete(string $email) : bool {
+	public function verificationComplete(string $email) : bool {
 		//user has completed signup, remove verification from DB
 		return $this->db->delete('auth_signup_verification', array('email' => $email));
 	}
 
-	//FIXME: This assumes we know the email is valid.
-	public function parse_email(string $email) : string {
+
+	/**
+	 * @param $identity
+	 *
+	 * @return string|null
+	 */
+	public function getEmailFromIdentity(string $identity) : ?string {
+		//login allows using email or username, but ion_auth doesn't support this
+		//check if identity is email, and if not, try and find it
+		//returns: email or FALSE
+		//CHECK: How should we handle invalid emails being passed to this?
+		$email = $identity;
+
+		if(!strpos($identity, '@')) {
+			//identity does not contain @, assume username
+			$this->load->database();
+
+			$query = $this->db->select('email')
+			                  ->from('auth_users')
+			                  ->where('username', $identity)
+			                  ->get();
+
+			if($query->num_rows() > 0) {
+				//username exists, grab email
+				$email = $query->row('email');
+			}else{
+				//username doesn't exist, return FALSE
+				$email = NULL;
+			}
+		}
+
+		return $email;
+	}
+
+	//NOTE: This assumes we know the email is valid.
+	public function parseEmail(string $email) : string {
 		$email_parts = explode('@', $email);
 		return $email_parts[0].'@'.strtolower($email_parts[1]); //Only the first half of the email can be case sensitive
 	}

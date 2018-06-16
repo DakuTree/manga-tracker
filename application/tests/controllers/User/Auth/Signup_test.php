@@ -1,22 +1,10 @@
-<?php
+<?php declare(strict_types=1); defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @coversDefaultClass Signup
+ */
 class Signup_test extends TestCase {
-	public function test_uri() {
-		$this->request('GET', 'user/signup');
-		$this->assertResponseCode(200);
-
-		$this->request->setCallable(
-			function ($CI) {
-				$auth = $this->getDouble('Auth_Model', ['verification_check' => 'foobar']);
-				$this->verifyInvokedOnce($auth, 'verification_check');
-				$CI->Auth = $auth;
-			}
-		);
-		$this->request('GET', 'user/signup/authcode');
-		$this->assertResponseCode(200);
-	}
-
-	public function test_index_logged_in() {
+	public function test_signup_logged_in() : void {
 		//user is already logged in, redirect to dashboard
 		$this->request->setCallablePreConstructor(
 			function () {
@@ -28,18 +16,17 @@ class Signup_test extends TestCase {
 		$this->request('GET', 'user/signup');
 		$this->assertRedirect('/');
 	}
-
-	public function test_index_not_logged_in() {
+	public function test_signup_not_logged_in() : void {
 		//user isn't logged in, so show signup form
 		$output = $this->request('GET', 'user/signup');
-		$this->assertContains('<title>Manga Tracker - Signup</title>', $output);
+		$this->assertTitle($output, 'Signup');
 	}
 
-	public function test_signup_p1_validation_pass_verification_pass() {
+	public function test_signup_p1_validation_pass_verification_pass() : void {
 		$this->request->setCallable(
 			function ($CI) {
 				$validation = $this->getDouble(
-					'CI_Form_validation',
+					'MY_Form_validation',
 					['set_rules' => NULL, 'run' => TRUE]
 				);
 
@@ -52,8 +39,8 @@ class Signup_test extends TestCase {
 		);
 		$this->request->addCallable(
 				function ($CI) {
-					$auth = $this->getDouble('Auth_Model', ['verification_start' => TRUE]);
-					$this->verifyInvokedOnce($auth, 'verification_start');
+					$auth = $this->getDouble('Auth_Model', ['verificationStart' => TRUE]);
+					$this->verifyInvokedOnce($auth, 'verificationStart');
 					$CI->Auth = $auth;
 				}
 		);
@@ -63,11 +50,11 @@ class Signup_test extends TestCase {
 		));
 		$this->assertContains('We have sent an verification email to "foo@bar.com".', $output);
 	}
-	public function test_signup_p1_validation_pass_verification_fail() {
+	public function test_signup_p1_validation_pass_verification_fail() : void {
 		$this->request->setCallable(
 				function ($CI) {
 					$validation = $this->getDouble(
-							'CI_Form_validation',
+							'MY_Form_validation',
 							['set_rules' => NULL, 'run' => TRUE]
 					);
 
@@ -80,8 +67,8 @@ class Signup_test extends TestCase {
 		);
 		$this->request->addCallable(
 				function ($CI) {
-					$auth = $this->getDouble('Auth_Model', ['verification_start' => FALSE]);
-					$this->verifyInvokedOnce($auth, 'verification_start');
+					$auth = $this->getDouble('Auth_Model', ['verificationStart' => FALSE]);
+					$this->verifyInvokedOnce($auth, 'verificationStart');
 					$CI->Auth = $auth;
 				}
 		);
@@ -91,7 +78,7 @@ class Signup_test extends TestCase {
 		));
 		$this->assertContains('Before we start the signup, we need to verify your email.', $output);
 	}
-	public function test_signup_p1_validation_fail() {
+	public function test_signup_p1_validation_fail() : void {
 		$this->request->setCallable(
 			function ($CI) {
 				$validation = $this->getDouble(
@@ -111,13 +98,13 @@ class Signup_test extends TestCase {
 		$this->assertContains('Before we start the signup, we need to verify your email.', $output);
 	}
 
-	public function test_signup_p2_verification_pass_validation_pass_register_pass() {
+	public function test_signup_p2_verification_pass_validation_pass_register_pass() : void {
 		//form was valid, and register was successful, user is redirected to dashboard
 
 		$this->request->setCallable(
 			function ($CI) {
-				$auth = $this->getDouble('Auth_Model', ['verification_check' => 'foo@bar.com']);
-				$this->verifyInvokedOnce($auth, 'verification_check');
+				$auth = $this->getDouble('Auth_Model', ['verificationCheck' => 'foo@bar.com']);
+				$this->verifyInvokedOnce($auth, 'verificationCheck');
 				$CI->Auth = $auth;
 			}
 		);
@@ -148,15 +135,15 @@ class Signup_test extends TestCase {
 			}
 		);
 
-		$this->request('POST', 'user/signup/foobarauthcode');
-		$this->assertRedirect('/help');
+		$this->request('POST', 'user/signup/foobarauthcode', ['username' => 'test_user']);
+		$this->assertRedirect('/profile/test_user');
 	}
-	public function test_signup_p2_verification_pass_validation_pass_register_fail() {
+	public function test_signup_p2_verification_pass_validation_pass_register_fail() : void {
 		//form was valid, and register was unsuccessful, reshow form
 		$this->request->setCallable(
 			function ($CI) {
-				$auth = $this->getDouble('Auth_Model', ['verification_check' => 'foo@bar.com']);
-				$this->verifyInvokedOnce($auth, 'verification_check');
+				$auth = $this->getDouble('Auth_Model', ['verificationCheck' => 'foo@bar.com']);
+				$this->verifyInvokedOnce($auth, 'verificationCheck');
 				$CI->Auth = $auth;
 			}
 		);
@@ -179,7 +166,7 @@ class Signup_test extends TestCase {
 			function ($CI) {
 				$auth = $this->getDouble(
 					'Ion_auth_model',
-					['register' => FALSE, 'errors' => FALSE, 'logged_in' => FALSE]
+					['register' => FALSE, 'errors' => FALSE, 'logged_in' => FALSE, 'messages' => [] /*This fixes a weird bug*/]
 				);
 
 				$this->verifyInvokedOnce($auth, 'register');
@@ -191,12 +178,12 @@ class Signup_test extends TestCase {
 		$output = $this->request('POST', 'user/signup/foobarauthcode');
 		$this->assertContains('name="username" value="foobar" id="username"', $output);
 	}
-	public function test_signup_p2_verification_pass_validation_fail() {
+	public function test_signup_p2_verification_pass_validation_fail() : void {
 		//validation failed, this is probably the first time the user visits the page, show form
 		$this->request->setCallable(
 			function ($CI) {
-				$auth = $this->getDouble('Auth_Model', ['verification_check' => 'foo@bar.com']);
-				$this->verifyInvokedOnce($auth, 'verification_check');
+				$auth = $this->getDouble('Auth_Model', ['verificationCheck' => 'foo@bar.com']);
+				$this->verifyInvokedOnce($auth, 'verificationCheck');
 				$CI->Auth = $auth;
 			}
 		);
@@ -219,12 +206,12 @@ class Signup_test extends TestCase {
 		$output = $this->request('POST', 'user/signup/foobarauthcode');
 		$this->assertContains('name="username" value="" id="username"', $output);
 	}
-	public function test_signup_p2_verification_fail() {
+	public function test_signup_p2_verification_fail() : void {
 		//validation failed, this is probably the first time the user visits the page, show form
 		$this->request->setCallable(
 			function ($CI) {
-				$auth = $this->getDouble('Auth_Model', ['verification_check' => FALSE]);
-				$this->verifyInvokedOnce($auth, 'verification_check');
+				$auth = $this->getDouble('Auth_Model', ['verificationCheck' => FALSE]);
+				$this->verifyInvokedOnce($auth, 'verificationCheck');
 				$CI->Auth = $auth;
 			}
 		);
