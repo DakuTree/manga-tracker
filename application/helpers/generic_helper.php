@@ -15,19 +15,19 @@ function get_time_class(string $time_string) : string {
 	if(is_int($time)) {
 		if($time < TIMEAGO_MONTH) {
 			//More than a month old.
-			$time_string = "sprite-month";
+			$time_string = 'sprite-month';
 		} elseif($time < TIMEAGO_WEEK) {
 			//More than a week old, but less than a month old.
-			$time_string = "sprite-week";
+			$time_string = 'sprite-week';
 		} elseif($time < TIMEAGO_3DAY) {
 			//More than 3 days old but less than a week old.
-			$time_string = "sprite-3day";
+			$time_string = 'sprite-3day';
 		} else {
 			//Less than a week old.
-			$time_string = "sprite-day";
+			$time_string = 'sprite-day';
 		}
 	} else {
-		$time_string = "sprite-error";
+		$time_string = 'sprite-error';
 	}
 	return $time_string;
 }
@@ -54,9 +54,9 @@ if (!function_exists('http_parse_headers')) { #http://www.php.net/manual/en/func
 }
 
 function exit_ci($status = NULL) : void {
-	if(ENVIRONMENT !== "testing") {
+	if(ENVIRONMENT !== 'testing') {
 		exit($status);
 	} else {
-		throw new CIPHPUnitTestExitException("exit() called");
+		throw new CIPHPUnitTestExitException('exit() called');
 	}
 }
