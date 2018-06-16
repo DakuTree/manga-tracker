@@ -2,5 +2,6 @@
 
 include APPPATH.'config/database.php'; //CI doesn't do this by default?
 
-$db['default']['username'] = 'mt_test';
-$db['default']['password'] = 'dev-password';
+//NOTE: These details are used with travis
+$db['default']['username'] = 'root';
+$db['default']['password'] = '';
