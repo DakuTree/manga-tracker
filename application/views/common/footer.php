@@ -42,7 +42,7 @@
 	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate-1.17.0.min.js"><\/script>')</script>
 	<script>$().validate || document.write('<script src="<?=asset_url()?>vendor/js/jquery.validate.additional-methods-1.17.0.min.js"><\/script>')</script>
 
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" integrity="sha384-feJI7QwhOS+hwpX2zkaeJQjeiwlhOP+SdQDqhgvvo1DsjtiSQByFdThsxO669S2D" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9" crossorigin="anonymous"></script>
 	<script>if(typeof($.fn.modal) === 'undefined') {document.write('<script src="<?=asset_url()?>vendor/css/bootstrap.bundle.min.js"><\/script>')}</script>
 
 	<script>
@@ -54,7 +54,7 @@
 	});
 	</script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.5/js/jquery.tablesorter.combined.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/js/jquery.tablesorter.combined.min.js"></script>
 	<script>$.fn.tablesorter  || document.write('<script src="<?=asset_url()?>vendor/js/jquery.tablesorter.combined.min.js"><\/script>')</script>
 
 	<script>
