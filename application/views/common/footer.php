@@ -7,17 +7,17 @@
 
 <?php if($show_header) { ?>
 <footer id="site-footer" class="navbar navbar-expand-md navbar-light bg-faded">
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdownFooter" aria-controls="navbarNavDropdownFooter" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<div id="navbarNavDropdownFooter" class="navbar-collapse collapse">
-		<ul class="navbar-nav mr-auto">
-			<li id="footer-left" class="nav-item text-muted">
-				<span class="footer-copyright">©2018 trackr.moe</span>
-				<span class="footer-debug"><?="Page rendered in <strong>{elapsed_time}</strong> seconds and used {memory_usage} of RAM. CodeIgniter Version <strong>".CI_VERSION."</strong>."?></span>
-			</li>
-		</ul>
-		<ul class="navbar-nav">
+	<div id="footer-left" class="text-muted">
+		<span class="footer-copyright">©2018 trackr.moe</span>
+		<span class="footer-debug"><?='Page rendered in <strong>{elapsed_time}</strong> seconds and used {memory_usage} of RAM.'?></span>
+	</div>
+	<div class="d-flex flex-row order-2 order-lg-3">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdownFooter">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
+	<div class="collapse navbar-collapse order-3 order-lg-2" id="navbarNavDropdownFooter">
+		<ul class="navbar-nav ml-auto">
 			<li class="nav-item"><a class="nav-link" href="https://github.com/DakuTree/manga-tracker" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i> Github</a></li>
 			<li class="nav-item"><a class="nav-link" href="https://twitter.com/trackr_dev" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('report_issue')?>">Report an Issue</a></li>
