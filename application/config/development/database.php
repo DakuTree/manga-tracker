@@ -3,24 +3,8 @@
 $active_group  = 'default';
 $query_builder = TRUE;
 
-$db['default'] = array(
-	'dsn'          => '',
-	'hostname'     => 'db',
-	'username'     => 'mt_dev',
-	'password'     => 'dev-password',
-	'database'     => 'mangatracker_development',
-	'dbdriver'     => 'mysqli',
-	'dbprefix'     => '',
-	'pconnect'     => FALSE,
-	'db_debug'     => TRUE,
-	'cache_on'     => FALSE,
-	'cachedir'     => '../application/cache',
-	'char_set'     => 'utf8mb4',
-	'dbcollat'     => 'utf8mb4_unicode_ci',
-	'swap_pre'     => '',
-	'encrypt'      => FALSE,
-	'compress'     => FALSE,
-	'stricton'     => TRUE, //FIXME: Currently testing this as TRUE, but only on development.
-	'failover'     => array(),
-	'save_queries' => TRUE
-);
+//NOTE: The hostname/password is assuming docker-compose is used.
+$db['default']['hostname'] = 'db';
+$db['default']['username'] = 'mt_dev';
+$db['default']['password'] = 'dev-password';
+$db['default']['db_debug'] = TRUE;
