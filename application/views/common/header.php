@@ -18,8 +18,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.bootstrap_4.min.css" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.4/cookieconsent.min.css" />
 
-	<?php if(ENVIRONMENT == 'production') { ?>
-	<link rel="stylesheet" href="<?=$complied_css_path?>">
+	<?php if(ENVIRONMENT === 'production') { ?>
+	<link rel="stylesheet" href="<?=$compiled_css_path()?>">
 	<?php } else { ?>
 	<link rel="stylesheet/less" href="<?=asset_url()?>less/main.less" type="text/css">
 	<script>less = {env: 'development', relativeUrls: true, modifyVars: {themeLocation: 'common\\themes\\<?=$theme?>'}};</script>

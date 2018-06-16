@@ -17,11 +17,13 @@ class MY_Controller extends CI_Controller {
 
 		$this->global_data['theme'] = $this->User_Options->get('theme');
 		if(ENVIRONMENT !== 'development') {
-			$css_path = "css/main.{$this->User_Options->get('theme')}";
-			$this->global_data['complied_css_path'] = asset_url()."{$css_path}.".filemtime(APPPATH . "../public/assets/{$css_path}.css").".css";
+			$this->global_data['compiled_css_path'] = function () {
+				$css_path = "css/main.{$this->global_data['theme']}";
+				return asset_url() . $css_path . filemtime(APPPATH . "../public/assets/{$css_path}.css") . '.css';
+			};
 
 			$js_path = 'js/compiled.min';
-			$this->global_data['complied_js_path']  = asset_url()."{$js_path}.".filemtime(APPPATH . "../public/assets/{$js_path}.js").".js";
+			$this->global_data['compiled_js_path'] = asset_url() . $js_path . filemtime(APPPATH . "../public/assets/{$js_path}.js") . '.js';
 		}
 	}
 
