@@ -22,11 +22,22 @@ services:
       - ./application/config:/app/application/config
       - ./application/controllers:/app/application/controllers
       - ./application/core:/app/application/core
+      - ./application/helpers:/app/application/helpers
+      - ./application/hooks:/app/application/hooks
+      - ./application/language:/app/application/language
+      - ./application/libraries:/app/application/libraries
+      - ./application/migrations:/app/application/migrations
       - ./application/models:/app/application/models
+      - ./application/tests/controllers:/app/application/tests/controllers
+      - ./application/tests/core:/app/application/tests/core
+      - ./application/tests/helpers:/app/application/tests/helpers
+      - ./application/tests/libraries:/app/application/tests/libraries
       - ./application/tests/models:/app/application/tests/models
       - ./application/views:/app/application/views
       - ./public/assets/img:/app/public/assets/img
-      - ./public/assets/less/modules:/app/public/assets/less/modules
+      - ./public/assets/js/main.js:/app/public/assets/main.js
+      - ./public/assets/js/pages:/app/public/assets/pages
+      - ./public/assets/less:/app/public/assets/less
       - ./public/userscripts:/app/public/userscripts
 
     depends_on:
