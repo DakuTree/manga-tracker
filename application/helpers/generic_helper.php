@@ -53,6 +53,37 @@ if (!function_exists('http_parse_headers')) { #http://www.php.net/manual/en/func
 	}
 }
 
+function get_notices() : string {
+	$CI = get_instance();
+
+	$notice_str = '';
+	if(function_exists('validation_errors') && validation_errors()) {
+		$notice_str = validation_errors();
+	} elseif($CI->ion_auth->errors()) {
+		$notice_str = $CI->ion_auth->errors();
+	} elseif($CI->ion_auth->messages()) {
+		$notice_str = $CI->ion_auth->messages();
+	} elseif($notices = $CI->session->flashdata('errors')) {
+		$CI->session->unset_userdata('errors'); //Sometimes we call this flashdata without redirecting, so make sure we remove it
+		if(is_string($notices)) {
+			$notice_str = $CI->config->item('error_start_delimiter', 'ion_auth') . $notices . $CI->config->item('error_end_delimiter', 'ion_auth');
+		} elseif(is_array($notices)) {
+			foreach($notices as $notice) {
+				$notice_str .= $CI->config->item('error_start_delimiter', 'ion_auth') . $notice . $CI->config->item('error_end_delimiter', 'ion_auth');
+			}
+		}
+	} elseif($notices = $CI->session->flashdata('notices')) {
+		$CI->session->unset_userdata('notices'); //Sometimes we call this flashdata without redirecting, so make sure we remove it
+		if(is_string($notices)) {
+			$notice_str = $CI->config->item('message_start_delimiter', 'ion_auth') . $notices . $CI->config->item('message_end_delimiter', 'ion_auth');
+		} elseif(is_array($notices)) {
+			foreach($notices as $notice) {
+				$notice_str .= $CI->config->item('message_start_delimiter', 'ion_auth') . $notice . $CI->config->item('message_end_delimiter', 'ion_auth');
+			}
+		}
+	}
+	return $notice_str;
+}
 function exit_ci($status = NULL) : void {
 	if(ENVIRONMENT !== 'testing') {
 		exit($status);

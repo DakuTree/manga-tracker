@@ -35,9 +35,13 @@ class MY_Controller extends CI_Controller {
 		$this->header_data['show_header'] = (array_key_exists('show_header', $this->header_data) ? $this->header_data['show_header'] : TRUE);
 		$this->footer_data['show_footer'] = (array_key_exists('show_footer', $this->footer_data) ? $this->footer_data['show_footer'] : TRUE);
 
+		$this->global_data['notices'] = get_notices();
+
+		//$this->output->enable_profiler(TRUE);
+
 		$this->load->view('common/header', ($this->global_data + $this->header_data));
 		foreach(func_get_args() as $path) {
-			view_exists($path) or show_404(); //TODO (FIXME): This seems bad performance wise in the long run. Is there any reason to have it in production?
+			view_exists($path) or show_404(); //CHECK: Does this have a performance impact?
 
 			$this->load->view($path, ($this->global_data + $this->body_data));
 		}
@@ -53,11 +57,18 @@ class MY_Controller extends CI_Controller {
 	}
 	public function _render_content(string $content, string $filenameExt, bool $download = FALSE, string $filenamePrefix = 'tracker') : void {
 		if($download) {
-			$date = date('Ymd_Hi', time());
+			$date = date('Ymd_Hi');
 			$this->output->set_header('Content-Disposition: attachment; filename="'.$filenamePrefix.'-'.$date.'.'.$filenameExt.'"');
 			$this->output->set_header('Content-Length: '.strlen($content));
 		}
 		$this->output->set_output($content);
+	}
+	public function _render_403(string $errorMessage = 'The user has insufficient permissions to perform that action.') : void {
+		$this->output->set_status_header(403);
+
+		$this->body_data['error_message'] = htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8');
+
+		$this->_render_page('common/403');
 	}
 }
 
