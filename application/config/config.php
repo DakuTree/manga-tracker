@@ -135,8 +135,8 @@ $config['composer_autoload'] = FALSE;
 
 //NOTE: This doesn't work in autoload.php as it is loaded after we need it.
 spl_autoload_register(function ($class) {
-	$fileMono = APPPATH . '../vendor/monolog/monolog/src/'.strtr($class, '\\', '/').'.php';
-	$filePsr  = APPPATH . '../vendor/psr/log/'.strtr($class, '\\', '/').'.php';
+	$fileMono = APPPATH . '../vendor/monolog/monolog/src/'. str_replace('\\', '/', $class) .'.php';
+	$filePsr  = APPPATH . '../vendor/psr/log/'. str_replace('\\', '/', $class) .'.php';
 	if(file_exists($fileMono)) {
 		require $fileMono;
 		return TRUE;
