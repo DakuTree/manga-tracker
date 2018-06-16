@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>Manga Tracker<?=($title !== 'Index' ? " - ".$title : '')?></title>
+	<title><?=$title?></title>
 	<meta name="description" content="A site for tracking manga across multiple sites.">
 	<meta name="author" content="https://github.com/DakuTree/manga-tracker/graphs/contributors" />
 	<link type="text/plain" rel="author" href="<?=base_url('humans.txt')?>" />
