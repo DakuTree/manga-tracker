@@ -1,4 +1,4 @@
-<?php die("This file is for autocompletion purposes only.");
+<?php die('This file is for autocompletion purposes only.');
 
 /**
  * @property CI_Benchmark        $benchmark                           This class enables you to mark points and calculate the time difference between them. Memory consumption can also be displayed.
@@ -32,7 +32,7 @@
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
  * @property CI_Router           $router                              Parses URIs and determines routing
- * @property CI_Security         $security                            Security Class
+ * @property MY_Security         $security                            Security Class
  * @property CI_Session          $session                             Session Class
  * @property CI_Table            $table                               Lets you create tables manually or from database result objects, or arrays
  * @property CI_Trackback        $trackback                           Trackback Sending/Receiving Class
@@ -96,7 +96,7 @@ class CI_Controller {}
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
  * @property CI_Router           $router                              Parses URIs and determines routing
- * @property CI_Security         $security                            Security Class
+ * @property MY_Security         $security                            Security Class
  * @property CI_Session          $session                             Session Class
  * @property CI_Table            $table                               Lets you create tables manually or from database result objects, or arrays
  * @property CI_Trackback        $trackback                           Trackback Sending/Receiving Class
@@ -160,7 +160,7 @@ class CI_Model {}
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
  * @property CI_Router           $router                              Parses URIs and determines routing
- * @property CI_Security         $security                            Security Class
+ * @property MY_Security         $security                            Security Class
  * @property CI_Session          $session                             Session Class
  * @property CI_Table            $table                               Lets you create tables manually or from database result objects, or arrays
  * @property CI_Trackback        $trackback                           Trackback Sending/Receiving Class
@@ -225,7 +225,7 @@ class CI_Migration {}
  * @property CI_Parser           $parser                              Parser Class
  * @property CI_Profiler         $profiler                            This class enables you to display benchmark, query, and other data in order to help with debugging and optimization.
  * @property CI_Router           $router                              Parses URIs and determines routing
- * @property CI_Security         $security                            Security Class
+ * @property MY_Security         $security                            Security Class
  * @property CI_Session          $session                             Session Class
  * @property CI_Table            $table                               Lets you create tables manually or from database result objects, or arrays
  * @property CI_Trackback        $trackback                           Trackback Sending/Receiving Class

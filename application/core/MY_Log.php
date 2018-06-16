@@ -60,6 +60,13 @@ class MY_Log extends CI_Log {
 			exit('monolog.php config does not exist');
 		}
 
+		// Is the config file in the _secure folder?
+		if (file_exists($file_path = APPPATH.'config/_secure/monolog.php')) {
+			require($file_path);
+		} elseif (!$found) {
+			exit('monolog.php config does not exist');
+		}
+
 		// make $config from config/monolog.php accessible to $this->write_log()
 		$this->config = $config;
 

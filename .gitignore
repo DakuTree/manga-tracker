@@ -2,7 +2,8 @@
 /public/assets/vendor/**/
 !/public/assets/vendor/**/.gitkeep
 
-/vendor/
+/vendor/*
+!/vendor/.gitkeep
 
 # Generated Files
 public/assets/css/main,*.css
@@ -10,12 +11,13 @@ public/assets/js/compiled.min.js
 public/userscripts/manga-tracker.dev.user.js
 
 # Configuration
-application/config/*/recaptcha.php
-application/config/*/email.php
-application/config/*/database_password.php
-application/config/*/sites.php
-application/config/*/mailgun.php
-application/config/*/monolog_secure.php
+application/config/_secure/*.php
+application/config/production/recaptcha.php
+application/config/production/email.php
+application/config/production/database_password.php
+application/config/production/sites.php
+
+!application/config/**/*.php.sample
 
 # Development Files
 ## phpStorm
@@ -27,6 +29,7 @@ application/config/*/monolog_secure.php
 
 ## Testing
 application/tests/_ci_phpunit_test/
+!application/tests/_ci_phpunit_test/.gitkeep
 application/tests/build/
 
 
@@ -35,7 +38,6 @@ application/tests_codeception/_support/_generated/*.php
 
 ## Misc
 _scripts/config.ini
-_scripts/*.sh
 _scripts/geckodriver.log
 _scripts/userscript_testing/chromedriver.exe
 _scripts/userscript_testing/tampermonkey_*.crx
