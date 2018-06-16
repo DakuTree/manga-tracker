@@ -17,43 +17,35 @@ class Mock_Libraries_Email
 	 */
 	public $return_send = TRUE;
 
-	public function initialize()
-	{
+	public function initialize() : void {
 		
 	}
 
-	public function from($from)
-	{
+	public function from($from) : void {
 		$this->data['from'] = $from;
 	}
 
-	public function to($to)
-	{
+	public function to($to) : void {
 		$this->data['to'] = $to;
 	}
 
-	public function bcc($bcc)
-	{
+	public function bcc($bcc) : void {
 		$this->data['bcc'] = $bcc;
 	}
 
-	public function subject($subject)
-	{
+	public function subject($subject) : void {
 		$this->data['subject'] = $subject;
 	}
 
-	public function message($message)
-	{
+	public function message($message) : void {
 		$this->data['message'] = $message;
 	}
 
-	public function send()
-	{
+	public function send() : bool {
 		return $this->return_send;
 	}
 
-	public function _get_data()
-	{
+	public function _get_data() : array {
 		return $this->data;
 	}
 }
