@@ -7,8 +7,7 @@ class Migration_Setup_Sessions extends CI_Migration {
 		$this->load->dbforge();
 	}
 
-	public function up()
-	{
+	public function up() : void {
 		// Table structure for table 'ci_sessions'
 		$this->dbforge->add_field(array(
 			'id' => array(
@@ -29,18 +28,16 @@ class Migration_Setup_Sessions extends CI_Migration {
 				'null'       => FALSE
 			),
 			'data' => array(
-				'type'       => 'TEXT',
-				// 'default'    => '',
-				'null'       => FALSE
+				'type'       => 'MEDIUMTEXT',
+				'null'       => TRUE
 			)
 		));
-		$this->dbforge->add_key(array('id', 'ip_address'), TRUE); //sess_match_ip = TRUE
+		$this->dbforge->add_key('id', TRUE); //sess_match_ip = TRUE
 		$this->dbforge->add_key('timestamp', FALSE); //NOTE: Docs label this key as "ci_sessions_timestamp", but dbforge lacks label functionality.
 		$this->dbforge->create_table('ci_sessions');
 	}
 
-	public function down()
-	{
+	public function down() : void {
 		$this->dbforge->drop_table('ci_sessions', TRUE);
 	}
 }

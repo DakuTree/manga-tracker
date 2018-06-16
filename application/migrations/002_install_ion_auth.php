@@ -7,8 +7,7 @@ class Migration_Install_ion_auth extends CI_Migration {
 		$this->load->dbforge();
 	}
 
-	public function up()
-	{
+	public function up() : void {
 		/** AUTH_GROUPS **/
 		// Table structure for table 'auth_groups'
 		$this->dbforge->add_field(array(
@@ -16,15 +15,18 @@ class Migration_Install_ion_auth extends CI_Migration {
 				'type'           => 'MEDIUMINT',
 				'constraint'     => '8',
 				'unsigned'       => TRUE,
-				'auto_increment' => TRUE
+				'auto_increment' => TRUE,
+				'null'           => FALSE
 			),
 			'name' => array(
 				'type'       => 'VARCHAR',
 				'constraint' => '20',
+				'null'       => FALSE
 			),
 			'description' => array(
 				'type'       => 'VARCHAR',
 				'constraint' => '100',
+				'null'       => FALSE
 			)
 		));
 		$this->dbforge->add_key('id', TRUE);
@@ -56,23 +58,25 @@ class Migration_Install_ion_auth extends CI_Migration {
 			),
 			'ip_address' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '16'
+				'constraint' => '45'
 			),
 			'username' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '100',
+				'constraint' => '100'
 			),
 			'password' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '80',
+				'constraint' => '80'
 			),
 			'salt' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '40'
+				'constraint' => '40',
+				'null'       => TRUE
 			),
 			'email' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '254' //SEE: http://stackoverflow.com/a/574698
+				'constraint' => '254', //SEE: http://stackoverflow.com/a/574698
+				'null'       => TRUE
 			),
 			'activation_code' => array(
 				'type'       => 'VARCHAR',
@@ -140,11 +144,10 @@ class Migration_Install_ion_auth extends CI_Migration {
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table('auth_users_groups');
 
-		$this->db->query('
-			ALTER TABLE auth_users_groups
-			ADD CONSTRAINT FK_auth_users_groups_auth_users FOREIGN KEY (user_id) REFERENCES auth_users (id) ON UPDATE NO ACTION ON DELETE NO ACTION,
-			ADD CONSTRAINT FK_auth_users_groups_auth_groups FOREIGN KEY (group_id) REFERENCES auth_groups (id) ON UPDATE NO ACTION ON DELETE NO ACTION;'
-		);
+		$this->db->trans_start();
+		$this->db->query('ALTER TABLE `auth_users_groups` ADD CONSTRAINT `FK_auth_users_groups_auth_groups` FOREIGN KEY (`group_id`) REFERENCES `auth_groups`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE');
+		$this->db->query('ALTER TABLE `auth_users_groups` ADD CONSTRAINT `FK_auth_users_groups_auth_users`  FOREIGN KEY (`user_id`)  REFERENCES `auth_users`(`id`)  ON DELETE CASCADE ON UPDATE CASCADE');
+		$this->db->trans_complete();
 
 		if(ENVIRONMENT !== 'production') {
 			// Dumping data for table 'auth_users'
@@ -192,7 +195,8 @@ class Migration_Install_ion_auth extends CI_Migration {
 			),
 			'ip_address' => array(
 				'type'       => 'VARCHAR',
-				'constraint' => '16'
+				'constraint' => '45',
+				'null'       => TRUE
 			),
 			'login' => array(
 				'type'       => 'VARCHAR',
@@ -211,8 +215,7 @@ class Migration_Install_ion_auth extends CI_Migration {
 
 	}
 
-	public function down()
-	{
+	public function down() : void {
 		$this->dbforge->drop_table('auth_users', TRUE);
 		$this->dbforge->drop_table('auth_groups', TRUE);
 		$this->dbforge->drop_table('auth_users_groups', TRUE);
