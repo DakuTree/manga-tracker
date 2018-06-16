@@ -193,7 +193,7 @@ class User_Model extends CI_Model {
 
 			$noticeData = [
 				'date' => $row->date_formatted,
-				'text' => Parsedown::instance()->text($row->notice)
+				'text' => $this->Parsedown->text($row->notice)
 			];
 		}
 

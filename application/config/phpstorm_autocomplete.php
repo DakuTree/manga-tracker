@@ -54,6 +54,7 @@
  * @property Recaptcha          $recaptcha
  * @property Gravatar           $gravatar
  * @property Limiter            $limiter
+ * @property CustomParsedown    $Parsedown
  *
  * @property User_model         $User
  * @property User_Options_model $User_Options
@@ -118,6 +119,7 @@ class CI_Controller {}
  * @property Recaptcha          $recaptcha
  * @property Gravatar           $gravatar
  * @property Limiter            $limiter
+ * @property CustomParsedown    $Parsedown
  *
  * @property User_model         $User
  * @property User_Options_model $User_Options
@@ -182,6 +184,7 @@ class CI_Model {}
  * @property Recaptcha          $recaptcha
  * @property Gravatar           $gravatar
  * @property Limiter            $limiter
+ * @property CustomParsedown    $Parsedown
  *
  * @property User_model         $User
  * @property User_Options_model $User_Options
@@ -247,6 +250,7 @@ class CI_Migration {}
  * @property Recaptcha          $recaptcha
  * @property Gravatar           $gravatar
  * @property Limiter            $limiter
+ * @property CustomParsedown    $Parsedown
  *
  * @property User_model         $User
  * @property User_Options_model $User_Options

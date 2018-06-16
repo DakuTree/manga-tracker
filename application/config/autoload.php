@@ -64,7 +64,13 @@ $autoload['packages'] = array(
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('session', 'ion_auth', 'cacher', 'gravatar');
+$autoload['libraries'] = array(
+	'session',
+	'ion_auth',
+	'cacher',
+	'gravatar',
+	'CustomParsedown' => 'Parsedown'
+);
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +95,11 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'asset', 'generic_helper');
+$autoload['helper'] = array(
+	'url',
+	'asset',
+	'generic_helper'
+);
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +113,12 @@ $autoload['helper'] = array('url', 'asset', 'generic_helper');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('asset', 'gravatar', 'analytics', 'sites');
+$autoload['config'] = array(
+	'asset',
+	'gravatar',
+	'analytics',
+	'sites'
+);
 
 /*
 | -------------------------------------------------------------------
@@ -117,7 +132,9 @@ $autoload['config'] = array('asset', 'gravatar', 'analytics', 'sites');
 | "codeigniter_lang.php" would be referenced as array('codeigniter');
 |
 */
-$autoload['language'] = array('auth');
+$autoload['language'] = array(
+	'auth'
+);
 
 /*
 | -------------------------------------------------------------------
@@ -138,5 +155,3 @@ $autoload['model'] = array(
 	'Tracker_Model'      => 'Tracker',
 	'History_Model'      => 'History'
 );
-
-require_once APPPATH . '../vendor/erusev/parsedown/Parsedown.php';
