@@ -5,7 +5,8 @@ $(function() {
 
 	//Validate signup. This will fallback to HTML5 validation if JS isn't enabled.
 	//This should run on all signup forms (initial & continued)
-	$('#page[data-page=signup]').find('form').validate({
+	let signup_form = $('#page[data-page=signup]').find('form');
+	signup_form.validate({
 		ignore: [], //Make sure terms input is validated
 		onkeyup: false,
 
@@ -22,8 +23,17 @@ $(function() {
 					type: 'post',
 					data: {
 						username: function () {
-							return $('input[name="username"]').val();
+							return signup_form.find('input[name="username"]').val();
+						},
+						csrf_token: function() {
+							return signup_form.find('input[name=csrf_token]').val();
 						}
+					},
+					dataFilter: function(data) {
+						let json = JSON.parse(data);
+
+						signup_form.find('input[name=csrf_token]').val(json.csrf_token);
+						return json.success === true;
 					}
 				}
 			}

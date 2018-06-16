@@ -134,4 +134,11 @@ class AJAX_Controller extends CI_Controller {
 
 		//TODO: general security stuff
 	}
+
+	public function _render_json($json_input) : void {
+		$json = is_array($json_input) ? json_encode($json_input) : $json_input;
+
+		$this->output->set_content_type('application/json', 'utf-8');
+		$this->output->set_output($json);
+	}
 }

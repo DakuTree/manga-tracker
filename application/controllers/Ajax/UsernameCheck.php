@@ -22,8 +22,11 @@ class UsernameCheck extends AJAX_Controller {
 			if(!$this->limiter->limit('username_check', 25)) {
 				$is_unique_username = $this->form_validation->is_unique_username($this->input->post('username'));
 
-				//FIXME: WE <should> probably output something different here.
-				$this->output->set_output($is_unique_username ? "true" : "false");
+				$data = [
+					'success'    => $is_unique_username,
+					'csrf_token' => $this->security->get_csrf_hash() //CHECK: Does returning this within the same query make the CSRF pointless?
+				];
+				$this->_render_json($data);
 			} else {
 				$this->output->set_status_header('429', 'Rate limit reached.'); //rate limited reached
 			}

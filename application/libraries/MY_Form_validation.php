@@ -7,9 +7,22 @@ class MY_Form_validation extends CI_Form_validation {
 		parent::__construct();
 		log_message('debug', 'MY_Form_validation Class Initialized');
 
-		$this->CI =& get_instance();
 		$this->CI->config->load('ion_auth', TRUE);
 		$this->user_tables = $this->CI->config->item('tables', 'ion_auth');
+
+		$this->set_error_delimiters(
+			$this->CI->config->item('error_start_delimiter', 'ion_auth'),
+			$this->CI->config->item('error_end_delimiter', 'ion_auth')
+		);
+	}
+
+	public function run($group = '') : bool {
+		if(!$this->CI->security->verified) {
+			$this->_error_array['csrf_token'] = $this->_build_error_msg('Session expired, please resubmit.');
+			return FALSE;
+		}
+
+		return parent::run($group);
 	}
 
 	/*** User Validation ***/
@@ -77,7 +90,7 @@ class MY_Form_validation extends CI_Form_validation {
 		return strpos($haystack, $needle) === FALSE;
 	}
 
-	public function not_equals(string $originalString, string $matchingString) {
+	public function not_equals(string $originalString, string $matchingString) : bool {
 		return $originalString !== $matchingString;
 	}
 
@@ -96,7 +109,7 @@ class MY_Form_validation extends CI_Form_validation {
 	public function isRuleValid(string $ruleName) : bool {
 		$isValid = FALSE;
 		if(is_string($ruleName) && $this->has_rule($ruleName)){
-			$isValid = !in_array($ruleName, array_keys($this->error_array()), TRUE);
+			$isValid = !array_key_exists($ruleName, $this->error_array());
 		}
 		return $isValid;
 	}

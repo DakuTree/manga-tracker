@@ -37,7 +37,7 @@
 	</button>
 	<div id="navbarNavDropdown" class="navbar-collapse collapse">
 		<ul class="navbar-nav ml-auto">
-			<?php if(!$this->User->logged_in()) { ?>
+			<?php if(!$this->ion_auth->logged_in()) { ?>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/login')?>">Login</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/signup')?>">Register</a></li>
 			<?php } else { ?>
@@ -68,3 +68,8 @@
 <main id="page-wrap" class="m-2">
 	<div id="page-holder">
 		<div id="page" data-page="<?=$page?>">
+			<?php if($notices) { ?>
+			<div id="notices">
+				<?=$notices?>
+			</div>
+			<?php } ?>
