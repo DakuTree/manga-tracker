@@ -3,6 +3,12 @@
 class TestCase extends CIPHPUnitTestCase {
 	//private static $migrate = false;
 
+	private $siteName = 'Manga Tracker'; //TODO: Is there a way to get this from config?
+
+	public function assertTitle(string $output, string $title) : void {
+		$this->assertContains("<title>{$title} - {$this->siteName}</title>", $output);
+	}
+
 	//public static function setUpBeforeClass() {
 	//	parent::setUpBeforeClass();
 	//
