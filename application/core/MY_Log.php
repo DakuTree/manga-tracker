@@ -119,7 +119,7 @@ class MY_Log extends CI_Log {
 
 				case 'papertrail':
 					$handler = new SyslogUdpHandler($this->config['papertrail_host'], $this->config['papertrail_port']);
-					$formatter = new LineFormatter("%channel%.%level_name%: %message% %extra%", null, $config['papertrail_multiline']);
+					$formatter = new LineFormatter('%channel%.%level_name%: %message% %extra%', null, $config['papertrail_multiline']);
 					$handler->setFormatter($formatter);
 					break;
 

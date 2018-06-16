@@ -75,18 +75,18 @@ class TestCase extends CIPHPUnitTestCase {
 	}
 
 	//extra functions
-	public function markTestNotImplemented() {
+	public function markTestNotImplemented() : void {
 		$this->markTestIncomplete(
 			'This test has not been implemented yet.'
 		);
 	}
 
-	public function skipTravis(string $reason = NULL) {
+	public function skipTravis(string $reason = NULL) : void {
 		if(getenv('TRAVIS')) {
-			$this->markTestSkipped('This test doesn\'t play nice with Travis'.($reason ? "\nReason: $reason" : ""));
+			$this->markTestSkipped('This test doesn\'t play nice with Travis'.($reason ? "\nReason: $reason" : ''));
 		}
 	}
-	public function skipTravisSSL() {
+	public function skipTravisSSL() : void {
 		$this->skipTravis('Travis\'s PHP Curl ver. doesn\'t seem to play nice with SSL.');
 	}
 }

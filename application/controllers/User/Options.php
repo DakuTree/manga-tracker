@@ -9,8 +9,8 @@ class Options extends Auth_Controller {
 	}
 
 	public function index() : void {
-		$this->header_data['title'] = "Options";
-		$this->header_data['page']  = "options";
+		$this->header_data['title'] = 'Options';
+		$this->header_data['page']  = 'options';
 
 		$customCategories = ['custom1' => 'category_custom_1', 'custom2' => 'category_custom_2', 'custom3' => 'category_custom_3'];
 		$usedCategories   = $this->Tracker->category->getUsed($this->User->id);

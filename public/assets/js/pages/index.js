@@ -1,7 +1,7 @@
 /* globals page */
 $(function() {
 	'use strict';
-	if (page !== 'index') { return false; }
+	if(page !== 'index') { return false; }
 
 	$('.example-image').hover(function() {
 		$(this).attr('src', (i, val) => {

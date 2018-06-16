@@ -82,8 +82,8 @@
 		const base_url = "<?=base_url()?>";
 		const page     = "<?=$page?>";
 	</script>
-	<?php if(ENVIRONMENT == 'production') { ?>
-	<script src="<?=$complied_js_path?>"></script>
+	<?php if(ENVIRONMENT === 'production') { ?>
+	<script src="<?=$compiled_js_path?>"></script>
 	<?php } else { ?>
 	<script src="<?=js_url()?>main.js"></script>
 	<?php foreach(array_slice(scandir(APPPATH.'../public/assets/js/pages/'), 2) as $filename) { ?>
@@ -91,7 +91,7 @@
 	<?php } ?>
 	<?php } ?>
 
-	<?php if(ENVIRONMENT == 'production') { ?>
+	<?php if(ENVIRONMENT === 'production') { ?>
 	<script>
 		(function (b, o, i, l, e, r) {
 			b.GoogleAnalyticsObject = l;

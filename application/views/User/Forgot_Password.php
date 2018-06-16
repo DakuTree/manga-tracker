@@ -13,7 +13,6 @@
 			<div class="form-group">
 				<?=form_input($form_email)?>
 			</div>
-			<div id="notices"><?=print_r($notices, TRUE)?></div>
 
 			<hr class="colorgraph">
 

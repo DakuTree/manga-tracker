@@ -15,47 +15,47 @@ class MY_Form_validation_test extends TestCase {
 	}
 
 	// A valid username is between 4 & 15 characters, and contains only [a-zA-Z0-9_-]
-	public function test_valid_username_pass() {
+	public function test_valid_username_pass() : void {
 		//username is valid, return true
 		$result = $this->form_validation->valid_username('FooBar');
 		$this->assertTrue($result);
 	}
-	public function test_valid_username_fail_case_1() {
+	public function test_valid_username_fail_case_1() : void {
 		//username is invalid (too short), return false
 		$result = $this->form_validation->valid_username('Foo');
 		$this->assertFalse($result);
 	}
-	public function test_valid_username_fail_case_2() {
+	public function test_valid_username_fail_case_2() : void {
 		//username is invalid (too long), return false
 		$result = $this->form_validation->valid_username('FooBarFooBarFooBar');
 		$this->assertFalse($result);
 	}
-	public function test_valid_username_fail_case_3() {
+	public function test_valid_username_fail_case_3() : void {
 		//username is invalid (invalid characters), return false
 		$result = $this->form_validation->valid_username('フーバル');
 		$this->assertFalse($result);
 	}
 
 	//A valid password is between 6 & 64 characters, any characters are allowed.
-	public function test_valid_password_pass() {
+	public function test_valid_password_pass() : void {
 		//password is valid, return true
 		$result = $this->form_validation->valid_password('FooBar2');
 		$this->assertTrue($result);
 	}
-	public function test_valid_password_fail_1() {
+	public function test_valid_password_fail_1() : void {
 		//password is invalid (too short), return false
 		$result = $this->form_validation->valid_password('Foo');
 		$this->assertEquals('The password is too short!', $this->get_error_message('valid_password'));
 		$this->assertFalse($result);
 	}
-	public function test_valid_password_fail_2() {
+	public function test_valid_password_fail_2() : void {
 		//password is invalid (too long), return false
 		$result = $this->form_validation->valid_password('FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar');
 		$this->assertEquals('The password is too long!', $this->get_error_message('valid_password'));
 		$this->assertFalse($result);
 	}
 
-	public function test_is_unique_username_pass() {
+	public function test_is_unique_username_pass() : void {
 		//username is unique, return true
 
 		$validation = $this->getDouble(
@@ -67,7 +67,7 @@ class MY_Form_validation_test extends TestCase {
 		$result = $validation->is_unique_username('FooBar');
 		$this->assertTrue($result);
 	}
-	public function test_is_unique_username_fail() {
+	public function test_is_unique_username_fail() : void {
 		//username already exists, return false
 
 		$validation = $this->getDouble(
@@ -81,7 +81,7 @@ class MY_Form_validation_test extends TestCase {
 		$this->assertFalse($result);
 	}
 
-	public function test_is_unique_email_pass() {
+	public function test_is_unique_email_pass() : void {
 		//email is unique, return true
 
 		$validation = $this->getDouble(
@@ -93,7 +93,7 @@ class MY_Form_validation_test extends TestCase {
 		$result = $validation->is_unique_email('foo@bar.com');
 		$this->assertTrue($result);
 	}
-	public function test_is_unique_email_fail() {
+	public function test_is_unique_email_fail() : void {
 		//email already exists, return false
 
 		$validation = $this->getDouble(
@@ -107,17 +107,17 @@ class MY_Form_validation_test extends TestCase {
 		$this->assertFalse($result);
 	}
 
-	public function test_is_valid_json_pass() {
+	public function test_is_valid_json_pass() : void {
 		//json is valid, return true
 		$result = $this->form_validation->is_valid_json('{"foo":"bar"}');
 		$this->assertTrue($result);
 	}
-	public function test_is_valid_json_fail_1() {
+	public function test_is_valid_json_fail_1() : void {
 		//json is not json, return false
 		$result = $this->form_validation->is_valid_json('i_am_a_bad_string');
 		$this->assertFalse($result);
 	}
-	public function test_is_valid_json_fail_2() {
+	public function test_is_valid_json_fail_2() : void {
 		//json is json but still has error (in this case, bad utf8), return false
 		$result = $this->form_validation->is_valid_json('{"foo": "'."\xB1\x31".'"}');
 		$this->assertFalse($result);
@@ -166,29 +166,29 @@ class MY_Form_validation_test extends TestCase {
 		$this->assertFalse($result);
 	}
 
-	public function test_not_contains_pass() {
+	public function test_not_contains_pass() : void {
 		//string does not contain string, return true
 		$result = $this->form_validation->not_contains('i am a string', 'foobar');
 		$this->assertTrue($result);
 	}
-	public function test_not_contains_fail() {
+	public function test_not_contains_fail() : void {
 		//string contains string, return false
 		$result = $this->form_validation->not_contains('i am a foobar', 'foobar');
 		$this->assertFalse($result);
 	}
 
-	public function test_is_valid_option_value_pass() {
+	public function test_is_valid_option_value_pass() : void {
 		//option value is valid, return true
 		$result = $this->form_validation->is_valid_option_value('alphabetical', 'list_sort_type');
 		$this->assertTrue($result);
 	}
-	public function test_is_valid_option_value_fail() {
+	public function test_is_valid_option_value_fail() : void {
 		//option value is invalid, return false
 		$result = $this->form_validation->is_valid_option_value('rainbow', 'theme');
 		$this->assertFalse($result);
 	}
 
-	public function test_isRuleValid_pass() {
+	public function test_isRuleValid_pass() : void {
 		//rule exists and has no errors, returns true
 
 		//FIXME: This really isn't the best way to check this...
@@ -201,7 +201,7 @@ class MY_Form_validation_test extends TestCase {
 		$result = $validation->isRuleValid('valid_username');
 		$this->assertTrue($result);
 	}
-	public function test_isRuleValid_fail_1() {
+	public function test_isRuleValid_fail_1() : void {
 		//rule exists but has errors, returns false
 
 		//FIXME: This really isn't the best way to check this...
@@ -215,7 +215,7 @@ class MY_Form_validation_test extends TestCase {
 		$result = $validation->isRuleValid('valid_username');
 		$this->assertFalse($result);
 	}
-	public function test_isRuleValid_fail_2() {
+	public function test_isRuleValid_fail_2() : void {
 		//rule does not exist, returns false
 
 		//FIXME: This really isn't the best way to check this...

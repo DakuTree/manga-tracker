@@ -318,7 +318,7 @@ $config['cache_query_string'] = FALSE;
 | CodeIgniter Multi-level Cache - https://github.com/terrylinooo/CodeIgniter-Multi-level-Cache
 |--------------------------------------------------------------------------
 */
-$config['multi_level_cache_folders'] = array(); //NOTE: Extend as needed.
+$config['multi_level_cache_folders'] = []; //NOTE: Extend as needed.
 
 /*
 |--------------------------------------------------------------------------

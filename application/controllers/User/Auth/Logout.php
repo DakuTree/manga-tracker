@@ -15,16 +15,18 @@ class Logout extends User_Controller {
 		);
 	}
 
-	public function index() {
-		$this->header_data['title'] = "Logout";
-		$this->header_data['page']  = "logout";
+	public function index() : void {
+		$this->header_data['title'] = 'Logout';
+		$this->header_data['page']  = 'logout';
 
-		//TODO (CHECK): Is there any point to checking if the user is even logged in before doing this?
-		$this->ion_auth->logout();
+		if($this->ion_auth->logged_in()) {
+			//This is called again due to logout not always logging out properly. - https://github.com/benedmunds/CodeIgniter-Ion-Auth/issues/1191#issuecomment-378934024
+			$this->ion_auth->logout() && $this->ion_auth->logout();
+		}
+		$this->session->set_flashdata('notices', 'Logout Successful');
+
 		delete_cookie('remember_time');
 
-		//TODO: Notify user on successful logout.
-		$this->session->set_flashdata('notices', $this->ion_auth->messages());
-		redirect('/'); //TODO: Should we have a custom logout page?
+		redirect('/', 'refresh'); //TODO: Should we have a custom logout page?
 	} //@codeCoverageIgnore
 }

@@ -5,7 +5,7 @@ class MY_Form_validation extends CI_Form_validation {
 
 	public function __construct() {
 		parent::__construct();
-		log_message('debug', "MY_Form_validation Class Initialized");
+		log_message('debug', 'MY_Form_validation Class Initialized');
 
 		$this->CI =& get_instance();
 		$this->CI->config->load('ion_auth', TRUE);

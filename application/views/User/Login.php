@@ -14,7 +14,6 @@
 				<div class="form-group">
 					<?=form_input($form_password)?>
 				</div>
-				<span><?=print_r($notices, TRUE)?></span>
 
 				<div class="row">
 					<div class="col-xs-8 col-sm-8 col-md-8">

@@ -1,6 +1,5 @@
 <div class="row justify-content-center">
 	<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<!-- TODO: Username/password requirements should be listed somewhere, maybe as popup when :focus -->
 		<form action="<?=base_url("user/signup/{$verificationCode}")?>" method="post" accept-charset="utf-8" role="form" autocomplete="off">
 			<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">
 
@@ -29,8 +28,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div id="notices"><?=print_r($notices, TRUE)?></div>
 
 			<div class="row">
 				<div class="col-xs-4 col-sm-3 col-md-3">

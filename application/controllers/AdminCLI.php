@@ -5,15 +5,15 @@ class AdminCLI extends CLI_Controller {
 		parent::__construct();
 	}
 
-	public function index() {
-		print "ERROR: This is an invalid route";
+	public function index() : void {
+		print 'ERROR: This is an invalid route';
 	}
 
 	/**
 	 * Used to update the site migration version.
 	 * Called via public/index.php admin/migrate
 	 */
-	public function migrate() {
+	public function migrate() : void {
 		$this->load->library('migration');
 
 		if(!$this->migration->current()) {

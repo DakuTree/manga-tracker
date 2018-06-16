@@ -6,7 +6,7 @@ class Migration_Setup_Rate_Limit extends CI_Migration {
 		$this->load->dbforge();
 	}
 
-	public function up() {
+	public function up() : void {
 		$this->dbforge->add_field(array(
 			'client' => array(
 				'type'       => 'VARCHAR',
@@ -39,7 +39,7 @@ class Migration_Setup_Rate_Limit extends CI_Migration {
 		$this->dbforge->create_table('rate_limit');
 	}
 
-	public function down() {
+	public function down() : void {
 		$this->dbforge->drop_table('rate_limit', TRUE);
 	}
 }

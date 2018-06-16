@@ -19,9 +19,9 @@ class Signup extends No_Auth_Controller {
 	// 2. User clicks link in email, is now taken to proper sign-up page. We now know the email is valid.
 	//        Signup continues like normal.
 
-	public function index($verificationCode = NULL) {
-		$this->header_data['title'] = "Signup";
-		$this->header_data['page']  = "signup";
+	public function index($verificationCode = NULL) : void {
+		$this->header_data['title'] = 'Signup';
+		$this->header_data['page']  = 'signup';
 
 		if(is_null($verificationCode)) {
 			$this->_initial_signup();
@@ -31,7 +31,7 @@ class Signup extends No_Auth_Controller {
 	}
 
 	//This initial signup occurs when the user is first shown the page.
-	private function _initial_signup() {
+	private function _initial_signup() : void {
 		//user is provided with an email form
 		//user enters email, submits, email is sent to verify it exists and to continue setup.
 
@@ -48,7 +48,7 @@ class Signup extends No_Auth_Controller {
 			if($this->Auth->verification_start($email)) {
 				$this->_render_page('User/Signup_Verification');
 			} else {
-				//TODO: We should have a better error return here.
+				$this->session->set_flashdata('notices', 'Signup failed?');
 				$isValid = FALSE;
 			}
 		}
@@ -56,9 +56,6 @@ class Signup extends No_Auth_Controller {
 		//login wasn't valid, failed, or this is a fresh login attempt
 		if(!$isValid){
 			//display the email validation form
-
-			$this->global_data['notices'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
 			$this->body_data['form_email'] = array(
 					'name'        => 'email',
 					'id'          => 'email',
@@ -87,7 +84,7 @@ class Signup extends No_Auth_Controller {
 	}
 
 	//This continued signup occurs after the user clicks the verification link in their email.
-	private function _continue_signup($verificationCode) {
+	private function _continue_signup($verificationCode) : void {
 		//check if validation is valid, if so return email, if not redirect to signup
 		if(!($email = $this->Auth->verification_check($verificationCode))) redirect('user/signup');
 
@@ -99,7 +96,7 @@ class Signup extends No_Auth_Controller {
 		//TODO: timezone
 		//TODO: receive email
 
-		if ($isValid = $this->form_validation->run() === TRUE) {
+		if ($isValid = ($this->form_validation->run() === TRUE)) {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 
@@ -115,9 +112,6 @@ class Signup extends No_Auth_Controller {
 				redirect('help');
 			} else { //@codeCoverageIgnore
 				//Signup failed.
-
-				$this->session->set_flashdata('notices', $this->ion_auth->errors());
-
 				$isValid = FALSE;
 			}
 		}
@@ -125,9 +119,6 @@ class Signup extends No_Auth_Controller {
 		//signup wasn't valid, failed, or this is a fresh signup attempt
 		if(!$isValid){
 			//display the create user form
-
-			$this->global_data['notices'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
 			$this->body_data['verificationCode'] = $verificationCode;
 
 			$this->body_data['form_username'] = array(

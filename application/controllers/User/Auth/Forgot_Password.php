@@ -11,9 +11,9 @@ class Forgot_Password extends No_Auth_Controller {
 		);
 	}
 
-	public function index() {
-		$this->header_data['title'] = "Forgot Password";
-		$this->header_data['page']  = "forgot_password";
+	public function index() : void {
+		$this->header_data['title'] = 'Forgot Password';
+		$this->header_data['page']  = 'forgot_password';
 
 		//TODO (RESEARCH): Should we allow username here too?
 		$this->form_validation->set_rules('email', 'Email',  'required|valid_email', array(
@@ -27,7 +27,6 @@ class Forgot_Password extends No_Auth_Controller {
 			$identity = $this->ion_auth->where('email', $this->input->post('email'))->users()->row();
 
 			//To avoid people finding out if an email is associated with the site, a valid email (regardless if it's used) will always return a success page.
-			//TODO (Research): Is this the right thing to do?
 			if(is_object($identity)) {
 				/*$forgotten = */$this->ion_auth->forgotten_password($identity->{'email'});
 				//if(!$forgotten) { print $this->email->print_debugger();}
@@ -35,9 +34,6 @@ class Forgot_Password extends No_Auth_Controller {
 
 			$this->_render_page('User/Forgot_Password_Success');
 		} else {
-			$this->global_data['notices'] = validation_errors() ? validation_errors() : $this->session->flashdata('notices');
-			//$errors = $this->form_validation->error_array();
-
 			$this->body_data['form_email'] = array(
 				'name'        => 'email',
 				'id'          => 'email',
@@ -66,38 +62,33 @@ class Forgot_Password extends No_Auth_Controller {
 	}
 
 	// reset password - final step for forgotten password
-	public function reset_password($code) {
-		$this->header_data['title'] = "Reset Password";
-		$this->header_data['page'] = "reset-password";
+	public function reset_password($code) : void {
+		$this->header_data['title'] = 'Reset Password';
+		$this->header_data['page'] = 'reset-password';
 
 		$user = $this->ion_auth->forgotten_password_check($code);
 		if ($user) {
 			//code is valid, show reset form or process reset
 			$min_password_length = $this->config->item('min_password_length', 'ion_auth');
 			$max_password_length = $this->config->item('max_password_length', 'ion_auth');
-			$this->form_validation->set_rules('new_password',         "Password",         'required|min_length['.$min_password_length.']|max_length['.$max_password_length.']');
-			$this->form_validation->set_rules('new_password_confirm', "Password Confirm", 'required|matches[new_password]');
+			$this->form_validation->set_rules('new_password',         'Password',         'required|min_length['.$min_password_length.']|max_length['.$max_password_length.']');
+			$this->form_validation->set_rules('new_password_confirm', 'Password Confirm', 'required|matches[new_password]');
 
 			if ($this->form_validation->run() === TRUE) {
 				//form is valid, process the password reset request
-				//TODO (Research): The original ion_auth auth.php sent the userid to the form, then matched it on return, is there any point to this?
 
 				$identity = $user->{'email'};
 				$change   = $this->ion_auth->reset_password($identity, $this->input->post('new_password'));
 
 				if ($change) {
 					//password changed successfully, redirect to login
-					$this->session->set_flashdata('notices', $this->ion_auth->messages());
-					redirect("user/login", 'refresh');
+					redirect('user/login', 'refresh');
 				} else { //@codeCoverageIgnore
 					//password changed unsuccessfully, refresh page.
-					$this->session->set_flashdata('notices', $this->ion_auth->errors());
 					redirect('user/reset_password/'.$code, 'refresh');
 				}
 			} else { //@codeCoverageIgnore
 				//form is invalid OR first-time viewing page
-				$this->global_data['notices'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('notices');
-
 				$this->body_data['reset_code']    = $code;
 				$this->body_data['form_password'] = array(
 					'name'         => 'new_password',
@@ -144,9 +135,7 @@ class Forgot_Password extends No_Auth_Controller {
 			}
 		} else {
 			//code is invalid, send them back to forgot password page
-			$this->session->set_flashdata('notices', $this->ion_auth->errors());
-
-			redirect("user/forgot_password");
+			redirect('user/forgot_password');
 		}
 	}
 }

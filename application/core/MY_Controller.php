@@ -13,7 +13,6 @@ class MY_Controller extends CI_Controller {
 		$this->global_data['user'] = ($this->ion_auth->user() ? $this->ion_auth->user()->row() : ['username' => '']);
 		$this->global_data['username'] = $this->User->username;
 
-		//TODO: Move this to a lib or something.
 		$this->global_data['analytics_tracking_id'] = $this->config->item('tracking_id');
 
 		$this->global_data['theme'] = $this->User_Options->get('theme');
@@ -78,7 +77,7 @@ class CLI_Controller extends CI_Controller {
 
 		//NOTE: This should fail, assuming routes.php does handles things properly.
 		//      It's good to have "just in case" fallbacks though.
-		is_cli() or exit("ERROR: This controller can only be called via command line: php index.php ...");
+		is_cli() or exit('ERROR: This controller can only be called via command line: php index.php ...');
 	}
 }
 

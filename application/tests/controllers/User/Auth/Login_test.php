@@ -1,12 +1,15 @@
-<?php
+<?php declare(strict_types=1); defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @coversDefaultClass Login
+ */
 class Login_test extends TestCase {
-	public function test_uri() {
+	public function test_uri() : void {
 		$this->request('GET', 'user/login');
 		$this->assertResponseCode(200);
 	}
 
-	public function test_index_logged_in() {
+	public function test_index_logged_in() : void {
 		//user is already logged in, redirect to dashboard
 		$this->request->setCallablePreConstructor(
 			function () {
@@ -19,13 +22,13 @@ class Login_test extends TestCase {
 		$this->assertRedirect('/');
 	}
 
-	public function test_index_not_logged_in() {
+	public function test_index_not_logged_in() : void {
 		//user isn't logged in, so show login form
 		$output = $this->request('GET', 'user/login');
-		$this->assertContains('<title>Manga Tracker - Login</title>', $output);
+		$this->assertTitle($output, 'Login');
 	}
 
-	public function test_login_validation_pass_user_pass() {
+	public function test_login_validation_pass_user_pass() : void {
 		//user isn't logged in, form is valid, login is valid, redirect the user (no referral)
 		$this->markTestIncomplete('This test is broken for now.');
 
@@ -72,7 +75,7 @@ class Login_test extends TestCase {
 		$this->assertRedirect('user/dashboard');
 	}
 
-	public function test_login_validation_pass_user_pass_and_referred() {
+	public function test_login_validation_pass_user_pass_and_referred() : void {
 		//user isn't logged in, form is valid, login is valid, redirect the user to referred url
 		$this->markTestIncomplete('This test is broken for now.');
 
@@ -131,7 +134,7 @@ class Login_test extends TestCase {
 		$this->assertRedirect('foo/bar');
 	}
 
-	public function test_login_validation_fail() {
+	public function test_login_validation_fail() : void {
 		//user isn't logged in, validation failed, this is happens on the first time loading the page
 		$this->request->setCallable(
 			function ($CI) {
@@ -153,7 +156,7 @@ class Login_test extends TestCase {
 		$this->assertContains('name="identity" value="" id="identity"', $output);
 	}
 
-	public function test_login_validation_pass_but_login_fail() {
+	public function test_login_validation_pass_but_login_fail() : void {
 		//user isn't logged in, tried to login, validation succeeded but login failed
 		$this->request->setCallable(
 			function ($CI) {

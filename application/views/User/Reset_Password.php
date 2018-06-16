@@ -23,7 +23,6 @@
 					</div>
 				</div>
 			</div>
-			<div id="notices"><?=print_r($notices, TRUE)?></div>
 
 			<hr class="colorgraph">
 

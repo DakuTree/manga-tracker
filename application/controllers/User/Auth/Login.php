@@ -11,9 +11,9 @@ class Login extends No_Auth_Controller {
 		);
 	}
 
-	public function index() {
-		$this->header_data['title'] = "Login";
-		$this->header_data['page']  = "login";
+	public function index() : void {
+		$this->header_data['title'] = 'Login';
+		$this->header_data['page']  = 'login';
 
 		$this->form_validation->set_rules('identity', 'Identity',  'required|max_length[254]', array(
 			'required'   => 'Please enter your username or email.',
@@ -42,12 +42,8 @@ class Login extends No_Auth_Controller {
 			if($identity) {
 				if($this->ion_auth->login($identity, $this->input->post('password'), $remember)) {
 					//login is successful
+					$this->session->set_flashdata('notices', 'Login Successful');
 
-					//Add some extra session data
-					$this->session->set_userdata('username', $this->ion_auth->user()->row()->username);
-
-					//Errors
-					$this->session->set_flashdata('notices', $this->ion_auth->messages());
 
 					//redirect to main page, or previous URL
 					$this->session->keep_flashdata('referred_from');
@@ -58,13 +54,13 @@ class Login extends No_Auth_Controller {
 					} //@codeCoverageIgnore
 				} else {
 					//login was unsuccessful
-					$this->session->set_flashdata('notices', $this->ion_auth->errors());
+					$this->ion_auth->set_error('login_unsuccessful');
 
 					$isValid = FALSE;
 				}
 			} else {
 				//identity doesn't exist
-				$this->session->set_flashdata('notices', '<p>Incorrect Login</p>');
+				$this->ion_auth->set_error('login_unsuccessful');
 
 				$isValid = FALSE;
 			}
@@ -72,9 +68,6 @@ class Login extends No_Auth_Controller {
 
 		//login wasn't valid, failed, or this is a fresh login attempt
 		if(!$isValid) {
-			$this->body_data['notices'] = validation_errors() ? validation_errors() : $this->session->flashdata('notices');
-			//$errors = $this->form_validation->error_array();
-
 			$this->body_data['form_create'] = array (
 				'action' => 'user/login',
 
