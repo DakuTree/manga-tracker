@@ -20,8 +20,10 @@ services:
     # container will see your local code changes
     volumes:
       - ./application/config:/app/application/config
-      - ./application/models/Tracker:/app/application/models/Tracker
-      - ./application/tests/models/Tracker/Sites:/app/application/tests/models/Tracker/Sites
+      - ./application/controllers:/app/application/controllers
+      - ./application/core:/app/application/core
+      - ./application/models:/app/application/models
+      - ./application/tests/models:/app/application/tests/models
       - ./application/views:/app/application/views
       - ./public/assets/img:/app/public/assets/img
       - ./public/assets/less/modules:/app/public/assets/less/modules
