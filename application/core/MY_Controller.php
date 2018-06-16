@@ -16,7 +16,7 @@ class MY_Controller extends CI_Controller {
 		$this->global_data['analytics_tracking_id'] = $this->config->item('tracking_id');
 
 		$this->global_data['theme'] = $this->User_Options->get('theme');
-		if(ENVIRONMENT !== 'development') {
+		if(ENVIRONMENT === 'production') {
 			$this->global_data['compiled_css_path'] = function () {
 				$css_path = "css/main.{$this->global_data['theme']}";
 				return asset_url() . $css_path . filemtime(APPPATH . "../public/assets/{$css_path}.css") . '.css';
