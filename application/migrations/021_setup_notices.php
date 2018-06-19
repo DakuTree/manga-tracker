@@ -54,8 +54,8 @@ class Migration_Setup_Notices extends CI_Migration {
 		//For whatever reason, dbforge lacks a unique/foreign key function.
 		$this->db->query('
 			ALTER TABLE `tracker_user_notices`
-				ADD CONSTRAINT `FK_tracker_user_notices_auth_users` FOREIGN KEY (`user_id`) REFERENCES `auth_users`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-				ADD CONSTRAINT `FK_tracker_user_notices_tracker_notices` FOREIGN KEY (`hidden_notice_id`) REFERENCES `tracker_notices` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION;'
+				ADD CONSTRAINT `FK_tracker_user_notices_auth_users` FOREIGN KEY (`user_id`) REFERENCES `auth_users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+				ADD CONSTRAINT `FK_tracker_user_notices_tracker_notices` FOREIGN KEY (`hidden_notice_id`) REFERENCES `tracker_notices` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;'
 		);
 	}
 
