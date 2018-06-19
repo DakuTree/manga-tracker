@@ -1,31 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class IndexC extends User_Controller {
+class Dashboard extends User_Controller {
 	public function __construct() {
 		parent::__construct();
 	}
 
 	public function index() : void {
-		if(!$this->User->logged_in()) {
-			$this->_frontpage();
-		} else {
-			$this->_dashboard();
-		}
-	}
-
-	private function _frontpage() : void {
-		$this->header_data['title'] = "Index";
-		$this->header_data['page']  = "index";
-
-		//redirect('user/login');
-		$this->_render_page('FrontPage');
-	}
-
-	private function _dashboard() : void {
 		$this->load->helper('form');
 
-		$this->header_data['title'] = "Dashboard";
-		$this->header_data['page']  = "dashboard";
+		$this->header_data['title'] = 'Dashboard';
+		$this->header_data['page']  = 'dashboard';
 
 		$trackerData                     = $this->Tracker->list->get();
 		$this->body_data['trackerData']  = $trackerData['series'];

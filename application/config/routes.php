@@ -48,12 +48,11 @@
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'IndexC';
+$route['default_controller'] = 'FrontPage';
 
 //CHECK: Should I limit everything to the specific methods? I.E: GET or POST
 //       This would avoid POST working on pages which should be gotten via GET. Does it matter?
 
-//usernames are limited to a-Z, 0-9, _ & - characters. 4min, 15 max length
 $route['user/signup']                = 'User/Auth/Signup';
 $route['user/signup/(.*)']           = 'User/Auth/Signup/index/$1';
 $route['user/forgot_password']       = 'User/Auth/Forgot_Password';
@@ -68,6 +67,10 @@ $route['user/favourites/([0-9]+)']   = 'User/Favourites/index/$1';
 $route['user/favourites/export/(csv|json)'] = 'User/Favourites/export/$1';
 $route['user/options']               = 'User/Options';
 
+$route['user/dashboard']      = 'User/Dashboard';
+$route['user/dashboard_beta'] = 'User/DashboardBeta'; //TEMP
+
+//usernames are limited to a-Z, 0-9, _ & - characters. 4min, 15 max length
 $route['list/([a-zA-Z0-9_-]+)']              = 'User/PublicList/index/$1';
 $route['list/([a-zA-Z0-9_-]+)\.([a-zA-Z]+)'] = 'User/PublicList/index/$1/$2';
 
@@ -76,10 +79,7 @@ $route['history/([0-9]+)/([0-9]+)']  = 'TitleHistory/index/$1/$2';
 
 $route['update_status'] = 'UpdateStatus';
 
-//TEMP
-$route['user/dashboard_beta'] = 'User/DashboardBeta';
-
-$route['api/internal/get_list']                                                  = 'API/Internal/GetList';
+$route['api/internal/get_list']                                                      = 'API/Internal/GetList';
 $route['api/internal/get_list/(all|reading|on-hold|plan-to-read|(custom(?:1|2|3)))'] = 'API/Internal/GetList/index/$1';
 
 $route['ajax/username_check']['post'] = 'Ajax/UsernameCheck'; //rate limited
@@ -99,9 +99,9 @@ $route['ajax/set_mal_id']['post']      = 'Ajax/TrackerInline/set_mal_id';
 $route['export_list']                 = 'Ajax/TrackerInline/export';
 //$route['import_list']['post']         = 'Ajax/TrackerInline/import';
 
-$route['import_amr']                  = 'Import_AMR';
+$route['import_amr'] = 'Import_AMR';
 
-$route['report_issue']      = 'ReportIssue';
+$route['report_issue'] = 'ReportIssue';
 
 $route['stats']       = 'Stats';
 $route['help']        = 'Help';
@@ -124,9 +124,11 @@ $route['userscripts/sites/.*\.js']           = 'Ajax/Userscript/site_fallback';
 /*** SPECIAL ROUTING ***/
 if(is_cli()) {
 	$route['admin/migrate']              = 'AdminCLI/migrate';
+
 	$route['admin/update_series']        = 'AdminCLI/updateSeries';
 	$route['admin/update_series_custom'] = 'AdminCLI/updateSeriesCustom';
 	$route['admin/refollow_custom']      = 'AdminCLI/refollowCustom';
+
 	$route['admin/test']                 = 'AdminCLI/testSite/do/nothing';
 	$route['admin/test/(.*?)/(.*)']      = 'AdminCLI/testSite/$1/$2';
 }

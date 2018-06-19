@@ -6,13 +6,13 @@ class DashboardBeta extends Auth_Controller {
 	}
 
 	public function index() : void {
-		$this->header_data['title'] = "Dashboard Beta";
-		$this->header_data['page']  = "dashboard_beta";
+		$this->header_data['title'] = 'Dashboard Beta';
+		$this->header_data['page']  = 'dashboard_beta';
 
 		$this->load->helper('form');
 
-		$this->header_data['title'] = "Dashboard Beta";
-		$this->header_data['page']  = "dashboard_beta";
+		$this->header_data['title'] = 'Dashboard Beta';
+		$this->header_data['page']  = 'dashboard_beta';
 
 		$trackerData                     = $this->Tracker->list->get();
 		$this->body_data['trackerData']  = $trackerData['series'];
@@ -44,6 +44,6 @@ class DashboardBeta extends Auth_Controller {
 		//Dashboard Beta
 		$this->body_data['siteAliases'] = str_replace('-', '.', json_encode($this->config->item('site_aliases')));
 
-		$this->_render_page("User/DashboardBeta");
+		$this->_render_page('User/DashboardBeta');
 	}
 }
