@@ -99,7 +99,7 @@ class User_Model extends CI_Model {
 		return $user;
 	}
 
-	public function get_gravatar_url($email = NULL, $size = NULL) : string {
+	public function getGravatarURL($email = NULL, $size = NULL) : string {
 		$email = $email ?? $this->email;
 		//TODO: FIXME ON PROFILE PAGES
 		return $this->gravatar->get($email, $size);

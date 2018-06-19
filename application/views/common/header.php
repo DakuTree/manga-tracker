@@ -43,7 +43,7 @@
 			<?php } else { ?>
 			<li class="nav-item dropdown p-0">
 				<a class="nav-link dropdown-toggle px-1 py-0" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="<?=$this->User->get_gravatar_url()?>" class="profile-image" />
+					<img src="<?=$this->User->getGravatarURL()?>" class="profile-image" />
 					<?=$username?>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
