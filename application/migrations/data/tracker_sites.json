@@ -4,100 +4,477 @@
 			"id"         : "1",
 			"site"       : "mangafox.me",
 			"site_class" : "MangaFox",
+			"status"     : "enabled",
 			"use_custom" : "Y"
 		},
 		{
 			"id"         : "2",
 			"site"       : "www.mangahere.co",
-			"site_class" : "MangaHere"
+			"site_class" : "MangaHere",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "3",
 			"site"       : "bato.to",
 			"site_class" : "Batoto",
+			"status"     : "disabled",
 			"use_custom" : "Y"
 		},
 		{
 			"id"         : "4",
 			"site"       : "dynasty-scans.com",
-			"site_class" : "DynastyScans"
+			"site_class" : "DynastyScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "5",
 			"site"       : "www.mangapanda.com",
-			"site_class" : "MangaPanda"
+			"site_class" : "MangaPanda",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "6",
-			"site"       : "readms.net",
-			"site_class" : "MangaStream"
+			"site"       : "mangastream.com",
+			"site_class" : "MangaStream",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "7",
 			"site"       : "www.webtoons.com",
-			"site_class" : "WebToons"
+			"site_class" : "WebToons",
+			"status"     : "enabled",
+			"use_custom" : "N"
 		},
 		{
 			"id"         : "8",
 			"site"       : "kissmanga.com",
 			"site_class" : "KissManga",
-			"status"     : "disabled"
+			"status"     : "disabled",
+			"use_custom" : "N"
 		},
 		{
 			"id"         : "9",
 			"site"       : "reader.kireicake.com",
-			"site_class" : "KireiCake"
+			"site_class" : "KireiCake",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "10",
 			"site"       : "gameofscanlation.moe",
-			"site_class" : "GameOfScanlation"
+			"site_class" : "GameOfScanlation",
+			"status"     : "disabled",
+			"use_custom" : "N"
 		},
 		{
 			"id"         : "11",
-			"site"       : "mngcow.co",
-			"site_class" : "MangaCow"
+			"site"       : "mangacow.ws",
+			"site_class" : "MangaCow",
+			"status"     : "disabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "12",
 			"site"       : "reader.seaotterscans.com",
-			"site_class" : "SeaOtterScans"
+			"site_class" : "SeaOtterScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "13",
 			"site"       : "helveticascans.com",
-			"site_class" : "HelveticaScans"
+			"site_class" : "HelveticaScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "14",
 			"site"       : "reader.sensescans.com",
-			"site_class" : "SenseScans"
+			"site_class" : "SenseScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "15",
 			"site"       : "jaiminisbox.com",
-			"site_class" : "JaiminisBox"
+			"site_class" : "JaiminisBox",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "16",
 			"site"       : "kobato.hologfx.com",
-			"site_class" : "DokiFansubs"
+			"site_class" : "DokiFansubs",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "17",
 			"site"       : "www.demonicscans.com",
-			"site_class" : "DemonicScans"
+			"site_class" : "DemonicScans",
+			"status"     : "disabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "18",
 			"site"       : "read.egscans.com",
-			"site_class" : "EGScans"
+			"site_class" : "EGScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		},
 		{
 			"id"         : "19",
 			"site"       : "reader.deathtollscans.net",
 			"site_class" : "DeathTollScans",
-			"status"     : "disabled"
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "20",
+			"site"       : "reader.whiteoutscans.com",
+			"site_class" : "WhiteoutScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "21",
+			"site"       : "otscans.com",
+			"site_class" : "OneTimeScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "22",
+			"site"       : "reader.s2smanga.com",
+			"site_class" : "S2Scans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "23",
+			"site"       : "www.readmanga.today",
+			"site_class" : "ReadMangaToday",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "24",
+			"site"       : "merakiscans.com",
+			"site_class" : "MerakiScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "25",
+			"site"       : "manga.fascans.com",
+			"site_class" : "FallenAngelsScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "26",
+			"site"       : "mangaichiscans.mokkori.fr",
+			"site_class" : "MangaichiScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "27",
+			"site"       : "read.lhtranslation.com",
+			"site_class" : "LHTranslation",
+			"status"     : "enabled",
+			"use_custom" : "N"
+		},
+		{
+			"id"         : "28",
+			"site"       : "hotchocolatescans.com",
+			"site_class" : "HotChocolateScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "29",
+			"site"       : "whitecloudpavilion.com",
+			"site_class" : "WhiteCloudPavillion",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "30",
+			"site"       : "www.slide.world-three.org",
+			"site_class" : "WorldThree",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "31",
+			"site"       : "mangazuki.co",
+			"site_class" : "Mangazuki",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "32",
+			"site"       : "reader.ygscans.com",
+			"site_class" : "YummyGummyScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "33",
+			"site"       : "reader.championscans.com",
+			"site_class" : "ChampionScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "34",
+			"site"       : "reader.puremashiro.moe",
+			"site_class" : "PureMashiroScans",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "35",
+			"site"       : "ravens-scans.com",
+			"site_class" : "RavensScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "36",
+			"site"       : "reader.thecatscans.com",
+			"site_class" : "CatScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "37",
+			"site"       : "hatigarmscans.net",
+			"site_class" : "HatigarmScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "38",
+			"site"       : "reader.serenade.moe",
+			"site_class" : "PhoenixSerenade",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "39",
+			"site"       : "forums.lolscans.com",
+			"site_class" : "LOLScans",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "40",
+			"site"       : "mangarock.com",
+			"site_class" : "MangaRock",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "41",
+			"site"       : "reader.evilflowers.com",
+			"site_class" : "EvilFlowers",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "42",
+			"site"       : "shoujohearts.com",
+			"site_class" : "ShoujoHearts",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "43",
+			"site"       : "www.twistedhelscans.com",
+			"site_class" : "TwistedHelScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "44",
+			"site"       : "www.cmreader.info",
+			"site_class" : "ChibiManga",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "45",
+			"site"       : "psychoplay.co",
+			"site_class" : "PsychoPlay",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "46",
+			"site"       : "mangakakalot.com",
+			"site_class" : "MangaKakalot",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "47",
+			"site"       : "reader.dkthias.com",
+			"site_class" : "DKThiasScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "48",
+			"site"       : "reader.fos-scans.com",
+			"site_class" : "ForgottenScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "49",
+			"site"       : "saikoscans.ml",
+			"site_class" : "SaikoScans",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "50",
+			"site"       : "reader.shoujosense.com",
+			"site_class" : "ShoujoSense",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "51",
+			"site"       : "mangatopia.net",
+			"site_class" : "MangaTopia",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "52",
+			"site"       : "reader.vortex-scans.com",
+			"site_class" : "VortexScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "53",
+			"site"       : "dokusha.info",
+			"site_class" : "Dokusha",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "54",
+			"site"       : "elpsycongroo.tk",
+			"site_class" : "ElPsyCongroo",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "55",
+			"site"       : "bangaqua.com",
+			"site_class" : "Bangaqua",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "56",
+			"site"       : "damn-feels.com",
+			"site_class" : "DamnFeels",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "57",
+			"site"       : "atelierdunoir.org",
+			"site_class" : "AtelierDuNoir",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "58",
+			"site"       : "reader.holylolikingdom.net",
+			"site_class" : "Lolitannia",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "59",
+			"site"       : "riceballicious.info",
+			"site_class" : "Riceballicious",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "60",
+			"site"       : "mangadex.org",
+			"site_class" : "MangaDex",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "61",
+			"site"       : "reader.tukimoop.pw",
+			"site_class" : "TukiScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "62",
+			"site"       : "sodascans.me",
+			"site_class" : "SodaScans",
+			"status"     : "disabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "63",
+			"site"       : "reader.roseliascans.com",
+			"site_class" : "RoseliaScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "64",
+			"site"       : "taptaptaptaptap.net",
+			"site_class" : "TapTrans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "65",
+			"site"       : "reader.sascans.com",
+			"site_class" : "SAScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "66",
+			"site"       : "reader.letitgo.scans.today",
+			"site_class" : "LetItGoScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "67",
+			"site"       : "zeroscans.com",
+			"site_class" : "ZeroScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
+		},
+		{
+			"id"         : "68",
+			"site"       : "reader.naniscans.xyz",
+			"site_class" : "NaniScans",
+			"status"     : "enabled",
+			"use_custom" : "Y"
 		}
 	]
 }
