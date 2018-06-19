@@ -4,7 +4,7 @@
  * @coversDefaultClass SAScans
  * @group              myMangaReaderCMS
  */
-class ChibiManga_test extends SiteTestCase {
+class SAScans_test extends SiteTestCase {
 	public function test_success() {
 		$testSeries = [
 			'manuke-na-fps-player-ga-isekai-e-ochita-baai'                  => 'Manuke na FPS Player ga Isekai e Ochita Baai',

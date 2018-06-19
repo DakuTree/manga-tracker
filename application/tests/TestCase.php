@@ -46,6 +46,10 @@ class TestCase extends CIPHPUnitTestCase {
 		         ->willReturn(TRUE);
 
 		$ion_auth->expects($this->any())
+		         ->method('get_user_id')
+		         ->will(0);
+
+		$ion_auth->expects($this->any())
 		         ->method($this->anything())
 		         ->will($this->returnSelf());
 		
