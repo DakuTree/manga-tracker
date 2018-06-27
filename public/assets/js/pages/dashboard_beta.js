@@ -307,7 +307,7 @@ $(function(){
 						//Wait one minute, then change favicon to alert user of update
 						setTimeout(function(){
 							//TODO: This "should" just be favicon.updated.ico, and we should handle any ENV stuff on the backend
-							$('link[rel*="icon"]').attr('href', `${base_url}favicon.production.updated.ico`);
+							$('link[rel*="icon"]').attr('href', `${base_url}favicon.updated.ico`);
 
 							//location.reload(); //TODO: We should have an option for this?
 						}, 60000);

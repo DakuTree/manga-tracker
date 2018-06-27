@@ -5,7 +5,7 @@
 // @description  A cross-site manga tracker.
 // @homepageURL  https://trackr.moe
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
-// @icon         https://trackr.moe/favicon.production.png
+// @icon         https://trackr.moe/favicon.png
 // @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
 // @include      /^https?:\/\/fanfox\.net\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^https?:\/\/(?:www\.)?mangahere\.c[o|c]\/manga\/.+\/.*\/?.*\/.*$/
@@ -76,8 +76,8 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-06-14
-// @version      1.10.42
+// @updated      2018-06-27
+// @version      1.10.43
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
