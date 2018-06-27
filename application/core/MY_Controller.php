@@ -19,11 +19,11 @@ class MY_Controller extends CI_Controller {
 		if(ENVIRONMENT === 'production') {
 			$this->global_data['compiled_css_path'] = function () {
 				$css_path = "css/main.{$this->global_data['theme']}";
-				return asset_url() . $css_path . filemtime(APPPATH . "../public/assets/{$css_path}.css") . '.css';
+				return asset_url() . $css_path . '.' . filemtime(APPPATH . "../public/assets/{$css_path}.css") . '.css';
 			};
 
 			$js_path = 'js/compiled.min';
-			$this->global_data['compiled_js_path'] = asset_url() . $js_path . filemtime(APPPATH . "../public/assets/{$js_path}.js") . '.js';
+			$this->global_data['compiled_js_path'] = asset_url() . $js_path . '.' . filemtime(APPPATH . "../public/assets/{$js_path}.js") . '.js';
 		}
 	}
 
