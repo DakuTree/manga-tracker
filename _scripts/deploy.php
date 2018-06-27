@@ -83,8 +83,8 @@ task('deploy:compile_assets', function() {
 		cd {{release_path}}/public/assets/js && \
 		exec google-closure-compiler-js \
 		--compilationLevel SIMPLE_OPTIMIZATIONS \
-		--externs {{release_path}}/public/assets/js/main.js \
-		--externs {{release_path}}/public/assets/js/pages/*.js \
+		{{release_path}}/public/assets/js/main.js \
+		{{release_path}}/public/assets/js/pages/*.js \
 		> {{release_path}}/public/assets/js/compiled.min.js \
 	)');
 });

@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   web:
     image: manga-tracker.local
 
@@ -13,7 +12,6 @@ services:
 
     command: bash -c '/app/.docker/wait-for-it.sh db:3306 -- php public/index.php admin/migrate && exec apache2-foreground'
 
-    # map host port 8080 to container port 80
     ports:
         - 20180:80
 
