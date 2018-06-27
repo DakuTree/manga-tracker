@@ -85,7 +85,7 @@ task('deploy:compile_assets', function() {
 		--compilationLevel SIMPLE_OPTIMIZATIONS \
 		--externs {{release_path}}/public/assets/js/main.js \
 		--externs {{release_path}}/public/assets/js/pages/*.js \
-		> {{release_path}}/public/assets/js/main.compiled.min.js \
+		> {{release_path}}/public/assets/js/compiled.min.js \
 	)');
 });
 after('deploy:vendors', 'deploy:compile_assets');
