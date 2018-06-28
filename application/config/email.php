@@ -39,3 +39,5 @@ $config['bcc_batch_mode'] = FALSE;
 $config['bcc_batch_size'] = 200;
 
 $config['dsn'] = TRUE;
+
+include '_secure/email.php'; //CI BUG: For some odd reason, this isn't picked up by MY_Config. Possibly due to MY_Config not being loaded yet?
