@@ -146,8 +146,7 @@ class User_Model_test extends TestCase {
 	public function test_get_gravatar_url() {
 		$User_Model = $this->User_Model;
 
-		//FIXME: This uses global_data which causes errors
-		$result = $User_Model->get_gravatar_url();
+		$result = $User_Model->getGravatarURL();
 
 		//NOTE: Gravatar lib changes between using http & https depending on what is being used, tests only use http though.
 		$this->assertRegExp('/^http:\/\/www\.gravatar\.com\/avatar\/[a-z0-9]+\.png\?s=[0-9]+\&d=[a-z]/i', $result);
