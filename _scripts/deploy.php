@@ -8,6 +8,7 @@ namespace Deployer;
 
 if(basename(getcwd()) !== 'manga-tracker') die('Bad CWD: Call from manga-tracker with dep -f=_scripts/deploy.php deploy');
 
+require 'recipe/cachetool.php'; //requires deployer/recipes
 require 'recipe/codeigniter.php';
 
 // Project name
@@ -113,6 +114,8 @@ task('deploy:copy_files', function () {
 	}
 });
 after('deploy:shared', 'deploy:copy_files');
+
+after('deploy:symlink', 'cachetool:clear:opcache');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
