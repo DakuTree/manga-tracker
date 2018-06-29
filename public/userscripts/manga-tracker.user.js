@@ -76,14 +76,14 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-06-27
-// @version      1.10.43
+// @updated      2018-06-29
+// @version      1.10.44
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @require      https://cdn.rawgit.com/flaviusmatis/easyModal.js/48cdbdfe/jquery.easyModal.js
-// @require      https://trackr.moe/userscripts/sites/_trackr.moe.8.js
+// @require      https://trackr.moe/userscripts/sites/_trackr.moe.9.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.3.js

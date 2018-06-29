@@ -7,7 +7,7 @@
 			let _this = this;
 
 			switch(location.pathname) {
-				case '/':
+				case '/user/dashboard':
 					//Dashboard / Front Page
 					if($('#page[data-page=dashboard]').length) {
 						//TODO: Is there a better way to do this?
