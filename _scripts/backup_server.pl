@@ -24,8 +24,6 @@ say "Running backup_server.pl @ ".localtime();
 my ($tempDir, $S3URI, $trackr_root);
 
 my $dirname = dirname(abs_path(__FILE__));
-if(!($dirname =~ /\/public_html\/_scripts$/)) { die("This is being run in an invalid location?"); }
-my $trackrLocation = ($dirname =~ s/\/_scripts$//r);
 
 my $cfg      = loadConfig();
 $S3URI       = $cfg->param('backup.s3uri');
