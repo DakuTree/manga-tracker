@@ -23,6 +23,13 @@ set('git_tty', FALSE);
 // Fix bug on windows
 set('ssh_multiplexing', false);
 
+set('clear_paths', [
+	'.docker',
+	'.git',
+	'.github',
+	'.idea'
+]);
+
 add('copy_files', [
 	'application/config/_secure/email.php',
 	'application/config/_secure/mailgun.php',
@@ -35,6 +42,7 @@ add('shared_dirs', []);
 
 // Writable dirs by web server 
 add('writable_dirs', []);
+
 set('allow_anonymous_stats', false);
 
 // Hosts
