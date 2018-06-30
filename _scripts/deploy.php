@@ -98,6 +98,7 @@ task('deploy:compile_assets', function() {
 	)');
 });
 after('deploy:vendors', 'deploy:compile_assets');
+after('deploy:vendors', 'deploy:clear_paths');
 
 task('deploy:copy_files', function () {
 	$sharedPath = '{{deploy_path}}/shared';
