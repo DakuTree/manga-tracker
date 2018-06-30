@@ -31,6 +31,7 @@ set('clear_paths', [
 ]);
 
 add('copy_files', [
+	'_scripts/config.ini',
 	'application/config/_secure/email.php',
 	'application/config/_secure/mailgun.php',
 	'application/config/_secure/monolog.php',
