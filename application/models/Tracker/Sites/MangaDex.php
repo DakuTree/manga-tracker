@@ -123,7 +123,7 @@ class MangaDex extends Base_Site_Model {
 						$i++;
 						$titleData = [];
 
-						$nodes_title         = $xpath->query("td[3]/a", $row);
+						$nodes_title         = $xpath->query('td[3]/a', $row);
 						$nodes_rows_chapters = $xpath->query("following-sibling::tr[.//td[@title] and count(preceding-sibling::tr[.//td[@rowspan]])=$i]", $row);
 
 						if($nodes_title->length === 1 && $nodes_rows_chapters->length >= 1) {
@@ -178,7 +178,7 @@ class MangaDex extends Base_Site_Model {
 			$page++;
 		}
 
-		$this->cache->save("mangadex_lastchapterid", $latestChapterID,  31536000 /* 1 year, or until we renew it */);
+		$this->cache->save('MangaDex_lastchapterid', $latestChapterID, 31536000 /* 1 year, or until we renew it */);
 
 		return $titleDataList;
 	}

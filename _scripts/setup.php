@@ -2,7 +2,7 @@
 
 (PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('CLI only.');
 
-chdir(realpath(dirname(__FILE__."../", 2))); //Navigate to root DIR
+chdir(realpath(dirname(__FILE__ . '../', 2))); //Navigate to root DIR
 
 function setup() {
 	vendor_copy();
@@ -10,7 +10,7 @@ function setup() {
 	chmod_files();
 
 	//Make sure .gitkeep file is recreated
-	touch(getcwd()."/application/tests/_ci_phpunit_test/.gitkeep");
+	touch(getcwd() . '/application/tests/_ci_phpunit_test/.gitkeep');
 }
 
 /**********************************************************************************************************************/
@@ -21,7 +21,7 @@ function vendor_copy() {
 }
 
 function chmod_files() {
-	$directory = new RecursiveDirectoryIterator(getcwd()."/application/config");
+	$directory = new RecursiveDirectoryIterator(getcwd() . '/application/config');
 	$flattened = new RecursiveIteratorIterator($directory);
 
 	$files = new RegexIterator($flattened, '/^(.*\/)?(database|database_password|config|email|recaptcha|sites)\.php/');
