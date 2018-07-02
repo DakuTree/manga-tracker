@@ -77,7 +77,15 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		$query = $query->get();
 
 		if($query->num_rows() > 0) {
+			$hardRateLimit  = 500; //This is to avoid any possible IP bans by cache breaking again.
+			$siteRateLimits = [];
 			foreach ($query->result() as $row) {
+				if(!array_key_exists($row->site_class,$siteRateLimits)) {
+					$siteRateLimits[$row->site_class] = 0;
+				}
+				$siteRateLimits[$row->site_class]++;
+				if($siteRateLimits[$row->site_class] > $hardRateLimit) continue;
+
 				$this->handleUpdate($row);
 			}
 		}
