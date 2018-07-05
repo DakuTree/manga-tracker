@@ -1,5 +1,3 @@
-<?=validation_errors()?>
-
 <div class="row" style="margin-top: 4px;">
 	<div class="col-sm-6">
 		<div id="options-site">
