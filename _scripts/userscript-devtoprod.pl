@@ -18,9 +18,9 @@ if($> != 0) { die("Script must be run as root!"); }
 my $trackrLocation = dirname(abs_path(__FILE__)) =~ s/[\\|\/]_scripts$//r;
 
 my $userscriptDev  = read_file($trackrLocation."/public/userscripts/manga-tracker.dev.user.js");
-my $userscriptProd = ($userscriptDev =~ s/dev\.trackr\.moe/trackr\.moe/rg);
+my $userscriptProd = ($userscriptDev =~ s/manga-tracker\.localhost:20180/trackr\.moe/rg =~ s/http:\/\/trackr\.moe/https:\/\/trackr.moe/rg);
 
-my $goodReplace  = "=== 'https://dev.trackr.moe'";
+my $goodReplace  = "=== 'http://manga-tracker.localhost:20180'";
 my $badReplace = "=== 'https://trackr.moe'";
 $userscriptProd =~ s/$badReplace/$goodReplace/g;
 
