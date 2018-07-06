@@ -31,7 +31,9 @@ class MangaKakalot extends Base_Site_Model {
 			'span[3]',
 			'span[1]/a',
 			function($data) {
-				return strpos($data, 'Sorry, the page you have requested cannot be found.') !== FALSE || strpos($data, 'REDIRECT : http://manganelo.com/manga/') !== FALSE;
+				return strpos($data, 'Sorry, the page you have requested cannot be found.') !== FALSE
+				       || strpos($data, 'REDIRECT :') !== FALSE
+				       || strpos($data, '<meta name="twitter:site" content="manganelo">') !== FALSE;
 			}
 		);
 		if($data) {
