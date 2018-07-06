@@ -2,7 +2,7 @@
 
 class MangaRock extends Base_Site_Model {
 	public $titleFormat   = '/^[0-9]+$/';
-	public $chapterFormat = '/^[0-9]+:--:(?:v[0-9]+\/)?c[0-9\.]+$/';
+	public $chapterFormat = '/^[0-9]+:--:.+$/';
 
 	public $customType    = 2;
 
@@ -56,7 +56,7 @@ class MangaRock extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = "https://api.mangarockhd.com/query/web400/mrs_latest";
+		$updateURL = 'https://api.mangarockhd.com/query/web400/mrs_latest';
 		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
 			$json = json_decode($content['body'], TRUE);
 			if(!empty($json['data'])) {
@@ -71,8 +71,8 @@ class MangaRock extends Base_Site_Model {
 
 						preg_match('/^(?:Vol\.(?<volume>\S+) )?(?:Chapter (?<chapter>[^\s:]+)(?:\s?-\s?(?<extra>[0-9]+))?):?.*/', $latestChapter['name'], $text);
 						preg_match('/^mrs-chapter-(?<id>[0-9]+)$/', $latestChapter['oid'], $matches_id);
-						$titleData['latest_chapter'] = $matches_id['id'].':--:'.((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));;
-						$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($latestChapter['updatedAt']));
+						$titleData['latest_chapter'] = $matches_id['id'].':--:'.((!empty($text['volume']) ? 'v'.$text['volume'].'/' : '') . 'c'.$text['chapter'] . (!empty($text['extra']) ? '-'.$text['extra'] : ''));
+						$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($latestChapter['updatedAt']));
 
 						$titleDataList[$title_url] = $titleData;
 					}
