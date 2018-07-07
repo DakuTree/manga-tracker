@@ -52,24 +52,18 @@
 					<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
 
 					<?php if($row['has_tags']) { ?>
-					<small class="more-info pull-right text-muted">Less info</small>
-					<div class="tags" style="display: block">
-						<?php } else { ?>
-						<small class="more-info pull-right text-muted">More info</small>
-						<div class="tags">
-							<?php } ?>
-							<small>
-								Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
-							</small>
-						</div>
+					<div class="tags">
+						<small>
+							Tags: <em class="text-lowercase tag-list"><?=($row['has_tags'] ? $row['tag_list'] : "none")?></em>
+						</small>
+					</div>
+					<?php } ?>
 				</td>
 				<td>
 					<?=htmlentities($row['generated_current_data']['number'])?>
 					<?php if(!is_null($row['title_data']['ignore_chapter'])) { ?><span class='hidden-chapter' title='The latest chapter was marked as ignored.'><?=$row['generated_ignore_data']['number']?></span><?php } ?>
 				</td>
-				<td>
-					<?=htmlentities($row['generated_latest_data']['number'])?>
-				</td>
+				<td><?=htmlentities($row['generated_latest_data']['number'])?></td>
 			</tr>
 		<?php } ?>
 		</tbody>
