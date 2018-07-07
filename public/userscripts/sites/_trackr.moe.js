@@ -113,7 +113,7 @@
 						e.preventDefault();
 					});
 
-					if(location.hostname === 'dev.trackr.moe') {
+					if(location.hostname === 'manga-tracker.localhost:20180') {
 						$('#api-key').text(config['api-key-dev'] || 'not set');
 					} else {
 						$('#api-key').text(config['api-key'] || 'not set');
@@ -132,7 +132,7 @@
 									if(json['api-key']) {
 										$('#api-key').text(json['api-key']);
 
-										if(location.hostname === 'dev.trackr.moe') {
+										if(location.hostname === 'manga-tracker.localhost:20180') {
 											config['api-key-dev'] = json['api-key'];
 										} else {
 											config['api-key']     = json['api-key'];
@@ -183,7 +183,7 @@
 										if(json['api-key'] !== '') {
 											$('#api-key').text(json['api-key']);
 
-											if(location.hostname === 'dev.trackr.moe') {
+											if(location.hostname === 'manga-tracker.localhost:20180') {
 												config['api-key-dev'] = json['api-key'];
 											} else {
 												config['api-key'] = json['api-key'];

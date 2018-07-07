@@ -92,7 +92,7 @@ class FoolSlideGenerator {
 		$baseDomain   = 'trackr.moe';
 		if(file_exists('./public/userscripts/manga-tracker.dev.user.js')) {
 			$baseFileName = './public/userscripts/manga-tracker.dev.user.js';
-			$baseDomain   = 'dev.trackr.moe';
+			$baseDomain   = 'manga-tracker.localhost:20180';
 		}
 
 		$baseFile = file_get_contents($baseFileName);
