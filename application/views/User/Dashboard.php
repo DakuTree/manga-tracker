@@ -115,7 +115,7 @@
 	<tbody>
 		<?php foreach($trackerDataType['manga'] as $row) {
 			$trInfo = '';
-			if($row['site_data']['status'] == 'disabled') {
+			if($row['site_data']['status'] === 'disabled') {
 				$trInfo = 'class="bg-danger"';
 			} else if($row['title_data']['status'] === 255) {
 				$trInfo = 'class="bg-danger" title="This title is no longer being updated as it has been marked as deleted/ignored."';
