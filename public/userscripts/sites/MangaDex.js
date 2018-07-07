@@ -1,4 +1,4 @@
-/* global window.generateChapterList */
+/* global unsafeWindow */
 (function(sites) {
 	/**
 	 * MangaDex (www)
@@ -55,7 +55,7 @@
 				    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
 				    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
 				    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
-				this.viewerCustomImageList = pages.map(function(filename, i) {
+				this.viewerCustomImageList = pages.map(function(filename/*, i*/) {
 					if(server === '/data/') {
 						return `${_this.https}://mangadex.org/data/${imageHash[1]}/${filename}`;
 					} else {
@@ -66,7 +66,7 @@
 			this.page_count             = this.viewerCustomImageList.length;
 
 			this.viewerChapterName      = this.chapter.split(':')[2];
-			this.viewerTitle            = $('h3[class="panel-title"] > a[title').text();
+			this.viewerTitle            = $('h3[class="panel-title"] > a[title]').text();
 		},
 		stylize : function() {
 			$('.info-top-chapter, .option_wrap').remove();
@@ -75,6 +75,82 @@
 			let newViewer = $('<div/>', {id: 'viewer'});
 
 			$('#content').replaceWith(newViewer); //Set base viewer div
+
+			callback(false, true);
+		}
+	};
+
+	/**
+	 * Beta.MangaDex
+	 * @type {SiteObject}
+	 */
+	sites['beta.mangadex.org'] = {
+		//FIXME: beta only has http support for now. Make sure to switch to https on release
+		preInit : function(callback) {
+			//NOTE: We need to wait for the page to load as if we call this before the initial load it will make duplicate requests to the API.
+			let pageLoad = $.Deferred();
+			let checkSelector = setInterval(function () {
+				if($('.reader-images > *').length) {
+					pageLoad.resolve();
+					clearInterval(checkSelector);
+				} else {
+					console.log('trackr - Waiting for initial page load...');
+				}
+			}, 1000);
+			pageLoad.done(() => {
+				//Page is now loaded, now use the site JS API to grab the data ourselves.
+				//NOTE: This does not send duplicate API requests as it uses the cache from the page load request.
+				let chapterID = $('head').attr('data-chapter-id');
+				unsafeWindow.API.Chapter.create({id: chapterID}).then(data => {
+					this.preInitData = data;
+					callback();
+				});
+			});
+		},
+
+		setObjVars : function() {
+			/* This contains all chapter & manga data:
+			       - manga
+			         - chapterList (This is all chapter data according to language settings)
+			         - chapters (This is all chapter data, regardless of language settings
+			         - _data (Manga Data)
+			       - _data (Current Chapter Data)*/
+			let apiData        = this.preInitData,
+			    chapterData    = apiData._data,
+			    titleData      = apiData.manga;
+
+			let titleID      = chapterData.manga_id;
+			this.title       = titleID + ':--:' + chapterData.lang_name;
+
+			let chapter      = chapterData.id;
+			this.chapterNumber = `v${chapterData.volume}/c${chapterData.chapter}`.replace(/^v\//, '');
+			this.chapter     = chapterData.id + ':--:' + this.chapterNumber;
+
+			this.title_url   = `${this.https}://beta.mangadex.org/manga/${titleID}`;
+			this.chapter_url = `${this.https}://beta.mangadex.org/chapter/${chapter}`;
+
+			let tempList = {};
+			titleData.chapterList.forEach((chData) => {
+				let chapterNumber = `v${chData.volume}/c${chData.chapter}`.replace(/^v\//, '');
+				tempList[`${this.https}://beta.mangadex.org/chapter/${chData.id}`] = `${chapterNumber} : ${chData.title}`;
+			});
+			this.chapterList = tempList;
+			this.chapterListCurrent = this.chapter_url;
+
+			//TODO: Handle Webtoons
+			this.viewerCustomImageList = chapterData.page_array.map((filename) => {
+				return `${chapterData.server}${chapterData.hash}/${filename}`;
+			});
+			this.page_count             = this.viewerCustomImageList.length;
+
+			this.viewerChapterName      = chapterData.title;
+			this.viewerTitle            = titleData._data.title;
+		},
+		stylize : function() {
+			$('.reader-page-bar').remove();
+		},
+		preSetupViewer : function(callback) {
+			$('.reader-image-wrapper').empty().attr('id', 'viewer').removeAttr('class');
 
 			callback(false, true);
 		}
