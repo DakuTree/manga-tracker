@@ -54,6 +54,7 @@ $(function(){
 
 			this.enabledCategories = Object.keys(this.data.series).filter((n) => ['custom1', 'custom2', 'custom3'].includes(n));
 
+			this.initialSortOrder = this.getListSort(list_sort_type, list_sort_order);
 			this.tablesorterDefaults = {
 				initialized: function(table) {
 					//fix for being unable to sort title column by asc on a single click if using "Unread (Alphabetical)" sort
@@ -68,7 +69,7 @@ $(function(){
 				},
 
 				//FIXME: This is kinda unneeded, and it does add a longer delay to the tablesorter load, but we need it for setting the header sort direction icons..
-				sortList: _class.getListSort(list_sort_type, list_sort_order),
+				sortList: _class.initialSortOrder,
 
 				headers : {
 					1 : { sortInitialOrder : 'asc'  },
@@ -1162,24 +1163,39 @@ $(function(){
 			delete $.tablesorter.filter.types.range;
 			//endregion
 
+			this.$tables.on('click', '.table-reset', function() { $(this).closest('table').trigger('resetToLoadState'); });
+
 			this.refreshTablesorter();
 		}
 		refreshTablesorter() {
+			let _class = this;
+
 			this.$tables.trigger('destroy');
 
-			this.$tables.tablesorter(this.tablesorterDefaults);
+			this.$tables
+				.tablesorter(this.tablesorterDefaults)
+				.bind('sortEnd', function(e, table) {
+					if(_class.initialSortOrder.sort().toString() === e.target.config.sortList.sort().toString()) {
+						$(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner').empty();
+					} else {
+						let th = $(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner');
+						if(!th.find('> .table-reset').length) {
+							th.empty().append($('<i/>', {class: 'fa fa-eraser table-reset', 'aria-hidden': 'true'}));
+						}
+					}
+				});
 		}
 		getListSort(type, order) {
 			let sortArr = [];
 
-			let sortOrder = (order === 'asc' ? 'a' : 'd');
+			let sortOrder = (order === 'asc' ? 0 : 1);
 			switch(type) {
 				case 'unread':
-					sortArr = [[/* unread */ 0, 'a'], [/* title*/ 1, sortOrder]];
+					sortArr = [[/* unread */ 0, 0], [/* title*/ 1, sortOrder]];
 					break;
 
 				case 'unread_latest':
-					sortArr = [[/* unread */ 0, 'a'], [/* title*/ 3, sortOrder]];
+					sortArr = [[/* unread */ 0, 0], [/* title*/ 3, sortOrder]];
 					break;
 
 				case 'alphabetical':
