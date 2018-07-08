@@ -34,8 +34,8 @@ services:
       - ./application/tests/models:/app/application/tests/models
       - ./application/views:/app/application/views
       - ./public/assets/img:/app/public/assets/img
-      - ./public/assets/js/main.js:/app/public/assets/main.js
-      - ./public/assets/js/pages:/app/public/assets/pages
+      - ./public/assets/js/main.js:/app/public/assets/js/main.js
+      - ./public/assets/js/pages:/app/public/assets/js/pages
       - ./public/assets/less:/app/public/assets/less
       - ./public/userscripts:/app/public/userscripts
 
