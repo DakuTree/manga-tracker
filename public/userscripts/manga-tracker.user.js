@@ -6,7 +6,7 @@
 // @homepageURL  https://trackr.moe
 // @supportURL   https://github.com/DakuTree/manga-tracker/issues
 // @icon         https://trackr.moe/favicon.png
-// @include      /^https:\/\/(?:(?:dev|test)\.)?trackr\.moe(\/.*$|$)/
+// @include      /^https:\/\/trackr\.moe(\/.*$|$)/
 // @include      /^https?:\/\/fanfox\.net\/manga\/.+\/(?:.*\/)?.*\/.*$/
 // @include      /^https?:\/\/(?:www\.)?mangahere\.c[o|c]\/manga\/.+\/.*\/?.*\/.*$/
 // @include      /^https?:\/\/bato\.to\/reader.*$/
@@ -1326,7 +1326,7 @@ const base_site = {
 	 * Name of site.
 	 * @type {string}
 	 */
-	site    : location.hostname.replace(/^(?:dev|test)\./, ''),
+	site    : location.hostname,
 
 	/**
 	 * Title of chapter
@@ -1682,7 +1682,7 @@ unsafeWindow.versionCompare = versionCompare;
 	//FIXME: ViolentMonkey is weird with @require scripts and needs us to use window to allow global variables...
 	//       We should really look into tweaking/rewriting this stuff..
 	window.main_site = 'https://trackr.moe';
-	window.hostname  = location.hostname.replace(/^(?:dev)\./, '');
+	window.hostname  = location.hostname;
 	let pConfig = await GM.getValue('config');
 	window.config    = JSON.parse(pConfig || '{}');
 	if(userscriptDebug) { console.log(window.config); }
