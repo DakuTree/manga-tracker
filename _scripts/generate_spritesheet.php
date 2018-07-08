@@ -1,22 +1,27 @@
 <?php declare(strict_types=1);
 
-if(!extension_loaded('gd')) die('GD ext is required to run this!');
+if(!extension_loaded('gd')) { die('GD ext is required to run this!'); }
 
-chdir(dirname(__FILE__).'/../'); //Just to make things easier, change dir to project root.
+chdir(__DIR__ . '/../'); //Just to make things easier, change dir to project root.
 const ASSET_FOLDER = 'public/assets';
 const ICON_FOLDER  = ASSET_FOLDER.'/img/site_icons';
 
-
+/** @noinspection AutoloadingIssuesInspection */
 class Spritesheet {
 	private $fileList;
 	private $less;
 
 	public function __construct() {
 		$this->fileList = $this->getFileList();
-		$this->less     = "";
+		$this->less     = '';
 	}
 
-	public function generate() {
+	public function generate() : void {
+		$this->generateSpritesheet();
+		$this->modifySiteLESS();
+	}
+
+	private function generateSpritesheet() : void {
 		$width = (count($this->fileList) * (16 + /* padding */ 2)) - 2;
 
 		$sheetImage = imagecreatetruecolor($width, 16);
@@ -37,11 +42,10 @@ class Spritesheet {
 			$x++;
 		}
 
-		imagepng($sheetImage, ASSET_FOLDER."/img/sites.png");
-		say("Updates spritesheet!");
-		$this->modifySiteLESS();
+		imagepng($sheetImage, ASSET_FOLDER . '/img/sites.png');
+		say('Updated spritesheet!');
 	}
-	private function generateLESS(string $filename, int $dst_x) {
+	private function generateLESS(string $filename, int $dst_x) : void {
 		$parts = pathinfo($filename);
 
 		$this->less .= "\n".
@@ -49,12 +53,12 @@ class Spritesheet {
 			"		.stitches-sprite(-{$dst_x}px);\n".
 			"	}\n";
 	}
-	private function modifySiteLESS() {
+	private function modifySiteLESS() : void {
 		$newSiteLESS = trim($this->less);
 
 		$icons_file = ASSET_FOLDER.'/less/modules/icons.less';
 		$oldLESS = file_get_contents($icons_file);
-		if(preg_match('/\.sprite-site.*\@cache-version: ([0-9]+);/s', $oldLESS, $cvMatches)) {
+		if(preg_match('/\.sprite-site.*\@cache-version: (\d+);/s', $oldLESS, $cvMatches)) {
 			$cacheVersion = ((int) $cvMatches[1]) + 1;
 
 			$newLESS = preg_replace('/\.sprite-site.*/s', '',$oldLESS);
@@ -67,17 +71,19 @@ class Spritesheet {
 				"}\n";
 
 			file_put_contents($icons_file, $newLESS);
-			say("Updated LESS!");
+			say('Updated LESS!');
 		} else {
 			die("Can't find cache-version?");
 		}
 	}
 
 	private function getFileList() : array {
-		return array_diff(scandir(ICON_FOLDER), array('..', '.'));
+		return array_diff(scandir(ICON_FOLDER, SCANDIR_SORT_NONE), array('..', '.'));
 	}
 }
-function say(string $text = "") { print "{$text}\n"; }
+
+/** @noinspection PhpFunctionNamingConventionInspection */
+function say(string $text = '') { print "{$text}\n"; }
 
 $Spritesheet = new Spritesheet();
 $Spritesheet->generate();
