@@ -22,7 +22,7 @@ class MangaDex extends Base_Site_Model {
 		$chapter_parts = explode(':--:', $chapter);
 		return [
 			'url'    => "https://mangadex.org/chapter/{$chapter_parts[0]}",
-			'number' => $chapter_parts[1]
+			'number' => str_replace('cOneshot', 'Oneshot', $chapter_parts[1])
 		];
 	}
 

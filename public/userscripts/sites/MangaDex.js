@@ -123,7 +123,7 @@
 			this.title       = titleID + ':--:' + chapterData.lang_name;
 
 			let chapter      = chapterData.id;
-			this.chapterNumber = `v${chapterData.volume}/c${chapterData.chapter}`.replace(/^v\//, '');
+			this.chapterNumber = `v${chapterData.volume}/c${chapterData.chapter}`.replace(/^v\//, '').replace(/^c$/, 'cOneshot');
 			this.chapter     = chapterData.id + ':--:' + this.chapterNumber;
 
 			this.title_url   = `${this.https}://beta.mangadex.org/manga/${titleID}`;
