@@ -40,7 +40,23 @@ class AdminPanel extends Admin_Controller {
 	public function update_mal_id() {
 		set_time_limit(0);
 		$this->_update_mal_backend();
-		print "Success.";
+		print 'Success.';
+	}
+	public function populate_db() {
+		if(ENVIRONMENT === 'development') {
+			$randomUpdateData = [
+				['mangadex.org', '18806:--:English', '12612:--:v1/c1'],
+				['helveticascans.com', 'mousou-telepathy', 'en/0/1'],
+				['elpsycongroo.tk', 'otomedanshi', 'en/1/1']
+			];
+			foreach($randomUpdateData as $updateData) {
+				$updateData[] = TRUE; //Active marker
+				$this->Tracker->list->update($this->User->id, ...$updateData);
+
+			}
+
+			print 'Dev DB populated with data';
+		}
 	}
 
 	private function _list_complete_titles() {

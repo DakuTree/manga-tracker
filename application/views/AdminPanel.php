@@ -1,5 +1,3 @@
-<?=validation_errors()?>
-
 <div>
 	<h3>Admin Panel</h3>
 
@@ -16,7 +14,10 @@
 
 	<br />
 
-	<a href="<?=base_url('admin_panel/update_mal_id')?>">Update MAL backend IDs (from admins & 2+ matches)</a>
+	<div>
+		<a class="btn btn-primary" href="<?=base_url('admin_panel/update_mal_id')?>" role="button">Update MAL backend IDs</a>
+		<?php if(ENVIRONMENT === 'development') { ?><a class="btn btn-primary" href="<?=base_url('admin_panel/populate_db')?>" role="button">Populate dev DB</a><?php } ?>
+	</div>
 
 	<br />
 

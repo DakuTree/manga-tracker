@@ -114,6 +114,7 @@ $route['admin_panel/update/normal'] = 'AdminPanel/update_normal';
 $route['admin_panel/update/custom'] = 'AdminPanel/update_custom';
 $route['admin_panel/update/titles'] = 'AdminPanel/update_titles';
 $route['admin_panel/update_mal_id'] = 'AdminPanel/update_mal_id';
+$route['admin_panel/populate_db']   = 'AdminPanel/populate_db';
 
 /*** USERSCRIPT ROUTING ***/
 $route['ajax/userscript/update']['post']     = 'Ajax/Userscript/update';
