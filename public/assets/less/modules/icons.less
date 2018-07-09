@@ -9,20 +9,34 @@
 }
 
 .sprite-time {
+	@cache-version: 5;
 	.sprite();
-	@cache-version: 4;
 	background: url('../../img/times.@{cache-version}.png') no-repeat;
 
-	&.sprite-day   { .stitches-sprite(-20px); }
-	&.sprite-3day  { .stitches-sprite(-0px); }
-	&.sprite-week  { .stitches-sprite(-80px); }
-	&.sprite-month { .stitches-sprite(-60px); }
-	&.sprite-error { .stitches-sprite(-40px); }
-}
+	&.sprite-3day {
+		.stitches-sprite(-0px);
+	}
+
+	&.sprite-day {
+		.stitches-sprite(-18px);
+	}
+
+	&.sprite-error {
+		.stitches-sprite(-36px);
+	}
+
+	&.sprite-month {
+		.stitches-sprite(-54px);
+	}
+
+	&.sprite-week {
+		.stitches-sprite(-72px);
+	}
+} //end sprite-time
 
 .sprite-site {
+	@cache-version: 75;
 	.sprite();
-	@cache-version: 74;
 	background: url('../../img/sites.@{cache-version}.png') no-repeat;
 
 	&.sprite-atelierdunoir-org {
@@ -304,4 +318,4 @@
 	&.sprite-zeroscans-com {
 		.stitches-sprite(-1242px);
 	}
-}
+} //end sprite-site

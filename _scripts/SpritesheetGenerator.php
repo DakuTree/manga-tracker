@@ -68,17 +68,17 @@ class Spritesheet {
 
 		$icons_file = ASSET_FOLDER.'/less/modules/icons.less';
 		$oldLESS = file_get_contents($icons_file);
-		if(preg_match('/\.sprite-'.$this->type.'.*\@cache-version: (\d+);/s', $oldLESS, $cvMatches)) {
+		if(preg_match('/\.sprite-'.$this->type.' {\n\t\@cache-version: (\d+);/s', $oldLESS, $cvMatches)) {
 			$cacheVersion = ((int) $cvMatches[1]) + 1;
 
-			$newLESS = preg_replace('/\.sprite-'.$this->type.'.*/s', '',$oldLESS);
-			$newLESS .= ''.
+			$newLESS = preg_replace('/\.sprite-'.$this->type.'.*end sprite-'.$this->type.'/s',
+				''.
 				".sprite-{$this->type} {\n".
-				"	.sprite();\n".
 				"	@cache-version: {$cacheVersion};\n".
+				"	.sprite();\n".
 				"	background: url('../../img/{$this->type}s.@{cache-version}.png') no-repeat;\n\n".
 				"	{$newIconLESS}\n".
-				"}\n";
+				"} //end sprite-{$this->type}",$oldLESS);
 
 			file_put_contents($icons_file, $newLESS);
 			say('Updated LESS!');
@@ -88,7 +88,7 @@ class Spritesheet {
 	}
 
 	private function getFileList() : array {
-		return array_diff(scandir($this->iconFolder, SCANDIR_SORT_NONE), array('..', '.'));
+		return array_diff(scandir($this->iconFolder, SCANDIR_SORT_ASCENDING), array('..', '.'));
 	}
 }
 
