@@ -171,6 +171,12 @@ $(function(){
 			unread_e.find(' > span').text('1');
 			table.trigger('updateCell', [unread_e[0], false, null]);
 
+			//And show reset sort button to signify the current sort is no longer valid
+			let th = $(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner');
+			if(!th.find('> .table-reset').length) {
+				th.empty().append($('<i/>', {class: 'fa fa-eraser table-reset', 'aria-hidden': 'true'}));
+			}
+
 			//Update header text
 			let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');
 			table.find('thead > tr > th:eq(1) > div').text('Series'+unreadText);
