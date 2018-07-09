@@ -24,6 +24,21 @@
 	<link rel="stylesheet/less" href="<?=asset_url()?>less/main.less" type="text/css">
 	<script>less = {env: 'development', relativeUrls: true, modifyVars: {themeLocation: 'common\\themes\\<?=$theme?>'}};</script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
+	<style>
+		/* Dynamic icon generation */
+		.sprite-site, .sprite-time { background-position: initial !important; }
+		<?php foreach(['site', 'time'] as $iconType) {
+			$iconFileList = array_map('pathinfo', array_diff(scandir(APPPATH."../public/assets/img/{$iconType}_icons", SCANDIR_SORT_NONE), array('..', '.')));
+
+			foreach($iconFileList as $iconFile) {
+				if($iconFile['extension'] === 'png') { ?>
+		.sprite-<?=$iconFile['filename']?> {
+			background: url(<?=img_url().$iconType?>_icons/<?=$iconFile['basename']?>) !important;
+		}
+				<?php }
+			}
+		} ?>
+	</style>
 	<?php } ?>
 </head>
 

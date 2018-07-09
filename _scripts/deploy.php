@@ -63,6 +63,7 @@ task('build', function () {
 task('deploy:compile_assets', function() {
 	// less
 	//// themes
+	writeln('➤➤ <comment>Compiling Themes</comment>');
 	run('( \
 		cd {{release_path}}/public/assets/less && \
 		exec lessc \
@@ -80,6 +81,7 @@ task('deploy:compile_assets', function() {
 		../css/main.dark.css \
 	)');
 	//// userscript css
+	writeln('➤➤ <comment>Compiling Userscript CSS</comment>');
 	run('( \
 		cd {{release_path}}/public/userscripts/assets/ && \
 		exec lessc \
@@ -89,6 +91,7 @@ task('deploy:compile_assets', function() {
 	)');
 
 	//js
+	writeln('➤➤ <comment>Compiling JavaScript</comment>');
 	run('( \
 		cd {{release_path}}/public/assets/js && \
 		exec google-closure-compiler-js \
@@ -96,6 +99,14 @@ task('deploy:compile_assets', function() {
 		{{release_path}}/public/assets/js/main.js \
 		{{release_path}}/public/assets/js/pages/*.js \
 		> {{release_path}}/public/assets/js/compiled.min.js \
+	)');
+
+	//icons
+	writeln('➤➤ <comment>Compiling Icons</comment>');
+	run('( \
+		cd {{release_path}} && \
+		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'site\', FALSE))->generate();" && \
+		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'time\', FALSE))->generate();"
 	)');
 });
 after('deploy:vendors', 'deploy:compile_assets');

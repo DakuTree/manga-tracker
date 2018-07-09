@@ -8,6 +8,8 @@
 # Generated Files
 public/assets/css/main.*.css
 public/assets/js/compiled.min.js
+public/assets/img/sites.png
+public/assets/img/times.png
 public/userscripts/manga-tracker.dev.user.js
 
 # Configuration
