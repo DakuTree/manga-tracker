@@ -64,6 +64,9 @@
 				});
 			}
 			this.page_count             = this.viewerCustomImageList.length;
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
 
 			this.viewerChapterName      = this.chapter.split(':')[2];
 			this.viewerTitle            = $('h3[class="panel-title"] > a[title]').text();
@@ -142,6 +145,9 @@
 				return `${chapterData.server}${chapterData.hash}/${filename}`;
 			});
 			this.page_count             = this.viewerCustomImageList.length;
+			if(this.segments[3]) {
+				this.currentPage = parseInt(this.segments[3]);
+			}
 
 			this.viewerChapterName      = chapterData.title;
 			this.viewerTitle            = titleData._data.title;

@@ -5,8 +5,8 @@
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-			<li><a href="<?=base_url("user/favourites/export/json")?>">Export as JSON</a></li>
-			<li><a href="<?=base_url("user/favourites/export/csv")?>">Export as CSV</a></li>
+			<li><a href="<?=base_url('user/favourites/export/json')?>">Export as JSON</a></li>
+			<li><a href="<?=base_url('user/favourites/export/csv')?>">Export as CSV</a></li>
 		</ul>
 	</div>
 	<div class="clearfix"></div>
@@ -18,7 +18,7 @@
 			<!-- TODO: We should have a delete button here -->
 			<th>Favourited at</th>
 			<th class="w-50">Title</th>
-			<th>Chapter</th>
+			<th>Chapter / Page</th>
 		<tr>
 	</thead>
 	<tbody>
@@ -31,7 +31,7 @@
 				<a href="<?=$row['title_url']?>"><?=$row['title']?></a>
 			</td>
 
-			<td><?=$row['chapter']?></td>
+			<td><?=$row['chapter_url']?></td>
 		</tr>
 		<?php } ?>
 	</tbody>

@@ -11,7 +11,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 			->select('SQL_CALC_FOUND_ROWS
 			          tt.title, tt.title_url,
 			          ts.site, ts.site_class,
-			          tf.chapter, tf.updated_at', FALSE)
+			          tf.chapter, tf.page, tf.updated_at', FALSE)
 			->from('tracker_favourites AS tf')
 			->join('tracker_chapters AS tc', 'tf.chapter_id = tc.id', 'left')
 			->join('tracker_titles AS tt',   'tc.title_id = tt.id',   'left')
@@ -34,7 +34,14 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 				$arrRow['site_sprite'] = str_replace('.', '-', $row->site);
 
 				$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->chapter);
-				$arrRow['chapter'] = "<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>";
+				$arrRow['chapter_url'] = "<a href=\"{$chapterData['url']}\">{$chapterData['number']}</a>";
+
+				if(!is_null($row->page)) {
+					$page_url = $this->Tracker->sites->{$row->site_class}->getChapterPageURL($chapterData, (!is_null($row->page) ? (int) $row->page : NULL));
+					$chapterNumber = "{$chapterData['number']} | Page: {$row->page}";
+					$arrRow['chapter_url'] = !is_null($page_url) ? "<a href=\"{$page_url}\">{$chapterNumber}</a>" : "<a href=\"{$chapterData['url']}\">{$chapterNumber} (No Direct URL)</a>";
+				}
+
 				$favourites['rows'][] = $arrRow;
 			}
 			$favourites['totalPages'] = ceil($this->db->query('SELECT FOUND_ROWS() count;')->row()->count / $rowsPerPage);
@@ -47,7 +54,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 			->select('SQL_CALC_FOUND_ROWS
 			          tt.title, tt.title_url,
 			          ts.site, ts.site_class,
-			          tf.chapter, tf.updated_at', FALSE)
+			          tf.chapter, tf.page, tf.updated_at', FALSE)
 			->from('tracker_favourites AS tf')
 			->join('tracker_chapters AS tc', 'tf.chapter_id = tc.id', 'left')
 			->join('tracker_titles AS tt',   'tc.title_id = tt.id',   'left')
@@ -67,6 +74,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 
 				$arrRow['site']        = $row->site;
 				$arrRow['chapter']     = $row->chapter;
+				$arrRow['page']        = $row->page;
 
 				$chapterData = $this->Tracker->sites->{$row->site_class}->getChapterData($row->title_url, $row->chapter);
 				$arrRow['chapter_number'] = $chapterData['number'];
@@ -79,7 +87,7 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 		return $favourites;
 	}
 
-	public function set(string $site, string $title, string $chapter, ?int $userID = NULL) : array {
+	public function set(int $userID, string $site, string $title, string $chapter, ?int $page = NULL, bool $removeIfExists = TRUE) : array {
 		$success = array(
 			'status' => 'Something went wrong',
 			'bool'   => FALSE
@@ -129,29 +137,37 @@ class Tracker_Favourites_Model extends Tracker_Base_Model {
 				                     ->get('tracker_favourites');
 				if($idFQuery->num_rows() > 0) {
 					//Chapter is already favourited, so remove it from DB
-					$idFQueryRow = $idFQuery->row();
+					if($removeIfExists) {
+						$idFQueryRow = $idFQuery->row();
 
-					$isSuccess = (bool) $this->db->where('id', $idFQueryRow->id)
-					                             ->delete('tracker_favourites');
+						$isSuccess = (bool) $this->db->where('id', $idFQueryRow->id)
+						                             ->delete('tracker_favourites');
 
-					if($isSuccess) {
+						if($isSuccess) {
+							$success = array(
+								'status' => 'Unfavourited' . ($page ? " page {$page}" : ''),
+								'bool'   => TRUE
+							);
+							$this->History->userRemoveFavourite((int) $idCQueryRow->id, $chapter);
+						}
+					} else {
 						$success = array(
-							'status' => 'Unfavourited',
+							'status' => 'Favourite already exists',
 							'bool'   => TRUE
 						);
-						$this->History->userRemoveFavourite((int) $idCQueryRow->id, $chapter);
 					}
 				} else {
 					//Chapter is not favourited, so add to DB.
 					$isSuccess = (bool) $this->db->insert('tracker_favourites', [
 						'chapter_id'      => $idCQueryRow->id,
 						'chapter'         => $chapter,
+						'page'            => $page,
 						'updated_at'      => date('Y-m-d H:i:s')
 					]);
 
 					if($isSuccess) {
 						$success = array(
-							'status' => 'Favourited',
+							'status' => 'Favourited' . ($page ? " page {$page}" : ''),
 							'bool'   => TRUE
 						);
 						$this->History->userAddFavourite((int) $idCQueryRow->id, $chapter);

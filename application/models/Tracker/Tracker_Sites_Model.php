@@ -37,6 +37,7 @@ abstract class Base_Site_Model extends CI_Model {
 	public $site          = '';
 	public $titleFormat   = '//';
 	public $chapterFormat = '//';
+	public $pageSeparator = ''; //NOTE: Each site must set this manually.
 	public $hasCloudFlare = FALSE;
 	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36';
 
@@ -98,6 +99,29 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @return array [url, number]
 	 */
 	abstract public function getChapterData(string $title_url, string $chapter) : array;
+
+	/**
+	 * Generates chapter page URL from given chapterData.
+	 *
+	 * Will return NULL if pageSeparator is not set.
+	 *
+	 * @param array $chapterData
+	 * @param int   $page
+	 *
+	 * @return null|string
+	 */
+	final public function getChapterPageURL(array $chapterData, int $page = 1) : ?string {
+		$pageURL = NULL;
+		if($this->pageSeparator !== '') {
+			$pageSeparator = $this->pageSeparator;
+			if(substr($chapterData['url'], -1) === $pageSeparator) {
+				//We don't want double trailing slashes, so fix this when possible.
+				$pageSeparator = '';
+			}
+			$pageURL = $chapterData['url'] . $pageSeparator . $page;
+		}
+		return $pageURL;
+	}
 
 	/**
 	 * Used to get the latest chapter of given $title_url.
@@ -548,6 +572,7 @@ abstract class Base_Site_Model extends CI_Model {
 abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_-]+$/';
 	public $chapterFormat = '/^(?:en(?:-us)?|pt|es)\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+(?:\/[0-9]+)?)?)?$/';
+	public $pageSeparator = 'page/';
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -653,6 +678,7 @@ abstract class Base_FoolSlide_Site_Model extends Base_Site_Model {
 abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[a-zA-Z0-9\._-]+)$/';
+	public $pageSeparator = '/';
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
@@ -766,6 +792,7 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^[0-9\.]+$/';
+	public $pageSeparator = '/';
 
 	public $customType    = 2;
 
@@ -977,6 +1004,7 @@ abstract class Base_Roku_Site_Model extends Base_Site_Model {
 abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
 	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)$/';
+	//TODO: Get PageSeperator
 
 	public $customType    = 2;
 

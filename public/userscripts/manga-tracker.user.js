@@ -76,8 +76,8 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-07-08
-// @version      1.10.48
+// @updated      2018-07-10
+// @version      1.11.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -114,7 +114,7 @@
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.21.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.22.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.5.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
@@ -153,7 +153,7 @@
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.7.css
+// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.8.css
 // @resource     reload        https://trackr.moe/userscripts/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
@@ -786,6 +786,15 @@ const base_site = {
 				_this.postSetupViewer();
 			});
 
+			//Setup favourite page event.
+			$(viewer).on('click', '#favouriteChapterPage', function(e) {
+				e.preventDefault();
+
+				let page = parseInt($(this).attr('data-page'));
+
+				_this.favouriteChapter(page);
+			});
+
 			function addToContainer(pageN, promiseResolve, promiseReject) {
 				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
 
@@ -852,7 +861,10 @@ const base_site = {
 		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
-				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
+				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count} `}).append(
+					$('<i/>', {id: 'favouriteChapterPage', class: 'fa fa-star', 'aria-hidden': 'true', 'data-page': pageN, title: 'Click to favourite this page (Requires series to be tracked first!)'})
+				)
+			)
 		);
 
 		//Replace the placeholder image_container with the real one
@@ -1013,7 +1025,7 @@ const base_site = {
 	 *
 	 * @final
 	 */
-	favouriteChapter : function() {
+	favouriteChapter : function(page = null) {
 		if(config['api-key']) {
 			let params = {
 				'api-key' : config['api-key'],
@@ -1025,6 +1037,9 @@ const base_site = {
 					'chapter' : this.chapter
 				}
 			};
+			if(page) {
+				params.manga.page = page;
+			}
 
 			GM.xmlHttpRequest({
 				url     : main_site + '/ajax/userscript/favourite',
@@ -1185,6 +1200,9 @@ const base_site = {
 				return $(e).attr('data-src');
 			});
 			this.page_count = this.viewerCustomImageList.length;
+			if(this.segments[2]) {
+				this.currentPage = parseInt(this.segments[2]);
+			}
 		};
 
 		this.preSetupViewer = function(callback) {
@@ -1252,7 +1270,7 @@ const base_site = {
 	 *
 	 * @function
 	 * @alias sites.*.setupRoku
-	 * @name base_site.setupRoki
+	 * @name base_site.setupRoku
 	 *
 	 * @final
 	 */
@@ -1272,6 +1290,8 @@ const base_site = {
 				return $(e).attr('src');
 			});
 			this.page_count = this.viewerCustomImageList.length;
+
+			//CHECK: Does Roku support page URLs?
 		};
 		this.preSetupTopBar = function(callback) {
 			let _this = this;

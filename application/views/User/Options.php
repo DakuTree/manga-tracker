@@ -2,6 +2,7 @@
 	<div class="col-sm-6">
 		<div id="options-site">
 			<h3>Site Options</h3>
+
 			<?=form_open('', ['method' => 'POST'])?>
 				<div id="options-theme">
 					<div class="form-group">

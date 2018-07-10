@@ -4,6 +4,7 @@ class MangaDex extends Base_Site_Model {
 	/* Update lang via: $(temp1).find('li img').map(function(i,e) { return $(e).attr('title').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); }).toArray().join('|'); */
 	public $titleFormat   = '/^[0-9]+:--:(Arabic|Bengali|Bulgarian|Catalan|Chinese \(Simp\)|Chinese \(Trad\)|Czech|Danish|Dutch|English|Filipino|Finnish|French|German|Greek|Hungarian|Indonesian|Italian|Japanese|Korean|Malaysian|Mongolian|Persian|Polish|Portuguese \(Br\)|Portuguese \(Pt\)|Romanian|Russian|Serbo\-Croatian|Spanish \(Es\)|Spanish \(LATAM\)|Swedish|Thai|Turkish|Vietnamese)$/';
 	public $chapterFormat = '/^[0-9]+:--:(?:(?:v[0-9\.]+\/)?c[0-9\.v]+|[0-9a-zA-Z \.]+)$/';
+	public $pageSeparator = '/';
 
 	public $customType    = 2;
 
