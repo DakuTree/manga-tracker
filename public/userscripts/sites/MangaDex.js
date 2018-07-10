@@ -90,6 +90,8 @@
 	sites['beta.mangadex.org'] = {
 		//FIXME: beta only has http support for now. Make sure to switch to https on release
 		preInit : function(callback) {
+			this.site = 'mangadex.org';
+
 			//NOTE: We need to wait for the page to load as if we call this before the initial load it will make duplicate requests to the API.
 			let pageLoad = $.Deferred();
 			let checkSelector = setInterval(function () {
