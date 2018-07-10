@@ -11,8 +11,8 @@ class AdminPanel extends Admin_Controller {
 	}
 
 	public function index() : void {
-		$this->header_data['title'] = "Admin Panel";
-		$this->header_data['page']  = "admin-panel";
+		$this->header_data['title'] = 'Admin Panel';
+		$this->header_data['page']  = 'admin-panel';
 
 		$this->body_data['complete_list'] = array_merge([['id', 'site_class', 'url']], $this->_list_complete_titles());
 		$this->body_data['id_sql']        = 'SELECT * FROM `tracker_titles` WHERE id IN('.implode(',', array_column($this->body_data['complete_list'], 'id')).')';
@@ -27,20 +27,32 @@ class AdminPanel extends Admin_Controller {
 
 	public function update_normal() {
 		set_time_limit(0);
+
+		ob_start();
 		$this->Tracker->admin->updateLatestChapters();
+		ob_end_clean();
+
+		$this->_redirect('Normal Update complete.');
 	}
 	public function update_custom() {
 		set_time_limit(0);
+		ob_start();
 		$this->Tracker->admin->updateCustom();
+		ob_end_clean();
+
+		$this->_redirect('Custom Update complete.');
 	}
 	public function update_titles() {
 		set_time_limit(0);
 		$this->Tracker->admin->updateTitles();
+
+		$this->_redirect('(Actual) Titles updated.');
 	}
 	public function update_mal_id() {
 		set_time_limit(0);
 		$this->_update_mal_backend();
-		print 'Success.';
+
+		$this->_redirect('MAL Backend IDs updated.');
 	}
 	public function populate_db() {
 		if(ENVIRONMENT === 'development') {
@@ -55,8 +67,13 @@ class AdminPanel extends Admin_Controller {
 
 			}
 
-			print 'Dev DB populated with data';
+			$this->_redirect('Populated Dev DB with data.');
 		}
+	}
+
+	private function _redirect(string $message) : void {
+		$this->session->set_flashdata('notices', $message);
+		redirect(site_url('admin_panel'));
 	}
 
 	private function _list_complete_titles() {
