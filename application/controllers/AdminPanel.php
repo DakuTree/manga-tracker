@@ -56,6 +56,7 @@ class AdminPanel extends Admin_Controller {
 	}
 	public function populate_db() {
 		if(ENVIRONMENT === 'development') {
+			//Populate list
 			$randomUpdateData = [
 				['mangadex.org', '18806:--:English', '12612:--:v1/c1'],
 				['helveticascans.com', 'mousou-telepathy', 'en/0/1'],
@@ -67,7 +68,20 @@ class AdminPanel extends Admin_Controller {
 
 			}
 
+			//Populate favorites
+			$randomFavouriteData = [
+				['mangadex.org', '18806:--:English', '306123:--:c19', 10],
+				['helveticascans.com', 'mousou-telepathy', 'en/0/564', NULL],
+				['elpsycongroo.tk', 'otomedanshi', 'en/2/239', NULL]
+			];
+			foreach($randomFavouriteData as $favouriteData) {
+				$favouriteData[] = FALSE;
+				$this->Tracker->favourites->set($this->User->id, ...$favouriteData);
+			}
+
 			$this->_redirect('Populated Dev DB with data.');
+		} else {
+			$this->_redirect('Populate Dev DB failed as ENVIRONMENT is not development.');
 		}
 	}
 
