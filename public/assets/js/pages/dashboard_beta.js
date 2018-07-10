@@ -10,6 +10,7 @@ $(function(){
 				break;
 			case 401:
 				alert('Session has expired, please re-log to continue.');
+				location.refresh();
 				break;
 			case 429:
 				alert('ERROR: Rate limit reached.');
