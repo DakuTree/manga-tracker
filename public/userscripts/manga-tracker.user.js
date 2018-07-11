@@ -77,7 +77,7 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-07-11
-// @version      1.11.4
+// @version      1.11.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -200,6 +200,11 @@ function main() {
 
 		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
 		if(window.sites[hostname]) {
+			if(hostname === 'trackr.moe') {
+				//trackr.moe needs to utilize these to avoid duplicating code
+				unsafeWindow.userscriptVersion = userscriptVersion;
+				unsafeWindow.versionCompare    = versionCompare;
+			}
 			$(function () {
 				window.sites[hostname].init();
 			});
@@ -1700,11 +1705,6 @@ function versionCompare(v1, v2, options) {
 
 	return 0;
 }
-
-window.userscriptVersion       = userscriptVersion;
-unsafeWindow.userscriptVersion = userscriptVersion;
-window.versionCompare       = versionCompare;
-unsafeWindow.versionCompare = versionCompare;
 
 /* * * * * * * * * * Main Script * * * * * * * * * */
 /* jshint ignore:start*/
