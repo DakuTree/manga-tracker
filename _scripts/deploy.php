@@ -136,8 +136,22 @@ task('deploy:copy_files', function () {
 });
 after('deploy:shared', 'deploy:copy_files');
 
-after('deploy:symlink', 'cachetool:clear:opcache');
+task('deploy:migrate_db', function () {
+	// Migration is disabled by default on production, so we need to toggle it temporally.
+	run('( \
+		cd {{release_path}} && \
+		sed -i -r "s/(migration_enabled.*?)FALSE/\1TRUE/g" application/config/production/migration.php -r && \
+		CI_ENV="production" php public/index.php admin/migrate && \
+		sed -i -r "s/(migration_enabled.*?)TRUE/\1FALSE/g" application/config/production/migration.php -r \
+	)');
+});
+
+//TODO: We should enable some form of maintenance mode prior to symlinking.
+after('deploy:symlink', 'deploy:migrate_db');
+after('deploy:migrate_db', 'cachetool:clear:opcache');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 
+//TODO: After deploy:success, ask if we want to send a tweet and/or update notices?
+//      https://deployer.org/docs/api
