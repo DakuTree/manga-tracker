@@ -11,6 +11,7 @@ public/assets/js/compiled.min.js
 public/assets/img/sites.png
 public/assets/img/times.png
 public/userscripts/manga-tracker.dev.user.js
+public/userscripts/assets/main.css
 
 # Configuration
 application/config/_secure/*.php

@@ -76,8 +76,8 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-07-10
-// @version      1.11.1
+// @updated      2018-07-11
+// @version      1.11.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -152,8 +152,9 @@
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
-// @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.8.css
+// @resource     fontAwesome    https://use.fontawesome.com/9533173d07.css
+// @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.8.css
+// @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.8.less
 // @resource     reload         https://trackr.moe/userscripts/assets/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
@@ -182,6 +183,7 @@
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
 const userscriptVersion = GM.info.script.version;
+const userscriptIsDev   = GM.info.script.updateURL.includes('manga-tracker.localhost'); // manga-tracker.localhost is the default docker hostname
 
 // Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
 (function(sites) {
@@ -358,7 +360,13 @@ const base_site = {
 		let _this = this;
 
 		this.preSetupTopBar(function() {
-			addStyleFromResource('userscriptCSS');
+			if(!userscriptIsDev) {
+				addStyleFromResource('userscriptCSS');
+			} else {
+				addStyleFromResource('userscriptLESS', true).then(() => {
+					$('head').append($('<script/>', {src: '//cdnjs.cloudflare.com/ajax/libs/less.js/3.7.0/less.min.js'}));
+				});
+			}
 
 			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
 			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
@@ -1541,7 +1549,7 @@ function initializeSites() {
 
 /* * * * * * * * * * General Functions * * * * * * * * * */
 
-async function addStyleFromResource(resourceName) {
+async function addStyleFromResource(resourceName, isLess = false) {
 	//Userscript extensions don't seem to handle GM_getResourceUrl the same, so we need to fix that.
 	let GMblob = await GM.getResourceUrl(resourceName);
 
@@ -1565,13 +1573,15 @@ async function addStyleFromResource(resourceName) {
 
 				let data   = binaryString.join('');
 				cssEle = $('<style/>', {type: 'text/css', text: data});
+				if(isLess) cssEle.attr('type', 'text/less');
 				$('head').append(cssEle);
 			}
 		};
 		xhr.send();
 	} else {
 		//Other
-		cssEle = $('<style/>', {type: 'text/css', text: atob(GMblob.substr(21))});
+		cssEle = $('<style/>', {type: 'text/css', text: atob(GMblob.replace(/^data:.*?;base64,/, ''))});
+		if(isLess) cssEle.attr('type', 'text/less');
 		$('head').append(cssEle);
 	}
 }

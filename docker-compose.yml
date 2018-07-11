@@ -37,7 +37,12 @@ services:
       - ./public/assets/js/main.js:/app/public/assets/js/main.js
       - ./public/assets/js/pages:/app/public/assets/js/pages
       - ./public/assets/less:/app/public/assets/less
-      - ./public/userscripts:/app/public/userscripts
+      - ./public/userscripts/manga-tracker.dev.user.js:/app/public/userscripts/manga-tracker.dev.user.js
+      - ./public/userscripts/manga-tracker.user.js:/app/public/userscripts/manga-tracker.user.js
+      - ./public/userscripts/manga-tracker.meta.js:/app/public/userscripts/manga-tracker.meta.js
+      - ./public/userscripts/assets/main.less:/app/public/userscripts/assets/main.less
+      - ./public/userscripts/assets/reload.png:/app/public/userscripts/assets/reload.png
+      - ./public/userscripts/sites:/app/public/userscripts/sites
 
     depends_on:
         - db
