@@ -53,10 +53,6 @@ host('trackr.moe')
 	->set('deploy_path', '/var/www/trackr.moe');
 
 // Tasks
-task('build', function () {
-	run('cd {{release_path}} && build');
-});
-
 //task('deploy:symlink', function() {}); //Uncomment when testing.
 //task('cleanup', function() {});        //Uncomment when testing.
 
@@ -140,9 +136,9 @@ task('deploy:migrate_db', function () {
 	// Migration is disabled by default on production, so we need to toggle it temporally.
 	run('( \
 		cd {{release_path}} && \
-		sed -i -r "s/(migration_enabled.*?)FALSE/\1TRUE/g" application/config/production/migration.php -r && \
+		sed -i -r "s/(migration_enabled.*?)FALSE/\1TRUE/g" application/config/production/migration.php && \
 		CI_ENV="production" php public/index.php admin/migrate && \
-		sed -i -r "s/(migration_enabled.*?)TRUE/\1FALSE/g" application/config/production/migration.php -r \
+		sed -i -r "s/(migration_enabled.*?)TRUE/\1FALSE/g" application/config/production/migration.php \
 	)');
 });
 
