@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Manga Tracker
-// @namespace    https://github.com/DakuTree/userscripts
+// @namespace    https://github.com/DakuTree/manga-tracker
 // @author       Daku (admin@codeanimu.net)
 // @description  A cross-site manga tracker.
 // @homepageURL  https://trackr.moe
@@ -77,7 +77,7 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-07-11
-// @version      1.11.3
+// @version      1.11.4
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
