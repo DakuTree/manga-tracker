@@ -1,4 +1,5 @@
-/* global config, main_site, userscriptVersion, versionCompare */
+/* global config, main_site, userscriptVersion, versionCompare, mal_sync, unsafeWindow */
+//NOTE: mal_sync is set on the page
 
 (function(sites) {
 	//TODO: Plan is to move this to actual inline userscript options at some point.
@@ -229,7 +230,8 @@
 			}
 		},
 		enableForm : function(form) {
-			let check = $('#userscript-check');
+			let check         = $('#userscript-check'),
+			    latestVersion = check.attr('data-version');
 			check
 				.html('')
 				.append($('<span/>', {text: 'Userscript is enabled!'}))
@@ -242,9 +244,9 @@
 				$(versionWarning).insertAfter(check);
 
 			}
-			else if(versionCompare(check.attr('data-version'), userscriptVersion)) {
+			else if(versionCompare(latestVersion, userscriptVersion) === 1) {
 				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
-				versionWarning.html(`Userscript version is behind the version reported by the server.<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
+				versionWarning.html(`Userscript version is behind the version reported by the server.<br/>${userscriptVersion} < ${latestVersion}<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
 
 				$(versionWarning).insertAfter(check);
 			}
