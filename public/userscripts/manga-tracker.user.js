@@ -154,7 +154,7 @@
 // @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @resource     fontAwesome   https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS https://trackr.moe/userscripts/assets/main.8.css
-// @resource     reload        https://trackr.moe/userscripts/reload.png
+// @resource     reload         https://trackr.moe/userscripts/assets/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
 // @grant        GM.getResourceUrl
