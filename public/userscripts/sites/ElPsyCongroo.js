@@ -1,11 +1,13 @@
 (function(sites) {
 	/**
-	 * ElPsyCongroo (FoolSlide) (Alt Domain)
+	 * ElPsyCongroo (FoolSlide) (New Domain)
 	 * @type {SiteObject}
 	 */
-	sites['elpsycongroo.pw'] = {
-		preInit : function() {
-			location.href = location.href.replace('elpsycongroo.pw', 'elpsycongroo.tk');
+	sites['elpsykongroo.pw'] = {
+		preInit : function(callback) {
+			this.site = 'elpsycongroo.tk';
+			this.setupFoolSlide();
+			callback();
 		}
 	};
 	/**
