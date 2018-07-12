@@ -28,7 +28,13 @@ class Userscript extends AJAX_Controller {
 		$updateAvailable = TRUE;
 		// TODO: We should record this for analytics purposes.
 		if($userUserscriptVersion = $this->input->get_request_header('X-Userscript-Version')) {
-			$updateAvailable = version_compare($userUserscriptVersion, USERSCRIPT_VERSION, '<');
+			if(version_compare($userUserscriptVersion, '1.11.3', '<=')) {
+				// 1.11.3 and below uses an old namespace and having the user update through our notification will install a duplicate version of the script
+				// so instead we return this is FALSE
+				$updateAvailable = FALSE;
+			} else {
+				$updateAvailable = version_compare($userUserscriptVersion, USERSCRIPT_VERSION, '<');
+			}
 		} else {
 
 		}
