@@ -77,7 +77,7 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-07-12
-// @version      1.11.8
+// @version      1.11.9
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -183,7 +183,7 @@
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
 const userscriptVersion = GM.info.script.version;
-const userscriptIsDev   = GM.script.resources.find(function(r) { return r.name === 'userscriptCSS'; }).url.includes('manga-tracker.localhost') // manga-tracker.localhost is the default docker hostname
+const userscriptIsDev   = GM.info.script.resources.find(function(r) { return r.name === 'userscriptCSS'; }).url.includes('manga-tracker.localhost'); // manga-tracker.localhost is the default docker hostname
 
 // Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
 (function(sites) {
