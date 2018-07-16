@@ -9,7 +9,7 @@ class JaiminisBox extends Base_FoolSlide_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$fullURL = $this->getFullTitleURL($title_url);
 		$titleData = [];
-		if($content = $this->get_content($fullURL, "", "", FALSE, TRUE, ['adult' => 'true'])) {
+		if($content = $this->get_content($fullURL, '', '', FALSE, TRUE, ['adult' => 'true'])) {
 			$content['body'] = preg_replace('/^[\S\s]*(<article[\S\s]*)<\/article>[\S\s]*$/', '$1', $content['body']);
 			$data = $this->parseTitleDataDOM(
 				$content,
@@ -20,10 +20,10 @@ class JaiminisBox extends Base_FoolSlide_Site_Model {
 				"div[@class='title']/a"
 			);
 			if($data) {
-				$titleData['title'] = trim($data['nodes_title']->textContent);
+				$titleData['title']          = trim($data['nodes_title']->textContent);
 				$link                        = (string) $data['nodes_chapter']->getAttribute('href');
 				$titleData['latest_chapter'] = preg_replace('/.*\/read\/.*?\/(.*?)\/$/', '$1', $link);
-				$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
+				$titleData['last_updated']   = date('Y-m-d H:i:s', strtotime((string) str_replace('.', '', explode(',', $data['nodes_latest']->nodeValue)[1])));
 			}
 		}
 		return (!empty($titleData) ? $titleData : NULL);
@@ -32,8 +32,8 @@ class JaiminisBox extends Base_FoolSlide_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = "https://jaiminisbox.com/reader/";
-		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+		$updateURL = 'https://jaiminisbox.com/reader/';
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
 			$data = $content['body'];
 
 			$dom = new DOMDocument();
@@ -61,24 +61,24 @@ class JaiminisBox extends Base_FoolSlide_Site_Model {
 						if(!array_key_exists($title_url, $titleDataList)) {
 							$titleData['title'] = trim($title->getAttribute('title'));
 
-							preg_match('/(?<chapter>[^\/]+\/[^\/]+\/[^\/]+(?=\/$|$))/', $chapter->getAttribute('href'), $chapter_arr);
-							$titleData['latest_chapter'] = $chapter_arr['chapter'];
+							$chapter_parts = explode('/', $chapter->getAttribute('href'));
+							$titleData['latest_chapter'] = trim(implode('/', array_slice($chapter_parts, 6)), '/');
 
 							$dateString = trim(str_replace(',', '', str_replace('.', '-', $nodes_latest->item(0)->textContent)));
 							switch($dateString) {
 								case 'Today':
-									$dateString = date("Y-m-d", now());
+									$dateString = date('Y-m-d', now());
 									break;
 
 								case 'Yesterday':
-									$dateString = date("Y-m-d", strtotime("-1 days"));
+									$dateString = date('Y-m-d', strtotime('-1 days'));
 									break;
 
 								default:
 									//Do nothing
 									break;
 							}
-							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+							$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($dateString));
 
 							$titleDataList[$title_url] = $titleData;
 						}
