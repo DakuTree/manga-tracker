@@ -142,6 +142,10 @@ task('deploy:migrate_db', function () {
 task('deploy:maintenance_enable', function () {
 	//define('MAINTENANCE', FALSE);
 	run('( \
+		cd {{previous_release}} && \
+		sed -i -r "s/(\'MAINTENANCE\',) FALSE/\1 TRUE/" public/index.php \
+	)');
+	run('( \
 		cd {{release_path}} && \
 		sed -i -r "s/(\'MAINTENANCE\',) FALSE/\1 TRUE/" public/index.php \
 	)');
