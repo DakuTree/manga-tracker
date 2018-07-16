@@ -161,10 +161,11 @@ after('deploy:vendors', 'deploy:clear_paths');
 after('deploy:shared', 'deploy:copy_files');
 
 before('deploy:symlink', 'deploy:maintenance_enable');
+after('deploy:maintenance_enable', 'cachetool:clear:opcache');
 after('deploy:symlink', 'deploy:migrate_db');
-after('deploy:migrate_db', 'cachetool:clear:opcache');
 
 after('deploy', 'deploy:maintenance_disable');
+after('deploy:maintenance_disable', 'cachetool:clear:opcache');
 after('deploy:failed', 'deploy:unlock'); // [Optional] if deploy fails automatically unlock.
 
 //TODO: After deploy:success, ask if we want to send a tweet and/or update notices?
