@@ -105,8 +105,6 @@ task('deploy:compile_assets', function() {
 		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'time\', FALSE))->generate();"
 	)');
 });
-after('deploy:vendors', 'deploy:compile_assets');
-after('deploy:vendors', 'deploy:clear_paths');
 
 task('deploy:copy_files', function () {
 	$sharedPath = '{{deploy_path}}/shared';
@@ -130,7 +128,6 @@ task('deploy:copy_files', function () {
 		run("cp $sharedPath/$file {{release_path}}/$file");
 	}
 });
-after('deploy:shared', 'deploy:copy_files');
 
 task('deploy:migrate_db', function () {
 	// Migration is disabled by default on production, so we need to toggle it temporally.
@@ -141,6 +138,12 @@ task('deploy:migrate_db', function () {
 		sed -i -r "s/(migration_enabled.*?)TRUE/\1FALSE/g" application/config/production/migration.php \
 	)');
 });
+
+// Events
+after('deploy:vendors', 'deploy:compile_assets');
+after('deploy:vendors', 'deploy:clear_paths');
+
+after('deploy:shared', 'deploy:copy_files');
 
 //TODO: We should enable some form of maintenance mode prior to symlinking.
 after('deploy:symlink', 'deploy:migrate_db');
