@@ -36,6 +36,13 @@
  * @filesource
  */
 
+// Maintenance Mode
+define('MAINTENANCE', FALSE);
+if(MAINTENANCE && PHP_SAPI !== 'cli') {
+	require_once __DIR__ . DIRECTORY_SEPARATOR . '../application/views/common/maintenance.php'; ## call view
+	exit();
+}
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

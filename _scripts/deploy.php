@@ -139,18 +139,33 @@ task('deploy:migrate_db', function () {
 	)');
 });
 
+task('deploy:maintenance_enable', function () {
+	//define('MAINTENANCE', FALSE);
+	run('( \
+		cd {{release_path}} && \
+		sed -i -r "s/(\'MAINTENANCE\',) FALSE/\1 TRUE/" public/index.php \
+	)');
+});
+task('deploy:maintenance_disable', function () {
+	//define('MAINTENANCE', FALSE);
+	run('( \
+		cd {{release_path}} && \
+		sed -i -r "s/(\'MAINTENANCE\',) TRUE/\1 FALSE/" public/index.php \
+	)');
+});
+
 // Events
 after('deploy:vendors', 'deploy:compile_assets');
 after('deploy:vendors', 'deploy:clear_paths');
 
 after('deploy:shared', 'deploy:copy_files');
 
-//TODO: We should enable some form of maintenance mode prior to symlinking.
+before('deploy:symlink', 'deploy:maintenance_enable');
 after('deploy:symlink', 'deploy:migrate_db');
 after('deploy:migrate_db', 'cachetool:clear:opcache');
 
-// [Optional] if deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
+after('deploy', 'deploy:maintenance_disable');
+after('deploy:failed', 'deploy:unlock'); // [Optional] if deploy fails automatically unlock.
 
 //TODO: After deploy:success, ask if we want to send a tweet and/or update notices?
 //      https://deployer.org/docs/api
