@@ -121,6 +121,7 @@
 		<li>Mangaichi Scanlation Division</li>
 		<li>Mangazuki</li>
 		<li>MerakiScans</li>
+		<li>NaniScans</li>
 		<li>One Time Scans!</li>
 		<li>Phoenix Serenade</li>
 		<li>Psycho Play</li>
@@ -138,6 +139,7 @@
 		<li>ShoujoSense</li>
 		<li>Soda Scans</li>
 		<li>tap-trans</li>
+		<li>TrashScanlations</li>
 		<li>TukiScans</li>
 		<li>TwistedHelScans</li>
 		<li>VortexScans</li>
@@ -150,6 +152,5 @@
 		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
 		<li><del>Demonic Scanlations</del> - Domain has been disabled.</li>
 		<li><del>KissManga.com</del> - KissManga has been temporarily disabled due to IP block. No ETA on fix.</li>
-		<li>NaniScans</li>
 	</ul> <!--ENDOFSITES-->
 </div>
