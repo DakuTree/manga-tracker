@@ -1017,9 +1017,9 @@ abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 	public function getChapterData(string $title_url, string $chapter) : array {
 		if(strpos($chapter, '/')) {
 			$chapterArr = explode('/', $chapter);
-			$chapterN   = "v{$chapterArr[0]}/c{$chapterArr[1]}";
+			$chapterN   = "v{$chapterArr[0]}/c".str_replace('chapter_','',$chapterArr[1]);
 		} else if (ctype_digit($chapter)) {
-			$chapterN = "c${chapter}";
+			$chapterN = 'c'.str_replace('chapter_','', $chapter);
 		}
 		return [
 			'url'    => $this->getChapterURL($title_url, $chapter),
