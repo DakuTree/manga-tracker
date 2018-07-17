@@ -34,15 +34,9 @@ services:
       - ./application/tests/models:/app/application/tests/models
       - ./application/views:/app/application/views
       - ./public/assets/img:/app/public/assets/img
-      - ./public/assets/js/main.js:/app/public/assets/js/main.js
-      - ./public/assets/js/pages:/app/public/assets/js/pages
+      - ./public/assets/js:/app/public/assets/js
       - ./public/assets/less:/app/public/assets/less
-      - ./public/userscripts/manga-tracker.dev.user.js:/app/public/userscripts/manga-tracker.dev.user.js
-      - ./public/userscripts/manga-tracker.user.js:/app/public/userscripts/manga-tracker.user.js
-      - ./public/userscripts/manga-tracker.meta.js:/app/public/userscripts/manga-tracker.meta.js
-      - ./public/userscripts/assets/main.less:/app/public/userscripts/assets/main.less
-      - ./public/userscripts/assets/reload.png:/app/public/userscripts/assets/reload.png
-      - ./public/userscripts/sites:/app/public/userscripts/sites
+      - ./public/userscripts:/app/public/userscripts
 
     depends_on:
         - db
