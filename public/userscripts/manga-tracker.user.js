@@ -76,8 +76,8 @@
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-07-12
-// @version      1.11.9
+// @updated      2018-07-17
+// @version      1.12.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -125,6 +125,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js
 // @require      https://trackr.moe/userscripts/sites/MerakiScans.3.js
+// @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @require      https://trackr.moe/userscripts/sites/OneTimeScans.js
 // @require      https://trackr.moe/userscripts/sites/PhoenixSerenade.js
 // @require      https://trackr.moe/userscripts/sites/PsychoPlay.2.js
@@ -151,7 +152,6 @@
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
-// @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @resource     fontAwesome    https://use.fontawesome.com/9533173d07.css
 // @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.9.css
 // @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.9.less
@@ -1330,6 +1330,47 @@ const base_site = {
 			$('.page-content').replaceWith($('<div/>', {id: 'viewer'})); //Set base viewer div
 
 			callback(false, true);
+		};
+	},
+
+	/**
+	 * Used to setup sites that using WP Manga - http://xhanch.com/wp-manga/
+	 *
+	 * @function
+	 * @alias sites.*.setupWPManga
+	 * @name base_site.setupWPManga
+	 *
+	 * @final
+	 */
+	setupWPManga : function() {
+		this.preInit = function(callback) {
+			//Force webtoon mode.
+			if(window.location.search === "?style=list") {
+				callback();
+			} else {
+				window.location.href += '?style=list';
+			}
+		};
+
+		this.setObjVars = function() {
+			this.title         = this.segments[2];
+			this.chapter       = this.segments[3];
+
+			this.title_url   = `${this.baseURL}/manga/${this.title}`;
+			this.chapter_url = `${this.baseURL}/manga/${this.title}/${this.chapter}`;
+
+			this.chapterListCurrent = this.chapter_url + '?style=list';
+			this.chapterList        = window.generateChapterList($('.single-chapter-select > option'), 'data-redirect');
+			let imgList = $('img.wp-manga-chapter-img');
+			this.viewerCustomImageList  = imgList.map(function(i, e) {
+				return $(e).attr('src');
+			});
+
+			this.page_count = imgList.length;
+		};
+		this.preSetupViewer = function(callback) {
+			$('.read-container').replaceWith($('<div/>', {id: 'viewer', class:'read-container'})); //Set base viewer div
+			callback(true, true);
 		};
 	},
 
