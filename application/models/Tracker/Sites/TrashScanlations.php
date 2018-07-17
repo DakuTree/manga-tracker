@@ -2,4 +2,5 @@
 
 class TrashScanlations extends Base_WP_Manga_Site_Model {
 	public $baseURL = 'https://trashscanlations.com/';
+	public $titleStub = 'series';
 }

@@ -1003,20 +1003,27 @@ abstract class Base_Roku_Site_Model extends Base_Site_Model {
 //CHECK: RSS might be better to use here?
 abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)$/';
+	public $chapterFormat = '/^(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)$/';
 	//TODO: Get PageSeperator
 
 	public $customType    = 2;
 
+	public $titleStub = 'manga';
+
 	public function getFullTitleURL(string $title_url) : string {
-		return "{$this->baseURL}/manga/{$title_url}/";
+		return "{$this->baseURL}/{$this->titleStub}/{$title_url}/";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
-		$chapterN = (ctype_digit($chapter) ? "c${chapter}" : $chapter);
+		if(strpos($chapter, '/')) {
+			$chapterArr = explode('/', $chapter);
+			$chapterN   = "v{$chapterArr[0]}/c{$chapterArr[1]}";
+		} else if (ctype_digit($chapter)) {
+			$chapterN = "c${chapter}";
+		}
 		return [
 			'url'    => $this->getChapterURL($title_url, $chapter),
-			'number' => $chapterN
+			'number' => $chapterN ?? $chapter
 		];
 	}
 
@@ -1034,7 +1041,7 @@ abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 			$content,
 			$title_url,
 			"(//div[@class='post-title'])/h3[1]",
-			"//ul[contains(@class, 'version-chap')]/li[1]",
+			"(//ul[contains(@class, 'list-chap') or contains(@class, 'version-chap')][1]/li[@class='wp-manga-chapter'])[1]",
 			"span[@class='chapter-release-date']/i[1]",
 			'a[1]',
 			function($data) {
@@ -1045,11 +1052,11 @@ abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 			$titleData['title'] = trim($data['nodes_title']->textContent);
 
 			$segments = explode('/', (string) $data['nodes_chapter']->getAttribute('href'));
-			$needle = array_search('manga', array_reverse($segments, TRUE), TRUE) + 2;
-			$titleData['latest_chapter'] = $segments[$needle];
+			$needle = array_search($this->titleStub, array_reverse($segments, TRUE), TRUE) + 2;
+			$titleData['latest_chapter'] = implode('/', array_slice($segments, $needle));
 
 			$dateString = $data['nodes_latest']->nodeValue;
-			$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
+			$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime(preg_replace('/ (-|\[A\]).*$/', '', $dateString)));
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
@@ -1090,8 +1097,10 @@ abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 							$titleData['title'] = trim($title->textContent);
 
 							$chapter = $nodes_chapter->item(0);
-							preg_match('/(?<chapter>[^\/]+(?=\/$|$))/', $chapter->getAttribute('href'), $chapter_arr);
-							$titleData['latest_chapter'] = $chapter_arr['chapter'];
+
+							$segments = explode('/', (string) $chapter->getAttribute('href'));
+							$needle = array_search($this->titleStub, array_reverse($segments, TRUE), TRUE) + 2;
+							$titleData['latest_chapter'] = implode('/', array_slice($segments, $needle));
 
 							$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($nodes_latest->item(0)->nodeValue));
 

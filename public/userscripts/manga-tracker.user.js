@@ -74,11 +74,11 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https:\/\/trashscanlations\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
-// @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
+// @include      /^https:\/\/trashscanlations\.com\/series\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
+// @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @updated      2018-07-17
-// @version      1.12.1
+// @version      1.12.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -155,8 +155,8 @@
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @resource     fontAwesome    https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.9.css
-// @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.9.less
+// @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.10.css
+// @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.10.less
 // @resource     reload         https://trackr.moe/userscripts/assets/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
@@ -1345,21 +1345,23 @@ const base_site = {
 	 * @final
 	 */
 	setupWPManga : function() {
-		this.preInit = function(callback) {
+		this.setObjVars = function() {
+			//NOTE: We can't override preInit here, so we need to put this here
 			//Force webtoon mode.
-			if(window.location.search === "?style=list") {
-				callback();
-			} else {
+			if(window.location.search !== "?style=list") {
 				window.location.href += '?style=list';
 			}
-		};
 
-		this.setObjVars = function() {
+			let type           = this.segments[1];
 			this.title         = this.segments[2];
-			this.chapter       = this.segments[3];
+			if(this.segments.length === 5) {
+				this.chapter = this.segments[3];
+			} else {
+				this.chapter = `${this.segments[3]}/${this.segments[4]}`;
+			}
 
-			this.title_url   = `${this.baseURL}/manga/${this.title}`;
-			this.chapter_url = `${this.baseURL}/manga/${this.title}/${this.chapter}`;
+			this.title_url   = `${this.baseURL}/${type}/${this.title}`;
+			this.chapter_url = `${this.baseURL}/${type}/${this.title}/${this.chapter}`;
 
 			this.chapterListCurrent = this.chapter_url + '?style=list';
 			this.chapterList        = window.generateChapterList($('.single-chapter-select > option'), 'data-redirect');
