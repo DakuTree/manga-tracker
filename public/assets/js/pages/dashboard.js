@@ -807,8 +807,7 @@ $(function(){
 	}
 
 	function updateUnread(table, row) {
-		let totalUnread  = table.find('tr .update-read:not([style])').length,
-		    unread_e     = row.find('> td:eq(0)'),
+		let unread_e     = row.find('> td:eq(0)'),
 		    chapter_e    = row.find('> td:eq(2)'),
 		    update_icons = row.find('.update-read, .ignore-latest');
 
@@ -822,6 +821,8 @@ $(function(){
 		//Update unread status for sorting purposes.
 		unread_e.find(' > span').text('1');
 		table.trigger('updateCell', [unread_e[0], false, null]);
+
+		let totalUnread  = table.find('tr .update-read:not([style])').length;
 
 		//Update header text
 		let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');

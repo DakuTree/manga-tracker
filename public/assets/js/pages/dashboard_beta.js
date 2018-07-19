@@ -156,8 +156,7 @@ $(function(){
 			}
 		}
 		updateUnread(table, row) {
-			let totalUnread  = table.find('tr .update-read:not([style])').length,
-			    unread_e     = row.find('> td:eq(0)'),
+			let unread_e     = row.find('> td:eq(0)'),
 			    chapter_e    = row.find('> td:eq(2)'),
 			    update_icons = row.find('.update-read, .ignore-latest');
 
@@ -177,6 +176,8 @@ $(function(){
 			if(!th.find('> .table-reset').length) {
 				th.empty().append($('<i/>', {class: 'fa fa-eraser table-reset', 'aria-hidden': 'true'}));
 			}
+
+			let totalUnread  = table.find('tr .update-read:not([style])').length;
 
 			//Update header text
 			let unreadText = (totalUnread > 0 ? ` (${totalUnread} unread)` : '');
