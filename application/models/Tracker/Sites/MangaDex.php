@@ -14,6 +14,8 @@ class MangaDex extends Base_Site_Model {
 
 	public $siteRateLimit = 450; //MangaDex limit 600 in 600s (10m). To avoid possible issues, we stick a bit lower than that,
 
+	private $langCodes = ['Arabic'=>'sa','Bengali'=>'bd','Bulgarian'=>'bg','Catalan'=>'ct','Chinese (Simp)'=>'cn','Chinese (Trad)'=>'hk','Czech'=>'cz','Danish'=>'dk','Dutch'=>'nl','English'=>'gb','Filipino'=>'ph','Finnish'=>'fi','French'=>'fr','German'=>'de','Greek'=>'gr','Hungarian'=>'hu','Indonesian'=>'id','Italian'=>'it','Japanese'=>'jp','Korean'=>'kr','Malay'=>'my','Mongolian'=>'mn','Persian'=>'ir','Polish'=>'pl','Portuguese (Br)'=>'br','Portuguese (Pt)'=>'pt','Romanian'=>'ro','Russian'=>'ru','Serbo-Croatian'=>'rs','Spanish (Es)'=>'es','Spanish (LATAM)'=>'mx','Swedish'=>'se','Thai'=>'th','Turkish'=>'tr','Ukrainian'=>'ua','Vietnamese'=>'vn'];
+
 	public function getFullTitleURL(string $title_url) : string {
 		$title_parts = explode(':--:', $title_url);
 		return "https://mangadex.org/manga/{$title_parts[0]}";
@@ -30,76 +32,48 @@ class MangaDex extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		$failureMatched = FALSE;
+		//TODO: This utilizes the beta branch API. When this becomes live, we will probably need to change to https.
+		$titleParts = explode(':--:', $title_url);
+		if($content = $this->get_content("http://beta.mangadex.org/api/manga/{$titleParts[0]}")) {
+			$json = json_decode($content['body'], TRUE);
+			if($json && $json['status'] === 'OK') {
+				$titleData['title'] = trim($json['manga']['title']);
 
-		//FIXME: There also seems to be RSS Feeds but they don't appear to work at the moment.
-		$fullURL = $this->getFullTitleURL($title_url);
+				$filteredChapters = array_filter($json['chapter'], function($v) use ($titleParts) {
+					return $v['lang_code'] === $this->langCodes[$titleParts[1]];
+				});
 
-		$content = $this->get_content($fullURL, $this->cookieString);
+				uasort($filteredChapters, function($a, $b) {
+					//CHECK: Should we account for volume here, and/or other non-numeric data?
+					return (float) $b['chapter'] <=> (float) $a['chapter'];
+				});
+				$latestChapter = reset($filteredChapters);
+				$chapterID     = key($filteredChapters);
 
-		$title_parts = explode(':--:', $title_url);
-		$data = $this->parseTitleDataDOM(
-			$content,
-			$title_url,
-			'//title',
-			"//div[@class='edit tab-content']/div/table/tbody/tr[.//*[@alt='{$title_parts[1]}']][1]",
-			'td[8]',
-			'td[2]/a',
-			function($data) use (&$failureMatched) {
-				$failed = strpos($data, 'Warning:</strong> Manga #') !== FALSE;
-				if($failed) $failureMatched = TRUE;
-				return $failed;
-			},
-			function($data, $xpath, &$returnData) {
-				if(strpos($data, 'Notice:</strong> No chapters') !== FALSE) {
-					// No chapters exist at all.
-				} else if(strpos($data, 'Notice:</strong> There are no chapters in your selected language(s).') !== FALSE) {
-					// No chapters exist at all.
-				} else {
-					$nodes_row = $xpath->query("//div[@class='edit tab-content']/div/table/tbody/tr[.//*[@alt]][1]");
-					if($nodes_row->length === 1) {
-						// Chapters exist, but not in the language we're looking for.
-					} else {
-						// No chapters exist, failure string wasn't matched and xpath failed?
-						// Mostly likely an HTML change.
-						$returnData = FALSE;
-					}
-				}
-			},
-			function($xpath, &$returnData) {
-				$nodes_mal = $xpath->query('//th[contains(text(), "Links:")]/following-sibling::td[1]/a[contains(@href,"myanimelist.net")]');
-				if($nodes_mal->length === 1) {
-					$returnData['nodes_mal'] = $nodes_mal->item(0);
-				}
-			}
-		);
-		if($data) {
-			$titleData['title'] = preg_replace('/\(Manga\)( -)? MangaDex.*?$/','', trim($data['nodes_title']->textContent));
-
-			if(isset($data['nodes_latest']) && isset($data['nodes_chapter'])) {
-				$chapterID     = explode('/', (string) $data['nodes_chapter']->getAttribute('href'))[2];
-				$chapterNumber = preg_replace('/v\//', '', preg_replace('/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/', 'v$1/c$2', trim((string) $data['nodes_chapter']->textContent)));
-
+				$chapterNumber = trim((!empty($latestChapter['volume']) ? "v{$latestChapter['volume']}" : '') . (!empty($latestChapter['chapter']) ? "c{$latestChapter['chapter']}" : ''));
+				if(empty($chapterNumber)) { $chapterNumber = 'Oneshot'; }
 				$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
-				$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->getAttribute('title')));
+				$titleData['last_updated'] =  date('Y-m-d H:i:s', $latestChapter['timestamp']);
 
-				if(isset($data['nodes_mal'])) {
-					$mal_id = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
-					if($mal_id !== "0") {
-						$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
-					}
-				}
+				//FIXME: MAL ID (and all other link info) does not exist in the API, even though it does on the actual page.
+				//       I've went and requested it in the beta thread - http://beta.mangadex.org/thread/16819/6/#post_109993
+				//if(isset($data['nodes_mal'])) {
+				//	$mal_id = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+				//	if($mal_id !== "0") {
+				//		$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+				//	}
+				//}
 			}
 		}
 
-		return (!empty($titleData) ? $titleData : (!$failureMatched ? NULL : []));
+		return (!empty($titleData) ? $titleData : NULL);
 	}
 
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$lastChapterID   = (int) ($this->cache->get("mangadex_lastchapterid") ?: 0);
+		$lastChapterID   = (int) ($this->cache->get('mangadex_lastchapterid') ?: 0);
 		$latestChapterID = 0;
 
 		$page = 1;
