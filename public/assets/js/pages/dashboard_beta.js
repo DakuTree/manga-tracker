@@ -173,10 +173,9 @@ $(function(){
 
 			//And show reset sort button to signify the current sort is no longer valid
 			let th = $(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner');
-			if(!th.find('> .table-reset').length) {
+			if(!th.find('> .table-reset').length && ($(table).find('thead > tr > th:eq(0)').attr('aria-sort') !== 'none')) {
 				th.empty().append($('<i/>', {class: 'fa fa-eraser table-reset', 'aria-hidden': 'true'}));
 			}
-
 			let totalUnread  = table.find('tr .update-read:not([style])').length;
 
 			//Update header text
