@@ -311,6 +311,7 @@ abstract class Base_Site_Model extends CI_Model {
 	 * @param closure|null $failureCall
 	 * @param closure|null $noChaptersCall
 	 * @param closure|null $extraCall
+	 * @param closure|null $statusCall //FIXME: This is really ugly.
 	 *
 	 * @return DOMElement[]|false [nodes_title,nodes_chapter,nodes_latest]
 	 */
@@ -318,7 +319,7 @@ abstract class Base_Site_Model extends CI_Model {
 		$content, string $title_url,
 		string $node_title_string, string $node_row_string,
 		string $node_latest_string, string $node_chapter_string,
-		closure $failureCall = NULL, closure $noChaptersCall = NULL, closure $extraCall = NULL) {
+		closure $failureCall = NULL, closure $noChaptersCall = NULL, closure $extraCall = NULL, closure $statusCall = NULL) {
 
 		if(!is_array($content)) {
 			log_message('error', "{$this->site} : {$title_url} | Failed to grab URL (See above curl error)");
@@ -328,6 +329,10 @@ abstract class Base_Site_Model extends CI_Model {
 			if(!($status_code >= 200 && $status_code < 300)) {
 				if($status_code === 502) {
 					// Site is overloaded, no need to log this.
+				} else if(!is_null($statusCall) && is_callable($statusCall) && $statusReturn = $statusCall($status_code, $data)) {
+					if(!array_key_exists('ignore', $statusReturn)) {
+						log_message('error', "{$this->site} : {$title_url} | Failure status call matched");
+					}
 				} else {
 					log_message('error', "{$this->site} : {$title_url} | Bad Status Code ({$status_code})");
 				}
@@ -710,8 +715,13 @@ abstract class Base_myMangaReaderCMS_Site_Model extends Base_Site_Model {
 			"//ul[contains(@class, 'chapters')]/li[not(contains(@class, 'btn'))][1]",
 			"div[contains(@class, 'action')]/div[@class='date-chapter-title-rtl']",
 			'h5/a[1] | h3/a[1]',
-			function($data) {
-				return strpos($data, 'Whoops, looks like something went wrong.') !== FALSE;
+			NULL,
+			NULL,
+			NULL,
+			function(int $status_code, $data) {
+				// We want to silently fail here.
+				$success = ($status_code === 500 && strpos($data, 'Whoops, looks like something went wrong.') !== FALSE);
+				return ['success' => $success, 'ignore' => TRUE];
 			}
 		);
 		if($data) {
