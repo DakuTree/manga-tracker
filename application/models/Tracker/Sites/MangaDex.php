@@ -81,7 +81,8 @@ class MangaDex extends Base_Site_Model {
 		while($getNextPage) {
 			if($page >= 5) break;
 
-			$updateURL = "https://mangadex.org/0/{$page}"; //All Languages
+			//TODO: We should have a user account for R18 options
+			$updateURL = "http://beta.mangadex.org/updates/{$page}"; //All Languages
 			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
 				$data = $content['body'];
 
@@ -91,14 +92,14 @@ class MangaDex extends Base_Site_Model {
 				libxml_use_internal_errors(FALSE);
 
 				$xpath      = new DOMXPath($dom);
-				$nodes_rows = $xpath->query("//div[@class='col-sm-9']/div/table/tbody/tr[.//td[@rowspan]]");
+				$nodes_rows = $xpath->query("//div[@role='main']/div/table/tbody/tr[.//td[@rowspan]]");
 				if($nodes_rows->length > 0) {
 					$i = 0;
 					foreach($nodes_rows as $row) {
 						$i++;
 						$titleData = [];
 
-						$nodes_title         = $xpath->query('td[3]/a', $row);
+						$nodes_title         = $xpath->query('td[3]/span/a', $row);
 						$nodes_rows_chapters = $xpath->query("following-sibling::tr[.//td[@title] and count(preceding-sibling::tr[.//td[@rowspan]])=$i]", $row);
 
 						if($nodes_title->length === 1 && $nodes_rows_chapters->length >= 1) {
@@ -109,8 +110,8 @@ class MangaDex extends Base_Site_Model {
 
 							foreach($nodes_rows_chapters as $rowC) {
 								$nodes_lang     = $xpath->query('td[3]/img', $rowC);
-								$nodes_chapter  = $xpath->query("td[2]/a", $rowC);
-								$nodes_latest   = $xpath->query("td[5]/time", $rowC);
+								$nodes_chapter  = $xpath->query('td[2]/a', $rowC);
+								$nodes_latest   = $xpath->query('td[7]/time', $rowC);
 
 								if($nodes_lang->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 									$lang = $nodes_lang->item(0)->getAttribute('title');
