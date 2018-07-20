@@ -599,7 +599,7 @@ $(function(){
 						.append(document.createTextNode(')'));
 				}
 
-				//region let tr = ...;
+				//region let $tr = ...;
 				let $tr = $('<tr/>', {'data-id': manga.id}).append(
 					$('<td/>')
 						.append($('<span/>', {hidden: true, text: manga.new_chapter_exists}))
@@ -614,6 +614,7 @@ $(function(){
 						)
 						.append($('<a/>', {href: manga.full_title_url, rel: 'nofollow', class: 'title', 'data-title': decodeEntities(manga.title_data.title_url), target: '_blank', text: decodeEntities(manga.title_data.title)}))
 
+						.append($('<small/>', {class: 'toggle-info pull-right text-muted', text: 'More info'}))
 						.append($('<small/>', {class: 'toggle-info pull-right text-muted', text: 'More info'}))
 						.append($('<div/>', {class: 'more-info'}).append(
 							$('<small/>')
@@ -671,6 +672,7 @@ $(function(){
 						)
 				);
 				//endregion
+
 				if(manga.site_data.status === 'disabled') {
 					$tr.addClass('bg-danger');
 				}
@@ -685,6 +687,11 @@ $(function(){
 				else if(manga.title_data.failed_checks > 0) {
 					$tr.addClass('bg-warning');
 					$tr.attr('title', 'The last update for this title failed, as such it may not be completely up to date.');
+				}
+
+				if(manga.has_tags) {
+					$tr.find('.toggle-info').text('Hide info');
+					$tr.find('.more-info').addClass('has-tags');
 				}
 
 				return $tr;
@@ -722,11 +729,13 @@ $(function(){
 			$('.toggle-info').on('click', function(e) {
 				e.preventDefault();
 
-				$(this).find('+ .more-info').toggle();
+				let moreInfo = $(this).find('+ .more-info');
 				if($(this).text() === 'More info') {
 					$(this).text('Hide info');
+					moreInfo.addClass('has-tags');
 				} else {
 					$(this).text('More info');
+					moreInfo.removeClass('has-tags');
 
 					//Hide input when hiding info
 					$(this).closest('tr').find('.tag-edit').attr('hidden', true);
