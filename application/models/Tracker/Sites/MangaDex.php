@@ -50,7 +50,9 @@ class MangaDex extends Base_Site_Model {
 				$latestChapter = reset($filteredChapters);
 				$chapterID     = key($filteredChapters);
 
-				$chapterNumber = trim((!empty($latestChapter['volume']) ? "v{$latestChapter['volume']}" : '') . (!empty($latestChapter['chapter']) ? "c{$latestChapter['chapter']}" : ''));
+				$chapterNumberVolume  = (!empty($latestChapter['volume']) ? "v{$latestChapter['volume']}" : '');
+				$chapterNumberChapter =  (!empty($latestChapter['chapter']) ? "c{$latestChapter['chapter']}" : '');
+				$chapterNumber = trim($chapterNumberVolume . (!empty($chapterNumberVolume) && !empty($chapterNumberChapter) ? '/' : '') . $chapterNumberChapter);
 				if(empty($chapterNumber)) { $chapterNumber = 'Oneshot'; }
 				$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
@@ -128,7 +130,7 @@ class MangaDex extends Base_Site_Model {
 										$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
 										$dateString = trim($nodes_latest->item(0)->getAttribute('datetime'));
-										$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+										$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($dateString));
 
 										if((int) $chapterID < $lastChapterID) {
 											$getNextPage = FALSE;
