@@ -77,8 +77,8 @@
 // @include      /^https:\/\/trashscanlations\.com\/series\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-07-17
-// @version      1.12.2
+// @updated      2018-07-23
+// @version      1.12.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -155,8 +155,8 @@
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @resource     fontAwesome    https://use.fontawesome.com/9533173d07.css
-// @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.10.css
-// @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.10.less
+// @resource     userscriptCSS  https://trackr.moe/userscripts/assets/main.11.css
+// @resource     userscriptLESS https://trackr.moe/userscripts/assets/main.11.less
 // @resource     reload         https://trackr.moe/userscripts/assets/reload.png
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
