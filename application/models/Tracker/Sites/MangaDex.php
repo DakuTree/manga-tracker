@@ -36,7 +36,7 @@ class MangaDex extends Base_Site_Model {
 		$titleParts = explode(':--:', $title_url);
 		if($content = $this->get_content("http://beta.mangadex.org/api/manga/{$titleParts[0]}")) {
 			$json = json_decode($content['body'], TRUE);
-			if($json && $json['status'] === 'OK') {
+			if($json && $json['status'] === 'OK' && array_key_exists('chapter',$json)) {
 				$titleData['title'] = trim($json['manga']['title']);
 
 				$filteredChapters = array_filter($json['chapter'], function($v) use ($titleParts) {
