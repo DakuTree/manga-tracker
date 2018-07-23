@@ -90,6 +90,8 @@
 	sites['beta.mangadex.org'] = {
 		//FIXME: beta only has http support for now. Make sure to switch to https on release
 		preInit : function(callback) {
+			let _this = this;
+
 			this.site = 'mangadex.org';
 
 			//NOTE: We need to wait for the page to load as if we call this before the initial load it will make duplicate requests to the API.
@@ -103,12 +105,41 @@
 				}
 			}, 1000);
 			pageLoad.done(() => {
+				/* FIXME: JS API no longer exists for whatever reason, so we need to do this the hard way.
+				   The problem with the hard way is it requires two duplicated requests that aren't cached. Great.
+
 				//Page is now loaded, now use the site JS API to grab the data ourselves.
 				//NOTE: This does not send duplicate API requests as it uses the cache from the page load request.
 				let chapterID = $('head').attr('data-chapter-id');
 				unsafeWindow.API.Chapter.create({id: chapterID}).then(data => {
 					this.preInitData = data;
 					callback();
+				});
+				*/
+
+				let preInitData = {};
+
+				//GM_xmlHttpRequest function may be better here.
+				$.getJSON(`http://beta.mangadex.org/api/chapter/${_this.segments[2]}?`, function(chapterData) {
+					preInitData._data = chapterData;
+					$.getJSON(`http://beta.mangadex.org/api/manga/${chapterData.manga_id}?`, function(titleData) {
+						preInitData.manga = {
+							_data       : titleData.manga,
+							chapters    : titleData.chapter,
+							chapterList : []
+						};
+
+						Object.keys(titleData.chapter).forEach(function (key) {
+							let chData = titleData.chapter[key];
+							if(chData.lang_code === chapterData.lang_code) {
+								chData.id = key;
+								preInitData.manga.chapterList.push(chData);
+							}
+						});
+
+						_this.preInitData = preInitData;
+						callback();
+					});
 				});
 			});
 		},
@@ -117,7 +148,7 @@
 			/* This contains all chapter & manga data:
 			       - manga
 			         - chapterList (This is all chapter data according to language settings)
-			         - chapters (This is all chapter data, regardless of language settings
+			         - chapters (This is all chapter data, regardless of language settings (Unused)
 			         - _data (Manga Data)
 			       - _data (Current Chapter Data)*/
 			let apiData        = this.preInitData,
