@@ -37,8 +37,6 @@ class MangaDex extends Base_Site_Model {
 		if($content = $this->get_content("http://beta.mangadex.org/api/manga/{$titleParts[0]}")) {
 			$json = json_decode($content['body'], TRUE);
 			if($json && $json['status'] === 'OK' && array_key_exists('chapter',$json)) {
-				$titleData['title'] = trim($json['manga']['title']);
-
 				$filteredChapters = array_filter($json['chapter'], function($v) use ($titleParts) {
 					return $v['lang_code'] === $this->langCodes[$titleParts[1]];
 				});
@@ -47,25 +45,29 @@ class MangaDex extends Base_Site_Model {
 					//CHECK: Should we account for volume here, and/or other non-numeric data?
 					return (float) $b['chapter'] <=> (float) $a['chapter'];
 				});
-				$latestChapter = reset($filteredChapters);
-				$chapterID     = key($filteredChapters);
+				if(!empty($filteredChapters)) {
+					$titleData['title'] = trim($json['manga']['title']);
 
-				$chapterNumberVolume  = (!empty($latestChapter['volume']) ? "v{$latestChapter['volume']}" : '');
-				$chapterNumberChapter =  (!empty($latestChapter['chapter']) ? "c{$latestChapter['chapter']}" : '');
-				$chapterNumber = trim($chapterNumberVolume . (!empty($chapterNumberVolume) && !empty($chapterNumberChapter) ? '/' : '') . $chapterNumberChapter);
-				if(empty($chapterNumber)) { $chapterNumber = 'Oneshot'; }
-				$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
+					$latestChapter = reset($filteredChapters);
+					$chapterID     = key($filteredChapters);
 
-				$titleData['last_updated'] =  date('Y-m-d H:i:s', $latestChapter['timestamp']);
+					$chapterNumberVolume  = (!empty($latestChapter['volume']) ? "v{$latestChapter['volume']}" : '');
+					$chapterNumberChapter =  (!empty($latestChapter['chapter']) ? "c{$latestChapter['chapter']}" : '');
+					$chapterNumber = trim($chapterNumberVolume . (!empty($chapterNumberVolume) && !empty($chapterNumberChapter) ? '/' : '') . $chapterNumberChapter);
+					if(empty($chapterNumber)) { $chapterNumber = 'Oneshot'; }
+					$titleData['latest_chapter'] = $chapterID . ':--:' . $chapterNumber;
 
-				//FIXME: MAL ID (and all other link info) does not exist in the API, even though it does on the actual page.
-				//       I've went and requested it in the beta thread - http://beta.mangadex.org/thread/16819/6/#post_109993
-				//if(isset($data['nodes_mal'])) {
-				//	$mal_id = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
-				//	if($mal_id !== "0") {
-				//		$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
-				//	}
-				//}
+					$titleData['last_updated'] =  date('Y-m-d H:i:s', $latestChapter['timestamp']);
+
+					//FIXME: MAL ID (and all other link info) does not exist in the API, even though it does on the actual page.
+					//       I've went and requested it in the beta thread - http://beta.mangadex.org/thread/16819/6/#post_109993
+					//if(isset($data['nodes_mal'])) {
+					//	$mal_id = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+					//	if($mal_id !== "0") {
+					//		$titleData['mal_id'] = explode('/', $data['nodes_mal']->getAttribute('href'))[4];
+					//	}
+					//}
+				}
 			}
 		}
 
