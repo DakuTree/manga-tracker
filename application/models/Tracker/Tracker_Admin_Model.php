@@ -83,6 +83,10 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				if(!array_key_exists($row->site_class,$siteRateLimits)) {
 					$siteRateLimits[$row->site_class] = 0;
 				}
+				if($siteRateLimits[$row->site_class] > 25) {
+					// We're doing lots of requests to a single site, so add delays.
+					sleep(1);
+				}
 				$siteRateLimits[$row->site_class]++;
 				if($siteRateLimits[$row->site_class] > $hardRateLimit) continue;
 
