@@ -77,8 +77,9 @@
 // @include      /^https:\/\/trashscanlations\.com\/series\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @updated      2018-07-23
-// @version      1.12.4
+// @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
+// @updated      2018-07-25
+// @version      1.12.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -133,6 +134,7 @@
 // @require      https://trackr.moe/userscripts/sites/PureMashiroScans.js
 // @require      https://trackr.moe/userscripts/sites/RavensScans.js
 // @require      https://trackr.moe/userscripts/sites/ReadMangaToday.2.js
+// @require      https://trackr.moe/userscripts/sites/ReadManhua.1.js
 // @require      https://trackr.moe/userscripts/sites/Riceballicious.js
 // @require      https://trackr.moe/userscripts/sites/RoseliaScans.1.js
 // @require      https://trackr.moe/userscripts/sites/S2Scans.js

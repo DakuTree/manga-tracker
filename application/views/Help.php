@@ -128,6 +128,7 @@
 		<li>Pure Mashiro Scans</li>
 		<li>Ravens Scans</li>
 		<li>ReadMangaToday</li>
+		<li>ReadManhua</li>
 		<li>Riceballicious</li>
 		<li>Roselia Scanlations</li>
 		<li>S2Scans</li>
