@@ -156,7 +156,6 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 			//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
 			$this->History->updateTitleHistory($titleID, $oldData['current_chapter'], $newData['latest_chapter'] ?? NULL, date('Y-m-d H:i:s'));
 		} else {
-			var_dump($data);
 			log_message('error', "ID {$titleID} is attempting to access an invalid column?");
 		}
 
