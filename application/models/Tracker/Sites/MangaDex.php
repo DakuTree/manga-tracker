@@ -37,6 +37,8 @@ class MangaDex extends Base_Site_Model {
 		if($content = $this->get_content("http://beta.mangadex.org/api/manga/{$titleParts[0]}")) {
 			$json = json_decode($content['body'], TRUE);
 			if($json && $json['status'] === 'OK' && array_key_exists('chapter',$json)) {
+				$titleData['title'] = trim($json['manga']['title']);
+
 				$filteredChapters = array_filter($json['chapter'], function($v) use ($titleParts) {
 					return $v['lang_code'] === $this->langCodes[$titleParts[1]];
 				});
@@ -46,8 +48,6 @@ class MangaDex extends Base_Site_Model {
 					return (float) $b['chapter'] <=> (float) $a['chapter'];
 				});
 				if(!empty($filteredChapters)) {
-					$titleData['title'] = trim($json['manga']['title']);
-
 					$latestChapter = reset($filteredChapters);
 					$chapterID     = key($filteredChapters);
 
