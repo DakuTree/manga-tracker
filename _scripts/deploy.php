@@ -104,6 +104,20 @@ task('deploy:compile_assets', function() {
 		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'site\', FALSE))->generate();" && \
 		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'time\', FALSE))->generate();"
 	)');
+
+	// userscript .meta.js
+	writeln('➤➤ <comment>Compiling Userscript .meta.js</comment>');
+	run('( \
+		cd {{release_path}} && \
+		userscript-utils get-updateblock -du -i public/userscripts/manga-tracker.user.js -o public/userscripts/manga-tracker.meta.js \
+	)');
+	// userscript version constant
+	writeln('➤➤ <comment>Tweaking Userscript Version Constant</comment>');
+	run('( \
+		cd {{release_path}} && \
+		USERSCRIPT_VERSION=$(grep -oP \'@version[\s]*\K([0-9\.]+)\' public/userscripts/manga-tracker.meta.js); \
+		sed -i -r "s/define\(\'USERSCRIPT_VERSION\', \'[0-9\.]+\'\);/define\(\'USERSCRIPT_VERSION\', \'$USERSCRIPT_VERSION\'\);/g" application/config/constants.php \
+	)');
 });
 
 task('deploy:copy_files', function () {
