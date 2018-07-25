@@ -41,9 +41,8 @@ class MangaDex extends Base_Site_Model {
 				switch($json['status']) {
 					case 'OK':
 						// API query appears to have been successful.
+						$titleData['title'] = trim($json['manga']['title']);
 						if(array_key_exists('chapter',$json)) {
-							$titleData['title'] = trim($json['manga']['title']);
-
 							$filteredChapters = array_filter($json['chapter'], function ($v) use ($titleParts) {
 								return $v['lang_code'] === $this->langCodes[$titleParts[1]];
 							});
