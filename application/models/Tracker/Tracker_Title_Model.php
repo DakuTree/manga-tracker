@@ -1,5 +1,7 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
+const TITLEDATA_COLUMNS = ['title', 'latest_chapter', 'status', 'followed', 'mal_id'];
+
 class Tracker_Title_Model extends Tracker_Base_Model {
 	public function __construct() {
 		parent::__construct();
@@ -81,7 +83,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		$titleData = $this->sites->{$query->row()->site_class}->getTitleData($titleURL, TRUE);
 
 		//FIXME: getTitleData can fail, which will in turn cause the below to fail aswell, we should try and account for that
-		if($titleData) {
+		if($titleData && array_key_exists('title', $titleData)) {
 			$this->db->insert('tracker_titles', array_merge($titleData, ['title_url' => $titleURL, 'site_id' => $siteID]));
 			$titleID = $this->db->insert_id();
 
@@ -123,6 +125,40 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 		//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
 		//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
 		$this->History->updateTitleHistory($titleID, $row->current_chapter, $latestChapter, date('Y-m-d H:i:s'));
+
+		return (bool) $success;
+	}
+
+	public function updateTitleDataByID(int $titleID, array $data) : bool {
+		$success = FALSE;
+
+		if(!array_diff(array_keys($data), TITLEDATA_COLUMNS)) {
+			$newData = array_merge($data, ['failed_checks' => 0]);
+			$oldData = $this->db->select('latest_chapter AS current_chapter')
+			                    ->from('tracker_titles')
+			                    ->where('id', $titleID)
+			                    ->get()->row_array();
+
+
+			$success = $this->db->set($newData) //last_updated gets updated via a trigger if something changes
+			                    ->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
+			                    ->where('id', $titleID)
+			                    ->update('tracker_titles');
+			if(in_array('latest_chapter', $newData, TRUE) && $newData['latest_chapter'] !== $oldData['current_chapter'] && $this->db->affected_rows() > 0) {
+				//Clear hidden latest chapter
+				$this->db->set(['ignore_chapter' => 'NULL', 'last_updated' => 'last_updated'], NULL, FALSE)
+				         ->where('title_id', $titleID)
+				         ->update('tracker_chapters');
+			}
+
+			//Update History
+			//NOTE: To avoid doing another query to grab the last_updated time, we just use time() which <should> get the same thing.
+			//FIXME: The <preferable> solution here is we'd just check against the last_updated time, but that can have a few issues.
+			$this->History->updateTitleHistory($titleID, $oldData['current_chapter'], $newData['latest_chapter'] ?? NULL, date('Y-m-d H:i:s'));
+		} else {
+			var_dump($data);
+			log_message('error', "ID {$titleID} is attempting to access an invalid column?");
+		}
 
 		return (bool) $success;
 	}

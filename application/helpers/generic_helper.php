@@ -91,3 +91,7 @@ function exit_ci($status = NULL) : void {
 		throw new CIPHPUnitTestExitException('exit() called');
 	}
 }
+
+function array_keys_exist(array $keys, array $array) : bool {
+	return !array_diff($keys, array_keys($array));
+}

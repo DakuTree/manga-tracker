@@ -22,7 +22,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				tracker_sites.site_class,
 				tracker_sites.status,
 				tracker_titles.latest_chapter,
-				tracker_titles.last_updated,
+				tracker_titles.last_updated, tracker_titles.last_checked,
 				from_unixtime(MAX(auth_users.last_login)) AS timestamp
 			')
 			->from('tracker_titles')
@@ -163,34 +163,32 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 		$updateData = $site->handleBatchUpdate($row->title_url);
 		if(!$updateData['limited']) {
 			$titleData = $updateData['titleData'];
-			if(is_array($titleData) && (!is_null($titleData['latest_chapter']) || $site->canHaveNoChapters)) {
-				if(count($titleData) >= 3) {
-					// Normal update.
+			if(is_array($titleData)) {
+				if(array_keys_exist(['title', 'latest_chapter', 'last_updated'], $titleData)) {
+					// Standard update.
 
-					//FIXME: "At the moment" we don't seem to be doing anything with TitleData['last_updated'].
-					//       Should we even use this? Y/N
-					if($this->Tracker->title->updateByID((int) $row->title_id, $titleData['latest_chapter'])) {
-						//Make sure last_checked is always updated on successful run.
-						//CHECK: Is there a reason we aren't just doing this in updateByID?
-						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-						         ->where('id', $row->title_id)
-						         ->update('tracker_titles');
-
+					if($this->Tracker->title->updateTitleDataByID((int) $row->title_id, $titleData)) {
 						print " - ({$titleData['latest_chapter']})\n";
 					} else {
 						log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
 
 						print " - Something went wrong?\n";
 					}
-				} else {
-					// No chapters were returned, but site allows this.
-					if($this->Tracker->title->updateByID((int) $row->title_id, NULL)) {
-						//Make sure last_checked is always updated on successful run.
-						//CHECK: Is there a reason we aren't just doing this in updateByID?
-						$this->db->set('last_checked', 'CURRENT_TIMESTAMP', FALSE)
-						         ->where('id', $row->title_id)
-						         ->update('tracker_titles');
+				}
+				else if(array_key_exists('status', $titleData)) {
+					// Series has probably been deleted.
 
+					if($this->Tracker->title->updateTitleDataByID((int) $row->title_id, $titleData)) {
+						print " - Status has changed ({$titleData['status']})\n";
+					} else {
+						log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
+
+						print " - Something went wrong?\n";
+					}
+				}
+				else if($site->canHaveNoChapters) {
+					// Previous statements failed, however site can have no chapters.
+					if($this->Tracker->title->updateTitleDataByID((int) $row->title_id, ['latest_chapter' => NULL])) {
 						print " - (No chapters found?)\n";
 					} else {
 						log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
@@ -198,8 +196,13 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 						print " - Something went wrong?\n";
 					}
 				}
+				else {
+					log_message('error', 'handleUpdate failed due to invalid titleData info?');
+				}
 			}
 			else {
+				// If TitleData does not exist, either something has broken, or we've set up the site wrong.
+
 				//TODO: We should have some way to handle this in the site models.
 				if($row->site_class !== 'MangaKakarot') {
 					log_message('error', "{$row->site_class} | {$row->title} ({$row->title_url}) | Failed to update.");
