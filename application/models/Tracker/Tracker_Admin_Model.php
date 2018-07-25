@@ -72,7 +72,7 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 			->having('tracker_chapters.active', 'Y')
 			//AND if they have been active in the last 120 hours (5 days)
 			->having('timestamp > DATE_SUB(NOW(), INTERVAL 120 HOUR)')
-			->order_by('tracker_titles.title', 'ASC');
+			->order_by('tracker_titles.last_checked', 'ASC');
 		// endregion
 		$query = $query->get();
 
