@@ -29,10 +29,10 @@ class DynastyScans extends Base_Site_Model {
 			'number' => ''
 		];
 
-		if($chapter == 'oneshot') {
+		if($chapter === 'oneshot') {
 			$chapterData['number'] = 'oneshot';
 		} else {
-			$chapter = preg_replace("/^([a-zA-Z]+)/", '$1_', $chapter);
+			$chapter = preg_replace('/^([a-zA-Z]+)/', '$1_', $chapter);
 			$chapterSegments = explode('_', $chapter);
 			switch($chapterSegments[0]) {
 				case 'ch':
@@ -59,6 +59,8 @@ class DynastyScans extends Base_Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
 
+		//FIXME: DynastyScans is just a mess of code it seems.
+		//       https://dynasty-scans.com/series/chatting_at_the_amber_teahouse uses /chapters/, but isn't a oneshot?
 		$title_parts = explode(':--:', $title_url);
 		switch($title_parts[1]) {
 			case '0':
@@ -68,7 +70,7 @@ class DynastyScans extends Base_Site_Model {
 					$title_url,
 					"//h2[@class='tag-title']/b[1]",
 					"(//dl[@class='chapter-list']/dd[a[contains(@href,'/chapters/')]])[last()]",
-					"small",
+					'small',
 					"a[@class='name']"
 				);
 				if($data) {
@@ -86,7 +88,7 @@ class DynastyScans extends Base_Site_Model {
 						$titleData['latest_chapter'] = $chapterURLSegments[2];
 					}
 
-					$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime(str_replace("'", '', substr((string) $data['nodes_latest']->textContent, 9))));
+					$titleData['last_updated'] =  date('Y-m-d H:i:s', strtotime(str_replace("'", '', substr((string) $data['nodes_latest']->textContent, 9))));
 				}
 				break;
 

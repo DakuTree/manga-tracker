@@ -30,7 +30,7 @@ class AdminCLI extends CLI_Controller {
 	 * Series are only checked if they haven't been updated in 16+ hours (unless they are marked as complete, to which they are only checked once a week).
 	 */
 	public function updateSeries() {
-		print "Environment: ".ENVIRONMENT."\n";
+		print 'Environment: ' . ENVIRONMENT . "\n";
 		$this->Tracker->admin->updateLatestChapters();
 	}
 
