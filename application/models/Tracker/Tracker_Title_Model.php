@@ -1,6 +1,6 @@
 <?php declare(strict_types=1); defined('BASEPATH') OR exit('No direct script access allowed');
 
-const TITLEDATA_COLUMNS = ['title', 'latest_chapter', 'status', 'followed', 'mal_id'];
+const TITLEDATA_COLUMNS = ['title', 'latest_chapter', 'status', 'followed', 'mal_id', 'last_updated'];
 
 class Tracker_Title_Model extends Tracker_Base_Model {
 	public function __construct() {
