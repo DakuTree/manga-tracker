@@ -1190,6 +1190,7 @@ $(function(){
 
 			this.$tables
 				.tablesorter(this.tablesorterDefaults)
+				.trigger('update', [true])
 				.bind('sortEnd', function(e, table) {
 					if(_class.initialSortOrder.sort().toString() === e.target.config.sortList.sort().toString()) {
 						$(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner').empty();
