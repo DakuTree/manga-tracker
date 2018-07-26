@@ -26,10 +26,13 @@ class MangaFox extends Base_Site_Model {
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
-			"//title",
+			'//title',
 			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
 			"div/span[@class='date']",
-			"div/h3/a"
+			'div/h3/a',
+			function($data) {
+				return strpos($data, 'has been licensed, it is not available in Manga Fox.') !== FALSE;
+			}
 		);
 		if($data) {
 			$titleData['title'] = html_entity_decode(explode(' Manga - Read ', $data['nodes_title']->textContent)[0]);
@@ -37,7 +40,7 @@ class MangaFox extends Base_Site_Model {
 			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 			$chapterURLSegments = explode('/', $link);
 			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
-			$titleData['last_updated'] =  date("Y-m-d H:i:s", strtotime((string) $data['nodes_latest']->nodeValue));
+			$titleData['last_updated'] =  date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->nodeValue));
 
 			if($firstGet) {
 				$titleData = array_merge($titleData, $this->doCustomFollow($content['body']));
@@ -51,7 +54,7 @@ class MangaFox extends Base_Site_Model {
 		$titleDataList = [];
 
 		$updateURL = 'http://fanfox.net/releases/';
-		if(($content = $this->get_content($updateURL)) && $content['status_code'] == 200) {
+		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
 			$data = $content['body'];
 
 			$dom = new DOMDocument();
@@ -66,8 +69,8 @@ class MangaFox extends Base_Site_Model {
 					$titleData = [];
 
 					$nodes_title   = $xpath->query("h3[@class='title']/a", $row);
-					$nodes_chapter = $xpath->query("dl/dt[1]/span/a", $row);
-					$nodes_latest  = $xpath->query("dl/dt[1]/em", $row);
+					$nodes_chapter = $xpath->query('dl/dt[1]/span/a', $row);
+					$nodes_latest  = $xpath->query('dl/dt[1]/em', $row);
 
 					if($nodes_title->length === 1 && $nodes_chapter->length === 1 && $nodes_latest->length === 1) {
 						$title   = $nodes_title->item(0);
@@ -85,18 +88,18 @@ class MangaFox extends Base_Site_Model {
 							$dateString = trim($nodes_latest->item(0)->textContent);
 							switch($dateString) {
 								case 'Today':
-									$dateString = date("Y-m-d", now());
+									$dateString = date('Y-m-d', now());
 									break;
 
 								case 'Yesterday':
-									$dateString = date("Y-m-d", strtotime("-1 days"));
+									$dateString = date('Y-m-d', strtotime('-1 days'));
 									break;
 
 								default:
 									//Do nothing
 									break;
 							}
-							$titleData['last_updated'] = date("Y-m-d H:i:s", strtotime($dateString));
+							$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime($dateString));
 
 							$titleDataList[$title_url] = $titleData;
 						}
