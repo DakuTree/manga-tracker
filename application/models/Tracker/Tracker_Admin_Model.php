@@ -87,9 +87,10 @@ class Tracker_Admin_Model extends Tracker_Base_Model {
 				$siteRateLimits[$row->site_class]++;
 				if($siteRateLimits[$row->site_class] > $hardRateLimit) continue;
 
+				usleep(500000); // Delay requests by .5 seconds.
 				if($siteRateLimits[$row->site_class] > 25) {
-					// We're doing lots of requests to a single site, so add delays.
-					sleep(1);
+					// We're doing lots of requests to a single site, so add additional delay.
+					usleep(500000);
 				}
 
 				$this->handleUpdate($row);
