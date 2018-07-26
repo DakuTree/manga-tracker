@@ -132,6 +132,7 @@ class Tracker_Title_Model extends Tracker_Base_Model {
 	public function updateTitleDataByID(int $titleID, array $data) : bool {
 		$success = FALSE;
 
+		unset($data['last_updated']); //NOTE: We don't want to overwrite last_updated
 		if(!array_diff(array_keys($data), TITLEDATA_COLUMNS)) {
 			$newData = array_merge($data, ['failed_checks' => 0]);
 			$oldData = $this->db->select('latest_chapter AS current_chapter')
