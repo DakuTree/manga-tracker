@@ -30,10 +30,14 @@ class MangaKakalot extends Base_Site_Model {
 			"//div[@class='chapter-list']/div[1]",
 			'span[3]',
 			'span[1]/a',
-			function($data) {
-				return strpos($data, 'Sorry, the page you have requested cannot be found.') !== FALSE
-				       || strpos($data, 'REDIRECT :') !== FALSE
-				       || strpos($data, '<meta name="twitter:site" content="manganelo">') !== FALSE;
+			function($data) use (&$titleData) {
+				$status = strpos($data, 'Sorry, the page you have requested cannot be found.') !== FALSE
+				          || strpos($data, 'REDIRECT :') !== FALSE
+				          || strpos($data, '<meta name="twitter:site" content="manganelo">') !== FALSE;
+				if($status) {
+					$titleData['status'] = 255;
+				}
+				return $status;
 			}
 		);
 		if($data) {
@@ -43,7 +47,7 @@ class MangaKakalot extends Base_Site_Model {
 			$titleData['latest_chapter'] = $chapter[0];
 
 			//FIXME: We can't properly use the time provided by the site as they don't include year :|
-			$titleData['last_updated'] = date("Y-m-d H:i:s", now());
+			$titleData['last_updated'] = date('Y-m-d H:i:s', now());
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);
