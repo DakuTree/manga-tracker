@@ -12,7 +12,10 @@ $(function () {
 		'Kirei Cake',
 		'Dynasty Scans',
 		'Manga Reader',
-		'Easy Going'
+		'Easy Going',
+		'EvilFlowers',
+		'S2Scans',
+		'Vortex Scans'
 	];
 
 	$('#amr_import').change(function () {
@@ -61,7 +64,7 @@ $(function () {
 										if(id === '#amr_bad' && $('#amr_bad').is(':empty')) {
 											$('<h3/>', {text: 'Incompatible Sites'}).appendTo('#amr_bad');
 										}
-										$('<h4/>', {text: site + ' (' + titleList.length + ')'}).appendTo(id);
+										$('<h4/>', {text: (site !== 'Batoto' ? site : 'Batoto (Replaced with MangaDex Links)') + ' (' + titleList.length + ')'}).appendTo(id);
 
 										let tbody = $('<tbody/>', {'aria-live': 'polite', 'aria-relevant': 'all'});
 										for (let titleN in titleList) {
@@ -70,6 +73,10 @@ $(function () {
 												/**
 												 * @param {{url:string, name:string, lastChapterReadURL:string, lastChapterReadName:string}} title
 												 */
+												if(site === 'Batoto') {
+													let batotoID = (title.url.match(/([0-9]+)/) || []).pop();
+													title.url = `https://mangadex.org/manga/${batotoID}`;
+												}
 												let tr = $('<tr/>', {role: 'row'}).append(
 													$('<td/>', {style: 'width: 50%'}).append(
 														$('<a/>', {
