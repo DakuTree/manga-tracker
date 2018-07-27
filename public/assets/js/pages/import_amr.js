@@ -5,7 +5,7 @@ $(function () {
 
 	const valid_sites = [
 		'Manga-Fox',
-		// 'Batoto',
+		'Batoto',
 		'Manga Here',
 		'MangaStream',
 		'Manga Panda',
