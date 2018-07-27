@@ -189,7 +189,7 @@
 			$('.reader-page-bar').remove();
 		},
 		preSetupViewer : function(callback) {
-			$('.reader-image-wrapper').empty().attr('id', 'viewer').removeAttr('class');
+			$('.reader-images').replaceWith($('<div/>', {id: 'viewer'}));
 
 			callback(false, true);
 		}
