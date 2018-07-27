@@ -76,6 +76,7 @@ $(function () {
 												if(site === 'Batoto') {
 													let batotoID = (title.url.match(/([0-9]+)/) || []).pop();
 													title.url = `https://mangadex.org/manga/${batotoID}`;
+													title.lastChapterReadURL = '#';
 												}
 												let tr = $('<tr/>', {role: 'row'}).append(
 													$('<td/>', {style: 'width: 50%'}).append(
@@ -87,7 +88,8 @@ $(function () {
 													$('<td/>', {style: 'width: 50%'}).append(
 														$('<a/>', {
 															href: title.lastChapterReadURL,
-															text: title.lastChapterReadName
+															text: title.lastChapterReadName,
+															onclick: (title.lastChapterReadURL === '#' ? 'return false' : null)
 														})
 													)
 												);
