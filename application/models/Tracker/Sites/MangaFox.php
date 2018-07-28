@@ -31,7 +31,7 @@ class MangaFox extends Base_Site_Model {
 			"div/span[@class='date']",
 			'div/h3/a',
 			function($data) {
-				return strpos($data, 'has been licensed, it is not available in Manga Fox.') !== FALSE;
+				return strpos($data, 'is not available in Manga Fox.') !== FALSE && strpos($data, '<ul class="chlist" style="display:block">') === FALSE;
 			}
 		);
 		if($data) {
