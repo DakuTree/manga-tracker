@@ -78,8 +78,8 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-07-27
-// @version      1.12.7
+// @updated      2018-08-03
+// @version      1.12.8
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -804,7 +804,7 @@ const base_site = {
 			});
 
 			//Setup favourite page event.
-			$(viewer).on('click', '#favouriteChapterPage', function(e) {
+			$(viewer).on('click', '.favouriteChapterPage', function(e) {
 				e.preventDefault();
 
 				let page = parseInt($(this).attr('data-page'));
@@ -875,14 +875,17 @@ const base_site = {
 				.on('error', function() {
 					_this.setupViewerContainerError(imgURL, pageN, true);
 				})
-		).append(
-			//Add page number
-			$('<div/>', {class: 'pageNumber'}).append(
-				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count} `}).append(
-					$('<i/>', {id: 'favouriteChapterPage', class: 'fa fa-star', 'aria-hidden': 'true', 'data-page': pageN, title: 'Click to favourite this page (Requires series to be tracked first!)'})
-				)
-			)
 		);
+		if(_this.page_count !== 1) {
+			image_container.append(
+				//Add page number
+				$('<div/>', {class: 'pageNumber'}).append(
+					$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count} `}).append(
+						$('<i/>', {class: 'fa fa-star favouriteChapterPage', 'aria-hidden': 'true', 'data-page': pageN, title: 'Click to favourite this page (Requires series to be tracked first!)'})
+					)
+				)
+			);
+		}
 
 		//Replace the placeholder image_container with the real one
 		$(`#trackr-page-${pageN}`).replaceWith(image_container);
