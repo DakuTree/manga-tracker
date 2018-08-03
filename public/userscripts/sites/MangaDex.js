@@ -168,7 +168,7 @@
 			let tempList = {};
 			titleData.chapterList.forEach((chData) => {
 				let chapterNumber = `v${chData.volume}/c${chData.chapter}`.replace(/^v\//, '');
-				tempList[`${this.https}://beta.mangadex.org/chapter/${chData.id}`] = chapterNumber + (chData.title !== '' ? chData.title : '');
+				tempList[`${this.https}://beta.mangadex.org/chapter/${chData.id}`] = chapterNumber + (chData.title !== '' ? ' - '+chData.title : '');
 			});
 			this.chapterList = tempList;
 			this.chapterListCurrent = this.chapter_url;
