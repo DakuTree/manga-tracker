@@ -49,7 +49,7 @@
 					<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 					<?=$row['mal_icon']?>
 
-					<a href="<?=$row['full_title_url']?>" rel="nofollow"><?=htmlentities($row['title_data']['title'])?></a>
+					<a href="<?=$row['full_title_url']?>" rel="nofollow noopener"><?=htmlentities($row['title_data']['title'])?></a>
 
 					<?php if($row['has_tags']) { ?>
 					<div class="tags">

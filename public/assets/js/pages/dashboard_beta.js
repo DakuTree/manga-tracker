@@ -612,7 +612,7 @@ $(function(){
 								.append($('<i/>', {class: `sprite-site sprite-${manga.site_data.site.replace(/\./g, '-')}`, title: manga.site_data.site}))
 								.append(manga.mal_icon)
 						)
-						.append($('<a/>', {href: manga.full_title_url, rel: 'nofollow', class: 'title', 'data-title': decodeEntities(manga.title_data.title_url), target: '_blank', text: decodeEntities(manga.title_data.title)}))
+						.append($('<a/>', {href: manga.full_title_url, rel: 'nofollow noopener', class: 'title', 'data-title': decodeEntities(manga.title_data.title_url), target: '_blank', text: decodeEntities(manga.title_data.title)}))
 
 						.append($('<small/>', {class: 'toggle-info pull-right text-muted', text: 'More info'}))
 						.append($('<small/>', {class: 'toggle-info pull-right text-muted', text: 'More info'}))
@@ -638,13 +638,13 @@ $(function(){
 												.append($('<button/>', {class: 'btn btn-default', type: 'button', text: 'Save'}))))))
 				).append(
 					$('<td/>', {'data-updated-at': manga.last_updated})
-						.append($('<a/>', {class: 'chp-release current', href: manga.generated_current_data.url, rel: 'nofollow', target: '_blank', text: decodeEntities(manga.generated_current_data.number)}))
+						.append($('<a/>', {class: 'chp-release current', href: manga.generated_current_data.url, rel: 'nofollow noopener', target: '_blank', text: decodeEntities(manga.generated_current_data.number)}))
 						.append(manga.title_data.ignore_chapter ? $('<span/>', {class: 'hidden-chapter', title: 'The latest chapter was marked as ignored.', text: manga.generated_ignore_data.number}) : null)
 				).append(
 					$('<td/>')
 						.append(
 							manga.generated_latest_data.number !== 'No chapters found' ?
-								$('<a/>', {class: 'chp-release latest', href: manga.generated_latest_data.url, rel: 'nofollow', 'data-chapter': manga.title_data.latest_chapter, target: '_blank', text: decodeEntities(manga.generated_latest_data.number)})
+								$('<a/>', {class: 'chp-release latest', href: manga.generated_latest_data.url, rel: 'nofollow noopener', 'data-chapter': manga.title_data.latest_chapter, target: '_blank', text: decodeEntities(manga.generated_latest_data.number)})
 								:
 								$('<i/>', {title: 'Title page still appears to exist, but chapters have been removed. This is usually due to DMCA.', text: 'No chapters found'})
 						)
@@ -1190,7 +1190,7 @@ $(function(){
 
 			this.$tables
 				.tablesorter(this.tablesorterDefaults)
-				.trigger('update', [true])
+				.trigger('applyWidgets')
 				.bind('sortEnd', function(e, table) {
 					if(_class.initialSortOrder.sort().toString() === e.target.config.sortList.sort().toString()) {
 						$(table).find('thead > tr > th:eq(4) > .tablesorter-header-inner').empty();

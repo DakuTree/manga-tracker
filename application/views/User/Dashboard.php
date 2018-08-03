@@ -135,7 +135,7 @@
 				<i class="sprite-site sprite-<?=str_replace('.', '-', $row['site_data']['site'])?>" title="<?=$row['site_data']['site']?>"></i>
 				<?=$row['mal_icon']?>
 
-				<a href="<?=$row['full_title_url']?>" rel="nofollow" class="title" data-title="<?=htmlentities($row['title_data']['title_url'])?>" target="_blank"><?=htmlentities($row['title_data']['title'])?></a>
+				<a href="<?=$row['full_title_url']?>" rel="nofollow noopener" class="title" data-title="<?=htmlentities($row['title_data']['title_url'])?>" target="_blank"><?=htmlentities($row['title_data']['title'])?></a>
 
 				<?php if($row['has_tags']) { ?>
 				<small class="toggle-info pull-right text-muted">Less info</small>
@@ -160,12 +160,12 @@
 				</div>
 			</td>
 			<td data-updated-at="<?=$row['last_updated']?>">
-				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow" target="_blank"><?=htmlentities($row['generated_current_data']['number'])?></a>
+				<a class="chp-release current" href="<?=$row['generated_current_data']['url']?>" rel="nofollow noopener" target="_blank"><?=htmlentities($row['generated_current_data']['number'])?></a>
 				<?php if(!is_null($row['title_data']['ignore_chapter'])) { ?><span class='hidden-chapter' title='The latest chapter was marked as ignored.'><?=$row['generated_ignore_data']['number']?></span><?php } ?>
 			</td>
 			<td>
 				<?php if($row['generated_latest_data']['number'] !== 'No chapters found') { ?>
-				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow" data-chapter="<?=$row['title_data']['latest_chapter']?>" target="_blank"><?=htmlentities($row['generated_latest_data']['number'])?></a>
+				<a class="chp-release latest" href="<?=$row['generated_latest_data']['url']?>" rel="nofollow noopener" data-chapter="<?=$row['title_data']['latest_chapter']?>" target="_blank"><?=htmlentities($row['generated_latest_data']['number'])?></a>
 				<?php } else { ?>
 				<i title="Title page still appears to exist, but chapters have been removed. This is usually due to DMCA.">No chapters found</i>
 				<?php } ?>
