@@ -110,7 +110,7 @@
 				this.currentPage = parseInt(this.segments[3]);
 			}
 
-			this.viewerChapterName      = this.chapterNumber + (chapterData.title !== '' ? chapterData.title : '');
+			this.viewerChapterName      = this.chapterNumber + (chapterData.title !== '' ? ' - '+chapterData.title : '');
 			this.viewerTitle            = titleData._data.title;
 		},
 		stylize : function() {
