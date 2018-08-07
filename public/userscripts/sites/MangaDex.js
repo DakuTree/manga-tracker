@@ -16,79 +16,6 @@
 	 * @type {SiteObject}
 	 */
 	sites['mangadex.org'] = {
-		setObjVars : function() {
-			let _this = this;
-
-			let language = '';
-			if($('#jump_group [data-content]').length) {
-				language = $('<div>'+$('#jump_group option:selected').attr('data-content')+'</div>').find('img').attr('title');
-			}
-			language = language || $('[data-id=jump_group] img[title]').attr('title');
-
-			let titleID      = $('h3[class="panel-title"] > a[title]').attr('href').split('/')[2];
-			this.title       = titleID + ':--:' + language;
-
-			let chapter      = this.segments[2];
-			this.chapterNumber = $('#jump_chapter').find('> option:selected').text().replace(/^(?:Vol(?:ume|\.) ([0-9\.]+)?.*?)?Ch(?:apter|\.) ([0-9\.v]+)[\s\S]*$/, 'v$1/c$2').replace(/^v\//, '');
-			this.chapter     = chapter + ':--:' + this.chapterNumber;
-
-			this.title_url   = `${this.https}://mangadex.org/manga/${titleID}`;
-			this.chapter_url = `${this.https}://mangadex.org/chapter/${chapter}`;
-
-			let tempList = {};
-			$('#jump_chapter').find('> option').reverseObj().each(function(){
-				tempList[`https://mangadex.org/chapter/`+ '' + $(this).attr('value')] = $(this).text();
-			});
-			this.chapterList = tempList;
-			this.chapterListCurrent = this.chapter_url;
-
-
-
-			if($('.webtoon').length) {
-				this.isWebtoon = true;
-
-				this.viewerCustomImageList = $('.webtoon').map(function(/*filename, i*/) {
-					return $(this).attr('src');
-				}).toArray();
-			} else {
-				let imageHash    = $('script:contains("dataurl =")').text().match(/dataurl = '(.*?)'/),
-				    page_match   = $('script:contains("page_array =")').text().match(/page_array = (\[[\s\S]*?\])/),
-				    server       = $('script:contains("server =")').text().match(/server = '(.*?)'/),
-				    pages        = JSON.parse(page_match[1].replace(/'/g, '"').replace(',]', ']'));
-				this.viewerCustomImageList = pages.map(function(filename/*, i*/) {
-					if(server === '/data/') {
-						return `${_this.https}://mangadex.org/data/${imageHash[1]}/${filename}`;
-					} else {
-						return `${server[1]}${imageHash[1]}/${filename}`;
-					}
-				});
-			}
-			this.page_count             = this.viewerCustomImageList.length;
-			if(this.segments[3]) {
-				this.currentPage = parseInt(this.segments[3]);
-			}
-
-			this.viewerChapterName      = this.chapter.split(':')[2];
-			this.viewerTitle            = $('h3[class="panel-title"] > a[title]').text();
-		},
-		stylize : function() {
-			$('.info-top-chapter, .option_wrap').remove();
-		},
-		preSetupViewer : function(callback) {
-			let newViewer = $('<div/>', {id: 'viewer'});
-
-			$('#content').replaceWith(newViewer); //Set base viewer div
-
-			callback(false, true);
-		}
-	};
-
-	/**
-	 * Beta.MangaDex
-	 * @type {SiteObject}
-	 */
-	sites['beta.mangadex.org'] = {
-		//FIXME: beta only has http support for now. Make sure to switch to https on release
 		preInit : function(callback) {
 			let _this = this;
 
@@ -120,9 +47,9 @@
 				let preInitData = {};
 
 				//GM_xmlHttpRequest function may be better here.
-				$.getJSON(`http://beta.mangadex.org/api/chapter/${_this.segments[2]}?`, function(chapterData) {
+				$.getJSON(`${_this.https}://mangadex.org/api/chapter/${_this.segments[2]}?`, function(chapterData) {
 					preInitData._data = chapterData;
-					$.getJSON(`http://beta.mangadex.org/api/manga/${chapterData.manga_id}?`, function(titleData) {
+					$.getJSON(`${_this.https}://mangadex.org/api/manga/${chapterData.manga_id}?`, function(titleData) {
 						preInitData.manga = {
 							_data       : titleData.manga,
 							chapters    : titleData.chapter,
@@ -145,6 +72,7 @@
 		},
 
 		setObjVars : function() {
+			let _this = this;
 			/* This contains all chapter & manga data:
 			       - manga
 			         - chapterList (This is all chapter data according to language settings)
@@ -162,13 +90,13 @@
 			this.chapterNumber = `v${chapterData.volume}/c${chapterData.chapter}`.replace(/^v\//, '').replace(/^c$/, 'cOneshot');
 			this.chapter     = chapterData.id + ':--:' + this.chapterNumber;
 
-			this.title_url   = `${this.https}://beta.mangadex.org/manga/${titleID}`;
-			this.chapter_url = `${this.https}://beta.mangadex.org/chapter/${chapter}`;
+			this.title_url   = `${_this.https}://mangadex.org/manga/${titleID}`;
+			this.chapter_url = `${_this.https}://mangadex.org/chapter/${chapter}`;
 
 			let tempList = {};
 			titleData.chapterList.forEach((chData) => {
 				let chapterNumber = `v${chData.volume}/c${chData.chapter}`.replace(/^v\//, '');
-				tempList[`${this.https}://beta.mangadex.org/chapter/${chData.id}`] = chapterNumber + (chData.title !== '' ? ' - '+chData.title : '');
+				tempList[`${_this.https}://mangadex.org/chapter/${chData.id}`] = chapterNumber + (chData.title !== '' ? ' - '+chData.title : '');
 			});
 			this.chapterList = tempList;
 			this.chapterListCurrent = this.chapter_url;

@@ -69,7 +69,7 @@
 // @include      /^http:\/\/atelierdunoir\.org\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.holylolikingdom\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/riceballicious\.info\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/(?:www\.|beta\.)?mangadex\.org\/chapter\/[0-9]+(?:\/[0-9]+)?$/
+// @include      /^https?:\/\/(?:www\.)?mangadex\.org\/chapter\/[0-9]+(?:\/[0-9]+)?$/
 // @include      /^https?:\/\/reader\.tukimoop\.pw\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
@@ -78,8 +78,8 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-08-03
-// @version      1.12.10
+// @updated      2018-08-08
+// @version      1.12.11
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -116,7 +116,7 @@
 // @require      https://trackr.moe/userscripts/sites/Lolitannia.js
 // @require      https://trackr.moe/userscripts/sites/LOLScans.2.js
 // @require      https://trackr.moe/userscripts/sites/MangaCow.3.js
-// @require      https://trackr.moe/userscripts/sites/MangaDex.27.js
+// @require      https://trackr.moe/userscripts/sites/MangaDex.28.js
 // @require      https://trackr.moe/userscripts/sites/MangaFox.3.js
 // @require      https://trackr.moe/userscripts/sites/MangaHere.5.js
 // @require      https://trackr.moe/userscripts/sites/MangaichiScans.js
