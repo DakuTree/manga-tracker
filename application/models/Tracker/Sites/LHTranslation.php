@@ -26,14 +26,14 @@ class LHTranslation extends Base_Site_Model {
 		$content = $this->get_content($fullURL);
 
 		$data = $content['body'];
-		$xml = simplexml_load_string($data) or die("Error: Cannot create object");
+		$xml = simplexml_load_string($data) or die('Error: Cannot create object');
 		if(((string) $xml->{'channel'}->title) !== 'Comments on: '){
 			if(isset($xml->{'channel'}->item[0])) {
 				if($title = (string) $xml->{'channel'}->item[0]->category) {
 					$titleData['title'] = trim($title);
 
 					$titleData['latest_chapter'] = str_replace('-', '.', preg_replace('/^.*?-(?:.*?)chapter-(.*?)\/$/', '$1', (string) $xml->{'channel'}->item[0]->link));
-					$titleData['last_updated']   = date("Y-m-d H:i:s", strtotime((string) $xml->{'channel'}->item[0]->pubDate));
+					$titleData['last_updated']   = date('Y-m-d H:i:s', strtotime((string) $xml->{'channel'}->item[0]->pubDate));
 				} else {
 					log_message('error', "Title is empty? - {$xml->{'channel'}->title} (LHTranslation): {$title_url}");
 					return NULL;
@@ -54,8 +54,9 @@ class LHTranslation extends Base_Site_Model {
 		//This is just a quick fix for series with bad titles.
 
 		$fixedTitles = [
-			'genjitsu-shugi-yuusha-no-oukoku-saikenki' => 'genjitsushugisha-no-oukokukaizouki',
-			'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku-' => 'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku'
+			'genjitsu-shugi-yuusha-no-oukoku-saikenki'         => 'genjitsushugisha-no-oukokukaizouki',
+			'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku-' => 'kuro-no-souzou-shoukanshi-tenseisha-no-hangyaku',
+			'seirei-gensouki-minazuki-futago'                  => 'seirei-gensouki'
 		];
 		if(array_key_exists($title_url, $fixedTitles)) {
 			$title_url = $fixedTitles[$title_url];
