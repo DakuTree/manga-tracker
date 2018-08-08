@@ -2,7 +2,7 @@
 
 (PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('CLI only.');
 
-chdir(__DIR__ . '/../'); //Just to make things easier, change dir to project root.
+chdir(dirname(__FILE__, 2)); //Just to make things easier, change dir to project root.
 
 function setup() {
 	vendor_copy();
