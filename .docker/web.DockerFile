@@ -6,8 +6,11 @@ WORKDIR /app
 RUN apt-get update --quiet
 RUN apt-get install --quiet --yes --no-install-recommends \
  git \
- zlib1g-dev
+ libzip-dev \
+ zip \
+ unzip
 
+RUN docker-php-ext-configure zip --with-libzip
 RUN docker-php-ext-install \
  pdo \
  pdo_mysql \
@@ -20,7 +23,7 @@ RUN composer global require hirak/prestissimo
 
 COPY composer.json /app
 COPY composer.lock /app
-RUN composer install --no-interaction --no-scripts
+RUN composer install --no-interaction --no-scripts --no-suggest
 
 COPY . /app
 
