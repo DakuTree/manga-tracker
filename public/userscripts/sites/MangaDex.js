@@ -21,29 +21,43 @@
 
 			this.site = 'mangadex.org';
 
-			//NOTE: We need to wait for the page to load as if we call this before the initial load it will make duplicate requests to the API.
-			let pageLoad = $.Deferred();
-			let checkSelector = setInterval(function () {
-				if($('.reader-images > *').length) {
-					pageLoad.resolve();
-					clearInterval(checkSelector);
-				} else {
-					console.log('trackr - Waiting for initial page load...');
-				}
-			}, 1000);
-			pageLoad.done(() => {
-				/* FIXME: JS API no longer exists for whatever reason, so we need to do this the hard way.
-				   The problem with the hard way is it requires two duplicated requests that aren't cached. Great.
+			if(!($('#legacy_reader_settings_label').length)) {
+				//NOTE: We need to wait for the page to load as if we call this before the initial load it will make duplicate requests to the API.
+				let pageLoad = $.Deferred();
+				let checkSelector = setInterval(function () {
+					if($('.reader-images > *').length) {
+						pageLoad.resolve();
+						clearInterval(checkSelector);
+					} else {
+						console.log('trackr - Waiting for initial page load...');
+					}
+				}, 1000);
+				pageLoad.done(() => {
+					/* FIXME: JS API no longer exists for whatever reason, so we need to do this the hard way.
+					   The problem with the hard way is it requires two duplicated requests that aren't cached. Great.
 
-				//Page is now loaded, now use the site JS API to grab the data ourselves.
-				//NOTE: This does not send duplicate API requests as it uses the cache from the page load request.
-				let chapterID = $('head').attr('data-chapter-id');
-				unsafeWindow.API.Chapter.create({id: chapterID}).then(data => {
-					this.preInitData = data;
-					callback();
+					//Page is now loaded, now use the site JS API to grab the data ourselves.
+					//NOTE: This does not send duplicate API requests as it uses the cache from the page load request.
+					let chapterID = $('head').attr('data-chapter-id');
+					unsafeWindow.API.Chapter.create({id: chapterID}).then(data => {
+						this.preInitData = data;
+						callback();
+					});
+					*/
+
+					getPreInitData(callback, _this);
 				});
-				*/
+			} else {
+				this.preSetupViewer  = function(callback2) {
+					$('.images').replaceWith($('<div/>', {id: 'viewer'}));
 
+					callback2(false, true);
+				};
+
+				getPreInitData(callback, _this);
+			}
+
+			function getPreInitData(callback, _this) {
 				let preInitData = {};
 
 				//GM_xmlHttpRequest function may be better here.
@@ -68,7 +82,7 @@
 						callback();
 					});
 				});
-			});
+			}
 		},
 
 		setObjVars : function() {
