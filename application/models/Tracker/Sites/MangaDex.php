@@ -32,9 +32,9 @@ class MangaDex extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		//TODO: This utilizes the beta branch API. When this becomes live, we will probably need to change to https.
 		$titleParts = explode(':--:', $title_url);
-		if($content = $this->get_content("http://beta.mangadex.org/api/manga/{$titleParts[0]}")) {
+		if($content = $this->get_content("https://mangadex.org/api/manga/{$titleParts[0]}")) {
+			//TODO: isValidContent? Status code check and whatnot.
 			if($json = json_decode($content['body'], TRUE)) {
 				//JSON appears to be valid.
 
@@ -104,7 +104,7 @@ class MangaDex extends Base_Site_Model {
 			if($page >= 5) break;
 
 			//TODO: We should have a user account for R18 options
-			$updateURL = "http://beta.mangadex.org/updates/{$page}"; //All Languages
+			$updateURL = "https://mangadex.org/updates/{$page}"; //All Languages
 			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
 				$data = $content['body'];
 
