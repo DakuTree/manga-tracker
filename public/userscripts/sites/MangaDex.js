@@ -128,7 +128,7 @@
 			this.viewerTitle            = titleData._data.title;
 		},
 		stylize : function() {
-			$('.reader-page-bar').remove();
+			$('.reader-page-bar, .reader-load-icon').remove();
 		},
 		preSetupViewer : function(callback) {
 			$('.reader-images').replaceWith($('<div/>', {id: 'viewer'}));
