@@ -77,6 +77,17 @@
 								preInitData.manga.chapterList.push(chData);
 							}
 						});
+						preInitData.manga.chapterList = preInitData.manga.chapterList.sort(function(a, b) {
+							let vA = parseFloat(a.volume || 1024),
+							    vB = parseFloat(b.volume || 1024),
+							    cA = parseFloat(a.chapter || 0),
+							    cB = parseFloat(b.chapter || 0);
+
+							let volumeSort = ((vA < vB) ? -1 : ((vA === vB) ? 0 : 1));
+							if(volumeSort !== 0) { return volumeSort; }
+
+							return ((cA < cB) ? -1 : ((cA === cB) ? 0 : 1));
+						});
 
 						_this.preInitData = preInitData;
 						callback();
