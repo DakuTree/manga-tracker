@@ -74,12 +74,12 @@
 // @include      /^http:\/\/reader\.roseliascans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/taptaptaptaptap\.net\/fs\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.letitgo\.scans\.today\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https:\/\/trashscanlations\.com\/series\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
-// @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)\/(?:$|\?.*?)$/
+// @include      /^https:\/\/trashscanlations\.com\/series\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-_]+)\/(?:$|\?.*?)$/
+// @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-_]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-08-09
-// @version      1.12.13
+// @updated      2018-08-11
+// @version      1.12.14
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js

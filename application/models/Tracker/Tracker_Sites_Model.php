@@ -1013,7 +1013,7 @@ abstract class Base_Roku_Site_Model extends Base_Site_Model {
 //CHECK: RSS might be better to use here?
 abstract class Base_WP_Manga_Site_Model extends Base_Site_Model {
 	public $titleFormat   = '/^[a-zA-Z0-9_-]+$/';
-	public $chapterFormat = '/^(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-]+)$/';
+	public $chapterFormat = '/^(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-_]+)$/';
 	//TODO: Get PageSeperator
 
 	public $customType    = 2;
