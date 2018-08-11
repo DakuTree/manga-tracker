@@ -8,6 +8,7 @@
 		"ext-curl"                            : "*",
 		"ext-json"                            : "*",
 		"ext-simplexml"                       : "*",
+		"ext-gd"                              : "*",
 
 		"codeigniter/framework"               : "3.1.*",
 		"kenjis/ci-phpunit-test"              : "1.0.x@dev",
