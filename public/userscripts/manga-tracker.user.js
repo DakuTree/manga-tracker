@@ -78,8 +78,9 @@
 // @include      /^https:\/\/zeroscans\.com\/manga\/[a-zA-Z0-9_-]+\/(?:[0-9]+-[0-9]+\/)?(?:oneshot|(?:chapter-)?[0-9a-zA-Z\.\-_]+)\/(?:$|\?.*?)$/
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
+// @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-11
-// @version      1.12.14
+// @version      1.12.15
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -154,6 +155,7 @@
 // @require      https://trackr.moe/userscripts/sites/WhiteCloudPavillion.2.js
 // @require      https://trackr.moe/userscripts/sites/WhiteoutScans.js
 // @require      https://trackr.moe/userscripts/sites/WorldThree.js
+// @require      https://trackr.moe/userscripts/sites/WoweScans.1.js
 // @require      https://trackr.moe/userscripts/sites/YummyGummyScans.js
 // @require      https://trackr.moe/userscripts/sites/ZeroScans.1.js
 // @resource     fontAwesome    https://use.fontawesome.com/9533173d07.css

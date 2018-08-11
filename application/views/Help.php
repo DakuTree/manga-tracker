@@ -148,6 +148,7 @@
 		<li>White Cloud Pavilion</li>
 		<li>Whiteout Scans</li>
 		<li>World Three</li>
+		<li>Wowe Scans</li>
 		<li>Yummy Gummy Scans</li>
 		<li>ZeroScans</li>
 		<li><del>Bato.to (with multi-lang support)</del> - Batoto is closed as of 2018/01/23</li>
