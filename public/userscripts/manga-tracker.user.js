@@ -184,7 +184,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
-/* global $, jQuery, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
+/* global $, jQuery, GM, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
@@ -846,7 +846,7 @@ const base_site = {
 					}
 				});
 			}
-			function addToContainerCustom(pageN, promiseResolve, promiseReject) {
+			function addToContainerCustom(pageN, promiseResolve/*, promiseReject*/) {
 				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
 				promiseResolve();
 			}
@@ -1735,12 +1735,12 @@ function versionCompare(v1, v2, options) {
 		v2parts = v2parts.map(Number);
 	}
 
-	for (var i = 0; i < v1parts.length; ++i) {
-		if (v2parts.length == i) {
+	for (let i = 0; i < v1parts.length; ++i) {
+		if (v2parts.length === i) {
 			return 1;
 		}
 
-		if (v1parts[i] == v2parts[i]) {
+		if (v1parts[i] === v2parts[i]) {
 			continue;
 		}
 		else if (v1parts[i] > v2parts[i]) {
@@ -1751,7 +1751,7 @@ function versionCompare(v1, v2, options) {
 		}
 	}
 
-	if (v1parts.length != v2parts.length) {
+	if (v1parts.length !== v2parts.length) {
 		return -1;
 	}
 
