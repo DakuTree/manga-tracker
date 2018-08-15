@@ -1,0 +1,42 @@
+{
+	"env" : {
+		"browser" : true,
+		"es6" : true
+	},
+	"extends" : "eslint:recommended",
+	"parserOptions" : {
+		"ecmaVersion" : 2018
+	},
+	"rules" : {
+		"no-console": "off",
+		"indent" : [
+			"error",
+			"tab"
+		],
+		"linebreak-style" : [
+			"error",
+			"windows"
+		],
+		"quotes" : [
+			"error",
+			"single"
+		],
+		"semi" : [
+			"error",
+			"always"
+		],
+		"no-mixed-spaces-and-tabs" : [
+			"error",
+			"smart-tabs"
+		]
+	},
+	"overrides" : [
+		{
+			"files" : ["*.user.js"],
+			"env" : {
+				"browser" : true,
+				"greasemonkey" : true
+			}
+		}
+	]
+}
