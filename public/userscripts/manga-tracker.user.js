@@ -379,8 +379,8 @@ const base_site = {
 				});
 			}
 
-			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
-			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
+			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', id: 'trackr-previous', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
+			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', id: 'trackr-next', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
 			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
 
 			let topbar = $('<div/>', {id: 'TrackerBar'}).append(
@@ -777,15 +777,17 @@ const base_site = {
 
 				//Setup zoom event
 				if(viewer.length) {
-					let changeZoom = function(action) {
-						let images = $('#viewer').find('img'),
-						    newZoom = images.get(0).clientWidth;
+					const images = $('#viewer').find('img');
+					const firstImage = images.get(0);
+					const next = document.getElementById('trackr-next');
+					const prev = document.getElementById('trackr-previous');
+					const handleClick = function(action) {
+						const newZoom = firstImage.clientWidth;
 
-						switch(action) {
+						switch(action.key) {
 							case '+':
 								//increase zoom
 								images.css({'width': newZoom + 50});
-
 								break;
 
 							case '-':
@@ -798,14 +800,20 @@ const base_site = {
 								images.css({'width': 'auto'});
 								break;
 
+							case 'ArrowLeft':
+								prev && prev.click();
+								break;
+
+							case 'ArrowRight':
+								next && next.click();
+								break;
+
 							default:
 								//do nothing
 								break;
 						}
 					};
-					$(document).keydown(function(event){
-						changeZoom(event.key);
-					});
+					$(document).keydown(handleClick);
 				}
 
 				_this.postSetupViewer();
