@@ -746,7 +746,7 @@ const base_site = {
 			let pagePromises = [];
 			let urls = [];
 			if(useCustomImageList) {
-				urls = _this.viewerCustomImageList;
+				urls = _this.viewerCustomImageList; // .slice(0) ?
 			}
 
 			for(let pageN=1; pageN<=_this.page_count; pageN++) {
@@ -763,8 +763,11 @@ const base_site = {
 
 			Promise.all(pagePromises).then(() => {
 				console.log('trackr - All promises resolved.');
-				_this.setupViewerContainer(urls);
-
+				_this.imageLoader = _this.setupViewerContainer(urls, +!useCustomImageList);
+				for (let k = 0; k < 3; k++) { // setup 3 pipelines (this will make the browser load 3 images in parallel but in order).. the number 3 should probably be smthing users can specify in their options page
+					_this.imageLoader.next();
+				}
+				
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
 				if(config.options.auto_track) {
@@ -850,32 +853,32 @@ const base_site = {
 	},
 
 	 /**
-	 * Used to decide which container to use for each image and load them in order.
+	 * A generator function that sets up the correct container for the next image and loads it.
 	 *
 	 * @function
 	 * @alias sites.*.setupViewerContainer
 	 * @name base_site.setupViewerContainer
 	 *
-	 * @param {string} imgURLs
-	 * @param {int}	pageN
+	 * @param {Array} imgURLs
+	 * @param {int}	offset
 	 *
 	 * @final
 	 */
-	setupViewerContainer : function(imgURLs, pageN = 0) { // should become a generator function
+	setupViewerContainer : function* (imgURLs, offset = 0) {
 		const _this = this;
-		const cb = function() {
-			if (pageN < imgURLs.length) {
-				_this.setupViewerContainer(imgURLs, pageN + 1);
+		let pageN = 0;
+		while(pageN < _this.page_count + offset) {
+			const imgURL = imgURLs[pageN + offset];
+			pageN += 1;
+			const cb = _this.imageLoader.next.bind(_this.imageLoader);
+
+			if (imgURL === undefined) {
+				this.setupViewerContainerError(imgURL, pageN, false, cb);
 			}
-		}
-
-		const imgURL = imgURLs[pageN];
-
-		if (imgURL === undefined) {
-			this.setupViewerContainerError(imgURL, pageN, false, cb);
-		}
-		else {
-			this.setupViewerContainerSuccess(imgURL, pageN, cb);
+			else {
+				this.setupViewerContainerSuccess(imgURL, pageN, cb);
+			}
+			yield;
 		}
 	},
 
@@ -1544,6 +1547,12 @@ const base_site = {
 	 * @type {Number}
 	 */
 	delay: 0,
+	
+	/**
+	 * Generator object that loads the image
+	 * @type {Generator}
+	 */ 
+	imageLoader: null,
 
 	//Used for search.
 
