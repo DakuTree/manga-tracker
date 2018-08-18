@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="$ProjectFileDir$/_scripts/userscript-devtoprod.pl" />
+      <option name="arguments" value="$ProjectFileDir$/_scripts/userscript_devtoprod.php" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -14,7 +14,7 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="perl" />
+      <option name="program" value="php" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="Userscript-dev" />
       <option name="trackOnlyRoot" value="false" />
