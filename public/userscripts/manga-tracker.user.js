@@ -79,8 +79,8 @@
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-08-11
-// @version      1.12.15
+// @updated      2018-08-18
+// @version      1.12.16
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -710,7 +710,6 @@ const base_site = {
 	setupViewer : function() {
 		let _this = this;
 
-		//FIXME: VIEWER: Is it possible to make sure the pages load in order without using async: false?
 		//FIXME: VIEWER: Is it possible to set the size of the image element before it is loaded (to avoid pop-in)?
 		//FIXME: Somehow handle the viewer header code here?
 
@@ -745,22 +744,26 @@ const base_site = {
 			$('<div/>', {class: 'read_img', style: 'display: none'}).appendTo(viewer.get()); //Add a dummy element
 
 			let pagePromises = [];
-			for(let pageN=1; pageN<=_this.page_count; pageN++) {
-				pagePromises.push(new Promise((resolve, reject) => { // jshint ignore:line
-					$('<div/>', {id: 'trackr-page-'+pageN, class: 'read_img'}).insertAfter(viewer.find('> .read_img:last'));
-
-					if(!useCustomImageList) {
-						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
-						setTimeout(addToContainer, pageDelay, pageN, resolve, reject);
-					} else {
-						//Although we don't actually need a delay here, it would probably be good not to load every single page at once if possible
-						let pageDelay = 100 + (pageN * 100);
-						setTimeout(addToContainerCustom, pageDelay, pageN, resolve, reject);
-					}
-				}));
+			let urls = [];
+			if(useCustomImageList) {
+				urls = _this.viewerCustomImageList;
 			}
+
+			for(let pageN=1; pageN<=_this.page_count; pageN++) {
+				$('<div/>', {id: 'trackr-page-'+pageN, class: 'read_img'}) // this should probably be in presetupviewer in its own loop
+					.append($('<div/>', {class: 'pageNumber'}).append($('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))) // add page number
+					.insertAfter(viewer.find('> .read_img:last'));
+				if(!useCustomImageList) { // move this out of the loop once the previous line is in presetupviewer
+					pagePromises.push(new Promise((resolve, reject) => { // jshint ignore:line
+						let pageDelay = _this.delay + (_this.delay !== 0 ? (pageN * _this.delay) : 0);
+						setTimeout(collectImagesURLs, pageDelay, urls, pageN, resolve, reject);
+					}));
+				}
+			}
+
 			Promise.all(pagePromises).then(() => {
 				console.log('trackr - All promises resolved.');
+				_this.setupViewerContainer(urls);
 
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
@@ -814,7 +817,7 @@ const base_site = {
 				_this.favouriteChapter(page);
 			});
 
-			function addToContainer(pageN, promiseResolve, promiseReject) {
+			function collectImagesURLs(urls, pageN, promiseResolve, promiseReject) {
 				let url = _this.viewerChapterURLFormat.replace('%pageN%', pageN.toString());
 
 				//FIXME: (TEMP HACK) Due to MH being weird with https redirects, we need to do this.
@@ -833,46 +836,72 @@ const base_site = {
 							data = data.replace(_this.viewerRegex, '$1');
 							data = data.replace(' src=', ' data-trackr-src='); //This prevents jQuery from preloading images, which can cause issues.
 
-							let original_image = $(data).find('img:first').addBack('img:first');
-							_this.setupViewerContainer($(original_image).attr('data-trackr-src'), this.page);
-						} else {
-							_this.setupViewerContainerError(url, this.page, false);
+							const original_image = $(data).find('img:first').addBack('img:first');
+							urls[pageN] = $(original_image).data('trackr-src');
 						}
 						promiseResolve();
 					},
 					error: function () {
-						_this.setupViewerContainerError(url, this.page, false);
 						promiseResolve(); // we probably should use promiseReject() here
 					}
 				});
 			}
-			function addToContainerCustom(pageN, promiseResolve/*, promiseReject*/) {
-				_this.setupViewerContainer(_this.viewerCustomImageList[pageN-1], pageN);
-				promiseResolve();
-			}
 		});
 	},
 
-	/**
-	 * Used to setup the page container used by the viewer.
+	 /**
+	 * Used to decide which container to use for each image and load them in order.
 	 *
 	 * @function
 	 * @alias sites.*.setupViewerContainer
 	 * @name base_site.setupViewerContainer
 	 *
-	 * @param {string} imgURL
-	 * @param {int}    pageN
+	 * @param {string} imgURLs
+	 * @param {int}	pageN
 	 *
 	 * @final
 	 */
-	setupViewerContainer : function(imgURL, pageN) {
+	setupViewerContainer : function(imgURLs, pageN = 0) { // should become a generator function
+		const _this = this;
+		const cb = function() {
+			if (pageN < imgURLs.length) {
+				_this.setupViewerContainer(imgURLs, pageN + 1);
+			}
+		}
+
+		const imgURL = imgURLs[pageN];
+
+		if (imgURL === undefined) {
+			this.setupViewerContainerError(imgURL, pageN, false, cb);
+		}
+		else {
+			this.setupViewerContainerSuccess(imgURL, pageN, cb);
+		}
+	},
+
+
+	/**
+	 * Used to setup the page container used by the viewer.
+	 *
+	 * @function
+	 * @alias sites.*.setupViewerContainerSuccess
+	 * @name base_site.setupViewerContainerSuccess
+	 *
+	 * @param {string} imgURL
+	 * @param {int}	pageN
+	 *
+	 * @final
+	 */
+	setupViewerContainerSuccess : function(imgURL, pageN, cb = () => {}) { // cb =
 		let _this = this;
+		// cb = cb || $.noop;
 
 		let image_container = $('<div/>', {id: `trackr-page-${pageN}`, class: 'read_img'}).append(
 			//We want to completely recreate the image element to remove all additional attributes
 			$('<img/>', {src: imgURL})
 				.on('load', function() {
 					_this.updatePagesLoaded(true);
+					cb();
 				})
 				.on('error', function() {
 					_this.setupViewerContainerError(imgURL, pageN, true);
@@ -906,7 +935,7 @@ const base_site = {
 	 *
 	 * @final
 	 */
-	setupViewerContainerError : async function(pageURL, pageN, imgLoadFailed) { // jshint ignore:line
+	setupViewerContainerError : async function(pageURL, pageN, imgLoadFailed, cb = () => {}) { // jshint ignore:line
 		let _this = this;
 		_this.updatePagesLoaded(false);
 
@@ -924,7 +953,7 @@ const base_site = {
 					// async: useASync,
 					success: function (data) {
 						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-						_this.setupViewerContainer($(original_image).attr('src'), this.page);
+						_this.setupViewerContainerSuccess($(original_image).attr('src'), this.page);
 					},
 					error: function () {
 						alert('Failed to load image again. Something may be wrong with the site.');
@@ -933,7 +962,7 @@ const base_site = {
 				});
 			} else {
 				//Image load failed
-				_this.setupViewerContainer(`${pageURL}?` + new Date().getTime(), pageN);
+				_this.setupViewerContainerSuccess(`${pageURL}?` + new Date().getTime(), pageN);
 			}
 		})
 	).append(
@@ -944,6 +973,8 @@ const base_site = {
 
 		//Replace the placeholder image_container with the real one
 		$('#trackr-page-'+pageN).replaceWith(image_container);
+
+		cb();
 	},
 
 	/**
