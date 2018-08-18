@@ -80,7 +80,7 @@
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-18
-// @version      1.12.17
+// @version      1.12.18
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -877,8 +877,13 @@ const base_site = {
 		let pageN = 0;
 		while(pageN < _this.page_count + offset) {
 			const imgURL = imgURLs[pageN + offset];
-			pageN += 1;
 			const cb = _this.imageLoader.next.bind(_this.imageLoader);
+			pageN += 1;
+
+			//Auto-scroll to page if URL is a specific page URL
+			if(_this.currentPage === pageN) {
+				_this.gotoPage(pageN);
+			}
 
 			if (imgURL === undefined) {
 				this.setupViewerContainerError(imgURL, pageN, false, cb);
@@ -903,7 +908,7 @@ const base_site = {
 	 *
 	 * @final
 	 */
-	setupViewerContainerSuccess : function(imgURL, pageN, cb = () => {}) { // cb =
+	setupViewerContainerSuccess : function(imgURL, pageN, cb = () => {}) {
 		let _this = this;
 		// cb = cb || $.noop;
 
@@ -1019,12 +1024,6 @@ const base_site = {
 				setTimeout(function() {
 					ele.html('&nbsp;').hide('slow');
 				}, 1500);
-
-				//Auto-scroll to page if URL is a specific page URL
-				//FIXME: Is there a better place to put this?
-				if(_this.currentPage > 0) {
-					_this.gotoPage(_this.currentPage);
-				}
 			} else {
 				ele
 					.html('') //remove everything from existing container
@@ -1163,13 +1162,12 @@ const base_site = {
 	 */
 	gotoPage : function(pageN) {
 		console.log(`trackr - Scrolling to page "${pageN}"`);
-		if(pageN > 1) {
-			let page_ele = $(`#trackr-page-${pageN}`);
-			if(page_ele.length) {
-				$('html, body').animate({
-					scrollTop: page_ele.offset().top
-				}, 2000);
-			}
+
+		let page_ele = $(`#trackr-page-${pageN}`);
+		if(page_ele.length) {
+			$('html, body').animate({
+				scrollTop: page_ele.offset().top
+			}, 2000);
 		}
 	},
 
