@@ -184,7 +184,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
-/* global $, jQuery, GM, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
+/* global $, jQuery, config, GM, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
@@ -379,11 +379,18 @@ const base_site = {
 				});
 			}
 
-			let previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', id: 'trackr-previous', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
-			let next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', id: 'trackr-next', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
-			let options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
+			let pos = config.barPosition || 'top';
+			const previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', id: 'trackr-previous', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
+			const next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', id: 'trackr-next', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
+			const options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
+			const trackerBarOptions = {
+				id: 'TrackerBar'
+			};
+			if(pos === 'bottom') {
+				trackerBarOptions.class = 'bottom';
+			}
 
-			let topbar = $('<div/>', {id: 'TrackerBar'}).append(
+			let topbar = $('<div/>', trackerBarOptions).append(
 				$('<div/>', {id: 'TrackerBarIn'}).append(
 					$('<a/>', {href: main_site, target: '_blank'}).append(
 						$('<i/>', {class: 'fa fa-home', 'aria-hidden': 'true'}))).append(
@@ -402,6 +409,8 @@ const base_site = {
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
 						$('<i/>', {id: 'toggleWebtoon', class: 'fa fa-file-image-o', 'aria-hidden': 'true', title: 'Toggle Webtoon Mode'})
+					).append(
+						$('<i/>', {id: 'togglePosition', class: `fa position-${pos}`, title: 'Toggle Position'})
 					).append(
 						$('<i/>', {id: 'favouriteChapter', class: 'fa fa-star', 'aria-hidden': 'true', title: 'Click to favourite this chapter (Requires series to be tracked first!)'})
 					).append(
@@ -448,11 +457,23 @@ const base_site = {
 
 				_this.search();
 			});
-			//Setup favourite event.
+			//Setup Webtoon toggle event.
 			$(topbar).on('click', '#toggleWebtoon', function(e) {
 				e.preventDefault();
 
 				$('#viewer').toggleClass('webtoon');
+			});
+			//Setup position toggle event.
+			$(topbar).on('click', '#togglePosition', function(e) {
+				e.preventDefault();
+
+				$(e.target).toggleClass('position-top position-bottom');
+				$(topbar).toggleClass('bottom');
+
+				pos = pos === 'top' ? 'bottom' : 'top';
+
+				const conf = $.extend(config, { barPosition: pos });
+				GM.setValue('config', JSON.stringify(conf));
 			});
 			//Setup favourite event.
 			$(topbar).on('click', '#favouriteChapter', function(e) {
@@ -1277,7 +1298,7 @@ const base_site = {
 			//Remove extra unneeded elements.
 			viewer.prevAll().remove();
 			viewer.nextAll().remove();
-		}
+		};
 	},
 
 	/**
@@ -1395,7 +1416,7 @@ const base_site = {
 		this.setObjVars = function() {
 			//NOTE: We can't override preInit here, so we need to put this here
 			//Force webtoon mode.
-			if(window.location.search !== "?style=list") {
+			if(window.location.search !== '?style=list') {
 				window.location.href += '?style=list';
 			}
 
@@ -1437,7 +1458,7 @@ const base_site = {
 	 * Object of URL parameters.
 	 * @type {Object}
 	 */
-	parameters : window.location.search.substring(1) ? JSON.parse('{"' + window.location.search.substring(1).replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key === "" ?  value : decodeURIComponent(value); }) : {},
+	parameters : window.location.search.substring(1) ? JSON.parse('{"' + window.location.search.substring(1).replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key === '' ?  value : decodeURIComponent(value); }) : {},
 
 	/**
 	 * String containing protocol
@@ -1742,14 +1763,14 @@ function handleUserscriptUpdate(headers) {
 			$('head').append(style);
 
 			let modal = $('<div/>', {id: 'modal-userscript', style: 'display: none'});
-			modal.html(`Userscript version is behind the version reported by the server.<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
+			modal.html('Userscript version is behind the version reported by the server.<br/>Click <a href=\'https://trackr.moe/userscripts/manga-tracker.user.js\'>here</a> to manually update to the latest version.');
 			modal.appendTo('body');
 
 			$('#modal-userscript').easyModal(
 				{
 					autoOpen      : true,
 					overlayOpacity: 0.3,
-					overlayColor  : "#333"
+					overlayColor  : '#333'
 				}
 			);
 		}
@@ -1772,8 +1793,8 @@ function versionCompare(v1, v2, options) {
 	}
 
 	if (zeroExtend) {
-		while (v1parts.length < v2parts.length) v1parts.push("0");
-		while (v2parts.length < v1parts.length) v2parts.push("0");
+		while (v1parts.length < v2parts.length) v1parts.push('0');
+		while (v2parts.length < v1parts.length) v2parts.push('0');
 	}
 
 	if (!lexicographical) {
