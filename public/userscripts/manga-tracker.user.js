@@ -767,7 +767,7 @@ const base_site = {
 				for (let k = 0; k < 3; k++) { // setup 3 pipelines (this will make the browser load 3 images in parallel but in order).. the number 3 should probably be smthing users can specify in their options page
 					_this.imageLoader.next();
 				}
-				
+
 				//Auto-track chapter if enabled.
 				/** @namespace config.auto_track */
 				if(config.options.auto_track) {
@@ -852,7 +852,7 @@ const base_site = {
 		});
 	},
 
-	 /**
+	/**
 	 * A generator function that sets up the correct container for the next image and loads it.
 	 *
 	 * @function
@@ -947,28 +947,28 @@ const base_site = {
 		console.error('setupViewerContainerError called');
 		let image_container = $('<div/>', {class: 'read_img', id: 'trackr-page-'+pageN}).append(
 			$('<img/>', {style: 'cursor: pointer', src: reloadUrl}).click(function() {
-			if(!imgLoadFailed) {
-				//Page load failed
-				$.ajax({
-					url    : pageURL,
-					type   : 'GET',
-					page   : pageN,
-					// async: useASync,
-					success: function (data) {
-						let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
-						_this.setupViewerContainerSuccess($(original_image).attr('src'), this.page);
-					},
-					error: function () {
-						alert('Failed to load image again. Something may be wrong with the site.');
-						_this.setupViewerContainerError(pageURL, this.page, false);
-					}
-				});
-			} else {
-				//Image load failed
-				_this.setupViewerContainerSuccess(`${pageURL}?` + new Date().getTime(), pageN);
-			}
-		})
-	).append(
+				if(!imgLoadFailed) {
+					//Page load failed
+					$.ajax({
+						url    : pageURL,
+						type   : 'GET',
+						page   : pageN,
+						// async: useASync,
+						success: function (data) {
+							let original_image = $(data.replace(_this.viewerRegex, '$1')).find('img:first').addBack('img:first');
+							_this.setupViewerContainerSuccess($(original_image).attr('src'), this.page);
+						},
+						error: function () {
+							alert('Failed to load image again. Something may be wrong with the site.');
+							_this.setupViewerContainerError(pageURL, this.page, false);
+						}
+					});
+				} else {
+					//Image load failed
+					_this.setupViewerContainerSuccess(`${pageURL}?` + new Date().getTime(), pageN);
+				}
+			})
+		).append(
 			//Add page number
 			$('<div/>', {class: 'pageNumber'}).append(
 				$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
@@ -1159,8 +1159,8 @@ const base_site = {
 			let page_ele = $(`#trackr-page-${pageN}`);
 			if(page_ele.length) {
 				$('html, body').animate({
-					      scrollTop: page_ele.offset().top
-				      }, 2000);
+					scrollTop: page_ele.offset().top
+				}, 2000);
 			}
 		}
 	},
@@ -1547,11 +1547,11 @@ const base_site = {
 	 * @type {Number}
 	 */
 	delay: 0,
-	
+
 	/**
 	 * Generator object that loads the image
 	 * @type {Generator}
-	 */ 
+	 */
 	imageLoader: null,
 
 	//Used for search.
