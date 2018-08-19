@@ -60,7 +60,7 @@ task('deploy:compile_assets', function() {
 	// less
 	//// themes
 	writeln('➤➤ <comment>Compiling Themes</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}}/public/assets/less && \
 		exec lessc \
 		--csscomb \
@@ -68,7 +68,7 @@ task('deploy:compile_assets', function() {
 		main.less \
 		../css/main.light.css \
 	)');
-	run('( \
+	runS('( \
 		cd {{release_path}}/public/assets/less && \
 		exec lessc \
 		--csscomb \
@@ -78,7 +78,7 @@ task('deploy:compile_assets', function() {
 	)');
 	//// userscript css
 	writeln('➤➤ <comment>Compiling Userscript CSS</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}}/public/userscripts/assets/ && \
 		exec lessc \
 		--csscomb \
@@ -88,7 +88,7 @@ task('deploy:compile_assets', function() {
 
 	//js
 	writeln('➤➤ <comment>Compiling JavaScript</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}}/public/assets/js && \
 		exec google-closure-compiler-js \
 		--compilationLevel SIMPLE_OPTIMIZATIONS \
@@ -99,7 +99,7 @@ task('deploy:compile_assets', function() {
 
 	//icons
 	writeln('➤➤ <comment>Compiling Icons</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'site\', FALSE))->generate();" && \
 		php -r "include \'_scripts/SpritesheetGenerator.php\'; (new SpriteSheet(\'time\', FALSE))->generate();"
@@ -107,13 +107,13 @@ task('deploy:compile_assets', function() {
 
 	// userscript .meta.js
 	writeln('➤➤ <comment>Compiling Userscript .meta.js</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		userscript-utils get-updateblock -du -i public/userscripts/manga-tracker.user.js -o public/userscripts/manga-tracker.meta.js \
 	)');
 	// userscript version constant
 	writeln('➤➤ <comment>Tweaking Userscript Version Constant</comment>');
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		USERSCRIPT_VERSION=$(grep -oP \'@version[\s]*\K([0-9\.]+)\' public/userscripts/manga-tracker.meta.js); \
 		sed -i -r "s/define\(\'USERSCRIPT_VERSION\', \'[0-9\.]+\'\);/define\(\'USERSCRIPT_VERSION\', \'$USERSCRIPT_VERSION\'\);/g" application/config/constants.php \
@@ -125,27 +125,27 @@ task('deploy:copy_files', function () {
 	foreach (get('copy_files') as $file) {
 		$dirname = dirname(parse($file));
 		// Create dir of shared file
-		run("mkdir -p $sharedPath/" . $dirname);
+		runS("mkdir -p $sharedPath/" . $dirname);
 		// Check if shared file does not exist in shared.
 		// and file exist in release
 		if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
 			// Copy file in shared dir if not present
-			run("cp -rv {{release_path}}/$file $sharedPath/$file");
+			runS("cp -rv {{release_path}}/$file $sharedPath/$file");
 		}
 		// Remove from source.
-		run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
+		runS("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 		// Ensure dir is available in release
-		run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
+		runS("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
 		// Touch shared
-		run("touch $sharedPath/$file");
+		runS("touch $sharedPath/$file");
 
-		run("cp $sharedPath/$file {{release_path}}/$file");
+		runS("cp $sharedPath/$file {{release_path}}/$file");
 	}
 });
 
 task('deploy:migrate_db', function () {
 	// Migration is disabled by default on production, so we need to toggle it temporally.
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		sed -i -r "s/(migration_enabled.*?)FALSE/\1TRUE/g" application/config/production/migration.php && \
 		CI_ENV="production" php public/index.php admin/migrate && \
@@ -155,18 +155,18 @@ task('deploy:migrate_db', function () {
 
 task('deploy:maintenance_enable', function () {
 	//define('MAINTENANCE', FALSE);
-	run('( \
+	runS('( \
 		cd {{previous_release}} && \
 		sed -i -r "s/(\'MAINTENANCE\',) FALSE/\1 TRUE/" public/index.php \
 	)');
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		sed -i -r "s/(\'MAINTENANCE\',) FALSE/\1 TRUE/" public/index.php \
 	)');
 });
 task('deploy:maintenance_disable', function () {
 	//define('MAINTENANCE', FALSE);
-	run('( \
+	runS('( \
 		cd {{release_path}} && \
 		sed -i -r "s/(\'MAINTENANCE\',) TRUE/\1 FALSE/" public/index.php \
 	)');
@@ -188,3 +188,8 @@ after('deploy:failed', 'deploy:unlock'); // [Optional] if deploy fails automatic
 
 //TODO: After deploy:success, ask if we want to send a tweet and/or update notices?
 //      https://deployer.org/docs/api
+
+function runS(string $runCommand) : void {
+	$runCommand = preg_replace("/\r\n/", "\n", $runCommand);
+	run($runCommand);
+}
