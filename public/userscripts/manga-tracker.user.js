@@ -1917,7 +1917,7 @@ function versionCompare(v1, v2, options) {
 
 				GM_config.save();
 
-				GM_config.set('apiKey', (main_site === 'trackr.moe' ? GM_config.get('apiKeyProd') : GM_config.get('apiKeyDev')));
+				GM_config.set('apiKey', (main_site === 'https://trackr.moe' ? GM_config.get('apiKeyProd') : GM_config.get('apiKeyDev')));
 			},
 			open : function(/*doc*/) {
 				/** @namespace GM_config.fields.node */
