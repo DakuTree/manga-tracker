@@ -222,7 +222,7 @@
 				$('#api-key').text(apiKey);
 
 				if(location.hostname !== 'manga-tracker.localhost') {
-					GM_config.set('apiKey', apiKey);
+					GM_config.set('apiKeyProd', apiKey);
 				} else {
 					GM_config.set('apiKeyDev', apiKey);
 				}

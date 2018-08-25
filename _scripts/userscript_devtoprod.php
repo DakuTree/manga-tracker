@@ -9,6 +9,7 @@ $userscriptDev = file_get_contents('./public/userscripts/manga-tracker.dev.user.
 // Replace where needed.
 $userscriptDev = str_replace('http://manga-tracker.localhost:20180/userscripts', 'https://trackr.moe/userscripts', $userscriptDev);
 $userscriptDev = str_replace('/^http:\/\/manga-tracker\.localhost\:20180', '/^https:\/\/trackr\.moe', $userscriptDev);
+$userscriptDev = str_replace('window.main_site = \'http://manga-tracker.localhost:20180\'', 'window.main_site = \'https://trackr.moe\'', $userscriptDev);
 
 // Push to prod file.
 file_put_contents('./public/userscripts/manga-tracker.user.js', $userscriptDev);

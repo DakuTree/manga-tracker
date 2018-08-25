@@ -87,7 +87,7 @@
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @require      https://openuserjs.org/src/libs/sizzle/GM_config.min.js
 // @require      https://cdn.rawgit.com/flaviusmatis/easyModal.js/48cdbdfe/jquery.easyModal.js
-// @require      https://trackr.moe/userscripts/sites/_trackr.moe.11.js
+// @require      https://trackr.moe/userscripts/sites/_trackr.moe.12.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
 // @require      https://trackr.moe/userscripts/sites/Bangaqua.js
 // @require      https://trackr.moe/userscripts/sites/Batoto.3.js
@@ -1807,6 +1807,8 @@ function versionCompare(v1, v2, options) {
 (async function() {
 	//FIXME: ViolentMonkey is weird with @require scripts and needs us to use window to allow global variables...
 	//       We should really look into tweaking/rewriting this stuff..
+	let main_site = window.main_site = 'https://trackr.moe';
+	let hostname  = window.hostname  = location.hostname;
 
 	GM_addStyle(`
 		#MangaTracker_Config {
@@ -1861,12 +1863,17 @@ function versionCompare(v1, v2, options) {
 				default : ''
 			},
 
-			'apiKey' : {
+			'apiKeyProd' : {
 				type    : 'hidden',
 				default : ''
 			},
 			'apiKeyDev' : {
 				type    : 'hidden',
+				default : ''
+			},
+			'apiKey'    : {
+				type    : 'hidden',
+				save    : false,
 				default : ''
 			}
 		},
@@ -1890,7 +1897,7 @@ function versionCompare(v1, v2, options) {
 						}
 
 						if('api-key' in oldConfig) {
-							GM_config.set('apiKey', oldConfig['api-key']);
+							GM_config.set('apiKeyProd', oldConfig['api-key']);
 						}
 						if('api-key-dev' in oldConfig) {
 							GM_config.set('apiKeyDev', oldConfig['api-key-dev']);
@@ -1909,6 +1916,8 @@ function versionCompare(v1, v2, options) {
 				GM_config.set('customCSS_fake', GM_config.get('customCSS'));
 
 				GM_config.save();
+
+				GM_config.set('apiKey', (main_site === 'trackr.moe' ? GM_config.get('apiKeyProd') : GM_config.get('apiKeyDev')));
 			},
 			open : function(/*doc*/) {
 				/** @namespace GM_config.fields.node */
@@ -1931,20 +1940,11 @@ function versionCompare(v1, v2, options) {
 	});
 
 
-	let main_site = window.main_site = 'http://manga-tracker.localhost:20180';
-	let hostname  = window.hostname  = location.hostname;
-
 	window.sites = {};
 	initializeSites();
 
 	// TODO: Handle dev mode better.
-	let apiKey;
-	if(hostname === 'trackr.moe') {
-		apiKey = GM_config.get('apiKey');
-	} else {
-		apiKey = GM_config.get('apiKeyDev');
-	}
-	if(apiKey || hostname === 'trackr.moe' || hostname === 'manga-tracker.localhost') {
+	if(GM_config.get('apiKey') || hostname === 'trackr.moe' || hostname === 'manga-tracker.localhost') {
 		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
 		if(hostname === 'manga-tracker.localhost') { hostname = 'trackr.moe'; }
 		if(window.sites[hostname]) {
