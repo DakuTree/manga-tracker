@@ -1,14 +1,13 @@
-/* global config, main_site, userscriptVersion, versionCompare, mal_sync, unsafeWindow */
+/* global GM, GM_config, GM_addValueChangeListener, main_site, userscriptVersion, versionCompare, mal_sync, unsafeWindow */
 //NOTE: mal_sync is set on the page
 
 (function(sites) {
-	//TODO: Plan is to move this to actual inline userscript options at some point.
 	sites['trackr.moe'] = {
 		init : function() {
 			let _this = this;
 
 			switch(location.pathname) {
-				case '/user/dashboard':
+				case '/user/dashboard': {
 					//Dashboard / Front Page
 					if($('#page[data-page=dashboard]').length) {
 						//TODO: Is there a better way to do this?
@@ -19,11 +18,12 @@
 							//get mal_sync option
 							//NOTE: This variable is set on the page, not through the userscript.
 							switch (mal_sync) {
-								case 'disabled':
+								case 'disabled': {
 									//do nothing
 									break;
+								}
 
-								case 'csrf':
+								case 'csrf': {
 									let mal_arr = $(row).find('.sprite-myanimelist-net');
 
 									if(mal_arr.length > 0) {
@@ -32,13 +32,16 @@
 									}
 
 									break;
+								}
 
-								case 'api':
+								case 'api': {
 									//TODO: Not implemented yet.
 									break;
+								}
 
-								default:
+								default: {
 									break;
+								}
 							}
 						});
 
@@ -78,46 +81,47 @@
 						}
 					}
 					break;
+				}
 
-				case '/user/options':
-					/* TODO:
-					   Stop generating HTML here, move entirely to PHP, but disable any user input unless enabled via userscript.
-					   If userscript IS loaded, then insert data.
-					   Separate API key from general options. Always set API config when generate is clicked.
-					*/
+				case '/user/options': {
+					let userscriptDiv = $('#options-userscript');
 
-					let form = $('#userscript-form');
-
-					this.enableForm(form); //Enable the form
-
-					//CHECK: Is there a better way to mass-set form values from an object/array?
-					$(form).find('input[name=auto_track]').attr(    'checked', ('auto_track' in config.options));
-					$(form).find('input[name=disable_viewer]').attr('checked', ('disable_viewer' in config.options));
-
-					$(form).submit(function(e) {
-						let data = {};
-						data.options = $(this).serializeArray().reduce(function(m,o){
-							m[o.name] = (typeof o.value !== 'undefined' ? true : o.value);
-							return m;
-						}, {});
-						/** @namespace data.csrf_token */
-						delete data.csrf_token;
-						if(config['api-key']) {
-							config = $.extend(config, data);
-
-							GM.setValue('config', JSON.stringify(config));
-							$('#form-feedback').text('Settings saved.').show().delay(4000).fadeOut(1000);
-						} else {
-							$('#form-feedback').text('API Key needs to be generated before options can be set.').show().delay(4000).fadeOut(1000);
-						}
-
+					// Add open userscript options link.
+					let openLink = $('<a/>', {href: '#', text: 'Open Userscript Options'}).on('click', function(e) {
 						e.preventDefault();
-					});
 
-					if(location.hostname === 'manga-tracker.localhost:20180') {
-						$('#api-key').text(config['api-key-dev'] || 'not set');
+						GM_config.open();
+					});
+					openLink.appendTo(userscriptDiv);
+
+					/* ALL OLD CODE */
+					let check         = $('#userscript-check'),
+					    latestVersion = check.attr('data-version');
+
+					check
+						.html('')
+						.append($('<span/>', {text: 'Userscript is enabled!'}))
+						.removeClass('alert-danger')
+						.addClass('alert-success');
+
+					if(userscriptVersion === undefined) {
+						let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
+						versionWarning.html(`Your userscript extension appears to be having issues loading required data. Try using another extension such as: TamperMonkey (Chrome) or ViolentMonkey (FireFox).`);
+
+						$(versionWarning).insertAfter(check);
+
+					}
+					else if(versionCompare(latestVersion, userscriptVersion) === 1) {
+						let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
+						versionWarning.html(`Userscript version is behind the version reported by the server.<br/>${userscriptVersion} < ${latestVersion}<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
+
+						$(versionWarning).insertAfter(check);
+					}
+
+					if(location.hostname !== 'manga-tracker.localhost') {
+						$('#api-key').text(GM_config.get('apiKey') || 'not set');
 					} else {
-						$('#api-key').text(config['api-key'] || 'not set');
+						$('#api-key').text(GM_config.get('apiKeyDev')|| 'not set');
 					}
 					let apiDiv = $('#api-key-div');
 					apiDiv.on('click', '#generate-api-key', function() {
@@ -131,14 +135,7 @@
 									    json = JSON.parse(data);
 
 									if(json['api-key']) {
-										$('#api-key').text(json['api-key']);
-
-										if(location.hostname === 'manga-tracker.localhost:20180') {
-											config['api-key-dev'] = json['api-key'];
-										} else {
-											config['api-key']     = json['api-key'];
-										}
-										GM.setValue('config', JSON.stringify(config));
+										setApiKey(json['api-key']);
 									} else {
 										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
@@ -181,18 +178,9 @@
 									    json = JSON.parse(data);
 
 									if(json['api-key']) {
-										if(json['api-key'] !== '') {
-											$('#api-key').text(json['api-key']);
-
-											if(location.hostname === 'manga-tracker.localhost:20180') {
-												config['api-key-dev'] = json['api-key'];
-											} else {
-												config['api-key'] = json['api-key'];
-											}
-											GM.setValue('config', JSON.stringify(config));
-										} else {
-											alert('API Key hasn\'t been set before. Use generate API key instead.')
-										}
+										setApiKey(json['api-key']);
+									} else if(json['api-key'] === null) {
+										alert('API Key hasn\'t been set before. Use generate API key instead.');
 									} else {
 										alert('ERROR: Something went wrong!\nJSON missing API key?');
 									}
@@ -227,32 +215,19 @@
 					});
 
 					break;
-			}
-		},
-		enableForm : function(form) {
-			let check         = $('#userscript-check'),
-			    latestVersion = check.attr('data-version');
-			check
-				.html('')
-				.append($('<span/>', {text: 'Userscript is enabled!'}))
-				.removeClass('alert-danger')
-				.addClass('alert-success');
-			if(userscriptVersion === undefined) {
-				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
-				versionWarning.html(`Your userscript extension appears to be having issues loading required data. Try using another extension TamperMonkey (Chrome) or ViolentMonkey (FireFox).`);
-
-				$(versionWarning).insertAfter(check);
-
-			}
-			else if(versionCompare(latestVersion, userscriptVersion) === 1) {
-				let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
-				versionWarning.html(`Userscript version is behind the version reported by the server.<br/>${userscriptVersion} < ${latestVersion}<br/>Click <a href='https://trackr.moe/userscripts/manga-tracker.user.js'>here</a> to manually update to the latest version.`);
-
-				$(versionWarning).insertAfter(check);
+				}
 			}
 
-			$(form).find('fieldset').removeAttr('disabled');
-			$(form).find('input[type=submit]').removeAttr('onclick');
+			function setApiKey(apiKey) {
+				$('#api-key').text(apiKey);
+
+				if(location.hostname !== 'manga-tracker.localhost') {
+					GM_config.set('apiKey', apiKey);
+				} else {
+					GM_config.set('apiKeyDev', apiKey);
+				}
+				GM_config.save();
+			}
 		}
 	};
 })(window.trackerSites = (window.trackerSites || {}));

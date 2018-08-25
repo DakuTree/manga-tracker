@@ -80,11 +80,12 @@
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-25
-// @version      1.12.20
+// @version      1.13.0
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
+// @require      https://openuserjs.org/src/libs/sizzle/GM_config.min.js
 // @require      https://cdn.rawgit.com/flaviusmatis/easyModal.js/48cdbdfe/jquery.easyModal.js
 // @require      https://trackr.moe/userscripts/sites/_trackr.moe.11.js
 // @require      https://trackr.moe/userscripts/sites/AtelierDuNoir.2.js
@@ -169,6 +170,8 @@
 // @grant        GM.getValue
 // @grant        GM_setValue
 // @grant        GM.setValue
+// @grant        GM_deleteValue
+// @grant        GM.deleteValue
 // @grant        GM_addValueChangeListener
 // @grant        GM.addValueChangeListener
 // @grant        GM_xmlhttpRequest
@@ -176,6 +179,7 @@
 // @grant        unsafeWindow
 // @noframes
 // @connect      trackr.moe
+// @connect      manga-tracker.localhost
 // @connect      myanimelist.net
 // @connect      m.mangafox.me
 // @connect      m.mangafox.la
@@ -184,7 +188,7 @@
 // @run-at       document-start
 // ==/UserScript==
 /** jshint asi=false, bitwise=true, boss=false, browser=true, browserify=false, camelcase=false, couch=false, curly=true, debug=false, devel=true, dojo=false, elision=false, enforceall=false, eqeqeq=true, eqnull=false, es3=false, es5=false, esnext=false, esversion=6, evil=false, expr=false, forin=true, freeze=false, funcscope=false, futurehostile=false, gcl=true, globalstrict=false, immed=false, iterator=false, jasmine=false, jquery=true, lastsemic=false, latedef=false, laxbreak=false, laxcomma=false, loopfunc=false, maxerr=50, mocha=false, module=true, mootools=false, moz=false, multistr=false, newcap=false, noarg=true, nocomma=false, node=false, noempty=false, nomen=false, nonbsp=false, nonew=true, nonstandard=false, notypeof=false, noyield=false, onevar=false, passfail=false, phantom=false, plusplus=false, proto=false, prototypejs=false, qunit=false, quotmark=single, rhino=false, scripturl=false, shadow=false, shelljs=false, singleGroups=false, smarttabs=true, strict=true, sub=false, supernew=false, trailing=true, typed=false, undef=true, unused=true, validthis=false, varstmt=true, white=true, withstmt=false, worker=false, wsh=false, yui=false **/
-/* global $, jQuery, config, GM, GM_addStyle, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
+/* global $, jQuery, GM, GM_addStyle, GM_config, GM_getResourceUrl, GM_getValue, GM_setValue, GM.xmlHttpRequest, mal_sync, GM_addValueChangeListener, unsafeWindow */
 'use strict';
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
@@ -198,29 +202,6 @@ const userscriptIsDev   = GM.info.script.resources.find(function(r) { return r.n
 
 
 /* * * * * * * * * * Site Functions * * * * * * * * * */
-function main() {
-	if(!$.isEmptyObject(config) || hostname === 'trackr.moe') {
-		//Config exists OR site is trackr.moe.
-		if(main_site === 'http://manga-tracker.localhost:20180' && hostname !== 'trackr.moe') { config['api-key'] = config['api-key-dev']; } //Use dev API-key if using dev site
-		if(!config.options) { config.options = {}; } //We can't use the 'in' operator on this if options doesn't exist.
-
-		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
-		if(window.sites[hostname]) {
-			if(hostname === 'trackr.moe') {
-				//trackr.moe needs to utilize these to avoid duplicating code
-				unsafeWindow.userscriptVersion = userscriptVersion;
-				unsafeWindow.versionCompare    = versionCompare;
-			}
-			$(function () {
-				window.sites[hostname].init();
-			});
-		} else {
-			console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
-		}
-	} else {
-		alert('Tracker isn\'t setup! Go to trackr.moe/user/options to set things up.');
-	}
-}
 
 /**
  * Base container model for relevant functions and variables.
@@ -249,8 +230,7 @@ const base_site = {
 			_this.setupTopBar(function() {
 				//We should only load the viewer if we've been successful with loading the topbar.
 
-				/** @namespace config.options.disable_viewer */
-				if(config.options.disable_viewer) { return; }
+				if(GM_config.get('disableCustomReader')) { return; }
 				_this.setupViewer();
 			});
 		});
@@ -379,7 +359,7 @@ const base_site = {
 				});
 			}
 
-			let pos = config.barPosition || 'top';
+			let pos = GM_config.get('topbarPosition') || 'top';
 			const previous = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) > 0 ? $('<a/>', {class: 'buttonTracker', id: 'trackr-previous', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) - 1], text: 'Previous'}) : '');
 			const next     = (Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) < (Object.keys(_this.chapterList).length - 1) ? $('<a/>', {class: 'buttonTracker', id: 'trackr-next', href: Object.keys(_this.chapterList)[Object.keys(_this.chapterList).indexOf(_this.chapterListCurrent) + 1], text: 'Next'}) : '');
 			const options  = $.map(_this.chapterList, function(k, v) {let o = $('<option/>', {value: v, text: k}); if(_this.chapterListCurrent === v) {o.attr('selected', '1');} return o.get();});
@@ -403,14 +383,14 @@ const base_site = {
 					).append(
 						next
 					).append(
+						$('<i/>', {id: 'mtOptions', class: 'fa fa-cog', 'aria-hidden': 'true', title: 'Open Userscript Options'})
+					).append(
 						$('<a/>', {href: main_site + '/report_issue?url='+encodeURIComponent(location.href), target: '_blank'}).append(
 							$('<i/>', {id: 'report-issue', class: 'fa fa-bug', 'aria-hidden': 'true', title: 'Report an Issue'}))
 					).append(
 						_this.searchURLFormat !== '' ? $('<i/>', {id: 'trackerSearch', class: 'fa fa-search', 'aria-hidden': 'true', title: 'Search'}) : ''
 					).append(
-						$('<i/>', {id: 'toggleWebtoon', class: 'fa fa-file-image-o', 'aria-hidden': 'true', title: 'Toggle Webtoon Mode'})
-					).append(
-						$('<i/>', {id: 'togglePosition', class: `fa position-${pos}`, title: 'Toggle Position'})
+						(!GM_config.get('disableCustomReader') ? $('<i/>', {id: 'toggleWebtoon', class: 'fa fa-file-image-o', 'aria-hidden': 'true', title: 'Toggle Webtoon Mode'}) : '')
 					).append(
 						$('<i/>', {id: 'favouriteChapter', class: 'fa fa-star', 'aria-hidden': 'true', title: 'Click to favourite this chapter (Requires series to be tracked first!)'})
 					).append(
@@ -457,23 +437,19 @@ const base_site = {
 
 				_this.search();
 			});
+
+			// Setup Userscript Options Event
+			$(topbar).on('click', '#mtOptions', function(e) {
+				e.preventDefault();
+
+				GM_config.open();
+			});
+
 			//Setup Webtoon toggle event.
 			$(topbar).on('click', '#toggleWebtoon', function(e) {
 				e.preventDefault();
 
 				$('#viewer').toggleClass('webtoon');
-			});
-			//Setup position toggle event.
-			$(topbar).on('click', '#togglePosition', function(e) {
-				e.preventDefault();
-
-				$(e.target).toggleClass('position-top position-bottom');
-				$(topbar).toggleClass('bottom');
-
-				pos = pos === 'top' ? 'bottom' : 'top';
-
-				const conf = $.extend(config, { barPosition: pos });
-				GM.setValue('config', JSON.stringify(conf));
 			});
 			//Setup favourite event.
 			$(topbar).on('click', '#favouriteChapter', function(e) {
@@ -508,13 +484,14 @@ const base_site = {
 		let _this = this;
 		askForConfirmation = (typeof askForConfirmation !== 'undefined' ? askForConfirmation : false);
 
-		if(config['api-key']) {
+		let apiKey = GM_config.get('apiKey');
+		if(apiKey) {
 			if(this.attemptingTrack === false) {
 				if(!askForConfirmation || askForConfirmation && confirm('This action will reset your reading state for this manga and this chapter will be considered as the latest you have read.\nDo you confirm this action?')) {
 					this.attemptingTrack = true;
 
 					let params = {
-						'api-key' : config['api-key'],
+						'api-key' : apiKey,
 						'manga'   : {
 							'site'    : this.site,
 
@@ -790,8 +767,7 @@ const base_site = {
 				}
 
 				//Auto-track chapter if enabled.
-				/** @namespace config.auto_track */
-				if(config.options.auto_track) {
+				if(GM_config.get('autoTrack')) {
 					console.log('trackr - Auto-tracking chapter');
 					_this.trackChapter();
 				}
@@ -1110,9 +1086,10 @@ const base_site = {
 	 * @final
 	 */
 	favouriteChapter : function(page = null) {
-		if(config['api-key']) {
+		let apiKey = GM_config.get('apiKey');
+		if(apiKey) {
 			let params = {
-				'api-key' : config['api-key'],
+				'api-key' : apiKey,
 				'manga'   : {
 					'site'    : this.site,
 
@@ -1830,15 +1807,166 @@ function versionCompare(v1, v2, options) {
 (async function() {
 	//FIXME: ViolentMonkey is weird with @require scripts and needs us to use window to allow global variables...
 	//       We should really look into tweaking/rewriting this stuff..
-	window.main_site = 'https://trackr.moe';
-	window.hostname  = location.hostname;
-	let pConfig = await GM.getValue('config');
-	window.config    = JSON.parse(pConfig || '{}');
-	if(userscriptDebug) { console.log(window.config); }
+
+	GM_addStyle(`
+		#MangaTracker_Config {
+			height: 25% !important;
+			min-height: 260px !important;
+		}
+	`);
+	GM_config.init({
+		id: 'MangaTracker_Config', //TODO: Changeme to config after we port the rest of the options.
+		title: 'Userscript Settings',
+
+		css: `
+			#MangaTracker_Config {
+				padding: 10px;
+			}
+		`,
+
+		fields: {
+			//TODO: This should check if disableLongStrip is disabled, because we shouldn't be doing a request every page.
+			'autoTrack' : {
+				label   : 'Auto-track chapters on page load',
+				type    : 'checkbox',
+				default : false
+			},
+
+			'disableCustomReader' : {
+				label   : 'Disable Custom Reader',
+				type    : 'checkbox',
+				default : false
+			},
+
+			'topbarPosition' : {
+				label   : 'Topbar Position',
+				type    : 'select',
+				options : ['top', 'bottom'],
+				default : 'bottom'
+			},
+
+			'customCSS_fake' : {
+				label   : 'Custom CSS',
+				type    : 'textarea',
+				save    :  false,
+				default : ''
+			},
+			'customCSS' : {
+				type    : 'hidden',
+				default : ''
+			},
+
+			'lastKnownVersion' : {
+				type    : 'hidden',
+				default : ''
+			},
+
+			'apiKey' : {
+				type    : 'hidden',
+				default : ''
+			},
+			'apiKeyDev' : {
+				type    : 'hidden',
+				default : ''
+			}
+		},
+		events: {
+			init : function() {
+				// Migrate from old settings (Pre 1.13.0) to new.
+				if(GM_config.get('lastKnownVersion') === '') {
+					(async function() {
+						let oldConfig = JSON.parse((await GM.getValue('config')) || '{}');
+
+						if('options' in oldConfig) {
+							if('auto_track' in oldConfig.options) {
+								GM_config.set('autoTrack', true);
+							}
+							if('disable_viewer' in oldConfig.options) {
+								GM_config.set('disableCustomReader', true);
+							}
+						}
+						if('barPosition' in oldConfig) {
+							GM_config.set('topbarPosition', oldConfig.barPosition);
+						}
+
+						if('api-key' in oldConfig) {
+							GM_config.set('apiKey', oldConfig['api-key']);
+						}
+						if('api-key-dev' in oldConfig) {
+							GM_config.set('apiKeyDev', oldConfig['api-key-dev']);
+						}
+
+						// Everything has migrated, delete old config.
+						GM.deleteValue('config');
+
+						alert('Manga Tracker - Migrated to new options format, reloading page.');
+						GM_config.save(null, true);
+					})();
+				}
+				GM_config.set('lastKnownVersion', GM.info.script.version);
+
+				// Set the value of the dummy field to the saved value
+				GM_config.set('customCSS_fake', GM_config.get('customCSS'));
+
+				GM_config.save();
+			},
+			open : function(/*doc*/) {
+				/** @namespace GM_config.fields.node */
+				GM_config.fields['customCSS_fake'].node.addEventListener('change', function () {
+					let customCSS = GM_config.get('customCSS_fake', true);
+					if (/\w+\s*{\s*\w+\s*:\s*\w+[\s|\S]*}/.test(customCSS)) {
+						GM_config.set('customCSS', customCSS);
+					}
+				}, false);
+			},
+			save : function(forgotten, reload = false) {
+				// If the values don't match then customCSS wasn't valid
+				if(GM_config.isOpen && forgotten['customCSS_fake'] !== GM_config.get('customCSS')) {
+					alert('CSS is invalid!');
+				} else if(reload || GM_config.isOpen) {
+					location.reload();
+				}
+			}
+		}
+	});
+
+
+	let main_site = window.main_site = 'http://manga-tracker.localhost:20180';
+	let hostname  = window.hostname  = location.hostname;
 
 	window.sites = {};
 	initializeSites();
 
-	main();
+	// TODO: Handle dev mode better.
+	let apiKey;
+	if(hostname === 'trackr.moe') {
+		apiKey = GM_config.get('apiKey');
+	} else {
+		apiKey = GM_config.get('apiKeyDev');
+	}
+	if(apiKey || hostname === 'trackr.moe' || hostname === 'manga-tracker.localhost') {
+		//NOTE: Although we load the userscript at document-start, we can't actually start poking the DOM of "most" sites until it's actually ready.
+		if(hostname === 'manga-tracker.localhost') { hostname = 'trackr.moe'; }
+		if(window.sites[hostname]) {
+			if(hostname === 'trackr.moe') {
+				//trackr.moe needs to utilize these to avoid duplicating code
+				unsafeWindow.userscriptVersion = userscriptVersion;
+				unsafeWindow.versionCompare    = versionCompare;
+			}
+			$(function () {
+				let customCSS = GM_config.get('customCSS');
+				if(customCSS !== '') {
+					GM_addStyle(GM_config.get('customCSS'));
+				}
+
+				window.sites[hostname].init();
+			});
+		} else {
+			console.error(`Hostname doesn't exist in sites object? | '${hostname}'`);
+		}
+	} else {
+		alert('Tracker is missing API Key! Redirecting to options page to set things up.');
+		location.href = `${main_site}/user/options`;
+	}
 })();
 /* jshint ignore:end*/

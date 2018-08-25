@@ -1,5 +1,29 @@
 <div class="row" style="margin-top: 4px;">
-	<div class="col-sm-6">
+	<div class="col-sm-2">&nbsp;</div>
+	<div class="col-sm-8">
+		<div id="options-userscript">
+			<h3>Userscript Options</h3>
+
+			<div id="userscript-check" style="line-height: 22px" class="alert alert-danger" role="alert" data-version="<?=USERSCRIPT_VERSION?>">
+				Userscript is not enabled/installed!<br/>
+				Check the <a href="https://trackr.moe/help">help page</a> for how to get set up.
+			</div>
+
+			<div id="api-key-div">
+				<a id="generate-api-key" href="#" onclick="return false">Generate/Reset</a>
+				|
+				<a id="restore-api-key" href="#" title="Use this when you want are wanting to use the userscript across multiple machines" onclick="return false">Restore</a>
+				|
+				API Key: <strong><span id="api-key">not set</span></strong>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-2">&nbsp;</div>
+</div>
+
+<div class="row" style="margin-top: 4px;">
+	<div class="col-sm-2">&nbsp;</div>
+	<div class="col-sm-8">
 		<div id="options-site">
 			<h3>Site Options</h3>
 
@@ -72,7 +96,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Live Countdown Timer <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background."></i></span>
+								<span class="input-group-text">Live Countdown Timer&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Live Countdown Timer.<br>Turn off to reducing CPU usage when tab is left open in background."></i></span>
 							</div>
 							<div class="input-group-append">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -126,7 +150,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Enable MAL Sync <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> set the MAL id for syncing to work for that series.<br>In some cases we already have the MAL id set on the backend (and will be noted as such).<br><br>Only chapter number will be set."></i></span>
+								<span class="input-group-text">Enable MAL Sync&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This requires users to <i>manually</i> set the MAL id for syncing to work for that series.<br>In some cases we already have the MAL id set on the backend (and will be noted as such).<br><br>Only chapter number will be set."></i></span>
 							</div>
 							<div class="input-group-append">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -152,42 +176,7 @@
 			</form>
 		</div>
 	</div>
-
-	<div class="col-sm-6">
-		<div id="options-userscript">
-			<h3>Userscript Options</h3>
-
-
-			<div id="userscript-check" class="alert alert-danger" role="alert" data-version="<?=USERSCRIPT_VERSION?>">
-				<p>Userscript is not enabled/installed!</p>
-				<p>Check the <a href="https://trackr.moe/help">help page</a> for how to get set up.</p>
-			</div>
-			<div id="api-key-div">
-				API Key: <strong><span id="api-key">not set</span></strong>
-				<p>
-					<a id="generate-api-key" href="#" onclick="return false">Generate/Reset</a> | <a id="restore-api-key" href="#" onclick="return false">Restore</a>
-				</p>
-			</div>
-
-			<?=form_open('', ['method' => 'POST', 'id' => 'userscript-form'])?>
-				<div id="options-auto_track">
-					<div class="form-group">
-						<?=form_checkbox('auto_track')?>
-						<?=form_label('Auto track series on page load.', 'auto_track')?>
-					</div>
-				</div>
-				<div id="options-disable_viewer">
-					<div class="form-group">
-						<?=form_checkbox('disable_viewer')?>
-						<?=form_label('Disable single page loader.', 'disable_viewer')?>
-					</div>
-				</div>
-
-				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success', 'onclick' => 'alert(\'Userscript must be enabled to save settings.\'); return false;')))?>
-				<span id="form-feedback"></span>
-			</form>
-		</div>
-	</div>
+	<div class="col-sm-2">&nbsp;</div>
 </div>
 
 
