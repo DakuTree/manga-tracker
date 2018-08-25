@@ -15,12 +15,10 @@
 	<ol>
 		<li>Make sure you are logged on to MAL in the same browser you are accessing trackr.moe from.</li>
 		<li>Set the MAL Sync options on the options page to "CSRF".</li>
-		<li>While viewing your list, click "Set MAL ID" to set the MAL ID.</li>
-		<li>Important: You must have the series added on MAL before we can update. We can't add series for you!</li>
+		<li>While viewing your list, click "Set MAL ID" to set the MAL ID. (Note: Some series may already have the ID set on the backend, as noted by the MAL Icon)</li>
 		<li>Optional: Set a MAL ID as "none" or "0" to mark it as not having a MAL entry. This shows a NOMAL icon on the list, and mentions the lack of MAL entry when updating via the userscript.</li>
 		<li>MAL Syncing is now setup!
 	</ol>
-	<br/>
 	<p>Note: We know this might be a bit tedious, but it's the best method we can do at the moment.</p>
 </div>
 
