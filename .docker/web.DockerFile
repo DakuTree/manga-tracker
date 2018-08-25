@@ -16,7 +16,9 @@ RUN docker-php-ext-install \
  pdo_mysql \
  mysqli \
  sockets \
- zip
+ zip \
+ dom \
+ libxml
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo
