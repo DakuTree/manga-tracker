@@ -80,7 +80,7 @@
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-25
-// @version      1.13.2
+// @version      1.13.3
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1925,7 +1925,8 @@ function versionCompare(v1, v2, options) {
 				/** @namespace GM_config.fields.node */
 				GM_config.fields['customCSS_fake'].node.addEventListener('change', function () {
 					let customCSS = GM_config.get('customCSS_fake', true);
-					if (/\w+\s*{\s*\w+\s*:\s*\w+[\s|\S]*}/.test(customCSS)) {
+					//FIXME : This is a terrible way of doing this, and doesn't really work.
+					if (/\w+\s*{\s*\w+\s*:\s*[^}]+[\s|\S]*}/.test(customCSS)) {
 						GM_config.set('customCSS', customCSS);
 					}
 				}, false);
