@@ -80,7 +80,7 @@
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-25
-// @version      1.13.1
+// @version      1.13.2
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -1846,7 +1846,7 @@ function versionCompare(v1, v2, options) {
 				label   : 'Topbar Position',
 				type    : 'select',
 				options : ['top', 'bottom'],
-				default : 'bottom'
+				default : 'top'
 			},
 
 			'customCSS_fake' : {
