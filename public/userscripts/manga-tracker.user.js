@@ -80,7 +80,7 @@
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @updated      2018-08-25
-// @version      1.13.0
+// @version      1.13.1
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -878,7 +878,7 @@ const base_site = {
 			pageN += 1;
 
 			//Auto-scroll to page if URL is a specific page URL
-			if(_this.currentPage === pageN) {
+			if(_this.currentPage !== 1 && _this.currentPage === pageN) {
 				_this.gotoPage(pageN);
 			}
 
