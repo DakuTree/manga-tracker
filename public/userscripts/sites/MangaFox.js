@@ -11,7 +11,6 @@
 			this.preSetupTopBar  = ms.preSetupTopBar;
 			this.postSetupTopBar = ms.postSetupTopBar;
 			this.preSetupViewer  = ms.preSetupViewer;
-			this.setupViewerContainer = ms.setupViewerContainer;
 
 			this.site = 'mangafox.me';
 
@@ -31,7 +30,6 @@
 			this.preSetupTopBar  = ms.preSetupTopBar;
 			this.postSetupTopBar = ms.postSetupTopBar;
 			this.preSetupViewer  = ms.preSetupViewer;
-			this.setupViewerContainer = ms.setupViewerContainer;
 
 			this.site = 'mangafox.me';
 
@@ -154,15 +152,6 @@
 
 			let newViewer = $('<div/>', {id: 'viewer'});
 
-			//Add a notice about adblock.
-			newViewer.prepend(
-				$('<p/>', {style: 'background: white; border: 2px solid black;', text: `
-					MangaFox has moved to using an image host which is blacklisted by some AdBlockers.
-					If you can't see any images, you will need to whitelist "lmfcdn.secure.footprint.net.
-					In addition to this, if the loaded image is a MangaFox logo, then the issue is on MangaFox's end and not a bug on our end.
-					".
-				`})
-			);
 
 			$('#viewer').replaceWith(newViewer); //Set base viewer div
 
@@ -179,8 +168,7 @@
 						imageList = $(data.replace(/^[\s\S]*(<div class="mangaread-main">[\s\S]*<\/div>)[\s\S]*<div class="mangaread-operate[\s\S]*$/, '$1')).find('img.reader-page');
 
 						_this.viewerCustomImageList = imageList.map(function(i, e) {
-							//NOTE: This is a temp-fix for uMatrix blocking secure.footprint.net by default due to one of the default lists containing it.
-							return $(e).attr('data-original').replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
+							return $(e).attr('data-original');
 						});
 
 						if(_this.viewerCustomImageList.length) {
@@ -202,29 +190,6 @@
 					callback(false, false);
 				}
 			});
-		},
-		setupViewerContainer : function(imgURL, pageN) {
-			let _this = this;
-
-			imgURL = imgURL.replace('https://lmfcdn.secure.footprint.net', 'http://l.mfcdn.net');
-
-			let image_container = $('<div/>', {id: `trackr-page-${pageN}`, class: 'read_img'}).append(
-				//We want to completely recreate the image element to remove all additional attributes
-				$('<img/>', {src: imgURL})
-					.on('load', function() {
-						_this.updatePagesLoaded(true);
-					})
-					.on('error', function() {
-						_this.setupViewerContainerError(imgURL, pageN, true);
-					})
-			).append(
-				//Add page number
-				$('<div/>', {class: 'pageNumber'}).append(
-					$('<div/>', {class: 'number', text: `${pageN} / ${_this.page_count}`}))
-			);
-
-			//Replace the placeholder image_container with the real one
-			$(`#trackr-page-${pageN}`).replaceWith(image_container);
 		}
 	};
 })(window.trackerSites = (window.trackerSites || {}));
