@@ -105,7 +105,7 @@ class MangaDex extends Base_Site_Model {
 
 			//TODO: We should have a user account for R18 options
 			$updateURL = "https://mangadex.org/updates/{$page}"; //All Languages
-			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] == 200) {
+			if(($content = $this->get_content($updateURL, $this->cookieString)) && $content['status_code'] === 200) {
 				$data = $content['body'];
 
 				$dom = new DOMDocument();
@@ -114,7 +114,7 @@ class MangaDex extends Base_Site_Model {
 				libxml_use_internal_errors(FALSE);
 
 				$xpath      = new DOMXPath($dom);
-				$nodes_rows = $xpath->query("//div[@role='main']/div/table/tbody/tr[.//td[@rowspan]]");
+				$nodes_rows = $xpath->query("//div[@role='main']/div/div[@class='table-responsive']/table/tbody/tr[.//td[@rowspan]]");
 				if($nodes_rows->length > 0) {
 					$i = 0;
 					foreach($nodes_rows as $row) {
