@@ -524,7 +524,9 @@ const base_site = {
 
 									/** @param {{mal_sync:string, mal_id:int, chapter:string}} json **/
 
-									GM.setValue('lastUpdatedSeries', JSON.stringify(Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)})));
+									let lastUpdatedData = Object.assign(params, json, {url: location.href, chapterNumber: (_this.chapterNumber !== '' ? _this.chapterNumber : _this.chapter)});
+									delete lastUpdatedData['api-key'];
+									GM.setValue('lastUpdatedSeries', JSON.stringify(lastUpdatedData));
 
 									//TODO: We should really output this somewhere other than the topbar..
 									status.text('Attempting update...');
