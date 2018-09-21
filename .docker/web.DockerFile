@@ -8,7 +8,8 @@ RUN apt-get install --quiet --yes --no-install-recommends \
  git \
  libzip-dev \
  zip \
- unzip
+ unzip \
+ libxml2-dev
 
 RUN docker-php-ext-configure zip --with-libzip
 RUN docker-php-ext-install \
@@ -17,8 +18,7 @@ RUN docker-php-ext-install \
  mysqli \
  sockets \
  zip \
- dom \
- libxml
+ dom
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo
