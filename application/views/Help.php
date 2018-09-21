@@ -1,7 +1,7 @@
 <h1 id="gettingstarted">Getting Started</h1>
 <div>
 	<ol>
-		<li>Install <a href="https://tampermonkey.net/">TamperMonkey</a> (Chrome) or <a href="https://addons.mozilla.org/en-GB/firefox/addon/tampermonkey/">TamperMonkey</a> (Firefox). (Alternatively, GreaseMonkey or ViolentMonkey can also be used)</li>
+		<li>Install <a href="https://tampermonkey.net/">TamperMonkey</a> (Chrome) or <a href="https://addons.mozilla.org/en-GB/firefox/addon/tampermonkey/">TamperMonkey</a> (Firefox). (Alternatively, ViolentMonkey may also be used.)</li>
 		<li>Install the trackr.moe <a href="<?=base_url('userscripts/manga-tracker.user.js')?>">userscript</a>. Make sure this is installed to the userscript extension, and not directly to your browser.</li>
 		<li><a href="<?=base_url('user/login')?>">Login</a> to the site.</li>
 		<li>While logged in, visit <a href="<?=base_url('user/options')?>">user/options</a> and click "Generate/Reset". A new key should be shown. Refresh to verify the same API key appears again.</li>
