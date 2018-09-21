@@ -79,8 +79,8 @@
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-08-25
-// @version      1.13.4
+// @updated      2018-09-21
+// @version      1.13.5
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -193,7 +193,7 @@
 
 const userscriptDebug   = false; //TODO: Move to a userscript option.
 const userscriptVersion = GM.info.script.version;
-const userscriptIsDev   = GM.info.script.resources.find(function(r) { return r.name === 'userscriptCSS'; }).url.includes('manga-tracker.localhost'); // manga-tracker.localhost is the default docker hostname
+const userscriptIsDev   = (GM.info.scriptHandler !== 'Greasemonkey' ?  GM.info.script.resources.find(function(r) { return r.name === 'userscriptCSS'; }) : GM.info.script.resources['userscriptCSS']).url.includes('manga-tracker.localhost'); // manga-tracker.localhost is the default docker hostname
 
 // Testing grounds for sites! Use this to test new sites, as well updates for existing sites. This will overwrite required files.
 (function(sites) {
@@ -1957,7 +1957,7 @@ function versionCompare(v1, v2, options) {
 		if(window.sites[hostname]) {
 			if(hostname === 'trackr.moe') {
 				//trackr.moe needs to utilize these to avoid duplicating code
-				unsafeWindow.userscriptVersion = userscriptVersion;
+				unsafeWindow.userscriptVersion = window.unsafeVersion = userscriptVersion;
 				unsafeWindow.versionCompare    = versionCompare;
 			}
 			$(function () {

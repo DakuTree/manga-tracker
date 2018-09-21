@@ -104,7 +104,14 @@
 						.removeClass('alert-danger')
 						.addClass('alert-success');
 
-					if(userscriptVersion === undefined) {
+					if(window.userscriptVersion === undefined) {
+						window.userscriptVersion = unsafeWindow.userscriptVersion;
+					}
+					if(window.versionCompare === undefined) {
+						window.versionCompare = unsafeWindow.versionCompare;
+					}
+
+					if(typeof userscriptVersion === undefined) {
 						let versionWarning = $('<div/>', {class: 'alert alert-danger text-center'});
 						versionWarning.html(`Your userscript extension appears to be having issues loading required data. Try using another extension such as: TamperMonkey (Chrome) or ViolentMonkey (FireFox).`);
 
