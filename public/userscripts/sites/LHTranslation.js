@@ -5,12 +5,16 @@
 	 */
 	sites['read.lhtranslation.com'] = {
 		preInit : function(callback) {
-			//Force webtoon mode.
-			if(window.getCookie('read_type') === '1') {
-				callback();
+			if((location.href.match(/\.php$/) || []).length > 0) {
+				location.replace(location.href.replace(/\.php$/, '.html'));
 			} else {
-				document.cookie = 'read_type=1; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
-				location.reload();
+				//Force webtoon mode.
+				if(window.getCookie('read_type') === '1') {
+					callback();
+				} else {
+					document.cookie = 'read_type=1; expires=Fri, 6 Sep 2069 00:00:00 UTC; path=/;';
+					location.reload();
+				}
 			}
 		},
 		setObjVars : function() {
