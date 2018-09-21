@@ -54,6 +54,8 @@ abstract class Base_Site_Model extends CI_Model {
 
 	public $siteRateLimit = 600;
 
+	public $bypassSSL = FALSE;
+
 	public function __construct() {
 		parent::__construct();
 
@@ -203,7 +205,7 @@ abstract class Base_Site_Model extends CI_Model {
 	 *
 	 * @return array|bool
 	 */
-	final protected function get_content(string $url, string $cookie_string = "", string $cookiejar_path = "", bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
+	final protected function get_content(string $url, string $cookie_string = '', string $cookiejar_path = '', bool $follow_redirect = FALSE, bool $isPost = FALSE, array $postFields = []) {
 		$refresh = TRUE; //For sites that have CloudFlare, we want to loop get_content again.
 		$loops   = 0;
 		while($refresh && $loops < 2) {
@@ -212,7 +214,7 @@ abstract class Base_Site_Model extends CI_Model {
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+			curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
 			//curl_setopt($ch, CURLOPT_VERBOSE, 1);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 
@@ -228,8 +230,13 @@ abstract class Base_Site_Model extends CI_Model {
 			//Some sites check the useragent for stuff, use a pre-defined user-agent to avoid stuff.
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 
-			//NOTE: This is required for SSL URLs for now. Without it we tend to get error code 60.
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+			if(!$this->bypassSSL) {
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+			} else {
+				// Some sites just can't do SSL properly.
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			}
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 
