@@ -7,12 +7,12 @@ class MangaKakalot extends Base_Site_Model {
 	public $customType    = 2;
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "http://mangakakalot.com/manga/{$title_url}/";
+		return "https://mangakakalot.com/manga/{$title_url}/";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
 		return [
-			'url'    => "http://mangakakalot.com/chapter/{$title_url}/chapter_{$chapter}",
+			'url'    => "https://mangakakalot.com/chapter/{$title_url}/chapter_{$chapter}",
 			'number' => "c{$chapter}"
 		];
 	}
