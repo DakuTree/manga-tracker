@@ -2,4 +2,5 @@
 
 class DokiFansubs extends Base_FoolSlide_Site_Model {
 	public $baseURL = 'https://kobato.hologfx.com/reader';
+	public $bypassSSL = TRUE; // Certs keep expiring.
 }
