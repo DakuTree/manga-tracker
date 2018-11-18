@@ -74,6 +74,9 @@
 				'border'     : '0'
 			});
 
+			$('.ad-reader, .ad-reader-con').remove();
+			$('.pager-list').remove();
+
 			let tool = $('#tool');
 			//Remove page count from the header, since all pages are loaded at once now.
 			tool.find('> #series > strong:eq(1)').remove();
@@ -153,7 +156,7 @@
 			let newViewer = $('<div/>', {id: 'viewer'});
 
 
-			$('#viewer').replaceWith(newViewer); //Set base viewer div
+			$('.reader-main').replaceWith(newViewer); //Set base viewer div
 
 			//We can't CSRF to the subdomain for some reason, so we need to use a GM function here...
 			GM.xmlHttpRequest({

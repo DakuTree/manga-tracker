@@ -3,7 +3,9 @@
 class MangaFox extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(?:v[0-9a-zA-Z]+\/)?c[0-9\.]+$/';
-	public $customType    = 2;
+	public $customType    = 0; //FIXME: New design doesn't have easy custom following method. Maybe use http://fanfox.net/new/ ?
+
+	public $cookieString  = 'isAdult=1';
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "http://fanfox.net/manga/{$title_url}/";
@@ -22,14 +24,14 @@ class MangaFox extends Base_Site_Model {
 		$fullURL = $this->getFullTitleURL($title_url);
 		$content = $this->get_content($fullURL);
 
-		$content['body'] = preg_replace('/\/manga\/\<\!DOCTYPE html\>[\s\S]*class="downloadimage"/', "/manga/{$title_url}\" class=\"downloadimage\" ", $content['body']);
+		// FIXME: The new design split up the chapter and volume chapters for whatever bizarre reason. We should handle the proper one.
 		$data = $this->parseTitleDataDOM(
 			$content,
 			$title_url,
 			'//title',
-			"//body/div[@id='page']/div[@class='left']/div[@id='chapters']/ul[1]/li[1]",
-			"div/span[@class='date']",
-			'div/h3/a',
+			"//div[@id='chapterlist']/div[1]/ul[1]/li[1]/a",
+			"div/p[@class='title2']",
+			"",
 			function($data) {
 				return strpos($data, 'is not available in Manga Fox.') !== FALSE && strpos($data, '<ul class="chlist" style="display:block">') === FALSE;
 			}
@@ -39,7 +41,7 @@ class MangaFox extends Base_Site_Model {
 
 			$link = preg_replace('/^(.*\/)(?:[0-9]+\.html)?$/', '$1', (string) $data['nodes_chapter']->getAttribute('href'));
 			$chapterURLSegments = explode('/', $link);
-			$titleData['latest_chapter'] = $chapterURLSegments[5] . (isset($chapterURLSegments[6]) && !empty($chapterURLSegments[6]) ? "/{$chapterURLSegments[6]}" : "");
+			$titleData['latest_chapter'] = $chapterURLSegments[3] . (isset($chapterURLSegments[4]) && !empty($chapterURLSegments[4]) ? "/{$chapterURLSegments[4]}" : "");
 			$titleData['last_updated'] =  date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->nodeValue));
 
 			if($firstGet) {

@@ -54,7 +54,7 @@ class AdminCLI extends CLI_Controller {
 		print "Testing site\n";
 		switch($type) {
 			case 'update':
-				if(!is_null($extra )) {
+				if(!is_null($extra)) {
 					print_r($this->Tracker->sites->{$site}->getTitleData($extra));
 				}
 				break;
