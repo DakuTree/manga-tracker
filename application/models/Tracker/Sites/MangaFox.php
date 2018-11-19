@@ -22,7 +22,7 @@ class MangaFox extends Base_Site_Model {
 		$titleData = [];
 
 		$fullURL = $this->getFullTitleURL($title_url);
-		$content = $this->get_content($fullURL);
+		$content = $this->get_content($fullURL, $this->cookieString);
 
 		// FIXME: The new design split up the chapter and volume chapters for whatever bizarre reason. We should handle the proper one.
 		$data = $this->parseTitleDataDOM(
