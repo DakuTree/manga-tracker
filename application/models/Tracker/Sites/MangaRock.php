@@ -21,7 +21,7 @@ class MangaRock extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		$fullURL = "https://api.mangarockhd.com/query/web400/info?oid=mrs-serie-{$title_url}";
+		$fullURL = "https://api.mangarockhd.com/query/web401/info?oid=mrs-serie-{$title_url}";
 		$content = $this->get_content($fullURL);
 
 		if(!is_array($content)) {
@@ -56,7 +56,7 @@ class MangaRock extends Base_Site_Model {
 	public function doCustomUpdate() {
 		$titleDataList = [];
 
-		$updateURL = 'https://api.mangarockhd.com/query/web400/mrs_latest';
+		$updateURL = 'https://api.mangarockhd.com/query/web401/mrs_latest';
 		if(($content = $this->get_content($updateURL)) && $content['status_code'] === 200) {
 			$json = json_decode($content['body'], TRUE);
 			if(!empty($json['data'])) {
