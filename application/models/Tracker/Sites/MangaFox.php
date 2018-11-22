@@ -3,7 +3,7 @@
 class MangaFox extends Base_Site_Model {
 	public $titleFormat   = '/^[a-z0-9_]+$/';
 	public $chapterFormat = '/^(?:v[0-9a-zA-Z]+\/)?c[0-9\.]+$/';
-	public $customType    = 0; //FIXME: New design doesn't have easy custom following method. Maybe use http://fanfox.net/new/ ?
+	public $customType    = 2; //FIXME: New design doesn't have easy custom following method. Maybe use http://fanfox.net/new/ ?
 
 	public $cookieString  = 'isAdult=1';
 
