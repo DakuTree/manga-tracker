@@ -31,7 +31,7 @@ class EGScans extends Base_Site_Model {
 			'//html', //FIXME: EGScans doesn't have a proper title page so we can't grab chapter time.
 			'',
 			function($data) {
-				return strpos($data, 'Select a manga title to get started!') !== FALSE;
+				return (strpos($data, 'Select a manga title to get started!') !== FALSE || strpos($data, 'There is no selected chapter!') !== FALSE);
 			}
 		);
 		if($data) {
