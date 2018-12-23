@@ -55,7 +55,7 @@
 // @include      /^https?:\/\/reader\.sascans\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9\.-]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/psychoplay\.co\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
 // @include      /^https?:\/\/sodascans\.me\/read\/[a-zA-Z0-9_-]+\/[0-9\.]+$/
-// @include      /^http:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
+// @include      /^https?:\/\/mangakakalot\.com\/chapter\/[a-zA-Z_\-0-9]+\/chapter_[0-9\.]+$/
 // @include      /^http:\/\/reader\.dkthias\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/reader\.fos-scans\.com\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/saikoscans\.ml\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
