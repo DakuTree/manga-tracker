@@ -2,3 +2,4 @@ User-agent: *
 Disallow: /user/
 Disallow: /history/
 Disallow: /report_issue
+Disallow: /list/
