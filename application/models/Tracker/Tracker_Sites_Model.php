@@ -811,7 +811,9 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public $chapterFormat = '/^[0-9\.]+$/';
 	public $pageSeparator = '/';
 
-	public $customType    = 2;
+	public $customType    = 2;#
+
+	public $version = 1; # New versions of GlossyBright have a diff style.
 
 	public function getFullTitleURL(string $title_url) : string {
 		return "{$this->baseURL}/{$title_url}";
@@ -827,26 +829,51 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public function getTitleData(string $title_url, bool $firstGet = FALSE) : ?array {
 		$titleData = [];
 
-		$fullURL = "{$this->baseURL}/manga-rss/{$title_url}";
-		$content = $this->get_content($fullURL);
-		$data    = $this->parseTitleDataDOM(
-			$content,
-			$title_url,
-			'//rss/channel/image/title',
-			'//rss/channel/item[1]',
-			'pubdate',
-			'title',
-			function($data) {
-				return strpos($data, '<image>') === FALSE;
+		if($this->version === 1) {
+			$fullURL = "{$this->baseURL}/manga-rss/{$title_url}";
+			$content = $this->get_content($fullURL);
+			$data    = $this->parseTitleDataDOM(
+				$content,
+				$title_url,
+				'//rss/channel/image/title',
+				'//rss/channel/item[1]',
+				'pubdate',
+				'title',
+				function($data) {
+					return strpos($data, '<image>') === FALSE;
+				}
+			);
+			if($data) {
+				$titleData['title'] = preg_replace('/^Recent chapters of (.*?) manga$/', '$1', trim($data['nodes_title']->textContent));
+
+				//For whatever reason, DOMDocument breaks the <link> element we need to grab the chapter, so we have to grab it elsewhere.
+				$titleData['latest_chapter'] = preg_replace('/^.*? - ([0-9\.]+) - .*?$/', '$1', trim($data['nodes_chapter']->textContent));
+
+				$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->textContent));
 			}
-		);
-		if($data) {
-			$titleData['title'] = preg_replace('/^Recent chapters of (.*?) manga$/', '$1', trim($data['nodes_title']->textContent));
+		} elseif($this->version === 2) {
+			$fullURL = "{$this->baseURL}/rss.php?manga={$title_url}";
+			$content = $this->get_content($fullURL);
+			$data    = $this->parseTitleDataDOM(
+				$content,
+				$title_url,
+				'//rss/channel/image/title',
+				'//rss/channel/item[1]',
+				'pubdate',
+				'',
+				function($data) {
+					return strpos($data, '<image>') === FALSE;
+				}
+			);
+			if($data) {
+				$titleData['title'] = preg_replace('/^Meraki Scans - (.*?)$/', '$1', trim($data['nodes_title']->textContent));
 
-			//For whatever reason, DOMDocument breaks the <link> element we need to grab the chapter, so we have to grab it elsewhere.
-			$titleData['latest_chapter'] = preg_replace('/^.*? - ([0-9\.]+) - .*?$/', '$1', trim($data['nodes_chapter']->textContent));
+				//For whatever reason, DOMDocument breaks the <link> element we need to grab the chapter, so we have to grab it elsewhere.
+				$chapter = preg_replace('/^.*?(https:\/\/.*)$/', '$1', trim($data['nodes_chapter']->textContent));
+				$titleData['latest_chapter'] = explode('/', $chapter)[4];
 
-			$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->textContent));
+				$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->textContent));
+			}
 		}
 
 		return (!empty($titleData) ? $titleData : NULL);

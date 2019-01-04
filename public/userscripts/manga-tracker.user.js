@@ -25,7 +25,7 @@
 // @include      /^http:\/\/mangacow\.ws\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/)?$/
 // @include      /^https:\/\/jaiminisbox\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/kobato\.hologfx\.com\/reader\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
-// @include      /^https?:\/\/merakiscans\.com\/[a-zA-Z0-9_-]+\/[0-9\.]+\/([0-9]+\/?)?$/
+// @include      /^https?:\/\/merakiscans\.com\/[a-zA-Z0-9_-]+\/[0-9\.]+(\/([0-9]+\/?)?)?$/
 // @include      /^http:\/\/www\.demonicscans\.com\/FoOlSlide\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https?:\/\/reader\.deathtollscans\.net\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^http:\/\/read\.egscans\.com\/[A-Za-z0-9\-_\!,]+\/?(?:Chapter_[0-9]+(?:_?extra)?(?:&display=(default|webtoon))?\/?)?$/
@@ -79,8 +79,8 @@
 // @include      /^https?:\/\/reader\.naniscans\.xyz\/read\/.*?\/[a-z]+\/[0-9]+\/[0-9]+(\/.*)?$/
 // @include      /^https:\/\/readmanhua\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
 // @include      /^https?:\/\/wowescans\.net\/[a-z]+\/[a-zA-Z0-9_-]+\/[0-9\.]+[\/]*[0-9]*$/
-// @updated      2018-12-23
-// @version      1.13.9
+// @updated      2019-01-04
+// @version      1.13.10
 // @downloadURL  https://trackr.moe/userscripts/manga-tracker.user.js
 // @updateURL    https://trackr.moe/userscripts/manga-tracker.meta.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
@@ -128,7 +128,7 @@
 // @require      https://trackr.moe/userscripts/sites/MangaStream.4.js
 // @require      https://trackr.moe/userscripts/sites/MangaTopia.js
 // @require      https://trackr.moe/userscripts/sites/Mangazuki.js
-// @require      https://trackr.moe/userscripts/sites/MerakiScans.3.js
+// @require      https://trackr.moe/userscripts/sites/MerakiScans.4.js
 // @require      https://trackr.moe/userscripts/sites/NaniScans.1.js
 // @require      https://trackr.moe/userscripts/sites/OneTimeScans.js
 // @require      https://trackr.moe/userscripts/sites/PhoenixSerenade.js
