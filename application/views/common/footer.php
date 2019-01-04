@@ -8,7 +8,7 @@
 <?php if($show_header) { ?>
 <footer id="site-footer" class="navbar navbar-expand-md navbar-light bg-faded">
 	<div id="footer-left" class="text-muted">
-		<span class="footer-copyright">©2018 trackr.moe</span>
+		<span class="footer-copyright">©2019 trackr.moe</span>
 		<span class="footer-debug"><?='Page rendered in <strong>{elapsed_time}</strong> seconds and used {memory_usage} of RAM.'?></span>
 	</div>
 	<div class="d-flex flex-row order-2 order-lg-3">
