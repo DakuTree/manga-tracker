@@ -47,6 +47,12 @@ class MangaDex extends Base_Site_Model {
 								return $v['lang_code'] === $this->langCodes[$titleParts[1]];
 							});
 
+							// MangaDex allows groups to upload in advance. Make sure we avoid grabbing these chapters.
+							$unixTimestamp = time();
+							$filteredChapters = array_filter($json['chapter'], function ($v) use ($titleParts, $unixTimestamp) {
+								return $unixTimestamp > $v['timestamp'];
+							});
+
 							uasort($filteredChapters, function ($a, $b) {
 								//CHECK: Should we account for volume here, and/or other non-numeric data?
 								return (float) $b['chapter'] <=> (float) $a['chapter'];
