@@ -49,7 +49,7 @@ class MangaDex extends Base_Site_Model {
 
 							// MangaDex allows groups to upload in advance. Make sure we avoid grabbing these chapters.
 							$unixTimestamp = time();
-							$filteredChapters = array_filter($json['chapter'], function ($v) use ($titleParts, $unixTimestamp) {
+							$filteredChapters = array_filter($filteredChapters, function ($v) use ($titleParts, $unixTimestamp) {
 								return $unixTimestamp > $v['timestamp'];
 							});
 
