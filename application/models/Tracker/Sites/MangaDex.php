@@ -137,7 +137,7 @@ class MangaDex extends Base_Site_Model {
 							$titleID = $title_url_arr[2];
 
 							foreach($nodes_rows_chapters as $rowC) {
-								$nodes_lang     = $xpath->query('td[3]/img', $rowC);
+								$nodes_lang     = $xpath->query('td[3]/span', $rowC);
 								$nodes_chapter  = $xpath->query('td[2]/a', $rowC);
 								$nodes_latest   = $xpath->query('td[7]/time', $rowC);
 
