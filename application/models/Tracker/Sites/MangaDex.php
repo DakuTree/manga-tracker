@@ -108,6 +108,9 @@ class MangaDex extends Base_Site_Model {
 		$getNextPage = TRUE;
 		while($getNextPage) {
 			if($page >= 5) break;
+			if($page > 1 && empty($titleDataList)) {
+				log_message('error', "{$this->site}/Custom | Custom update list failed to parse?");
+			}
 
 			//TODO: We should have a user account for R18 options
 			$updateURL = "https://mangadex.org/updates/{$page}"; //All Languages
