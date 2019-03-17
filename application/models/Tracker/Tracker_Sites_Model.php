@@ -39,7 +39,7 @@ abstract class Base_Site_Model extends CI_Model {
 	public $chapterFormat = '//';
 	public $pageSeparator = ''; //NOTE: Each site must set this manually.
 	public $hasCloudFlare = FALSE;
-	public $userAgent     = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36';
+	public $userAgent     = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36';
 
 	public $baseURL = '';
 
