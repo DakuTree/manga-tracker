@@ -286,7 +286,7 @@ abstract class Base_Site_Model extends CI_Model {
 				'user_agent' => $this->userAgent
 			];
 			//TODO: shell_exec seems bad since the URLs "could" be user inputted? Better way of doing this?
-			$result = shell_exec('python '.APPPATH.'../_scripts/get_cloudflare_cookie.py '.escapeshellarg(json_encode($urlData)));
+			$result = shell_exec('python3 '.APPPATH.'../_scripts/get_cloudflare_cookie.py '.escapeshellarg(json_encode($urlData)));
 			$cookieData = json_decode($result, TRUE);
 
 			$this->cache->save("cloudflare_{$this->site}", $cookieData['cookies'],  31536000 /* 1 year, or until we renew it */);
