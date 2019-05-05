@@ -35,12 +35,12 @@
 			//this.page_count    = $('.list-switcher-2 > li > select[name=category_type]').get(0).length;
 			this.title         = this.segments[2].substr(10);
 			let chapterID      = this.segments[4].substr(12);
-			this.chapter       = chapterID + ':--:' + $('div[data-test="reader-manga-name"] + div select > option:selected').text().replace(/^(.*?):.*?$/, '$1').replace(/Chapter /g, 'c').replace(/Vol\.([0-9]+) /, 'v$1/').trim();
+			this.chapter       = chapterID + ':--:' + $(`a[href="/manga/mrs-serie-${this.title}"] + div select > option[value=mrs-chapter-${chapterID}]`).text().replace(/^(.*?):.*?$/, '$1').replace(/Chapter /g, 'c').replace(/Vol\.([0-9]+) /, 'v$1/').trim();
 
 			this.title_url   = `${this.https}://mangarock.com/manga/mrs-serie-${this.title}`;
 			this.chapter_url = `${this.title_url}/chapter/mrs-chapter-${chapterID}`;
 
-			let tempList = window.generateChapterList($('div[data-test="reader-manga-name"] + div select:first > option'), 'value');
+			let tempList = window.generateChapterList($(`a[href="/manga/mrs-serie-${this.title}"] + div select > option`), 'value');
 			this.chapterList = Object.keys(tempList).reduce(function(result, key) {
 				result[`${_this.title_url}/chapter/${key}`] = tempList[key];
 				return result;
