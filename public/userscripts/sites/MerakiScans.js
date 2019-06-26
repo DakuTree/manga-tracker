@@ -10,10 +10,10 @@
 			let _this = this;
 
 
-			this.title       = this.segments[1];
-			this.chapter     = this.segments[2];
+			this.title       = this.segments[2];
+			this.chapter     = this.segments[3];
 
-			this.title_url   = `${this.baseURL}/${this.title}/`;
+			this.title_url   = `${this.baseURL}/manga/${this.title}/`;
 			this.chapter_url = this.title_url +  this.chapter + '/';
 
 			let chapterSelect = $('#chapter_select > option').reverseObj();

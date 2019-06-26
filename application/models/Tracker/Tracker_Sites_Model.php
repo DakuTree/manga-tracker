@@ -816,7 +816,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 	public $version = 1; # New versions of GlossyBright have a diff style.
 
 	public function getFullTitleURL(string $title_url) : string {
-		return "{$this->baseURL}/{$title_url}";
+		return "{$this->baseURL}/manga/{$title_url}";
 	}
 
 	public function getChapterData(string $title_url, string $chapter) : array {
@@ -867,10 +867,9 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			);
 			if($data) {
 				$titleData['title'] = preg_replace('/^Meraki Scans - (.*?)$/', '$1', trim($data['nodes_title']->textContent));
-
 				//For whatever reason, DOMDocument breaks the <link> element we need to grab the chapter, so we have to grab it elsewhere.
 				$chapter = preg_replace('/^.*?(https:\/\/.*)$/', '$1', trim($data['nodes_chapter']->textContent));
-				$titleData['latest_chapter'] = explode('/', $chapter)[4];
+				$titleData['latest_chapter'] = explode('/', $chapter)[sizeof(explode('/', $chapter))-2];
 
 				$titleData['last_updated'] = date('Y-m-d H:i:s', strtotime((string) $data['nodes_latest']->textContent));
 			}
@@ -892,14 +891,15 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 			libxml_use_internal_errors(FALSE);
 
 			$xpath      = new DOMXPath($dom);
-			$nodes_rows = $xpath->query("//div[@id='wpm_mng_lst']/div | //*[@id='wpm_mng_lst']/li/div");
+			$nodes_rows = $xpath->query("//div[@id='mangalistitem']");
+
 			if($nodes_rows->length > 0) {
 				foreach($nodes_rows as $row) {
 					$titleData = [];
 
-					$nodes_title   = $xpath->query("a[2]", $row);
-					$nodes_chapter = $xpath->query("a[2]", $row);
-					$nodes_latest  = $xpath->query("b", $row);
+					$nodes_title   = $xpath->query(".//li[@id='manganame']/a", $row);
+					$nodes_chapter = $xpath->query(".//li[@id='chaptername'][1]/a", $row);
+					$nodes_latest  = $xpath->query(".//li[@id='chaptername'][1]/label", $row);
 
 					if($nodes_latest->length === 0) {
 						$nodes_latest = $xpath->query('text()[last()]', $row);
@@ -909,7 +909,7 @@ abstract class Base_GlossyBright_Site_Model extends Base_Site_Model {
 						$title   = $nodes_title->item(0);
 						$chapter = $nodes_chapter->item(0);
 
-						preg_match('/'.$baseURLRegex.'\/(?<url>.*?)\//', $title->getAttribute('href'), $title_url_arr);
+						preg_match('/manga\/(?<url>.*?)\//', $title->getAttribute('href'), $title_url_arr);
 						$title_url = $title_url_arr['url'];
 
 						if(!array_key_exists($title_url, $titleDataList)) {
