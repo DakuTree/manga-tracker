@@ -88,3 +88,11 @@
 				<?=$notices?>
 			</div>
 			<?php } ?>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div id="update-notice" class="alert alert-warning py-1" role="alert">
+						<strong>Notice of Site Closure</strong> : As of 16/04/2019, trackr.moe has shut its doors. More info can be found <a href='https://blog.codeanimu.net/posts/2019/07/trackr-moe-the-future/'>here</a>.
+					</div>
+				</div>
+			</div>
