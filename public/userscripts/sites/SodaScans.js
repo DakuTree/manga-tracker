@@ -5,6 +5,8 @@
 	 */
 	sites['sodascans.me'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupRoku();
 			callback();
 		}

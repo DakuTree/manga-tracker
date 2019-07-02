@@ -5,7 +5,7 @@
 	 */
 	sites['kissmanga.com'] = {
 		preInit : function(callback) {
-			return;
+			return; // Site disabled.
 
 			//Kissmanga has bot protection, sometimes we need to wait for the site to load.
 			if($('.cf-browser-verification').length === 0) {

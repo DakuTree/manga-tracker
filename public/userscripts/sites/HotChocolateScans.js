@@ -5,6 +5,8 @@
 	 */
 	sites['hotchocolatescans.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.foolSlideBaseURL = this.https+'://hotchocolatescans.com/fs';
 			this.setupFoolSlide();
 			callback();

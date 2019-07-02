@@ -5,6 +5,8 @@
 	 */
 	sites['reader.seaotterscans.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupFoolSlide();
 			callback();
 		}

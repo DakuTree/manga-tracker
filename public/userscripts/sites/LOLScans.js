@@ -4,6 +4,9 @@
 	 * @type {SiteObject}
 	 */
 	sites['forums.lolscans.com'] = {
+		preInit : function() {
+			return; // Site disabled.
+		},
 		setObjVars : function() {
 			let _this = this;
 

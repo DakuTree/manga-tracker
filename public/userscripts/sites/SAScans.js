@@ -5,6 +5,8 @@
 	 */
 	sites['reader.sascans.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupMyMangaReaderCMS();
 			callback();
 		}

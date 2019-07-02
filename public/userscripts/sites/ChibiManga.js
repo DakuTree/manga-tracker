@@ -5,6 +5,8 @@
 	 */
 	sites['www.cmreader.info'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupMyMangaReaderCMS();
 			callback();
 		}

@@ -6,6 +6,8 @@
 	 */
 	sites['gameofscanlation.moe'] = {
 		setObjVars : function() {
+			return; // Site disabled.
+
 			let _this = this;
 			//GoS is a bit weird. The title URL has two variations, one with the ID and one without.
 			//The ID one works only on the title page, and the no ID one works on the chapter page.

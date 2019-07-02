@@ -5,6 +5,8 @@
 	 */
 	sites['atelierdunoir.org'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupFoolSlide();
 			callback();
 		}

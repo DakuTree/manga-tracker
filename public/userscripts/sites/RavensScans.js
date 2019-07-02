@@ -5,6 +5,8 @@
 	 */
 	sites['ravens-scans.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			if(location.href.indexOf('/multi/') !== -1) {
 				location.href = location.href.replace('/multi/', '/lector/').replace('.0', '');
 			} else {

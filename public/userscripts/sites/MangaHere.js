@@ -5,6 +5,8 @@
 	 */
 	sites['www.mangahere.cc'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			let ms = sites['www.mangahere.co'];
 			this.setObjVars      = ms.setObjVars;
 			this.stylize         = ms.stylize;

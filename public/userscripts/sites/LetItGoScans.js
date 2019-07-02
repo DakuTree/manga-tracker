@@ -5,6 +5,8 @@
 	 */
 	sites['reader.letitgo.scans.today'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupFoolSlide();
 			callback();
 		}

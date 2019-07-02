@@ -5,6 +5,8 @@
 	 */
 	sites['ygscans.com'] = {
 		preInit : function() {
+			return; // Site disabled.
+
 			//Auto-redirect to subdomain if using non-subdomain url.
 			location.href = location.href.replace(/^https?:\/\/ygscans\.com\/reader/, 'http://reader.ygscans.com'); //NOTE: Subdomain doesn't have https support for some reason.
 		}

@@ -5,6 +5,8 @@
 	 */
 	sites['psychoplay.co'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupRoku();
 			callback();
 		}

@@ -5,6 +5,8 @@
 	 */
 	sites['bangaqua.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			this.setupFoolSlide();
 			callback();
 		}

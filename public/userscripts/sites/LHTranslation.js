@@ -5,6 +5,8 @@
 	 */
 	sites['read.lhtranslation.com'] = {
 		preInit : function(callback) {
+			return; // Site disabled.
+
 			if((location.href.match(/\.php$/) || []).length > 0) {
 				location.replace(location.href.replace(/\.php$/, '.html'));
 			} else {
