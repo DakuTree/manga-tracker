@@ -11,6 +11,9 @@ class ReportIssue extends MY_Controller {
 		$this->header_data['title'] = 'Report Issue';
 		$this->header_data['page']  = 'report-issue';
 
+		show_404();
+		return;
+
 		$this->form_validation->set_rules('issue_description', 'Description', 'required|max_length[1000]');
 		$this->form_validation->set_rules('issue_url',         'URL',         'valid_url');
 
