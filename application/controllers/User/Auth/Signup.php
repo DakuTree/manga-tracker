@@ -23,11 +23,12 @@ class Signup extends No_Auth_Controller {
 		$this->header_data['title'] = 'Signup';
 		$this->header_data['page']  = 'signup';
 
-		if(is_null($verificationCode)) {
-			$this->_initial_signup();
-		} else {
-			$this->_continue_signup($verificationCode);
-		}
+		$this->_no_more_signup();
+		//if(is_null($verificationCode)) {
+		//	$this->_initial_signup();
+		//} else {
+		//	$this->_continue_signup($verificationCode);
+		//}
 	}
 
 	//This initial signup occurs when the user is first shown the page.
@@ -206,5 +207,9 @@ class Signup extends No_Auth_Controller {
 
 			$this->_render_page('User/Signup_Continued');
 		}
+	}
+
+	private function _no_more_signup() : void {
+		$this->_render_page('User/Signup_Closed');
 	}
 }

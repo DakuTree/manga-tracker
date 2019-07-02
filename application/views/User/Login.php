@@ -32,12 +32,12 @@
 				<hr class="colorgraph">
 
 				<div class="row">
-					<div class="col-xs-6 col-sm-6 col-md-6">
+					<div class="col-xs-12 col-sm-12 col-md-12">
 						<?=form_submit($form_submit);?>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
+					<!-- <div class="col-xs-6 col-sm-6 col-md-6">
 						<a href="<?=base_url('user/signup')?>" class="btn btn-lg btn-primary btn-block">Create an account</a>
-					</div>
+					</div> -->
 				</div>
 			</fieldset>
 		</form>

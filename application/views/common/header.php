@@ -54,7 +54,7 @@
 		<ul class="navbar-nav ml-auto">
 			<?php if(!$this->ion_auth->logged_in()) { ?>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/login')?>">Login</a></li>
-			<li class="nav-item"><a class="nav-link" href="<?=base_url('user/signup')?>">Register</a></li>
+			<!--<li class="nav-item"><a class="nav-link" href="<?=base_url('user/signup')?>">Register</a></li>-->
 			<?php } else { ?>
 			<li class="nav-item dropdown p-0">
 				<a class="nav-link dropdown-toggle px-1 py-0" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
