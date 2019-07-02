@@ -22,7 +22,7 @@
 			<li class="nav-item"><a class="nav-link" href="https://twitter.com/trackr_dev" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('report_issue')?>">Report an Issue</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('stats')?>">Site Stats</a></li>
-			<li class="nav-item"><a class="nav-link" href="https://github.com/DakuTree/manga-tracker/wiki/Changelog" target="_blank">Changelog</a></li>
+			<li class="nav-item"><a class="nav-link" href="https://github.com/DakuTree/manga-tracker/commits/master" target="_blank">Changelog</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('about/terms')?>">Terms</a></li>
 			<li class="nav-item"><a class="nav-link" href="<?=base_url('about')?>">About</a></li>
 		</ul>
