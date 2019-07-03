@@ -31,7 +31,7 @@ class Favourites extends Auth_Controller {
 
 			case 'csv':
 				$this->output->set_content_type('text/csv', 'utf-8');
-				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($favouriteData, 'Date/Time,Title,Manga URL,Site,Chapter,Chapter Number, Chapter URL'), 'csv',TRUE, 'tracker-favourite');
+				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($favouriteData, 'Date/Time,Title,Manga URL,Site,Chapter,Chapter Number, Chapter URL', ',', '"', FALSE, TRUE), 'csv',TRUE, 'tracker-favourite');
 				break;
 
 			default:

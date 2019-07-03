@@ -31,7 +31,7 @@ class History extends Auth_Controller {
 
 			case 'csv':
 				$this->output->set_content_type('text/csv', 'utf-8');
-				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($historyData, 'Date/Time,Title,URL,Site,Status'), 'csv',TRUE, 'tracker-history');
+				$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($historyData, 'Date/Time,Title,URL,Site,Status', ',', '"', FALSE, TRUE), 'csv',TRUE, 'tracker-history');
 				break;
 
 			default:
