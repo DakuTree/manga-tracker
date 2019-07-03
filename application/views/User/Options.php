@@ -128,7 +128,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<span class="input-group-text">Enable Public List (<a href="<?=base_url("list/{$username}.html")?>">HTML</a> | <a href="<?=base_url("list/{$username}.json")?>">JSON</a>)</span>
+								<span class="input-group-text">Enable Public List (<a href="<?=base_url("list/{$username}.html")?>">HTML</a> | <a href="<?=base_url("list/{$username}.json")?>">JSON</a> | <a href="<?=base_url("list/{$username}.csv")?>">CSV</a>)</span>
 							</div>
 							<div class="input-group-append">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -171,13 +171,10 @@
 						</div>
 					</div>
 				</div>
-			
+
 				<?=form_submit(...array(NULL, 'Save Settings', array('class' => 'btn btn-success')))?>
 			</form>
 		</div>
 	</div>
 	<div class="col-sm-2">&nbsp;</div>
 </div>
-
-
-

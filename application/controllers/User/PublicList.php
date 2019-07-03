@@ -14,7 +14,7 @@ class PublicList extends MY_Controller {
 		$type = mb_strtolower($type);
 		if(
 			(!is_null($username) && $this->form_validation->valid_username($username) && ($user = $this->User->get_user_by_username($username)))
-			&& in_array($type, ['html', 'json'/*, 'txt'*/])
+			&& in_array($type, ['html', 'json', 'csv'])
 			&& (($this->User->id == $user->id) || ($this->User_Options->get('enable_public_list', $user->id) == 'enabled' ? TRUE : FALSE))//&& get option enabled
 		) {
 			$this->header_data['title'] = "{$username}'s list";
@@ -22,8 +22,30 @@ class PublicList extends MY_Controller {
 
 			$trackerData = $this->Tracker->list->get($user->id);
 			switch($type) {
-				//case 'txt':
-				//	break;
+				case 'csv':
+					$csvArr = [];
+					foreach ($trackerData['series'] as $category => $categoryData) {
+						$categoryName = $categoryData['name'];
+
+						foreach ($categoryData['manga'] as $manga) {
+							$csvArr[] = [
+								$categoryName,
+								'=HYPERLINK("' . $manga['full_title_url'] . '","' . $manga['title_data']['title'] . '")',
+								$manga['site_data']['site'],
+
+								'=HYPERLINK("' . $manga['generated_current_data']['url'] . '","' . addslashes($manga['generated_current_data']['number']) . '")',
+								'=HYPERLINK("' . $manga['generated_latest_data']['url'] . '","' . addslashes($manga['generated_latest_data']['number']) . '")',
+
+								$manga['tag_list'],
+								$manga['mal_id'],
+								$manga['last_updated']
+							];
+						}
+					}
+
+					$this->output->set_content_type('text/csv', 'utf-8');
+					$this->_render_content($this->Tracker->portation->arrayToCSVRecursive($csvArr, 'Category,Title,Site,My Status,Latest Chapter,Tag List,MAL ID, Last Updated', ',', '"', FALSE, TRUE), 'csv', TRUE, 'tracker-data');
+					break;
 
 				case 'html':
 					$this->body_data['trackerData']  = $trackerData['series'];
