@@ -31,7 +31,11 @@ class AdminCLI extends CLI_Controller {
 	 */
 	public function updateSeries() {
 		print 'Environment: ' . ENVIRONMENT . "\n";
-		$this->Tracker->admin->updateLatestChapters();
+
+		// hack, just incase something happens
+		if (!(date("Y-m-d") > '2019-08-01')) {
+			$this->Tracker->admin->updateLatestChapters();
+		}
 	}
 
 	/**
